@@ -1,7 +1,7 @@
 ---
 name: Issue Task Card
 about: Issue Task Card Template
-title: 작업을 설명하는 prefix로 시작하세요 (ex. [Feat | Fix | Refactor | Style | Docs] )
+title: 'e.g. [milestone 이름] 기능   '
 labels: ''
 assignees: ''
 
