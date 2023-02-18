@@ -1,49 +1,86 @@
 import styled from 'styled-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEarthAmericas } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
+import { useState } from 'react';
+
+const NavContainer = styled.div`
+  width: 164px;
+  height: 180px;
+  position: sticky;
+  padding-top: 10px;
+  > div {
+    height: 8%;
+    width: 100%;
+    color: #525960;
+    padding-left: 13px;
+    margin-bottom: 5px;
+  }
+  > nav {
+    height: 92%;
+    width: 100%;
+  }
+`;
+
+const MenuContainer = styled.li`
+  height: 34px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  &.current {
+    background-color: #f2f2f3;
+    border-right: 3px solid #fc7730;
+    > div {
+      color: black;
+      font-weight: 500;
+    }
+  }
+
+  > div {
+    color: #525960;
+    font-size: 13px;
+    width: 130px;
+    height: 16px;
+    padding-left: 3px;
+    &:hover {
+      color: black;
+    }
+  }
+`;
 
 const Nav = () => {
-  // 164px , 382.77 Px
-  const NavContainer = styled.div`
-    width: 164px;
-    height: 382.77px;
-    position: sticky;
-    padding-top: 10px;
-    border: 1px solid black;
-    > nav {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-    }
-  `;
-
-  const NavItemContainer = styled.ol`
-    width: 100%;
-    height: 300px;
-    border: 1px solid blue;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-  `;
-
-  const NavMenu = styled.li`
-    width: 100%;
-    height: 34px;
-    border: 1px solid red;
-  `;
+  const [isClicked, setIsClicked] = useState('questions');
 
   return (
-    <NavContainer id='left-sidebar--sticky-container js-sticky-leftnav'>
-      <nav role='navigation'>
-        <NavItemContainer className='nav-links'>
-          <NavMenu>Public</NavMenu>
-          <NavMenu className='nav-questions'>
-            <span>icon</span>
-            <span>Questions</span>
-          </NavMenu>
-          <NavMenu className='nav-tags'>Tags</NavMenu>
-          <NavMenu className='nav-users'>Users</NavMenu>
-          <NavMenu className='nav-companies'>Companies</NavMenu>
-        </NavItemContainer>
+    <NavContainer>
+      <div>PUBLIC</div>
+      <nav>
+        <ol>
+          <Link to='/'>
+            <MenuContainer
+              onClick={() => setIsClicked('questions')}
+              className={isClicked === 'questions' ? 'current' : null}
+            >
+              <FontAwesomeIcon
+                id='icon'
+                icon={faEarthAmericas}
+                size='lg'
+                style={{ color: 'black' }}
+              />
+              <div>Questions</div>
+            </MenuContainer>
+          </Link>
+
+          <MenuContainer>
+            <div>Tags</div>
+          </MenuContainer>
+          <MenuContainer>
+            <div>Users</div>
+          </MenuContainer>
+          <MenuContainer>
+            <div>Companies</div>
+          </MenuContainer>
+        </ol>
       </nav>
     </NavContainer>
   );
