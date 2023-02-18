@@ -1,9 +1,11 @@
 import styled from 'styled-components';
+import LoginButton from '../Buttons';
 
 const BoxStyle = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(4, 1fr);
+
   .formContainer {
     background-color: white;
     display: grid;
@@ -21,6 +23,9 @@ const BoxStyle = styled.div`
 `;
 
 const LoginBox = () => {
+  const handleClick = () => {
+    console.log('Button clicked!');
+  };
   return (
     <>
       <div className='LoginBox'>
@@ -32,7 +37,7 @@ const LoginBox = () => {
               <div>Password</div>
               <input type='Password' />
             </div>
-            <button type='submit'> Login </button>
+            <LoginButton className='login-button' onClick={handleClick} />
           </div>
         </BoxStyle>
       </div>

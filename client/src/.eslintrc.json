@@ -5,7 +5,6 @@
   },
   "extends": [
     "eslint:recommended",
-    "plugin:react/recommended",
     "plugin:import/recommended",
     "plugin:jsx-a11y/recommended",
     "plugin:prettier/recommended"
@@ -21,6 +20,7 @@
     "react/react-in-jsx-scope": 0,
     "react/jsx-uses-react": 0,
     "comma-dangle": ["error", "never"],
+    "react/prop-types": "off",
     "prettier/prettier": [
       "error",
       {
