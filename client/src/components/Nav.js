@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEarthAmericas } from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import { useState } from 'react';
 
 const NavContainer = styled.div`
@@ -56,20 +56,20 @@ const Nav = () => {
       <div>PUBLIC</div>
       <nav>
         <ol>
-          <Link to='/'>
-            <MenuContainer
-              onClick={() => setIsClicked('questions')}
-              className={isClicked === 'questions' ? 'current' : null}
-            >
-              <FontAwesomeIcon
-                id='icon'
-                icon={faEarthAmericas}
-                size='lg'
-                style={{ color: 'black' }}
-              />
-              <div>Questions</div>
-            </MenuContainer>
-          </Link>
+          {/* <Link to='/'> */}
+          <MenuContainer
+            onClick={() => setIsClicked('questions')}
+            className={isClicked === 'questions' ? 'current' : null}
+          >
+            <FontAwesomeIcon
+              id='icon'
+              icon={faEarthAmericas}
+              size='lg'
+              style={{ color: 'black' }}
+            />
+            <div>Questions</div>
+          </MenuContainer>
+          {/* </Link> */}
 
           <MenuContainer>
             <div>Tags</div>
