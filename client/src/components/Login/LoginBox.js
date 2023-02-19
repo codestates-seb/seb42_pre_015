@@ -1,60 +1,68 @@
-import styled from 'styled-components';
 import LoginButton from '../Buttons';
-
-const BoxStyle = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  place-items: center;
-  padding: 24px;
-  .login-box {
-    display: grid;
-    grid-column-start: 2;
-    grid-template-rows: repeat(3, 1fr);
-  }
-  .Container {
-    background-color: white;
-    padding: 24px;
-    grid-row-start: 2;
-    width: 307.09px;
-    height: 283.56px;
-  }
-  .login-form {
-    display: grid;
-    grid-template-rows: 0.5fr 1fr 0.5fr 1fr 0.6fr;
-    row-gap: 2px;
-    height: 100%;
-  }
-  h1 {
-    font-size: 1.25rem;
-    font-weight: bold;
-  }
-  .login__text {
-    border: 1px solid black;
-    border-radius: 5px;
-    height: 33px;
-  }
-`;
+import BoxStyle from '../Login/LoginStyle';
+import { useState } from 'react';
 
 const LoginBox = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessageE, setErrorMessageE] = useState('');
+  const [errorMessageP, setErrorMessageP] = useState('');
+
+  const handleEmail = e => {
+    setEmail(e.target.value);
+  };
+
+  const handlePassword = e => {
+    setPassword(e.target.value);
+  };
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    const emailError = !email.trim() ? 'Email cannot be empty' : '';
+    const passwordError = !password.trim() ? 'Password cannot be empty' : '';
+
+    setErrorMessageE(emailError);
+    setErrorMessageP(passwordError);
+  };
+
   const handleClick = () => {
     console.log('Button clicked!');
   };
+
   return (
-    <>
-      <BoxStyle>
-        <div className='login-box'>
-          <div className='Container'>
-            <div className='login-form'>
+    <BoxStyle>
+      <div className='login-box'>
+        <div className='Container'>
+          <form className='login-form' onSubmit={handleSubmit}>
+            <div className='email-container'>
               <h1>Email</h1>
-              <input type='Email' className='login__text' />
-              <h1>Password</h1>
-              <input type='Password' className='login__text' />
-              <LoginButton className='login__button' onClick={handleClick} />
+              <input
+                type='email'
+                value={email}
+                onChange={handleEmail}
+                className='login__text'
+              />
+              {errorMessageE && (
+                <div style={{ color: 'red' }}>{errorMessageE}</div>
+              )}
             </div>
-          </div>
+            <div className='password-container'>
+              <h1>Password</h1>
+              <input
+                type='password'
+                value={password}
+                onChange={handlePassword}
+                className='login__text'
+              />
+              {errorMessageP && (
+                <div style={{ color: 'red' }}>{errorMessageP}</div>
+              )}
+            </div>
+            <LoginButton className='login__button' onClick={handleClick} />
+          </form>
         </div>
-      </BoxStyle>
-    </>
+      </div>
+    </BoxStyle>
   );
 };
 
