@@ -2,10 +2,11 @@ import styled from 'styled-components';
 import { ReactComponent as SpotPencil } from '../../assets/AskQuestionP/spotPencil.svg';
 
 const BoxContainer = styled.div`
-  max-width: 95%;
-  height: 130px;
+  height: max-content;
   border: 1px solid #d0d4d7;
+  box-shadow: rgba(0, 0, 0, 0.5) 0px 1px 2px 0px;
   border-radius: 3px;
+  margin: 0px 20px;
 
   > .box-heading {
     height: 44px;
@@ -13,10 +14,9 @@ const BoxContainer = styled.div`
     border-bottom: 1px solid #d0d4d7;
     display: flex;
     align-items: center;
-    > p {
-      font-size: 15px;
-      padding: 12px;
-    }
+    font-size: 14.3px;
+    color: rgb(35, 38, 41);
+    padding: 12px;
   }
 `;
 
@@ -24,6 +24,8 @@ const BoxContentContainer = styled.div`
   display: flex;
   padding: 16px;
   background-color: #fff;
+  height: auto;
+  min-height: 0;
 
   > .box-content {
     display: flex;
@@ -34,6 +36,7 @@ const BoxContentContainer = styled.div`
       font-size: 12px;
       white-space: normal;
       margin-bottom: 10px;
+      color: rgb(35, 38, 41);
     }
   }
 `;
@@ -41,9 +44,7 @@ const BoxContentContainer = styled.div`
 function WritingTipBox() {
   return (
     <BoxContainer>
-      <div className='box-heading'>
-        <p>Expand on the problem</p>
-      </div>
+      <div className='box-heading'>Expand on the problem</div>
       <BoxContentContainer>
         <div>
           <SpotPencil />
