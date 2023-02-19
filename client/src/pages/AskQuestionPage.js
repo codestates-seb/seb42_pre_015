@@ -14,38 +14,84 @@ const Main = styled.main`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  border: 1px solid red;
+  margin: 0px 20px;
 `;
 
 const MainHeading = styled.div`
-  border: 1px solid green;
-  display: flex;
-  flex-direction: column;
   width: 85%;
   height: 410px;
+  display: flex;
+  flex-direction: column;
   > .main-heading-title {
-    // !반응형에 따라 사진 없어지는 구역
-    display: flex;
     height: 130px;
+    display: flex;
+    justify-content: flex-end;
     > h1 {
-      width: 70%;
       font-size: 27px;
       font-weight: 550;
       padding-top: 50px;
     }
   }
+
+  @media screen and (max-width: 1050px) {
+    width: 100%;
+    .ask-question-background {
+      visibility: hidden;
+    }
+  }
 `;
 
 const MainBody = styled.div`
-  border: 1px solid blue;
   width: 85%;
-  display: flex;
-  > .main-body-form {
-    background-color: lightpink;
-    width: 70%;
-    max-width: 850px;
+  display: grid;
+  grid-template-rows: 150px 380px 150px;
+  > .form {
+    display: grid;
+    grid-template-columns: 70% 30%;
+    grid-column-gap: 15px;
+    margin-bottom: 15px;
   }
-  > .main-body-tips {
+
+  @media screen and (max-width: 1050px) {
+    width: 100%;
+    > .form {
+      display: flex;
+      flex-direction: column-reverse;
+    }
+  }
+`;
+
+const InputBox = styled.div`
+  width: 100%;
+  border: 1.5px solid #e0e2e5;
+  border-radius: 3px;
+  height: auto;
+  background-color: #fff;
+  padding: 24px;
+  > label {
+    font-weight: 600;
+    font-size: 15px;
+  }
+  > p {
+    color: #33383d;
+    font-size: 12px;
+    margin: 7px 0px;
+  }
+  > input,
+  textarea {
+    border: 1px solid #ced2d5;
+    border-radius: 3px;
+    width: 100%;
+    padding: 7.8px 9.1px;
+    font-size: 13px;
+    &:focus {
+      box-shadow: 0 0 0 4px #d9e9f6;
+      border: 1px solid #409ad6;
+      outline: none;
+    }
+  }
+  > textarea {
+    height: 250px;
   }
 `;
 
@@ -59,28 +105,51 @@ function AskQuestionPage() {
         <MainHeading>
           <div className='main-heading-title'>
             <h1>Ask a public question</h1>
-            <AskQuestionBackground className='icon' />
+            <AskQuestionBackground className='ask-question-background' />
           </div>
           <WritingGoodQBox />
         </MainHeading>
         <MainBody>
-          <form className='main-body-form'>
-            <div>
+          <div className='form form-title'>
+            <InputBox>
               <label htmlFor='title'>Title</label>
-              <input type='text' id='title'></input>
-            </div>
-            <div>
-              <label htmlFor='title'>Title</label>
-              <input type='text' id='title'></input>
-            </div>
-            <div>
-              <label htmlFor='title'>Title</label>
-              <input type='text' id='title'></input>
-            </div>
-          </form>
-          <div className='main-body-tips'>
+              <p>
+                Be specific and imagine you’re asking a question to another
+                person.
+              </p>
+              <input
+                type='text'
+                id='title'
+                placeholder='e.g. Is there an R function for finding the index of an element in a vector?'
+              ></input>
+            </InputBox>
             <WritingTipBox />
           </div>
+          <div className='form form-content'>
+            <InputBox>
+              <label htmlFor='content'>
+                What are the details of your problem?
+              </label>
+              <p>
+                Introduce the problem and expand on what you put in the title.
+                Minimum 20 characters.
+              </p>
+              <textarea type='text' id='content'></textarea>
+            </InputBox>
+            <WritingTipBox />
+          </div>
+          <div className='form form-tags'>
+            <InputBox>
+              <label htmlFor='tags'>Tag</label>
+              <p>
+                Add up to 5 tags to describe what your question is about. Start
+                typing to see suggestions.
+              </p>
+              <input type='text' id='tags'></input>
+            </InputBox>
+            <WritingTipBox />
+          </div>
+          <div className='main-body-tips'></div>
         </MainBody>
       </Main>
       <div className='footer' style={{ background: 'grey' }}>
