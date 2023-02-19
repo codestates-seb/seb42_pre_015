@@ -6,19 +6,19 @@ const BoxStyle = styled.div`
   grid-template-columns: repeat(3, 1fr);
   place-items: center;
   padding: 24px;
-  .LoginBox {
+  .login-box {
     display: grid;
     grid-column-start: 2;
     grid-template-rows: repeat(3, 1fr);
   }
-  .formContainer {
+  .Container {
     background-color: white;
     padding: 24px;
     grid-row-start: 2;
     width: 307.09px;
     height: 283.56px;
   }
-  .loginForm {
+  .login-form {
     display: grid;
     grid-template-rows: 0.5fr 1fr 0.5fr 1fr 0.6fr;
     row-gap: 2px;
@@ -28,7 +28,7 @@ const BoxStyle = styled.div`
     font-size: 1.25rem;
     font-weight: bold;
   }
-  .login--text {
+  .login__text {
     border: 1px solid black;
     border-radius: 5px;
     height: 33px;
@@ -42,14 +42,14 @@ const LoginBox = () => {
   return (
     <>
       <BoxStyle>
-        <div className='LoginBox'>
-          <div className='formContainer'>
-            <div className='loginForm'>
+        <div className='login-box'>
+          <div className='Container'>
+            <div className='login-form'>
               <h1>Email</h1>
-              <input type='Email' className='login--text' />
+              <input type='Email' className='login__text' />
               <h1>Password</h1>
-              <input type='Password' className='login--text' />
-              <LoginButton className='login--button' onClick={handleClick} />
+              <input type='Password' className='login__text' />
+              <LoginButton className='login__button' onClick={handleClick} />
             </div>
           </div>
         </div>
