@@ -25,7 +25,6 @@ const MainHeading = styled.div`
   > .main-heading-title {
     height: 130px;
     display: flex;
-    justify-content: flex-end;
     > h1 {
       font-size: 27px;
       font-weight: 550;
@@ -41,14 +40,13 @@ const MainHeading = styled.div`
   }
 `;
 
+// ! flex나 grid로 통일해야함!
 const MainBody = styled.div`
   width: 85%;
-  display: grid;
-  grid-template-rows: 150px 380px 150px;
+  display: flex;
+  flex-direction: column;
   > .form {
-    display: grid;
-    grid-template-columns: 70% 30%;
-    grid-column-gap: 15px;
+    display: flex;
     margin-bottom: 15px;
   }
 
@@ -57,15 +55,15 @@ const MainBody = styled.div`
     > .form {
       display: flex;
       flex-direction: column-reverse;
+      width: 95%;
     }
   }
 `;
 
 const InputBox = styled.div`
-  width: 100%;
+  width: 70%;
   border: 1.5px solid #e0e2e5;
   border-radius: 3px;
-  height: auto;
   background-color: #fff;
   padding: 24px;
   > label {
@@ -92,6 +90,10 @@ const InputBox = styled.div`
   }
   > textarea {
     height: 250px;
+  }
+
+  @media screen and (max-width: 1050px) {
+    width: 100%;
   }
 `;
 
