@@ -1,6 +1,12 @@
-import LoginButton from '../Buttons';
+import {
+  GoogleButton,
+  GithubButton,
+  FacebookButton,
+  LoginButton
+} from './OAuthBottons';
 import BoxStyle from '../Login/LoginStyle';
 import { useState } from 'react';
+import { ReactComponent as MainLogo } from '../../assets/logo.svg';
 
 const LoginBox = () => {
   const [email, setEmail] = useState('');
@@ -15,7 +21,7 @@ const LoginBox = () => {
   const handlePassword = e => {
     setPassword(e.target.value);
   };
-
+  // 로그인 error 메세지
   const handleSubmit = e => {
     e.preventDefault();
     const emailError = !email.trim() ? 'Email cannot be empty' : '';
@@ -28,10 +34,22 @@ const LoginBox = () => {
   const handleClick = () => {
     console.log('Button clicked!');
   };
-
+  // 로그인 컴포넌트
   return (
     <BoxStyle>
       <div className='login-box'>
+        <div className='all-oauth-box'>
+          <div className='logo-box'>
+            <div className='logo'>
+              <MainLogo />
+            </div>
+          </div>
+          <div className='oauth-box'>
+            <GoogleButton />
+            <GithubButton />
+            <FacebookButton />
+          </div>
+        </div>
         <div className='Container'>
           <form className='login-form' onSubmit={handleSubmit}>
             <div className='email-container'>
