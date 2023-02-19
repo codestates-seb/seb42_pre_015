@@ -2,12 +2,13 @@ import styled from 'styled-components';
 import { ReactComponent as SpotPencil } from '../../assets/AskQuestionP/spotPencil.svg';
 
 const BoxContainer = styled.div`
-  max-width: 348px;
+  max-width: 95%;
   border: 1px solid #d0d4d7;
   border-radius: 3px;
+  display: grid;
+  grid-template-rows: 44px auto;
   > .box-heading {
     background-color: #f7f8f8;
-    height: 44px;
     border-bottom: 1px solid #d0d4d7;
     display: flex;
     align-items: center;
@@ -20,7 +21,8 @@ const BoxContainer = styled.div`
 
 const BoxContentContainer = styled.div`
   display: flex;
-  margin: 16px;
+  padding: 16px;
+  background-color: #fff;
   > .box-content {
     display: flex;
     flex-direction: column;
@@ -45,27 +47,8 @@ function WritingTipBox() {
           <SpotPencil />
         </div>
         <div className='box-content'>
-          <p>
-            Your title should summarize the problem. You might find that you
-            have a better idea of your title after writing out the rest of the
-            question.
-          </p>
-          <p>
-            Your title should summarize the problem. You might find that you
-            have a better idea of your title after writing out the rest of the
-            question.
-          </p>
-          <p>
-            Your title should summarize the problem. You might find that you
-            have a better idea of your title after writing out the rest of the
-            question. Your title should summarize the problem. You might find
-            that you have a better idea of your title after writing out the rest
-            of the question. Your title should summarize the problem. You might
-            find that you have a better idea of your title after writing out the
-            rest of the question. Your title should summarize the problem. You
-            might find that you have a better idea of your title after writing
-            out the rest of the question.
-          </p>
+          <p>Your title should summarize the problem.</p>
+          <p>Your title should summarize the problem.</p>
         </div>
       </BoxContentContainer>
     </BoxContainer>
