@@ -3,11 +3,12 @@ import { ReactComponent as SpotPencil } from '../../assets/AskQuestionP/spotPenc
 
 const BoxContainer = styled.div`
   max-width: 95%;
+  height: 130px;
   border: 1px solid #d0d4d7;
   border-radius: 3px;
-  display: grid;
-  grid-template-rows: 44px auto;
+
   > .box-heading {
+    height: 44px;
     background-color: #f7f8f8;
     border-bottom: 1px solid #d0d4d7;
     display: flex;
@@ -23,6 +24,7 @@ const BoxContentContainer = styled.div`
   display: flex;
   padding: 16px;
   background-color: #fff;
+
   > .box-content {
     display: flex;
     flex-direction: column;
