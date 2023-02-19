@@ -97,6 +97,15 @@ const InputBox = styled.div`
   }
 `;
 
+const Buttons = styled.div`
+  > button {
+    background: lightblue;
+    margin: 0px 10px 15px 0px;
+    width: 120px;
+    height: 40px;
+  }
+`;
+
 function AskQuestionPage() {
   return (
     <Page className='page'>
@@ -151,7 +160,10 @@ function AskQuestionPage() {
             </InputBox>
             <WritingTipBox />
           </div>
-          <div className='main-body-tips'></div>
+          <Buttons className='buttons'>
+            <button>Post your question</button>
+            <button>Discard draft</button>
+          </Buttons>
         </MainBody>
       </Main>
       <div className='footer' style={{ background: 'grey' }}>

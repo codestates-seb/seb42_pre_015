@@ -3,12 +3,11 @@ import styled from 'styled-components';
 const BoxContainer = styled.div`
   width: 70%;
   min-height: 250px;
-  margin-top: 30px;
+  margin: 15px 0px;
   padding: 24px;
   border: 1px solid #97c8e9;
   border-radius: 3px;
   background-color: #e6f2fa;
-  max-width: 850px;
   color: #33383d;
   display: flex;
   flex-direction: column;
@@ -39,6 +38,10 @@ const BoxContainer = styled.div`
     > li {
       white-space: normal;
     }
+  }
+
+  @media screen and (max-width: 1050px) {
+    width: 95%;
   }
 `;
 
