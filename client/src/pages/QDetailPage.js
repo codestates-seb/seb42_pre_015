@@ -8,7 +8,6 @@ const Page = styled.div`
 const Main = styled.main`
   display: flex;
   justify-content: center;
-  /* grid-template-columns: 164px auto; */
 `;
 
 const Nav = styled.div`
@@ -17,8 +16,8 @@ const Nav = styled.div`
   position: sticky;
   padding-top: 10px;
   background-color: yellow;
-  @media scan and (max-width: 640) {
-    visibility: hidden;
+  @media screen and (max-width: 640px) {
+    display: none;
   }
 `;
 
@@ -49,12 +48,15 @@ const Content = styled.div`
     height: 800px;
     background: blue;
   }
-  @media scan and (max-width: 980) {
-    // sidebar 없애기
+  @media screen and (max-width: 1100px) {
+    // remove sidebar
     grid-template-areas:
       'question-header question-header'
       'question-info question-info'
       'mainbar mainbar';
+    > .sidebar {
+      display: none;
+    }
   }
 `;
 
