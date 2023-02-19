@@ -18,6 +18,9 @@ const BoxContainer = styled.div`
     color: rgb(35, 38, 41);
     padding: 12px;
   }
+  @media screen and (max-width: 1050px) {
+    margin: 0;
+  }
 `;
 
 const BoxContentContainer = styled.div`
@@ -25,7 +28,6 @@ const BoxContentContainer = styled.div`
   padding: 16px;
   background-color: #fff;
   height: auto;
-  min-height: 0;
 
   > .box-content {
     display: flex;
