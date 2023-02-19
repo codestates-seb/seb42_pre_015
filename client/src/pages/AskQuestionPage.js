@@ -7,6 +7,7 @@ const Page = styled.div`
   // 헤더, 푸터 작업 완료되면 지워도 되는 코드
   display: grid;
   grid-template-rows: 50px auto 100px;
+  background-color: #f7f8f8;
 `;
 
 const Main = styled.main`
