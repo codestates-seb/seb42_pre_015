@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ReactComponent as SpotPencil } from '../../assets/spotPencil.svg';
+import { ReactComponent as SpotPencil } from '../../assets/AskQuestionP/spotPencil.svg';
 
 const BoxContainer = styled.div`
   max-width: 348px;
