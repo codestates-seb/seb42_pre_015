@@ -20,7 +20,7 @@ const LoginButtonStyle = styled.button`
 const LoginButton = props => {
   return (
     <LoginButtonStyle>
-      <button className={props.className} onClick={props.onClick}>
+      <button type='submit' className={props.className} onClick={props.onClick}>
         Log in
       </button>
     </LoginButtonStyle>
