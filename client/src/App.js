@@ -1,14 +1,10 @@
-import Header from './Header';
+import GlobalStyles from './GlobalStyles';
 
 function App() {
   return (
-    <div className='app'>
-      <div className='app'>
-        <div className='test'>
-          <Header />
-        </div>
-      </div>
-    </div>
+    <>
+      <GlobalStyles />
+    </>
   );
 }
 
