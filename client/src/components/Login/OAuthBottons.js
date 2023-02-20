@@ -1,10 +1,7 @@
 import styled from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faGoogle,
-  faGithub,
-  faFacebook
-} from '@fortawesome/free-brands-svg-icons';
+import { ReactComponent as Googlelogo } from '../../assets/logo/Google.svg';
+import { ReactComponent as GitHublogo } from '../../assets/logo/GitHub.svg';
+import { ReactComponent as Facebooklogo } from '../../assets/logo/Facebook.svg';
 
 const ButtonWrapper = styled.button`
   background-color: ${({ bgColor }) => bgColor};
@@ -15,7 +12,6 @@ const ButtonWrapper = styled.button`
   height: 42px;
   cursor: pointer;
   transition: background-color 0.2s;
-  font-size: 12px;
   &:hover {
     background-color: ${({ hoverBgColor }) => hoverBgColor};
   }
@@ -37,8 +33,10 @@ const GoogleButton = () => {
       hoverBgColor='#eee'
       activeBgColor='#ddd'
     >
-      <FontAwesomeIcon icon={faGoogle} className='icon' />
-      Log in with Google
+      <span style={{ display: 'inline-flex', alignItems: 'center' }}>
+        <Googlelogo className='icon' />
+        Log in with Google
+      </span>
     </ButtonWrapper>
   );
 };
@@ -51,8 +49,9 @@ const GithubButton = () => {
       hoverBgColor='#000'
       activeBgColor='#333'
     >
-      <FontAwesomeIcon icon={faGithub} className='icon' />
-      Log in with GitHub
+      <span style={{ display: 'inline-flex', alignItems: 'center' }}>
+        <GitHublogo className='icon' /> Log in with GitHub
+      </span>
     </ButtonWrapper>
   );
 };
@@ -65,8 +64,10 @@ const FacebookButton = () => {
       hoverBgColor='#2f477a'
       activeBgColor='#293e69'
     >
-      <FontAwesomeIcon icon={faFacebook} className='icon' />
-      Log in with Facebook
+      <span style={{ display: 'inline-flex', alignItems: 'center' }}>
+        <Facebooklogo className='icon' />
+        Log in with Facebook
+      </span>
     </ButtonWrapper>
   );
 };

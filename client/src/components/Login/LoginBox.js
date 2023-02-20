@@ -6,7 +6,7 @@ import {
 } from './OAuthBottons';
 import BoxStyle from '../Login/LoginStyle';
 import { useState } from 'react';
-import { ReactComponent as MainLogo } from '../../assets/logo.svg';
+import { ReactComponent as MainLogo } from '../../assets/logo/logo.svg';
 
 const LoginBox = () => {
   const [email, setEmail] = useState('');
