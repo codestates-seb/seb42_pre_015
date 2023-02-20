@@ -75,7 +75,7 @@ const FacebookButton = () => {
   );
 };
 
-const LoginButton1 = () => {
+const LoginButton = () => {
   return (
     <ButtonWrapper
       bgColor='#0895ff'
@@ -88,7 +88,7 @@ const LoginButton1 = () => {
     </ButtonWrapper>
   );
 };
-const LoginButton2 = () => {
+const HeaderLogin = () => {
   return (
     <ButtonWrapper
       bgColor='hsl(205deg 46% 92%)'
@@ -132,8 +132,8 @@ export {
   GoogleButton,
   GithubButton,
   FacebookButton,
-  LoginButton1,
-  LoginButton2,
+  LoginButton,
+  HeaderLogin,
   SignUpButton,
   AskQuestionButton
 };

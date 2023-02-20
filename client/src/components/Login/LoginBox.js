@@ -2,8 +2,8 @@ import {
   GoogleButton,
   GithubButton,
   FacebookButton,
-  LoginButton1,
-  LoginButton2,
+  LoginButton,
+  HeaderLogin,
   SignUpButton,
   AskQuestionButton
 } from './OAuthBottons';
@@ -79,7 +79,7 @@ const LoginBox = () => {
                 <div style={{ color: 'red' }}>{errorMessageP}</div>
               )}
             </div>
-            <LoginButton1 className='login__button' onClick={handleClick} />
+            <LoginButton className='login__button' onClick={handleClick} />
           </form>
         </div>
         <div>
@@ -87,7 +87,7 @@ const LoginBox = () => {
           <div> Are you an employer?</div>
         </div>
         <SignUpButton />
-        <LoginButton2 />
+        <HeaderLogin />
         <AskQuestionButton />
       </div>
     </BoxStyle>
