@@ -2,13 +2,13 @@ package preproject.underdog.answer.dto.answer;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import preproject.underdog.question.entity.Question;
-import preproject.underdog.user.entity.User;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class AnswerRespDto {
 
     private Long answerId;

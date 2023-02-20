@@ -10,7 +10,7 @@ import preproject.underdog.answer.dto.answer.AnswerRespDto;
 import preproject.underdog.answer.entity.Answer;
 import preproject.underdog.answer.mapper.AnswerMapper;
 import preproject.underdog.answer.service.AnswerService;
-import preproject.underdog.response.SingleResponse;
+import preproject.underdog.utils.Uri;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -22,32 +22,31 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class AnswerController {
 
-    private AnswerService answerService;
-    private AnswerMapper answerMapper;
+    private final String DEFAULT_URI = "/answers/";
+    private final AnswerService answerService;
+    private final AnswerMapper answerMapper;
 
     @PostMapping
-    public ResponseEntity postAnswer(@Valid @RequestBody AnswerPostDto answerPostDto) {
-//        Answer answer = answerService.createAnswer(answerMapper.answerPostDtoToAnswer(answerPostDto));
-//
-//        AnswerRespDto response = answerMapper.answerToAnswerRespDto(answer);
-        AnswerRespDto answerRespDto = new AnswerRespDto(1L,"테스트",1L,1L,1L, LocalDateTime.of(2023, 4, 3, 3, 3, 0),LocalDateTime.of(2023, 4, 3, 3, 3, 0));
-
-        return new ResponseEntity<>(answerRespDto, HttpStatus.CREATED);
-    }
-
-    @PatchMapping("{answer-id}")
-    public ResponseEntity patchAnswer() {
-        return ResponseEntity.ok(null);
-    }
-
-    @GetMapping("questions/{id}/answers")
-    public ResponseEntity getAnswers() {
-        return ResponseEntity.ok(null);
-
-    }
-
-    @DeleteMapping("{answer-id}")
-    public ResponseEntity deleteAnswer() {
-        return ResponseEntity.noContent().build();
+    public ResponseEntity postAnswer(@RequestBody @Valid AnswerPostDto post) {
+        Answer postAnswer = answerMapper.answerPostDtoToAnswer(post);
+        Answer createdAnswer = answerService.createAnswer(postAnswer);
+        URI location = Uri.createUri(DEFAULT_URI, Long.toString(createdAnswer.getAnswerId()));
+        return ResponseEntity.created(location).build();
     }
 }
+//    @PatchMapping("{answer-id}")
+//    public ResponseEntity patchAnswer() {
+//        return ResponseEntity.ok(null);
+//    }
+//
+//    @GetMapping("questions/{id}/answers")
+//    public ResponseEntity getAnswers() {
+//        return ResponseEntity.ok(null);
+//
+//    }
+//
+//    @DeleteMapping("{answer-id}")
+//    public ResponseEntity deleteAnswer() {
+//        return ResponseEntity.noContent().build();
+//    }
+//}

@@ -38,3 +38,6 @@ out/
 
 ### yml
 *.yml
+
+### gradle
+*.gradle
