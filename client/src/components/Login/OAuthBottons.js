@@ -12,6 +12,7 @@ const ButtonWrapper = styled.button`
   height: 42px;
   cursor: pointer;
   transition: background-color 0.2s;
+  font-size: 15px;
   &:hover {
     background-color: ${({ hoverBgColor }) => hoverBgColor};
   }
@@ -19,10 +20,12 @@ const ButtonWrapper = styled.button`
     margin-right: 10px;
   }
   ${({ isLoginButton }) =>
-    isLoginButton &&
-    `
-    box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.25);
-  `}
+    isLoginButton && `box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.25);`}
+  .span-style {
+    display: inline-flex;
+    align-items: center;
+    font-size: 13px;
+  }
 `;
 
 const GoogleButton = () => {
@@ -33,7 +36,7 @@ const GoogleButton = () => {
       hoverBgColor='#eee'
       activeBgColor='#ddd'
     >
-      <span style={{ display: 'inline-flex', alignItems: 'center' }}>
+      <span className='span-style'>
         <Googlelogo className='icon' />
         Log in with Google
       </span>
@@ -49,7 +52,7 @@ const GithubButton = () => {
       hoverBgColor='#000'
       activeBgColor='#333'
     >
-      <span style={{ display: 'inline-flex', alignItems: 'center' }}>
+      <span className='span-style'>
         <GitHublogo className='icon' /> Log in with GitHub
       </span>
     </ButtonWrapper>
@@ -64,7 +67,7 @@ const FacebookButton = () => {
       hoverBgColor='#2f477a'
       activeBgColor='#293e69'
     >
-      <span style={{ display: 'inline-flex', alignItems: 'center' }}>
+      <span className='span-style'>
         <Facebooklogo className='icon' />
         Log in with Facebook
       </span>
@@ -72,18 +75,65 @@ const FacebookButton = () => {
   );
 };
 
-const LoginButton = () => {
+const LoginButton1 = () => {
   return (
     <ButtonWrapper
       bgColor='#0895ff'
       color='#fff'
       hoverBgColor='#2f477a'
       activeBgColor='#293e69'
-      isLoginButton // 추가된 속성
+      isLoginButton
     >
       Log in
     </ButtonWrapper>
   );
 };
+const LoginButton2 = () => {
+  return (
+    <ButtonWrapper
+      bgColor='hsl(205deg 46% 92%)'
+      color='hsl(205deg 47% 42%)'
+      hoverBgColor='#2f477a'
+      activeBgColor='#293e69'
+      isLoginButton
+    >
+      Log in
+    </ButtonWrapper>
+  );
+};
+const SignUpButton = () => {
+  return (
+    <ButtonWrapper
+      bgColor='#0895ff'
+      color='#fff'
+      hoverBgColor='#2f477a'
+      activeBgColor='#293e69'
+      isLoginButton
+    >
+      Sign Up
+    </ButtonWrapper>
+  );
+};
+const AskQuestionButton = () => {
+  return (
+    <ButtonWrapper
+      bgColor='#0895ff'
+      color='#fff'
+      hoverBgColor='#2f477a'
+      activeBgColor='#293e69'
+      isLoginButton
+    >
+      Ask Question
+    </ButtonWrapper>
+  );
+};
 
-export { GoogleButton, GithubButton, FacebookButton, LoginButton };
+export {
+  GoogleButton,
+  GithubButton,
+  FacebookButton,
+  LoginButton1,
+  LoginButton2,
+  SignUpButton,
+  AskQuestionButton
+};

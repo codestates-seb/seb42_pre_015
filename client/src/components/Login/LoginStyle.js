@@ -38,7 +38,7 @@ const BoxStyle = styled.div`
     grid-row-start: 2;
     width: 307.09px;
     height: 283.56px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);
     border-radius: 5px;
   }
   .Container > .login-form {

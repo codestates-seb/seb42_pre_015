@@ -2,7 +2,10 @@ import {
   GoogleButton,
   GithubButton,
   FacebookButton,
-  LoginButton
+  LoginButton1,
+  LoginButton2,
+  SignUpButton,
+  AskQuestionButton
 } from './OAuthBottons';
 import BoxStyle from '../Login/LoginStyle';
 import { useState } from 'react';
@@ -76,9 +79,16 @@ const LoginBox = () => {
                 <div style={{ color: 'red' }}>{errorMessageP}</div>
               )}
             </div>
-            <LoginButton className='login__button' onClick={handleClick} />
+            <LoginButton1 className='login__button' onClick={handleClick} />
           </form>
         </div>
+        <div>
+          <div> Don't have an account?</div>
+          <div> Are you an employer?</div>
+        </div>
+        <SignUpButton />
+        <LoginButton2 />
+        <AskQuestionButton />
       </div>
     </BoxStyle>
   );
