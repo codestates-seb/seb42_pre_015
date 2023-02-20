@@ -1,19 +1,22 @@
-// 기본폴더 추가
 import LoginBox from '../components/Login/LoginBox';
 import styled from 'styled-components';
 
 const LoginPageStyle = styled.div`
   background-color: hsl(27, 100%, 97%);
+  .login-page {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    place-items: center;
+    padding: 24px;
+  }
 `;
 
 const LoginPage = () => {
   return (
     <>
       <LoginPageStyle>
-        <div className='header'>
-          <div className='LoginBox'>
-            <LoginBox />
-          </div>
+        <div className='login-page'>
+          <LoginBox />
         </div>
       </LoginPageStyle>
     </>
