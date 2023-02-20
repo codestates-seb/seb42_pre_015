@@ -21,11 +21,11 @@ const SvgList = styled.ol`
     cursor: pointer;
     &:hover {
       background-color: #e3e6e8;
-      a {
+      p {
         opacity: 0.8;
       }
     }
-    a {
+    p {
       display: flex;
       align-items: center;
       position: relative;
@@ -228,9 +228,9 @@ export default function LoginNav() {
         }}
         ref={messagesRef}
       >
-        <a href='/#'>
+        <p>
           <MessagesIcon></MessagesIcon>
-        </a>
+        </p>
         {isMessagesIconClick ? (
           <UsersNavigation height='423px'>
             <DropDownHeader>
@@ -264,9 +264,9 @@ export default function LoginNav() {
         }}
         ref={achievementsRef}
       >
-        <a href='/#'>
+        <p>
           <Achievements></Achievements>
-        </a>
+        </p>
         {isAchievementsClick ? (
           <UsersNavigation left='-337px' height='422px'>
             <DropDownHeader>
@@ -286,9 +286,9 @@ export default function LoginNav() {
         }}
         ref={helpIconRef}
       >
-        <a href='/#'>
+        <p>
           <HelpIcon />
-        </a>
+        </p>
         {isHelpIconClick ? (
           <UsersNavigation left='-176px' width='214px' height='328px'>
             <HelpContainer>
@@ -320,9 +320,9 @@ export default function LoginNav() {
         }}
         ref={communityRef}
       >
-        <a href='/#'>
+        <p>
           <CommunityIcon></CommunityIcon>
-        </a>
+        </p>
         {isCommunityIconClick ? (
           <UsersNavigation left='-337px' height='398px'>
             <DropDownHeader>

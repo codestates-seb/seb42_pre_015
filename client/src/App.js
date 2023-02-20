@@ -6,6 +6,7 @@ function App() {
     <>
       <GlobalStyles />
       <Header />
+      <div style={{ height: '10000px' }}></div>
     </>
   );
 }
