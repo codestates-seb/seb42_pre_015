@@ -11,6 +11,10 @@ const GlobalStyles = createGlobalStyle`
     white-space: nowrap;
     font-size: 11px; 
   }
+  body {
+    width: 100vw;
+    height: 100vh;
+  }
 
   ol, ul {
     list-style: none;
