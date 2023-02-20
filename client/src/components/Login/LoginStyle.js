@@ -34,7 +34,6 @@ const BoxStyle = styled.div`
     background-color: white;
     padding: 24px;
     grid-row-start: 2;
-
     height: 283.56px;
     box-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);
     border-radius: 5px;
