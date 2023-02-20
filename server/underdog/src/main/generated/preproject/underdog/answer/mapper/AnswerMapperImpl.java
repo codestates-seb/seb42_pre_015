@@ -5,15 +5,21 @@ import org.springframework.stereotype.Component;
 import preproject.underdog.answer.dto.answer.AnswerPatchDto;
 import preproject.underdog.answer.dto.answer.AnswerPostDto;
 import preproject.underdog.answer.dto.answer.AnswerRespDto;
+import preproject.underdog.answer.dto.answer.AnswerRespDto.AnswerRespDtoBuilder;
 import preproject.underdog.answer.dto.comment.CommentPatchDto;
 import preproject.underdog.answer.dto.comment.CommentPostDto;
 import preproject.underdog.answer.dto.comment.CommentRespDto;
+import preproject.underdog.answer.dto.comment.CommentRespDto.CommentRespDtoBuilder;
+import preproject.underdog.answer.dto.vote.VotePostDto;
+import preproject.underdog.answer.dto.vote.VoteRespDto;
+import preproject.underdog.answer.dto.vote.VoteRespDto.VoteRespDtoBuilder;
 import preproject.underdog.answer.entity.Answer;
 import preproject.underdog.answer.entity.AnswerComment;
+import preproject.underdog.answer.entity.AnswerVote;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-02-20T20:21:25+0900",
+    date = "2023-02-21T01:01:10+0900",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 11.0.17 (Azul Systems, Inc.)"
 )
 @Component
@@ -51,9 +57,14 @@ public class AnswerMapperImpl implements AnswerMapper {
             return null;
         }
 
-        AnswerRespDto answerRespDto = new AnswerRespDto();
+        AnswerRespDtoBuilder answerRespDto = AnswerRespDto.builder();
 
-        return answerRespDto;
+        answerRespDto.answerId( answer.getAnswerId() );
+        answerRespDto.content( answer.getContent() );
+        answerRespDto.createdAt( answer.getCreatedAt() );
+        answerRespDto.modifiedAt( answer.getModifiedAt() );
+
+        return answerRespDto.build();
     }
 
     @Override
@@ -88,8 +99,35 @@ public class AnswerMapperImpl implements AnswerMapper {
             return null;
         }
 
-        CommentRespDto commentRespDto = new CommentRespDto();
+        CommentRespDtoBuilder commentRespDto = CommentRespDto.builder();
 
-        return commentRespDto;
+        commentRespDto.answerCommentId( answerComment.getAnswerCommentId() );
+        commentRespDto.content( answerComment.getContent() );
+        commentRespDto.createdAt( answerComment.getCreatedAt() );
+        commentRespDto.modifiedAt( answerComment.getModifiedAt() );
+
+        return commentRespDto.build();
+    }
+
+    @Override
+    public AnswerVote votePostDtoToAnswerVote(VotePostDto votePostDto) {
+        if ( votePostDto == null ) {
+            return null;
+        }
+
+        AnswerVote answerVote = new AnswerVote();
+
+        return answerVote;
+    }
+
+    @Override
+    public VoteRespDto voteToAnswerVoteRespDto(AnswerVote answerVote) {
+        if ( answerVote == null ) {
+            return null;
+        }
+
+        VoteRespDtoBuilder voteRespDto = VoteRespDto.builder();
+
+        return voteRespDto.build();
     }
 }

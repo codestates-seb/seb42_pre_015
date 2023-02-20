@@ -4,11 +4,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import preproject.underdog.answer.entity.Answer;
 import preproject.underdog.answer.entity.AnswerComment;
+import preproject.underdog.answer.entity.AnswerVote;
 import preproject.underdog.answer.repository.AnswerRepository;
 import preproject.underdog.answer.repository.CommentRepository;
+import preproject.underdog.answer.repository.VoteRepository;
 import preproject.underdog.exception.BusinessLogicException;
 import preproject.underdog.exception.ExceptionCode;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -18,9 +22,12 @@ public class AnswerService {
 
     private final CommentRepository commentRepository;
 
-    public AnswerService(AnswerRepository answerRepository, CommentRepository commentRepository) {
+    private final VoteRepository voteRepository;
+
+    public AnswerService(AnswerRepository answerRepository, CommentRepository commentRepository, VoteRepository voteRepository) {
         this.answerRepository = answerRepository;
         this.commentRepository = commentRepository;
+        this.voteRepository = voteRepository;
     }
 
     @Transactional
@@ -40,6 +47,11 @@ public class AnswerService {
         answerRepository.delete(answer);
     }
 
+    public Answer getAnswer(long answerId) {
+        Answer answer = new Answer();
+        return answer;
+    }
+
     @Transactional
     public AnswerComment postComment(AnswerComment comment) {
         return commentRepository.save(comment);
@@ -48,6 +60,21 @@ public class AnswerService {
     @Transactional
     public AnswerComment patchComment(AnswerComment comment){
         return commentRepository.save(comment);
+    }
+
+    public AnswerComment getComment(long answerId) {
+        AnswerComment comment = new AnswerComment();
+        return comment;
+    }
+
+    @Transactional
+    public AnswerVote doVote(AnswerVote vote) {
+        return voteRepository.save(vote);
+    }
+
+    @Transactional
+    public void undoVote(long answerVoteId) {
+        return;
     }
 
     @Transactional
@@ -76,7 +103,6 @@ public class AnswerService {
 
         return findComment;
     }
-
 
 
 }
