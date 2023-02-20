@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import HeaderLogo from '../assets/Header/HeaderLogo.JPG';
 import UserNav from './Header/UserNav';
@@ -56,11 +56,22 @@ const NavigationBtn = styled.button`
 function Header() {
   const [isLogin] = useState(true);
   const [isProductsClick, setIsProductsClick] = useState(false);
-  const [isSearchClick, setIsSearchClick] = useState(false);
-  const [isMessagesIconClick, setIsMessagesIconClick] = useState(false);
-  const [isAchievementsClick, setIsAchievementsClick] = useState(false);
-  const [isHelpIconClick, setIsHelpIconClick] = useState(false);
-  const [isCommunityIconClick, setIsCommunityIconClick] = useState(false);
+
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleWindowClick = e => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setIsProductsClick(false);
+      }
+    };
+
+    window.addEventListener('click', handleWindowClick);
+
+    return () => {
+      window.removeEventListener('click', handleWindowClick);
+    };
+  }, []);
 
   return (
     <>
@@ -69,46 +80,29 @@ function Header() {
         <HeaderContainer>
           <HeaderLogoImg src={HeaderLogo} alt='HeaderLogo' />
           {isLogin ? (
-            <NavigationBtn onClick={() => setIsProductsClick(pre => !pre)}>
+            <NavigationBtn
+              onClick={() => setIsProductsClick(true)}
+              ref={dropdownRef}
+            >
               Products
               {isProductsClick ? <ProductsNav /> : null}
             </NavigationBtn>
           ) : (
             <>
               <NavigationBtn>About</NavigationBtn>
-              <NavigationBtn onClick={() => setIsProductsClick(pre => !pre)}>
+              <NavigationBtn
+                onClick={() => setIsProductsClick(true)}
+                ref={dropdownRef}
+              >
                 Products
                 {isProductsClick ? <ProductsNav /> : null}
               </NavigationBtn>
               <NavigationBtn>For Teams</NavigationBtn>
             </>
           )}
-          <Search
-            isLogin={isLogin}
-            isSearchClick={isSearchClick}
-            setIsSearchClick={() => {
-              setIsSearchClick(true);
-            }}
-          />
+          <Search isLogin={isLogin} />
           <UserNav />
-          <LoginNav
-            isMessagesIconClick={isMessagesIconClick}
-            isAchievementsClick={isAchievementsClick}
-            isHelpIconClick={isHelpIconClick}
-            isCommunityIconClick={isCommunityIconClick}
-            MessagesIconClickHandler={() => {
-              setIsMessagesIconClick(pre => !pre);
-            }}
-            AchievementsClickHandler={() => {
-              setIsAchievementsClick(pre => !pre);
-            }}
-            HelpIconClickHandler={() => {
-              setIsHelpIconClick(pre => !pre);
-            }}
-            CommunityIconClickHandler={() => {
-              setIsCommunityIconClick(pre => !pre);
-            }}
-          />
+          <LoginNav />
         </HeaderContainer>
       </StyledHeader>
     </>

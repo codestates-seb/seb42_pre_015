@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { ReactComponent as GlassesIcon } from '../../assets/Header/GlassesIcon.svg';
+import { useEffect, useRef, useState } from 'react';
 
 const SearchForm = styled.form`
   padding: 0 8px;
@@ -61,7 +62,29 @@ const SearchNavFont2 = styled.span`
   font-size: 13px;
   color: rgb(106, 115, 124);
 `;
-export default function Search({ isLogin, isSearchClick, setIsSearchClick }) {
+export default function Search({ isLogin }) {
+  const searchRef = useRef(null);
+  const searchNavRef = useRef(null);
+  const [isSearchClick, setIsSearchClick] = useState(false);
+
+  useEffect(() => {
+    const handleSearchClick = e => {
+      console.log(!searchNavRef.current.contains(e.target));
+      if (
+        searchRef.current &&
+        !searchRef.current.contains(e.target) &&
+        !searchNavRef.current.contains(e.target)
+      ) {
+        setIsSearchClick(false);
+      }
+    };
+    window.addEventListener('click', handleSearchClick);
+
+    return () => {
+      window.removeEventListener('click', handleSearchClick);
+    };
+  }, []);
+
   return (
     <SearchForm>
       <SearchIcon>
@@ -73,11 +96,12 @@ export default function Search({ isLogin, isSearchClick, setIsSearchClick }) {
             width='776.734px'
             placeholder='Search...'
             onFocus={() => {
-              setIsSearchClick();
+              setIsSearchClick(true);
             }}
+            ref={searchRef}
           />
           {isSearchClick ? (
-            <SearchInputNavigation width='776.734px'>
+            <SearchInputNavigation width='776.734px' ref={searchNavRef}>
               <SearchDiv>
                 <div>
                   <div>

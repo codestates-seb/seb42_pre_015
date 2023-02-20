@@ -6,6 +6,7 @@ import { ReactComponent as CommunityIcon } from '../../assets/Header/CommunityIc
 import { ReactComponent as InboxMailIcon } from '../../assets/Header/InboxMailIcon.svg';
 import { ReactComponent as GlassesIcon } from '../../assets/Header/GlassesIcon.svg';
 import SOLogo from '../../assets/Header/SOLogo.png';
+import { useEffect, useRef, useState } from 'react';
 
 const SvgList = styled.ol`
   display: flex;
@@ -179,22 +180,50 @@ const SearchInput = styled.input`
   }
 `;
 
-export default function LoginNav({
-  isMessagesIconClick,
-  isAchievementsClick,
-  isHelpIconClick,
-  isCommunityIconClick,
-  MessagesIconClickHandler,
-  AchievementsClickHandler,
-  HelpIconClickHandler,
-  CommunityIconClickHandler
-}) {
+export default function LoginNav() {
+  const [isMessagesIconClick, setIsMessagesIconClick] = useState(false);
+  const [isAchievementsClick, setIsAchievementsClick] = useState(false);
+  const [isHelpIconClick, setIsHelpIconClick] = useState(false);
+  const [isCommunityIconClick, setIsCommunityIconClick] = useState(false);
+
+  const messagesRef = useRef(null);
+  const achievementsRef = useRef(null);
+  const helpIconRef = useRef(null);
+  const communityRef = useRef(null);
+
+  useEffect(() => {
+    const handleWindowClick = e => {
+      if (messagesRef.current && !messagesRef.current.contains(e.target)) {
+        setIsMessagesIconClick(false);
+      }
+      if (
+        achievementsRef.current &&
+        !achievementsRef.current.contains(e.target)
+      ) {
+        setIsAchievementsClick(false);
+      }
+      if (helpIconRef.current && !helpIconRef.current.contains(e.target)) {
+        setIsHelpIconClick(false);
+      }
+      if (communityRef.current && !communityRef.current.contains(e.target)) {
+        setIsCommunityIconClick(false);
+      }
+    };
+
+    window.addEventListener('click', handleWindowClick);
+
+    return () => {
+      window.removeEventListener('click', handleWindowClick);
+    };
+  }, []);
+
   return (
     <SvgList>
       <button
         onClick={() => {
-          MessagesIconClickHandler();
+          setIsMessagesIconClick(true);
         }}
+        ref={messagesRef}
       >
         <a href='/#'>
           <MessagesIcon></MessagesIcon>
@@ -228,8 +257,9 @@ export default function LoginNav({
       </button>
       <button
         onClick={() => {
-          AchievementsClickHandler();
+          setIsAchievementsClick(true);
         }}
+        ref={achievementsRef}
       >
         <a href='/#'>
           <Achievements></Achievements>
@@ -249,8 +279,9 @@ export default function LoginNav({
       </button>
       <button
         onClick={() => {
-          HelpIconClickHandler();
+          setIsHelpIconClick(true);
         }}
+        ref={helpIconRef}
       >
         <a href='/#'>
           <HelpIcon />
@@ -282,8 +313,9 @@ export default function LoginNav({
       </button>
       <button
         onClick={() => {
-          CommunityIconClickHandler();
+          setIsCommunityIconClick(true);
         }}
+        ref={communityRef}
       >
         <a href='/#'>
           <CommunityIcon></CommunityIcon>
