@@ -18,10 +18,10 @@ public class AnswerVote {
     private Long answerVoteId;
 
     @ManyToOne
-    @JoinColumn(name = "user-id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "answer-id")
+    @JoinColumn(name = "answer_id")
     private Answer answer;
 }

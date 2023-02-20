@@ -1,5 +1,6 @@
 package preproject.underdog.answer.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,15 +19,12 @@ public class AnswerComment extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long answerCommentId;
-
     @ManyToOne
-    @JoinColumn(name = "user-id")
+    @JoinColumn(name = "user_id")
     private User user;
-
     @ManyToOne
-    @JoinColumn(name = "answer-id")
+    @JoinColumn(name = "answer_id")
     private Answer answer;
-
     @Nullable
     private String content;
 }

@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Getter
-@AllArgsConstructor
+@AllArgsConstructor//API 작성 후 삭제
 @NoArgsConstructor
 public class AnswerRespDto {
 

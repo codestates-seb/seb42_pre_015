@@ -4,11 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Getter
-@AllArgsConstructor // 테스트
+@AllArgsConstructor //API 작성 후 삭제
 @NoArgsConstructor
 public class AnswerPostDto {
 

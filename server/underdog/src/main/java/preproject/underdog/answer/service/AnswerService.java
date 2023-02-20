@@ -3,7 +3,9 @@ package preproject.underdog.answer.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import preproject.underdog.answer.entity.Answer;
+import preproject.underdog.answer.entity.AnswerComment;
 import preproject.underdog.answer.repository.AnswerRepository;
+import preproject.underdog.answer.repository.CommentRepository;
 import preproject.underdog.exception.BusinessLogicException;
 import preproject.underdog.exception.ExceptionCode;
 
@@ -14,8 +16,11 @@ public class AnswerService {
 
     private final AnswerRepository answerRepository;
 
-    public AnswerService(AnswerRepository answerRepository) {
+    private final CommentRepository commentRepository;
+
+    public AnswerService(AnswerRepository answerRepository, CommentRepository commentRepository) {
         this.answerRepository = answerRepository;
+        this.commentRepository = commentRepository;
     }
 
     @Transactional
@@ -35,7 +40,25 @@ public class AnswerService {
         answerRepository.delete(answer);
     }
 
+    @Transactional
+    public AnswerComment postComment(AnswerComment comment) {
+        return commentRepository.save(comment);
+    }
+
+    @Transactional
+    public AnswerComment patchComment(AnswerComment comment){
+        return commentRepository.save(comment);
+    }
+
+    @Transactional
+    public void deleteComment(long answerCommentId) {
+        AnswerComment comment = findVerifiedComment(answerCommentId);
+        commentRepository.delete(comment);
+    }
+
+
     public Answer findVerifiedAnswer(long answerId) {
+
         Optional<Answer> optionalAnswer = answerRepository.findById(answerId);
         Answer findAnswer =
                 optionalAnswer.orElseThrow(() ->
@@ -43,4 +66,17 @@ public class AnswerService {
 
         return findAnswer;
     }
+
+    public AnswerComment findVerifiedComment(long answerCommentId) {
+
+        Optional<AnswerComment> optionalAnswer = commentRepository.findById(answerCommentId);
+        AnswerComment findComment =
+                optionalAnswer.orElseThrow(() ->
+                        new BusinessLogicException(ExceptionCode.COMMENT_NOT_FOUND));
+
+        return findComment;
+    }
+
+
+
 }

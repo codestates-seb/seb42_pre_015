@@ -5,11 +5,15 @@ import org.springframework.stereotype.Component;
 import preproject.underdog.answer.dto.answer.AnswerPatchDto;
 import preproject.underdog.answer.dto.answer.AnswerPostDto;
 import preproject.underdog.answer.dto.answer.AnswerRespDto;
+import preproject.underdog.answer.dto.comment.CommentPatchDto;
+import preproject.underdog.answer.dto.comment.CommentPostDto;
+import preproject.underdog.answer.dto.comment.CommentRespDto;
 import preproject.underdog.answer.entity.Answer;
+import preproject.underdog.answer.entity.AnswerComment;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-02-20T01:15:08+0900",
+    date = "2023-02-20T20:21:25+0900",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 11.0.17 (Azul Systems, Inc.)"
 )
 @Component
@@ -23,7 +27,6 @@ public class AnswerMapperImpl implements AnswerMapper {
 
         Answer answer = new Answer();
 
-        answer.setAnswerId( answerPatchDto.getAnswerId() );
         answer.setContent( answerPatchDto.getContent() );
 
         return answer;
@@ -51,5 +54,42 @@ public class AnswerMapperImpl implements AnswerMapper {
         AnswerRespDto answerRespDto = new AnswerRespDto();
 
         return answerRespDto;
+    }
+
+    @Override
+    public AnswerComment commentPostDtoToAnswerComment(CommentPostDto commentPostDto) {
+        if ( commentPostDto == null ) {
+            return null;
+        }
+
+        AnswerComment answerComment = new AnswerComment();
+
+        answerComment.setContent( commentPostDto.getContent() );
+
+        return answerComment;
+    }
+
+    @Override
+    public AnswerComment commentPatchDtoToAnswerComment(CommentPatchDto commentPatchDto) {
+        if ( commentPatchDto == null ) {
+            return null;
+        }
+
+        AnswerComment answerComment = new AnswerComment();
+
+        answerComment.setContent( commentPatchDto.getContent() );
+
+        return answerComment;
+    }
+
+    @Override
+    public CommentRespDto commentToAnswerCommentRespDto(AnswerComment answerComment) {
+        if ( answerComment == null ) {
+            return null;
+        }
+
+        CommentRespDto commentRespDto = new CommentRespDto();
+
+        return commentRespDto;
     }
 }

@@ -1,0 +1,17 @@
+= Underdog-Pre-Project
+:sectnums:
+:toc: left
+:toclevels: 4
+:toc-title: Underdog
+:source-highlighter: prettify
+
+[[Answer-API]]
+== Answer API
+
+[[User-단일-조회]]
+=== 답변글 등록
+operation::post-answers[snippets='http-request,http-response,response-headers,request-fields']
+=== 답변글 수정
+operation::patch-answers[snippets='http-request,http-response,response-headers,request-fields']
+=== 답변글 삭제
+operation::delete-answer[snippets='http-request,http-response,response-headers,request-fields']

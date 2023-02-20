@@ -26,11 +26,11 @@ public class Answer extends BaseTimeEntity {
     private String content;
 
     @ManyToOne
-    @JoinColumn(name = "user-id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "question-id")
+    @JoinColumn(name = "question_id")
     private Question question;
 
     @OneToMany(mappedBy = "answer")

@@ -4,7 +4,11 @@ import org.mapstruct.Mapper;
 import preproject.underdog.answer.dto.answer.AnswerPatchDto;
 import preproject.underdog.answer.dto.answer.AnswerPostDto;
 import preproject.underdog.answer.dto.answer.AnswerRespDto;
+import preproject.underdog.answer.dto.comment.CommentPatchDto;
+import preproject.underdog.answer.dto.comment.CommentPostDto;
+import preproject.underdog.answer.dto.comment.CommentRespDto;
 import preproject.underdog.answer.entity.Answer;
+import preproject.underdog.answer.entity.AnswerComment;
 
 @Mapper(componentModel = "spring")
 public interface AnswerMapper {
@@ -14,4 +18,10 @@ public interface AnswerMapper {
     Answer answerPostDtoToAnswer(AnswerPostDto answerPostDto);
 
     AnswerRespDto answerToAnswerRespDto(Answer answer);
+
+    AnswerComment commentPostDtoToAnswerComment(CommentPostDto commentPostDto);
+
+    AnswerComment commentPatchDtoToAnswerComment(CommentPatchDto commentPatchDto);
+
+    CommentRespDto commentToAnswerCommentRespDto(AnswerComment answerComment);
 }
