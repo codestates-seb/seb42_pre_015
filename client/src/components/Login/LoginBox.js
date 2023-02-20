@@ -14,30 +14,35 @@ import { ReactComponent as MainLogo } from '../../assets/logo/logo.svg';
 const LoginBox = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [errorMessageE, setErrorMessageE] = useState('');
-  const [errorMessageP, setErrorMessageP] = useState('');
+  const [errorMessages, setErrorMessages] = useState({
+    email: '',
+    password: ''
+  });
 
-  const handleEmail = e => {
-    setEmail(e.target.value);
+  const handleInput = e => {
+    const { name, value } = e.target;
+    if (name === 'email') {
+      setEmail(value);
+      setErrorMessages({ ...errorMessages, email: '' });
+    } else if (name === 'password') {
+      setPassword(value);
+      setErrorMessages({ ...errorMessages, password: '' });
+    }
   };
 
-  const handlePassword = e => {
-    setPassword(e.target.value);
-  };
-  // 로그인 error 메세지
+  // 유효성 검사 에러 메세지
   const handleSubmit = e => {
     e.preventDefault();
     const emailError = !email.trim() ? 'Email cannot be empty' : '';
     const passwordError = !password.trim() ? 'Password cannot be empty' : '';
 
-    setErrorMessageE(emailError);
-    setErrorMessageP(passwordError);
+    setErrorMessages({ email: emailError, password: passwordError });
   };
 
   const handleClick = () => {
     console.log('Button clicked!');
   };
-  // 로그인 컴포넌트
+
   return (
     <BoxStyle>
       <div className='login-box'>
@@ -59,31 +64,33 @@ const LoginBox = () => {
               <h1>Email</h1>
               <input
                 type='email'
+                name='email'
                 value={email}
-                onChange={handleEmail}
+                onChange={handleInput}
                 className='login__text'
               />
-              {errorMessageE && (
-                <div style={{ color: 'red' }}>{errorMessageE}</div>
+              {errorMessages.email && (
+                <div style={{ color: 'red' }}>{errorMessages.email}</div>
               )}
             </div>
             <div className='password-container'>
               <h1>Password</h1>
               <input
                 type='password'
+                name='password'
                 value={password}
-                onChange={handlePassword}
+                onChange={handleInput}
                 className='login__text'
               />
-              {errorMessageP && (
-                <div style={{ color: 'red' }}>{errorMessageP}</div>
+              {errorMessages.password && (
+                <div style={{ color: 'red' }}>{errorMessages.password}</div>
               )}
             </div>
             <LoginButton className='login__button' onClick={handleClick} />
           </form>
         </div>
         <div>
-          <div> Don't have an account?</div>
+          <div>Don&apos;t have an account?</div>
           <div> Are you an employer?</div>
         </div>
         <SignUpButton />
