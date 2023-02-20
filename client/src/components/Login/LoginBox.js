@@ -10,6 +10,7 @@ import {
 import BoxStyle from '../Login/LoginStyle';
 import { useState } from 'react';
 import { ReactComponent as MainLogo } from '../../assets/logo/logo.svg';
+import { ReactComponent as ErrorComponet } from '../../assets/logo/LoginError.svg';
 
 const LoginBox = () => {
   const [email, setEmail] = useState('');
@@ -18,7 +19,7 @@ const LoginBox = () => {
     email: '',
     password: ''
   });
-
+  // login-form 작성 에러
   const handleInput = e => {
     const { name, value } = e.target;
     if (name === 'email') {
@@ -30,7 +31,7 @@ const LoginBox = () => {
     }
   };
 
-  // 유효성 검사 에러 메세지
+  // login-button 제출 에러
   const handleSubmit = e => {
     e.preventDefault();
     const emailError = !email.trim() ? 'Email cannot be empty' : '';
@@ -45,7 +46,7 @@ const LoginBox = () => {
 
   return (
     <BoxStyle>
-      <div className='login-box'>
+      <div className='all-box'>
         <div className='all-oauth-box'>
           <div className='logo-box'>
             <div className='logo'>
@@ -58,35 +59,49 @@ const LoginBox = () => {
             <FacebookButton />
           </div>
         </div>
-        <div className='Container'>
+        <div className='login-box'>
           <form className='login-form' onSubmit={handleSubmit}>
-            <div className='email-container'>
+            <div className='login-form__email'>
               <h1>Email</h1>
-              <input
-                type='email'
-                name='email'
-                value={email}
-                onChange={handleInput}
-                className='login__text'
-              />
+              <div style={{ position: 'relative' }}>
+                <input
+                  type='email'
+                  name='email'
+                  value={email}
+                  onChange={handleInput}
+                  className='login-form__text'
+                />
+                {errorMessages.email && (
+                  <div className='error-svg'>
+                    <ErrorComponet />
+                  </div>
+                )}
+              </div>
               {errorMessages.email && (
                 <div style={{ color: 'red' }}>{errorMessages.email}</div>
               )}
             </div>
-            <div className='password-container'>
+            <div className='login-form__password'>
               <h1>Password</h1>
-              <input
-                type='password'
-                name='password'
-                value={password}
-                onChange={handleInput}
-                className='login__text'
-              />
+              <div style={{ position: 'relative' }}>
+                <input
+                  type='password'
+                  name='password'
+                  value={password}
+                  onChange={handleInput}
+                  className='login-form__text'
+                />
+                {errorMessages.email && (
+                  <div className='error-svg'>
+                    <ErrorComponet />
+                  </div>
+                )}
+              </div>
               {errorMessages.password && (
                 <div style={{ color: 'red' }}>{errorMessages.password}</div>
               )}
             </div>
-            <LoginButton className='login__button' onClick={handleClick} />
+            <LoginButton onClick={handleClick} />
           </form>
         </div>
         <div>

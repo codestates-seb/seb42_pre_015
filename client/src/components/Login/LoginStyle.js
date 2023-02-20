@@ -7,7 +7,7 @@ const BoxStyle = styled.div`
   padding: 24px;
   margin-top: 70px;
 
-  .login-box {
+  .all-box {
     display: grid;
     grid-column-start: 2;
     grid-template-rows: repeat(3, 1fr);
@@ -32,7 +32,7 @@ const BoxStyle = styled.div`
       }
     }
   }
-  .Container {
+  .login-box {
     background-color: white;
     padding: 24px;
     grid-row-start: 2;
@@ -44,7 +44,7 @@ const BoxStyle = styled.div`
       width: 267px;
     }
   }
-  .Container > .login-form {
+  .login-box > .login-form {
     display: grid;
     grid-template-rows: repeat(2, 1fr) 0.5fr;
     row-gap: 2px;
@@ -54,12 +54,20 @@ const BoxStyle = styled.div`
     font-size: 1.25rem;
     font-weight: bold;
   }
-  .login__text {
+  .login-form__text {
     border: 1px solid black;
     border-radius: 5px;
     height: 35px;
     width: 100%;
     margin: 5px 0;
+  }
+  .error-svg {
+    position: absolute;
+    top: 12px;
+    left: 230px;
+    @media (max-width: 640px) {
+      left: 190px;
+    }
   }
 `;
 export default BoxStyle;
