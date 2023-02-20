@@ -1,17 +1,15 @@
 import styled from 'styled-components';
 
 const BoxStyle = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  place-items: center;
-  padding: 24px;
-  margin-top: 70px;
-
+  grid-column-start: 2;
   .all-box {
     display: grid;
-    grid-column-start: 2;
     grid-template-rows: repeat(3, 1fr);
     row-gap: 20px;
+    width: 307.09px;
+    @media (max-width: 640px) {
+      width: 290px;
+    }
     .all-oauth-box {
       display: grid;
       grid-template-rows: repeat(2, 1fr);
@@ -36,13 +34,10 @@ const BoxStyle = styled.div`
     background-color: white;
     padding: 24px;
     grid-row-start: 2;
-    width: 307.09px;
+
     height: 283.56px;
     box-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);
     border-radius: 5px;
-    @media (max-width: 640px) {
-      width: 267px;
-    }
   }
   .login-box > .login-form {
     display: grid;
@@ -67,6 +62,21 @@ const BoxStyle = styled.div`
     left: 230px;
     @media (max-width: 640px) {
       left: 190px;
+    }
+  }
+  .support-messages {
+    div {
+      font-size: 13px;
+      margin: 10px;
+      text-align: center;
+      a {
+        font-size: 14px;
+        color: hsl(206deg 100% 40%);
+        margin-left: 5px;
+        :hover {
+          color: hsl(206deg 100% 52%);
+        }
+      }
     }
   }
 `;

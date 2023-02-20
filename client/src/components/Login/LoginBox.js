@@ -2,15 +2,13 @@ import {
   GoogleButton,
   GithubButton,
   FacebookButton,
-  LoginButton,
-  HeaderLogin,
-  SignUpButton,
-  AskQuestionButton
+  LoginButton
 } from './OAuthBottons';
 import BoxStyle from '../Login/LoginStyle';
 import { useState } from 'react';
 import { ReactComponent as MainLogo } from '../../assets/logo/logo.svg';
 import { ReactComponent as ErrorComponet } from '../../assets/logo/LoginError.svg';
+import { ReactComponent as SignUpIcon } from '../../assets/logo/SignupIcon.svg';
 
 const LoginBox = () => {
   const [email, setEmail] = useState('');
@@ -47,6 +45,7 @@ const LoginBox = () => {
   return (
     <BoxStyle>
       <div className='all-box'>
+        {/* 로고 & OAuth 버튼 */}
         <div className='all-oauth-box'>
           <div className='logo-box'>
             <div className='logo'>
@@ -59,6 +58,7 @@ const LoginBox = () => {
             <FacebookButton />
           </div>
         </div>
+        {/* 로그인 박스  */}
         <div className='login-box'>
           <form className='login-form' onSubmit={handleSubmit}>
             <div className='login-form__email'>
@@ -91,7 +91,7 @@ const LoginBox = () => {
                   onChange={handleInput}
                   className='login-form__text'
                 />
-                {errorMessages.email && (
+                {errorMessages.password && (
                   <div className='error-svg'>
                     <ErrorComponet />
                   </div>
@@ -104,13 +104,18 @@ const LoginBox = () => {
             <LoginButton onClick={handleClick} />
           </form>
         </div>
-        <div>
-          <div>Don&apos;t have an account?</div>
-          <div> Are you an employer?</div>
+        {/* Support Message */}
+        <div className='support-messages'>
+          <div>
+            Don&apos;t have an account?<a href='/'> Sign up </a>
+          </div>
+          <div>
+            Are you an employer?
+            <a href='/'>
+              Sign up on Talent <SignUpIcon className='signup-icon' />
+            </a>
+          </div>
         </div>
-        <SignUpButton />
-        <HeaderLogin />
-        <AskQuestionButton />
       </div>
     </BoxStyle>
   );

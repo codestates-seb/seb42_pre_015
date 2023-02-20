@@ -9,7 +9,7 @@ const ButtonWrapper = styled.button`
   border: 1px solid gainsboro;
   border-radius: 5px;
   width: 100%;
-  height: 42px;
+  height: ${({ height }) => height};
   cursor: pointer;
   transition: background-color 0.2s;
   font-size: 15px;
@@ -35,6 +35,7 @@ const GoogleButton = () => {
       color='#000'
       hoverBgColor='#eee'
       activeBgColor='#ddd'
+      height='42px'
     >
       <span className='span-style'>
         <Googlelogo className='icon' />
@@ -51,6 +52,7 @@ const GithubButton = () => {
       color='#fff'
       hoverBgColor='#000'
       activeBgColor='#333'
+      height='42px'
     >
       <span className='span-style'>
         <GitHublogo className='icon' /> Log in with GitHub
@@ -66,6 +68,7 @@ const FacebookButton = () => {
       color='#fff'
       hoverBgColor='#2f477a'
       activeBgColor='#293e69'
+      height='42px'
     >
       <span className='span-style'>
         <Facebooklogo className='icon' />
@@ -82,58 +85,12 @@ const LoginButton = () => {
       color='#fff'
       hoverBgColor='#2f477a'
       activeBgColor='#293e69'
+      height='42px'
       isLoginButton
     >
       Log in
-    </ButtonWrapper>
-  );
-};
-const HeaderLogin = () => {
-  return (
-    <ButtonWrapper
-      bgColor='hsl(205deg 46% 92%)'
-      color='hsl(205deg 47% 42%)'
-      hoverBgColor='#2f477a'
-      activeBgColor='#293e69'
-      isLoginButton
-    >
-      Log in
-    </ButtonWrapper>
-  );
-};
-const SignUpButton = () => {
-  return (
-    <ButtonWrapper
-      bgColor='#0895ff'
-      color='#fff'
-      hoverBgColor='#2f477a'
-      activeBgColor='#293e69'
-      isLoginButton
-    >
-      Sign Up
-    </ButtonWrapper>
-  );
-};
-const AskQuestionButton = () => {
-  return (
-    <ButtonWrapper
-      bgColor='#0895ff'
-      color='#fff'
-      hoverBgColor='#2f477a'
-      activeBgColor='#293e69'
-      isLoginButton
-    >
-      Ask Question
     </ButtonWrapper>
   );
 };
 
-export {
-  GoogleButton,
-  GithubButton,
-  FacebookButton,
-  LoginButton,
-  HeaderLogin,
-  SignUpButton,
-  AskQuestionButton
-};
+export { GoogleButton, GithubButton, FacebookButton, LoginButton };
