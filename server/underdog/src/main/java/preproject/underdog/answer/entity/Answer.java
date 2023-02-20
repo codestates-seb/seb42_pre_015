@@ -26,7 +26,7 @@ public class Answer extends BaseTimeEntity {
     private String content;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user-id")
     private User user;
 
     @ManyToOne
