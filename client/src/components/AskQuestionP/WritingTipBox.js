@@ -3,6 +3,7 @@ import { ReactComponent as SpotPencil } from '../../assets/AskQuestionP/spotPenc
 
 const BoxContainer = styled.div`
   height: max-content;
+  width: 25%;
   border: 1px solid #d0d4d7;
   box-shadow: rgba(0, 0, 0, 0.5) 0px 1px 2px 0px;
   border-radius: 3px;
@@ -20,6 +21,7 @@ const BoxContainer = styled.div`
   }
   @media screen and (max-width: 1050px) {
     margin: 0;
+    width: 100%;
   }
 `;
 
@@ -43,17 +45,16 @@ const BoxContentContainer = styled.div`
   }
 `;
 
-function WritingTipBox() {
+function WritingTipBox({ title, content }) {
   return (
     <BoxContainer>
-      <div className='box-heading'>Expand on the problem</div>
+      <div className='box-heading'>{title}</div>
       <BoxContentContainer>
         <div>
           <SpotPencil />
         </div>
         <div className='box-content'>
-          <p>Your title should summarize the problem.</p>
-          <p>Your title should summarize the problem.</p>
+          <p>{content}</p>
         </div>
       </BoxContentContainer>
     </BoxContainer>
