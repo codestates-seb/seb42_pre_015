@@ -5,6 +5,8 @@ import UserNav from './Header/UserNav';
 import ProductsNav from './Header/ProductsNav';
 import Search from './Header/Search';
 import LoginNav from './Header/LoginNav';
+import StackOverflowMini from '../assets/Header/StackOverflowMini.png';
+import HamburgerIcon from '../assets/Header/HamburgerIcon.png';
 
 const StyledHeader = styled.div`
   width: 100%;
@@ -36,6 +38,20 @@ const HeaderLogoImg = styled.img`
   margin-top: -4px;
   padding: 0 8px;
   cursor: pointer;
+  @media (max-width: 640px) {
+    display: none;
+  }
+`;
+const HeaderLogoImgMini = styled.img`
+  display: none;
+  @media (max-width: 640px) {
+    display: block;
+    width: 25px;
+    height: 25px;
+    margin-top: -4px;
+    margin: 0 10px;
+    cursor: pointer;
+  }
 `;
 const NavigationBtn = styled.button`
   position: relative;
@@ -48,13 +64,41 @@ const NavigationBtn = styled.button`
   border-radius: 1000px;
   background-color: rgb(0, 0, 0, 0);
   &:hover {
-    background-color: #e3e6e8;
+    background-color: #f48225;
     color: #232629;
   }
+  @media (max-width: 640px) {
+    display: ${props => props.display || 'block'};
+  }
 `;
-
+const HamburgerIconImg = styled.img`
+  display: none;
+  @media (max-width: 640px) {
+    display: block;
+    cursor: pointer;
+    width: 25px;
+    height: 25px;
+    margin-left: 15px;
+    margin-right: 5px;
+  }
+`;
+const HamburgerBtn = styled.button`
+  display: none;
+  @media (max-width: 640px) {
+    display: block;
+    background: none;
+  }
+`;
+const LogBtn = styled.div`
+  padding: 8px 10.4px;
+  border: 1px solid black;
+  background-color: blue;
+  font-size: 14px;
+  border-radius: 4px;
+  margin-right: 5px;
+`;
 function Header() {
-  const [isLogin] = useState(true);
+  const [isLogin, setIsLogIn] = useState(false);
   const [isProductsClick, setIsProductsClick] = useState(false);
 
   const dropdownRef = useRef(null);
@@ -78,6 +122,10 @@ function Header() {
       <HeaderLine />
       <StyledHeader>
         <HeaderContainer>
+          <HamburgerBtn>
+            <HamburgerIconImg src={HamburgerIcon} alt='' />
+          </HamburgerBtn>
+          <HeaderLogoImgMini src={StackOverflowMini} alt='StackOverflowMini' />
           <HeaderLogoImg src={HeaderLogo} alt='HeaderLogo' />
           {isLogin ? (
             <NavigationBtn
@@ -89,7 +137,7 @@ function Header() {
             </NavigationBtn>
           ) : (
             <>
-              <NavigationBtn>About</NavigationBtn>
+              <NavigationBtn display='none'>About</NavigationBtn>
               <NavigationBtn
                 onClick={() => setIsProductsClick(true)}
                 ref={dropdownRef}
@@ -97,12 +145,22 @@ function Header() {
                 Products
                 {isProductsClick ? <ProductsNav /> : null}
               </NavigationBtn>
-              <NavigationBtn>For Teams</NavigationBtn>
+              <NavigationBtn display='none'>For Teams</NavigationBtn>
             </>
           )}
           <Search isLogin={isLogin} />
-          <UserNav />
-          <LoginNav />
+          {isLogin ? (
+            <UserNav />
+          ) : (
+            <LogBtn
+              onClick={() => {
+                setIsLogIn(true);
+              }}
+            >
+              Log in
+            </LogBtn>
+          )}
+          {isLogin ? <LoginNav /> : <LogBtn>Sign up</LogBtn>}
         </HeaderContainer>
       </StyledHeader>
     </>

@@ -134,6 +134,9 @@ const HelpContainer = styled.div`
     display: inline-block;
     white-space: normal;
   }
+  &:hover {
+    background-color: #d6d9dc;
+  }
 `;
 const CurrentBody = styled.div`
   display: flex;

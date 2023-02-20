@@ -21,6 +21,9 @@ const ProductsLi = styled.li`
   text-align: left;
   border-radius: 3px;
   display: block;
+  &:hover {
+    background-color: #d6d9dc;
+  }
 `;
 const ProductsTitle = styled.span`
   max-width: 100%;

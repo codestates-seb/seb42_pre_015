@@ -22,6 +22,9 @@ const UsersNavigation = styled.nav`
         align-items: center;
         font-weight: 700;
         font-size: 12px;
+        @media (max-width: 640px) {
+          display: none;
+        }
       }
       a {
         display: inline-flex;
