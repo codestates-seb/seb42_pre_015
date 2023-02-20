@@ -44,7 +44,7 @@ const MainHeading = styled.div`
 `;
 
 // ! flex나 grid로 통일해야함!
-const MainBody = styled.div`
+const MainBody = styled.form`
   width: 85%;
   display: flex;
   flex-direction: column;
@@ -86,8 +86,9 @@ const InputBox = styled.div`
     padding: 7.8px 9.1px;
     font-size: 13px;
     &:focus {
-      box-shadow: 0 0 0 4px #d9e9f6;
-      border: 1px solid #409ad6;
+      border: 1px solid ${props => (props.validated ? '#409ad6' : '#DE4F54')};
+      box-shadow: ${props =>
+        props.validated ? '0 0 0 4px #d9e9f6' : '0 0 0 4px #F6E0E0'};
       outline: none;
     }
   }
@@ -110,7 +111,51 @@ const Buttons = styled.div`
 `;
 
 function AskQuestionPage() {
+  // Writing Tip Box 팝업을 위한 상태
   const [isClicked, setIsClicked] = useState(null);
+
+  const [formValues, setFormValues] = useState({
+    title: '',
+    content: '',
+    tags: ''
+  });
+
+  const [titleErrorMsg, setTitleErrorMsg] = useState('');
+  const [contentErrorMsg, setContentErrorMsg] = useState('');
+
+  const handleValidation = e => {
+    const { name, value } = e.target;
+
+    if (name === 'title') {
+      if (value.length > 0 && value.length < 15) {
+        setTitleErrorMsg('Title must be at least 15 characters.');
+      } else if (value.length === 0) {
+        setTitleErrorMsg('Title is missing.');
+      } else {
+        setTitleErrorMsg('');
+      }
+    }
+
+    if (name === 'content') {
+      if (value.length > 0 && value.length < 20) {
+        setContentErrorMsg('Body must be at least 20 characters.');
+      } else if (value.length === 0) {
+        setContentErrorMsg('Body is missing.');
+      } else {
+        setContentErrorMsg('');
+      }
+    }
+  };
+
+  const handleEditForm = e => {
+    const { name, value } = e.target;
+    setFormValues({ ...formValues, [name]: value });
+  };
+
+  const handleSubmit = e => {
+    e.preventDefault();
+  };
+
   return (
     <Page className='page'>
       <div className='header' style={{ background: 'grey' }}>
@@ -124,9 +169,13 @@ function AskQuestionPage() {
           </div>
           <WritingGoodQBox />
         </MainHeading>
-        <MainBody>
+        <MainBody onSubmit={handleSubmit}>
           <div className='form form-title'>
-            <InputBox onClick={() => setIsClicked('titleClicked')}>
+            <InputBox
+              onClick={() => setIsClicked('titleClicked')}
+              validated={!titleErrorMsg}
+              onBlur={handleValidation}
+            >
               <label htmlFor='title'>Title</label>
               <p>
                 Be specific and imagine you’re asking a question to another
@@ -135,7 +184,13 @@ function AskQuestionPage() {
               <input
                 type='text'
                 placeholder='e.g. Is there an R function for finding the index of an element in a vector?'
+                name='title'
+                value={formValues.title}
+                onChange={handleEditForm}
               ></input>
+              {titleErrorMsg && (
+                <p style={{ color: '#DE4F54' }}>{titleErrorMsg}</p>
+              )}
             </InputBox>
             {isClicked === 'titleClicked' ? (
               <WritingTipBox
@@ -145,7 +200,11 @@ function AskQuestionPage() {
             ) : null}
           </div>
           <div className='form form-content'>
-            <InputBox onClick={() => setIsClicked('contentClicked')}>
+            <InputBox
+              onClick={() => setIsClicked('contentClicked')}
+              validated={!contentErrorMsg}
+              onBlur={handleValidation}
+            >
               <label htmlFor='content'>
                 What are the details of your problem?
               </label>
@@ -153,7 +212,15 @@ function AskQuestionPage() {
                 Introduce the problem and expand on what you put in the title.
                 Minimum 20 characters.
               </p>
-              <textarea type='text'></textarea>
+              <textarea
+                type='text'
+                name='content'
+                value={formValues.content}
+                onChange={handleEditForm}
+              ></textarea>
+              {contentErrorMsg && (
+                <p style={{ color: '#DE4F54' }}>{contentErrorMsg}</p>
+              )}
             </InputBox>
             {isClicked === 'contentClicked' ? (
               <WritingTipBox
@@ -183,7 +250,13 @@ function AskQuestionPage() {
             ) : null}
           </div>
           <Buttons className='buttons'>
-            <button>Post your question</button>
+            <button
+              type='submit'
+              onClick={handleValidation}
+              disabled={titleErrorMsg || contentErrorMsg}
+            >
+              Post your question
+            </button>
             <button>Discard draft</button>
           </Buttons>
         </MainBody>

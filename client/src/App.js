@@ -1,7 +1,7 @@
 import GlobalStyles from './GlobalStyles';
 // import WritingTipBox from './components/WritingTipBox';
-import AskQuestionPage from './pages/AskQuestionPage';
 // import WritingGoodQBox from './components/AskQuestionP/WritingGoodQBox';
+import AskQuestionPage from './pages/AskQuestionPage';
 function App() {
   return (
     <>
