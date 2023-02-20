@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import WritingTipBox from '../components/AskQuestionP/WritingTipBox';
 import WritingGoodQBox from '../components/AskQuestionP/WritingGoodQBox';
+import TagInput from '../components/common/TagInput';
 import { ReactComponent as AskQuestionBackground } from '../assets/AskQuestionP/askquestion-background.svg';
 
 const Page = styled.div`
@@ -131,7 +132,6 @@ function AskQuestionPage() {
               </p>
               <input
                 type='text'
-                id='title'
                 placeholder='e.g. Is there an R function for finding the index of an element in a vector?'
               ></input>
             </InputBox>
@@ -146,7 +146,7 @@ function AskQuestionPage() {
                 Introduce the problem and expand on what you put in the title.
                 Minimum 20 characters.
               </p>
-              <textarea type='text' id='content'></textarea>
+              <textarea type='text'></textarea>
             </InputBox>
             <WritingTipBox />
           </div>
@@ -157,7 +157,7 @@ function AskQuestionPage() {
                 Add up to 5 tags to describe what your question is about. Start
                 typing to see suggestions.
               </p>
-              <input type='text' id='tags'></input>
+              <TagInput />
             </InputBox>
             <WritingTipBox />
           </div>
