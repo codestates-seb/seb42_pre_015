@@ -1,11 +1,13 @@
 import GlobalStyles from './GlobalStyles';
-import QDetailPage from './pages/QDetailPage';
+// import DetailPage from './pages/DetailPage';
+import Test from './pages/Test2';
 
 function App() {
   return (
     <>
       <GlobalStyles />
-      <QDetailPage />
+      {/* <DetailPage /> */}
+      <Test />
     </>
   );
 }
