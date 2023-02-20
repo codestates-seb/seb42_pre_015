@@ -3,6 +3,7 @@ import WritingTipBox from '../components/AskQuestionP/WritingTipBox';
 import WritingGoodQBox from '../components/AskQuestionP/WritingGoodQBox';
 import TagInput from '../components/common/TagInput';
 import { ReactComponent as AskQuestionBackground } from '../assets/AskQuestionP/askquestion-background.svg';
+import { useState } from 'react';
 
 const Page = styled.div`
   // 헤더, 푸터 작업 완료되면 지워도 되는 코드
@@ -109,6 +110,7 @@ const Buttons = styled.div`
 `;
 
 function AskQuestionPage() {
+  const [isClicked, setIsClicked] = useState(null);
   return (
     <Page className='page'>
       <div className='header' style={{ background: 'grey' }}>
@@ -124,7 +126,7 @@ function AskQuestionPage() {
         </MainHeading>
         <MainBody>
           <div className='form form-title'>
-            <InputBox>
+            <InputBox onClick={() => setIsClicked('titleClicked')}>
               <label htmlFor='title'>Title</label>
               <p>
                 Be specific and imagine you’re asking a question to another
@@ -135,10 +137,15 @@ function AskQuestionPage() {
                 placeholder='e.g. Is there an R function for finding the index of an element in a vector?'
               ></input>
             </InputBox>
-            <WritingTipBox />
+            {isClicked === 'titleClicked' ? (
+              <WritingTipBox
+                title='Writing a good title'
+                content='Your title should summarize the problem.'
+              />
+            ) : null}
           </div>
           <div className='form form-content'>
-            <InputBox>
+            <InputBox onClick={() => setIsClicked('contentClicked')}>
               <label htmlFor='content'>
                 What are the details of your problem?
               </label>
@@ -148,10 +155,17 @@ function AskQuestionPage() {
               </p>
               <textarea type='text'></textarea>
             </InputBox>
-            <WritingTipBox />
+            {isClicked === 'contentClicked' ? (
+              <WritingTipBox
+                title={'Introduce the problem'}
+                content={
+                  'Explain how you encountered the problem you’re trying to solve, and any difficulties that have prevented you from solving it yourself.'
+                }
+              />
+            ) : null}
           </div>
           <div className='form form-tags'>
-            <InputBox>
+            <InputBox onClick={() => setIsClicked('tagsClicked')}>
               <label htmlFor='tags'>Tag</label>
               <p>
                 Add up to 5 tags to describe what your question is about. Start
@@ -159,7 +173,14 @@ function AskQuestionPage() {
               </p>
               <TagInput />
             </InputBox>
-            <WritingTipBox />
+            {isClicked === 'tagsClicked' ? (
+              <WritingTipBox
+                title={'Adding tags'}
+                content={
+                  'Tags help ensure that your question will get attention from the right people.'
+                }
+              />
+            ) : null}
           </div>
           <Buttons className='buttons'>
             <button>Post your question</button>
