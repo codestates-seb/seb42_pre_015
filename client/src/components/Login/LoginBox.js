@@ -6,9 +6,8 @@ import {
 } from './OAuthBottons';
 import BoxStyle from '../Login/LoginStyle';
 import { useState } from 'react';
-import { ReactComponent as MainLogo } from '../../assets/logo/logo.svg';
-import { ReactComponent as ErrorComponet } from '../../assets/logo/LoginError.svg';
-import { ReactComponent as SignUpIcon } from '../../assets/logo/SignupIcon.svg';
+import { StackOverlogo } from '../../assets/Login_assets/Logos';
+import { ErrorIcon, SignUpIcon } from '../../assets/Login_assets/Icons';
 
 const LoginBox = () => {
   const [email, setEmail] = useState('');
@@ -49,7 +48,7 @@ const LoginBox = () => {
         <div className='all-oauth-box'>
           <div className='logo-box'>
             <div className='logo'>
-              <MainLogo />
+              <StackOverlogo />
             </div>
           </div>
           <div className='oauth-box'>
@@ -73,7 +72,7 @@ const LoginBox = () => {
                 />
                 {errorMessages.email && (
                   <div className='error-svg'>
-                    <ErrorComponet />
+                    <ErrorIcon />
                   </div>
                 )}
               </div>
@@ -93,7 +92,7 @@ const LoginBox = () => {
                 />
                 {errorMessages.password && (
                   <div className='error-svg'>
-                    <ErrorComponet />
+                    <ErrorIcon />
                   </div>
                 )}
               </div>

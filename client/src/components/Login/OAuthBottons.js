@@ -1,7 +1,9 @@
 import styled from 'styled-components';
-import { ReactComponent as Googlelogo } from '../../assets/logo/Google.svg';
-import { ReactComponent as GitHublogo } from '../../assets/logo/GitHub.svg';
-import { ReactComponent as Facebooklogo } from '../../assets/logo/Facebook.svg';
+import {
+  Googlelogo,
+  GitHublogo,
+  Facebooklogo
+} from '../../assets/Login_assets/Logos';
 
 const ButtonWrapper = styled.button`
   background-color: ${({ bgColor }) => bgColor};
