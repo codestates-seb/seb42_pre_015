@@ -40,6 +40,9 @@ const BoxStyle = styled.div`
     height: 283.56px;
     box-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);
     border-radius: 5px;
+    @media (max-width: 640px) {
+      width: 267px;
+    }
   }
   .Container > .login-form {
     display: grid;
