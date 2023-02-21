@@ -155,11 +155,11 @@ export default function Search({ isLogin }) {
                 <SearchNavFont2>&nbsp;serch by author</SearchNavFont2>
               </div>
               <div>
-                <SearchNavFont>"words here"</SearchNavFont>
+                <SearchNavFont>&quot;words here&quot;</SearchNavFont>
                 <SearchNavFont2>&nbsp;exact phrase</SearchNavFont2>
               </div>
               <div>
-                <SearchNavFont>collective:"Name"</SearchNavFont>
+                <SearchNavFont>collective:&quot;Name&quot;</SearchNavFont>
                 <SearchNavFont2>&nbsp;collective content</SearchNavFont2>
               </div>
             </div>

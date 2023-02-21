@@ -2,7 +2,7 @@ export const AchievementsSvg = () => {
   return (
     <svg
       aria-hidden='true'
-      class='svg-icon iconAchievements'
+      className='svg-icon iconAchievements'
       width='18'
       height='18'
       viewBox='0 0 18 18'
@@ -15,7 +15,7 @@ export const CommunitySvg = () => {
   return (
     <svg
       aria-hidden='true'
-      class='svg-icon iconStackExchange'
+      className='svg-icon iconStackExchange'
       width='18'
       height='18'
       viewBox='0 0 18 18'
@@ -28,7 +28,7 @@ export const GlassesSvg = () => {
   return (
     <svg
       aria-hidden='true'
-      class='s-input-icon s-input-icon__search svg-icon iconSearch'
+      className='s-input-icon s-input-icon__search svg-icon iconSearch'
       width='18'
       height='18'
       viewBox='0 0 18 18'
@@ -41,7 +41,7 @@ export const HelpSvg = () => {
   return (
     <svg
       aria-hidden='true'
-      class='svg-icon iconHelp'
+      className='svg-icon iconHelp'
       width='18'
       height='18'
       viewBox='0 0 18 18'
@@ -54,7 +54,7 @@ export const MailSvg = () => {
   return (
     <svg
       aria-hidden='true'
-      class='m1 svg-icon iconMailSm'
+      className='m1 svg-icon iconMailSm'
       width='14'
       height='14'
       viewBox='0 0 14 14'
@@ -67,7 +67,7 @@ export const MessageSvg = () => {
   return (
     <svg
       aria-hidden='true'
-      class='svg-icon iconInbox'
+      className='svg-icon iconInbox'
       width='20'
       height='18'
       viewBox='0 0 20 18'

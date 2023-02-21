@@ -4,6 +4,8 @@ import WritingGoodQBox from '../components/AskQuestionP/WritingGoodQBox';
 import TagInput from '../components/common/TagInput';
 import { ReactComponent as AskQuestionBackground } from '../assets/askquestion-background.svg';
 import { useState } from 'react';
+import Header from '../components/Header/Header';
+import Footer from '../components/Footer';
 
 const Page = styled.div`
   // 헤더, 푸터 작업 완료되면 지워도 되는 코드
@@ -158,9 +160,7 @@ function AskQuestionPage() {
 
   return (
     <Page className='page'>
-      <div className='header' style={{ background: 'grey' }}>
-        Header
-      </div>
+      <Header />
       <Main>
         <MainHeading>
           <div className='main-heading-title'>
@@ -261,9 +261,7 @@ function AskQuestionPage() {
           </Buttons>
         </MainBody>
       </Main>
-      <div className='footer' style={{ background: 'grey' }}>
-        Footer
-      </div>
+      <Footer />
     </Page>
   );
 }
