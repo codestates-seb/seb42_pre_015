@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { StackOverlogo } from '../assets/Login_assets/LoginLogos';
+import { SOiconSVG } from '../assets/CommonSVG';
 const FooterStyle = styled.footer`
   background-color: hsl(210deg 8% 15%);
   color: hsl(210deg 8% 90%);
@@ -196,7 +196,7 @@ const Footer = () => {
         <footer>
           <div className='footer-container'>
             <div className='footer-logo'>
-              <StackOverlogo />
+              <SOiconSVG />
             </div>
             <nav className='footer-nav'>
               {footerLinks.map(({ title, links }) => (

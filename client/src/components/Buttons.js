@@ -1,9 +1,5 @@
 import styled from 'styled-components';
-import {
-  Googlelogo,
-  GitHublogo,
-  Facebooklogo
-} from '../assets/Login_assets/LoginLogos';
+import { GoogleSVG, GitHubSVG, FacebookSVG } from '../assets/LoginSVG';
 
 const ButtonWrapper = styled.button`
   background-color: ${({ bgColor }) => bgColor};
@@ -28,7 +24,7 @@ const ButtonWrapper = styled.button`
   }
 `;
 
-const GoogleButton = () => {
+const GoogleBtn = () => {
   return (
     <ButtonWrapper
       bgColor='#fff'
@@ -38,14 +34,14 @@ const GoogleButton = () => {
       height='42px'
     >
       <span className='span-style'>
-        <Googlelogo className='icon' />
+        <GoogleSVG className='icon' />
         Log in with Google
       </span>
     </ButtonWrapper>
   );
 };
 
-const GithubButton = () => {
+const GithubBtn = () => {
   return (
     <ButtonWrapper
       bgColor='#222'
@@ -55,13 +51,13 @@ const GithubButton = () => {
       height='42px'
     >
       <span className='span-style'>
-        <GitHublogo className='icon' /> Log in with GitHub
+        <GitHubSVG className='icon' /> Log in with GitHub
       </span>
     </ButtonWrapper>
   );
 };
 
-const FacebookButton = () => {
+const FacebookBtn = () => {
   return (
     <ButtonWrapper
       bgColor='#3b5998'
@@ -71,13 +67,13 @@ const FacebookButton = () => {
       height='42px'
     >
       <span className='span-style'>
-        <Facebooklogo className='icon' /> Log in with Facebook
+        <FacebookSVG className='icon' /> Log in with Facebook
       </span>
     </ButtonWrapper>
   );
 };
 
-const LoginButton = () => {
+const GeneralBtn = () => {
   return (
     <ButtonWrapper
       bgColor='#0895ff'
@@ -92,4 +88,4 @@ const LoginButton = () => {
   );
 };
 
-export { GoogleButton, GithubButton, FacebookButton, LoginButton };
+export { GoogleBtn, GithubBtn, FacebookBtn, GeneralBtn };
