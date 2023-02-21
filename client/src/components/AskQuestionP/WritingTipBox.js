@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { SpotPencilSvg } from '../../assets/AskQPage';
+import { SpotPencilSvg } from '../../assets/AskQuestionSVG';
 
 const BoxContainer = styled.div`
   height: max-content;
