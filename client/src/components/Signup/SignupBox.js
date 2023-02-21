@@ -4,17 +4,19 @@ import {
   FacebookBtn,
   GeneralBtn
 } from '../common/Buttons';
-import BoxStyle from '../common/Login/LoginStyle';
+import BoxStyle from './SignupStyle';
 import { useState } from 'react';
 import { ErrorSVG, SignUpSVG } from '../../assets/LoginSVG';
+
 const SignupBox = () => {
+  const [DPname, setDPname] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessages, setErrorMessages] = useState({
     email: '',
     password: ''
   });
-  // login-form 작성 에러
+
   const handleInput = e => {
     const { name, value } = e.target;
     if (name === 'email') {
@@ -22,6 +24,9 @@ const SignupBox = () => {
       setErrorMessages({ ...errorMessages, email: '' });
     } else if (name === 'password') {
       setPassword(value);
+      setErrorMessages({ ...errorMessages, password: '' });
+    } else if (name === 'displayname') {
+      setDPname(value);
       setErrorMessages({ ...errorMessages, password: '' });
     }
   };
@@ -51,18 +56,18 @@ const SignupBox = () => {
               <FacebookBtn />
             </div>
           </div>
-          {/* 로그인 박스  */}
-          <div className='login-box'>
-            <form className='login-form' onSubmit={handleSubmit}>
-              <div className='login-form__email'>
-                <h1>Email</h1>
+          {/* 회원가입 박스  */}
+          <div className='signup-box'>
+            <form className='signup-form' onSubmit={handleSubmit}>
+              <div className='signup-form__email'>
+                <h1>Display name</h1>
                 <div style={{ position: 'relative' }}>
                   <input
-                    type='email'
-                    name='email'
-                    value={email}
+                    type='displayname'
+                    name='displayname'
+                    value={DPname}
                     onChange={handleInput}
-                    className='login-form__text'
+                    className='signup-form__text'
                   />
                   {errorMessages.email && (
                     <div className='error-svg'>
@@ -74,7 +79,27 @@ const SignupBox = () => {
                   <div style={{ color: 'red' }}>{errorMessages.email}</div>
                 )}
               </div>
-              <div className='login-form__password'>
+              <div className='signup-form__email'>
+                <h1>Email</h1>
+                <div style={{ position: 'relative' }}>
+                  <input
+                    type='email'
+                    name='email'
+                    value={email}
+                    onChange={handleInput}
+                    className='signup-form__text'
+                  />
+                  {errorMessages.email && (
+                    <div className='error-svg'>
+                      <ErrorSVG />
+                    </div>
+                  )}
+                </div>
+                {errorMessages.email && (
+                  <div style={{ color: 'red' }}>{errorMessages.email}</div>
+                )}
+              </div>
+              <div className='signup-form__password'>
                 <h1>Password</h1>
                 <div style={{ position: 'relative' }}>
                   <input
@@ -82,7 +107,7 @@ const SignupBox = () => {
                     name='password'
                     value={password}
                     onChange={handleInput}
-                    className='login-form__text'
+                    className='signup-form__text'
                   />
                   {errorMessages.password && (
                     <div className='error-svg'>
@@ -94,13 +119,18 @@ const SignupBox = () => {
                   <div style={{ color: 'red' }}>{errorMessages.password}</div>
                 )}
               </div>
-              <GeneralBtn onClick={handleClick} />
+              <div className='checkbox'>
+                <input type={'checkbox'} />
+                Opt-in to receive occasional product updates, user research
+                invitations, company announcements, and digests.
+              </div>
+              <GeneralBtn BtnText='Sign up' onClick={handleClick} />
             </form>
           </div>
           {/* Support Message */}
           <div className='support-messages'>
             <div>
-              Don&apos;t have an account?<a href='/'> Sign up </a>
+              Already have an accout? <a href='/'> Log in </a>
             </div>
             <div>
               Are you an employer?

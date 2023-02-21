@@ -1,23 +1,18 @@
 import styled from 'styled-components';
 import SignupBox from '../components/Signup/SignupBox';
 import SignupText from '../components/Signup/SignupText';
+import Header from '../components/common/Header/Header';
 const AllBoxStyle = styled.div`
   background-color: #f9f9f9;
   body {
-    display: grid;
-    grid-template-rows: 40px 1fr;
     height: 100%;
-  }
-  header {
-    background-color: pink;
-    height: 40px;
   }
 `;
 
 const ContainerStyle = styled.div`
   display: grid;
   grid-template-columns: 0.6fr 0.4fr;
-  padding: 30px;
+  padding: 60px;
 
   .container-left {
     display: flex;
@@ -37,7 +32,7 @@ const SignupP = () => {
     <>
       <AllBoxStyle>
         <body>
-          <header>header</header>
+          <Header />
           <ContainerStyle>
             <div className='container-left'>
               <SignupText className='text-box' />
