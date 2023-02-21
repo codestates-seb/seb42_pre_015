@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useEffect, useRef, useState } from 'react';
-import { GlassesSvg } from '../../assets/Header/HeaderSVG';
+import { GlassesSvg } from '../../../assets/Header/HeaderSVG';
 
 const SearchForm = styled.form`
   width: 100%;
@@ -155,11 +155,11 @@ export default function Search({ isLogin }) {
                 <SearchNavFont2>&nbsp;serch by author</SearchNavFont2>
               </div>
               <div>
-                <SearchNavFont>"words here"</SearchNavFont>
+                <SearchNavFont>&quot;words here&quot;</SearchNavFont>
                 <SearchNavFont2>&nbsp;exact phrase</SearchNavFont2>
               </div>
               <div>
-                <SearchNavFont>collective:"Name"</SearchNavFont>
+                <SearchNavFont>collective:&quot;Name&quot;</SearchNavFont>
                 <SearchNavFont2>&nbsp;collective content</SearchNavFont2>
               </div>
             </div>
