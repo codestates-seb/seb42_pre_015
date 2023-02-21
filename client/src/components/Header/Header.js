@@ -14,13 +14,13 @@ const StyledHeader = styled.div`
   width: 100%;
   height: 50px;
   background-color: #f8f9f9;
-  position: sticky;
+  position: fixed;
   z-index: 10;
   margin: 0 auto;
 `;
 
 const HeaderLine = styled.div`
-  position: sticky;
+  position: fixed;
   top: 0px;
   width: 100%;
   height: 3px;
