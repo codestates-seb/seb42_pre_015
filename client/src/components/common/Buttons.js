@@ -10,7 +10,6 @@ const ButtonWrapper = styled.button`
   width: 100%;
   height: ${({ height }) => height};
   cursor: pointer;
-  transition: background-color 0.2s;
   font-size: 13px;
   &:hover {
     background-color: ${({ hoverBgColor }) => hoverBgColor};
