@@ -19,7 +19,7 @@ import preproject.underdog.answer.entity.AnswerVote;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-02-21T01:01:10+0900",
+    date = "2023-02-21T02:12:10+0900",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 11.0.17 (Azul Systems, Inc.)"
 )
 @Component
