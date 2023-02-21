@@ -32,7 +32,7 @@ const Nav = styled.div`
 const Content = styled.div`
   display: grid;
   grid-template-rows: minmax(45px, auto) minmax(30px, auto) minmax(800px, auto);
-  grid-template-columns: minmax(800px, auto) 300px;
+  grid-template-columns: minmax(auto, 800px) 300px;
   grid-template-areas:
     'title title'
     'info info'
