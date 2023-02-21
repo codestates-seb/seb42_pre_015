@@ -11,10 +11,8 @@ import preproject.underdog.answer.dto.answer.AnswerRespDto;
 import preproject.underdog.answer.dto.comment.CommentPatchDto;
 import preproject.underdog.answer.dto.comment.CommentPostDto;
 import preproject.underdog.answer.dto.comment.CommentRespDto;
-import preproject.underdog.answer.dto.vote.VotePostDto;
 import preproject.underdog.answer.entity.Answer;
 import preproject.underdog.answer.entity.AnswerComment;
-import preproject.underdog.answer.entity.AnswerVote;
 import preproject.underdog.answer.mapper.AnswerMapper;
 import preproject.underdog.answer.service.AnswerService;
 import preproject.underdog.utils.Uri;
@@ -30,8 +28,6 @@ import java.util.List;
 @Validated
 @RequiredArgsConstructor
 public class AnswerController {
-
-    private final String DEFAULT_URI = "/answer/";
     private final AnswerService answerService;
     private final AnswerMapper answerMapper;
 
@@ -40,7 +36,7 @@ public class AnswerController {
                                      @PathVariable("question-id") @Positive long questionId) {
         Answer postAnswer = answerMapper.answerPostDtoToAnswer(post);
         Answer createdAnswer = answerService.createAnswer(postAnswer);
-        URI location = Uri.createUri(DEFAULT_URI, Long.toString(createdAnswer.getAnswerId()));
+        URI location = Uri.createUri("/question/"+ Long.toString(questionId) +"/answer/", Long.toString(createdAnswer.getAnswerId()));
         return ResponseEntity.created(location).build();
     }
 
@@ -75,8 +71,9 @@ public class AnswerController {
                                       @RequestBody @Valid CommentPostDto post) {
         AnswerComment postComment = answerMapper.commentPostDtoToAnswerComment(post);
         AnswerComment createdAnswer = answerService.postComment(postComment);
-
-        return new ResponseEntity<>(createdAnswer, HttpStatus.CREATED);
+        URI location = Uri.createUri("/question/"+ Long.toString(questionId) +"/answer/"+Long.toString(answerId)
+                +"/comments/", Long.toString(createdAnswer.getAnswerCommentId()));
+        return ResponseEntity.created(location).build();
     }
 
     @PatchMapping("/{answer-id}/{answer-comment-id}")
@@ -98,7 +95,7 @@ public class AnswerController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("/comment")
+    @GetMapping("/{answer-id}/comment")
     public ResponseEntity getComment(@PathVariable("question-id") @Positive long questionId) {
         List<CommentRespDto> response = List.of(CommentRespDto.builder()
                 .answerCommentId(1L).answerId(1L).content("test").userId(1L).questionId(1L).createdAt(LocalDateTime.of(2023, 4, 3, 3, 3, 0)).modifiedAt(LocalDateTime.of(2023, 4, 3, 3, 3, 0)).build());
@@ -108,12 +105,9 @@ public class AnswerController {
 
     @PostMapping("vote/{answer-id}/{user-id}")
     public ResponseEntity doVote(@PathVariable("answer-id") @Positive long answerId,
-                                 @PathVariable("user-id") @Positive long userId,
-                                 @RequestBody @Valid VotePostDto post) {
-        AnswerVote vote = answerMapper.votePostDtoToAnswerVote(post);
-        AnswerVote createdVote = answerService.doVote(vote);
-        URI location = Uri.createUri(DEFAULT_URI, Long.toString(createdVote.getAnswerVoteId()));
-        return ResponseEntity.created(location).build();
+                                 @PathVariable("user-id") @Positive long userId) {
+//        AnswerVote createdVote = answerService.doVote();
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @DeleteMapping("vote/{answer-id}/{user-id}")

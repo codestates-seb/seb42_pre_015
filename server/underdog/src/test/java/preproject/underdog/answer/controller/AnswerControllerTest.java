@@ -32,6 +32,8 @@ import java.util.List;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
@@ -72,25 +74,28 @@ class AnswerControllerTest {
 
         given(mapper.answerPostDtoToAnswer(Mockito.any(AnswerPostDto.class))).willReturn(new Answer());
         given(answerService.createAnswer(Mockito.any(Answer.class))).willReturn(answer);
-        mockMvc.perform(RestDocumentationRequestBuilders.post("/question/{question-id}/answer/", + questionId)
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .content(content)
-        ).andExpect(status().isCreated())
+        mockMvc.perform(RestDocumentationRequestBuilders.post("/question/{question-id}/answer", +questionId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(content)
+                ).andExpect(status().isCreated())
                 .andExpect(header().exists(HttpHeaders.LOCATION))
                 .andDo(document("post-answer",
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint()),
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint()),
                                 pathParameters(
                                         parameterWithName("question-id").description("질문글 id")
                                 ),
-                        requestFields(
-                                fieldWithPath("content").type(JsonFieldType.STRING).description("답변 내용").attributes(key("constraints").value(contentAttribute)),
-                                fieldWithPath("userId").type(JsonFieldType.NUMBER).description("유저 id").attributes(key("constraints").value(userIdAttribute)),
-                                fieldWithPath("questionId").type(JsonFieldType.NUMBER).description("질문글 id").attributes(key("constraints").value(questionIdAttribute))
+                                requestFields(
+                                        fieldWithPath("content").type(JsonFieldType.STRING).description("답변 내용").attributes(key("constraints").value(contentAttribute)),
+                                        fieldWithPath("userId").type(JsonFieldType.NUMBER).description("유저 id").attributes(key("constraints").value(userIdAttribute)),
+                                        fieldWithPath("questionId").type(JsonFieldType.NUMBER).description("질문글 id").attributes(key("constraints").value(questionIdAttribute))
+                                ),
+                                responseHeaders(
+                                        headerWithName("Location").description("등록된 답변의 URI")
+                                )
                         )
-                        )
-                        );
+                );
     }
 
     @Test
@@ -104,24 +109,24 @@ class AnswerControllerTest {
         String content = gson.toJson(patch);
         Answer answer = new Answer();
         answer.setAnswerId(1L);
-        long questionId =1L;
+        long questionId = 1L;
 
 
         given(mapper.answerPatchDtoToAnswer(Mockito.any(AnswerPatchDto.class))).willReturn(new Answer());
         given(answerService.updateAnswer(Mockito.any(Answer.class))).willReturn(answer);
         given(mapper.answerToAnswerRespDto(Mockito.any(Answer.class))).willReturn(response);
-        mockMvc.perform(RestDocumentationRequestBuilders.patch("/question/{question-id}/answer/{answer-id}", + questionId, answerId)
+        mockMvc.perform(RestDocumentationRequestBuilders.patch("/question/{question-id}/answer/{answer-id}", +questionId, answerId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(content)
                 ).andExpect(status().isOk())
-                .andDo(document("patch-answers",
-                            preprocessRequest(prettyPrint()),
-                            preprocessResponse(prettyPrint()),
-                            requestFields(
+                .andDo(document("patch-answer",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        requestFields(
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("답변 수정 내용").attributes(key("constraints").value(contentAttribute))
-                                ),
-                            pathParameters(
+                        ),
+                        pathParameters(
                                 parameterWithName("question-id").description("질문글 id"),
                                 parameterWithName("answer-id").description("답변글 id")
                         )
@@ -134,9 +139,9 @@ class AnswerControllerTest {
         doNothing().when(answerService).deleteAnswer(Mockito.anyLong());
         long questionId = 1L;
         mockMvc.perform(
-                RestDocumentationRequestBuilders.delete("/question/{question-id}/answer/{answer-id}", + questionId,answerId)
-                        .accept(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isNoContent())
+                        RestDocumentationRequestBuilders.delete("/question/{question-id}/answer/{answer-id}", +questionId, answerId)
+                                .accept(MediaType.APPLICATION_JSON)
+                ).andExpect(status().isNoContent())
                 .andDo(document("delete-answer",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
@@ -164,24 +169,27 @@ class AnswerControllerTest {
 
         given(mapper.commentPostDtoToAnswerComment(Mockito.any(CommentPostDto.class))).willReturn(new AnswerComment());
         given(answerService.postComment(Mockito.any(AnswerComment.class))).willReturn(comment);
-        mockMvc.perform(RestDocumentationRequestBuilders.post("/question/{question-id}/answer/{answer-id}/comments", + questionId, answerId)
+        mockMvc.perform(RestDocumentationRequestBuilders.post("/question/{question-id}/answer/{answer-id}/comments", +questionId, answerId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(content)
                 ).andExpect(status().isCreated())
-                .andDo(document("post-comment",
-                                preprocessRequest(prettyPrint()),
-                                preprocessResponse(prettyPrint()),
-                                pathParameters(
-                                parameterWithName("question-id").description("댓글 id"),
+                .andExpect(header().exists(HttpHeaders.LOCATION))
+                .andDo(document("post-answer-comment",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        pathParameters(
+                                parameterWithName("question-id").description("질문글 id"),
                                 parameterWithName("answer-id").description("답변글 id")
-                                ),
-                                requestFields(
-                                        fieldWithPath("content").type(JsonFieldType.STRING).description("댓글 내용").attributes(key("constraints").value(contentAttribute)),
-                                        fieldWithPath("userId").type(JsonFieldType.NUMBER).description("유저 id").attributes(key("constraints").value(userIdAttribute)),
-                                        fieldWithPath("answerId").type(JsonFieldType.NUMBER).description("답변글 id").attributes(key("constraints").value(answerIdAttribute))
-                                )
-                        )
+                        ),
+                        requestFields(
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("댓글 내용").attributes(key("constraints").value(contentAttribute)),
+                                fieldWithPath("userId").type(JsonFieldType.NUMBER).description("유저 id").attributes(key("constraints").value(userIdAttribute)),
+                                fieldWithPath("answerId").type(JsonFieldType.NUMBER).description("답변글 id").attributes(key("constraints").value(answerIdAttribute))
+                        ),
+                        responseHeaders(
+                                headerWithName("Location").description("등록된 댓글의 URI")
+                        ))
                 );
     }
 
@@ -202,18 +210,18 @@ class AnswerControllerTest {
         given(mapper.commentPatchDtoToAnswerComment(Mockito.any(CommentPatchDto.class))).willReturn(new AnswerComment());
         given(answerService.patchComment(Mockito.any(AnswerComment.class))).willReturn(comment);
         given(mapper.commentToAnswerCommentRespDto(Mockito.any(AnswerComment.class))).willReturn(response);
-        mockMvc.perform(RestDocumentationRequestBuilders.patch("/question/{question-id}/answer/{answer-id}/{answer-comment-id}", +questionId,answerId,answerCommentId)
+        mockMvc.perform(RestDocumentationRequestBuilders.patch("/question/{question-id}/answer/{answer-id}/{answer-comment-id}", +questionId, answerId, answerCommentId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(content)
                 ).andExpect(status().isOk())
-                .andDo(document("patch-comment",
+                .andDo(document("patch-answer-comment",
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint()),
                                 pathParameters(
-                                parameterWithName("question-id").description("댓글 id"),
-                                parameterWithName("answer-id").description("답변글 id"),
-                                parameterWithName("answer-comment-id").description("댓글 id")
+                                        parameterWithName("question-id").description("질문글 id"),
+                                        parameterWithName("answer-id").description("답변글 id"),
+                                        parameterWithName("answer-comment-id").description("답변글 댓글 id")
                                 ),
                                 requestFields(
                                         fieldWithPath("content").type(JsonFieldType.STRING).description("댓글 수정 내용").attributes(key("constraints").value(contentAttribute))
@@ -223,33 +231,33 @@ class AnswerControllerTest {
     }
 
     @Test
-    void deleteComment() throws Exception{
+    void deleteComment() throws Exception {
         long answerId = 1L;
         doNothing().when(answerService).deleteComment(Mockito.anyLong());
         long answerCommentId = 1L;
         long questionId = 1L;
         mockMvc.perform(
-                        RestDocumentationRequestBuilders.delete("/question/{question-id}/answer/{answer-id}/{answer-comment-id}", + questionId,answerId,answerCommentId)
+                        RestDocumentationRequestBuilders.delete("/question/{question-id}/answer/{answer-id}/{answer-comment-id}", +questionId, answerId, answerCommentId)
                                 .accept(MediaType.APPLICATION_JSON)
                 ).andExpect(status().isNoContent())
-                .andDo(document("delete-comment",
+                .andDo(document("delete-answer-comment",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         pathParameters(
                                 parameterWithName("answer-id").description("답변글 id"),
-                                parameterWithName("answer-comment-id").description("댓글 id"),
+                                parameterWithName("answer-comment-id").description("답변글 댓글 id"),
                                 parameterWithName("question-id").description("질문글 id")
                         )));
     }
 
     @Test
-    void getAnswer() throws Exception{
+    void getAnswer() throws Exception {
         List<AnswerRespDto> response = List.of(AnswerRespDto.builder()
                 .answerId(1L).voteCount(1L).content("test").questionId(1L).userId(1L).createdAt(LocalDateTime.of(2023, 4, 3, 3, 3, 0)).modifiedAt(LocalDateTime.of(2023, 4, 3, 3, 3, 0)).build());
         long questionId = 1L;
         String content = gson.toJson(response);
 
-        mockMvc.perform(RestDocumentationRequestBuilders.get("/question/{question-id}/answer", + questionId)
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/question/{question-id}/answer", +questionId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(content)
@@ -258,7 +266,7 @@ class AnswerControllerTest {
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         pathParameters(
-                                parameterWithName("question-id").description("질문 id")
+                                parameterWithName("question-id").description("질문글 id")
                         ),
                         responseFields(
                                 fieldWithPath("[0].answerId").type(JsonFieldType.NUMBER).description("답변글 id"),
@@ -272,25 +280,27 @@ class AnswerControllerTest {
     }
 
     @Test
-    void getComment() throws Exception{
+    void getComment() throws Exception {
         List<CommentRespDto> response = List.of(CommentRespDto.builder()
                 .answerCommentId(1L).answerId(1L).content("test").userId(1L).questionId(1L).createdAt(LocalDateTime.of(2023, 4, 3, 3, 3, 0)).modifiedAt(LocalDateTime.of(2023, 4, 3, 3, 3, 0)).build());
         long questionId = 1L;
+        long answerId = 1L;
         String content = gson.toJson(response);
 
-        mockMvc.perform(RestDocumentationRequestBuilders.get("/question/{question-id}/answer/comment", + questionId)
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/question/{question-id}/answer/{answer-id}/comment", + questionId, answerId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(content)
                 ).andExpect(status().isOk())
-                .andDo(document("get-comment",
+                .andDo(document("get-answer-comment",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         pathParameters(
-                                parameterWithName("question-id").description("질문 id")
+                                parameterWithName("question-id").description("질문글 id"),
+                                parameterWithName("answer-id").description("답변글 id")
                         ),
                         responseFields(
-                                fieldWithPath("[0].answerCommentId").type(JsonFieldType.NUMBER).description("댓글 id"),
+                                fieldWithPath("[0].answerCommentId").type(JsonFieldType.NUMBER).description("답변글 댓글 id"),
                                 fieldWithPath("[0].content").type(JsonFieldType.STRING).description("답변글 내용"),
                                 fieldWithPath("[0].userId").type(JsonFieldType.NUMBER).description("유저 id"),
                                 fieldWithPath("[0].questionId").type(JsonFieldType.NUMBER).description("질문글 id"),
@@ -302,12 +312,7 @@ class AnswerControllerTest {
 
     @Test
     void doVote() throws Exception{
-        ConstraintDescriptions requestConstraints = new ConstraintDescriptions(AnswerPostDto.class);
-        List<String> userIdAttribute = requestConstraints.descriptionsForProperty("content");
-        List<String> answerIdAttribute = requestConstraints.descriptionsForProperty("userId");
-
         VotePostDto post = new VotePostDto(1L, 1L);
-
         String content = gson.toJson(post);
 
         Answer answer = new Answer();
@@ -320,41 +325,34 @@ class AnswerControllerTest {
         long answerId = 1L;
 
 
-        given(mapper.votePostDtoToAnswerVote(Mockito.any(VotePostDto.class))).willReturn(new AnswerVote());
-        given(answerService.doVote(Mockito.any(AnswerVote.class))).willReturn(vote);
         mockMvc.perform(RestDocumentationRequestBuilders.post("/question/{question-id}/answer/vote/{answer-id}/{user-id}", + questionId,answerId,userId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(content)
-                ).andExpect(status().isCreated())
-                .andExpect(header().exists(HttpHeaders.LOCATION))
-                .andDo(document("post-vote",
+                ).andExpect(status().isOk())
+                .andDo(document("post-answer-vote",
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint()),
-                        pathParameters(
-                                parameterWithName("answer-id").description("답변글 id"),
-                                parameterWithName("user-id").description("유저 id"),
-                                parameterWithName("question-id").description("질문글 id")
-                                ),
-                                requestFields(
-                                        fieldWithPath("userId").type(JsonFieldType.NUMBER).description("유저 id").attributes(key("constraints").value(userIdAttribute)),
-                                        fieldWithPath("answerId").type(JsonFieldType.NUMBER).description("답변글 id").attributes(key("constraints").value(answerIdAttribute))
+                                pathParameters(
+                                        parameterWithName("answer-id").description("답변글 id"),
+                                        parameterWithName("user-id").description("유저 id"),
+                                        parameterWithName("question-id").description("질문글 id")
                                 )
                         )
                 );
     }
 
     @Test
-    void undoVote() throws Exception{
+    void undoVote() throws Exception {
         long answerId = 1L;
         doNothing().when(answerService).undoVote(Mockito.anyLong());
         long userId = 1L;
         long questionId = 1L;
         mockMvc.perform(
-                        RestDocumentationRequestBuilders.delete("/question/{question-id}/answer/vote/{answer-id}/{user-id}", + questionId,answerId,userId)
+                        RestDocumentationRequestBuilders.delete("/question/{question-id}/answer/vote/{answer-id}/{user-id}", +questionId, answerId, userId)
                                 .accept(MediaType.APPLICATION_JSON)
                 ).andExpect(status().isNoContent())
-                .andDo(document("delete-vote",
+                .andDo(document("delete-answer-vote",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         pathParameters(
