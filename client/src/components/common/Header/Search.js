@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useEffect, useRef, useState } from 'react';
-import { GlassesSvg } from '../../assets/Header/HeaderSVG';
+import { GlassesSvg } from '../../../assets/Header/HeaderSVG';
 
 const SearchForm = styled.form`
   width: 100%;

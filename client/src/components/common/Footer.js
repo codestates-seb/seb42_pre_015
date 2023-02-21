@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import { SOiconSVG } from '../assets/CommonSVG';
+import { SOiconSVG } from '../../assets/CommonSVG';
+
 const FooterStyle = styled.footer`
   background-color: hsl(210deg 8% 15%);
   color: hsl(210deg 8% 90%);
