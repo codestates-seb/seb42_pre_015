@@ -73,7 +73,7 @@ const FacebookBtn = () => {
   );
 };
 
-const GeneralBtn = () => {
+const GeneralBtn = ({ BtnText = 'Log in' }) => {
   return (
     <ButtonWrapper
       bgColor='#0895ff'
@@ -83,7 +83,7 @@ const GeneralBtn = () => {
       height='42px'
       isLoginButton
     >
-      Log in
+      {BtnText}
     </ButtonWrapper>
   );
 };
