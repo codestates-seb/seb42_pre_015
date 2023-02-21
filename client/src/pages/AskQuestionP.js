@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 import WritingTipBox from '../components/AskQuestionP/WritingTipBox';
 import WritingGoodQBox from '../components/AskQuestionP/WritingGoodQBox';
-import TagInput from '../components/common/TagInput';
+import TagInput from '../components/Common/TagInput';
 import { ReactComponent as AskQuestionBackground } from '../assets/askquestion-background.svg';
 import { useState } from 'react';
-import Header from '../components/Header/Header';
-import Footer from '../components/Footer';
+import Header from '../components/Common/Header/Header';
+import Footer from '../components/Common/Footer';
 
 const Page = styled.div`
   // 헤더, 푸터 작업 완료되면 지워도 되는 코드
