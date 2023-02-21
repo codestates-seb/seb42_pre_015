@@ -62,8 +62,8 @@ function Test() {
       <Main>
         <Nav />
         <Content>
-          <div className='title'>title</div>
-          <div className='info'>info</div>
+          <Title className='title'>title</div>
+          <Info className='info'>info</div>
           <div className='main'>main</div>
           <div className='side'>side</div>
         </Content>
