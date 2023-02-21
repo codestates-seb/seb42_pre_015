@@ -12,9 +12,7 @@ const Main = styled.main`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin-top: 53px;
-  margin-left: 20px;
-  margin-right: 20px;
+  margin: 53px 5px 0px 5px;
 `;
 
 const MainHeading = styled.div`
@@ -74,6 +72,7 @@ const InputBox = styled.div`
     color: #33383d;
     font-size: 12px;
     margin: 7px 0px;
+    white-space: normal;
   }
   > input,
   textarea {
