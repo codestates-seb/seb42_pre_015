@@ -60,11 +60,10 @@ class AnswerControllerTest {
         ConstraintDescriptions requestConstraints = new ConstraintDescriptions(AnswerPostDto.class);
         List<String> contentAttribute = requestConstraints.descriptionsForProperty("content");
         List<String> userIdAttribute = requestConstraints.descriptionsForProperty("userId");
-        List<String> questionIdAttribute = requestConstraints.descriptionsForProperty("questionId");
 
 
         //given
-        AnswerPostDto post = new AnswerPostDto("test", 1L, 1L);
+        AnswerPostDto post = new AnswerPostDto("test", 1L);
         String content = gson.toJson(post);
 
         Answer answer = new Answer();
@@ -87,8 +86,7 @@ class AnswerControllerTest {
                                 ),
                                 requestFields(
                                         fieldWithPath("content").type(JsonFieldType.STRING).description("답변 내용").attributes(key("constraints").value(contentAttribute)),
-                                        fieldWithPath("userId").type(JsonFieldType.NUMBER).description("유저 id").attributes(key("constraints").value(userIdAttribute)),
-                                        fieldWithPath("questionId").type(JsonFieldType.NUMBER).description("질문글 id").attributes(key("constraints").value(questionIdAttribute))
+                                        fieldWithPath("userId").type(JsonFieldType.NUMBER).description("유저 id").attributes(key("constraints").value(userIdAttribute))
                                 ),
                                 responseHeaders(
                                         headerWithName("Location").description("등록된 답변의 URI")
@@ -155,9 +153,8 @@ class AnswerControllerTest {
         ConstraintDescriptions requestConstraints = new ConstraintDescriptions(CommentPostDto.class);
         List<String> contentAttribute = requestConstraints.descriptionsForProperty("content");
         List<String> userIdAttribute = requestConstraints.descriptionsForProperty("userId");
-        List<String> answerIdAttribute = requestConstraints.descriptionsForProperty("answerId");
 
-        CommentPostDto post = new CommentPostDto("test", 1L, 1L);
+        CommentPostDto post = new CommentPostDto("test", 1L);
         String content = gson.toJson(post);
 
         AnswerComment comment = new AnswerComment();
@@ -183,8 +180,7 @@ class AnswerControllerTest {
                         ),
                         requestFields(
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("댓글 내용").attributes(key("constraints").value(contentAttribute)),
-                                fieldWithPath("userId").type(JsonFieldType.NUMBER).description("유저 id").attributes(key("constraints").value(userIdAttribute)),
-                                fieldWithPath("answerId").type(JsonFieldType.NUMBER).description("답변글 id").attributes(key("constraints").value(answerIdAttribute))
+                                fieldWithPath("userId").type(JsonFieldType.NUMBER).description("유저 id").attributes(key("constraints").value(userIdAttribute))
                         ),
                         responseHeaders(
                                 headerWithName("Location").description("등록된 댓글의 URI")
