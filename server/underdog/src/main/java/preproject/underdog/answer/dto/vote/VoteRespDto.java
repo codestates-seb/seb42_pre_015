@@ -12,9 +12,6 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor//API 작성 후 삭제
 public class VoteRespDto {
-
-    @NotNull
     private Long userId;
-    @NotNull
     private Long answerId;
 }

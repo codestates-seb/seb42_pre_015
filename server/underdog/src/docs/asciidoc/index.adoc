@@ -8,6 +8,37 @@
 [[User-API]]
 == User API
 
-[[User-단일-조회]]
 === 회원 등록
 operation::post-user[snippets='http-request,http-response,response-headers,request-fields']
+
+[[Answer-API]]
+== Answer API
+
+=== 답변 등록
+operation::post-answer[snippets='http-request,http-response,response-headers,request-fields,path-parameters']
+=== 답변 수정
+operation::patch-answer[snippets='http-request,http-response,request-fields,path-parameters']
+=== 답변 조회
+operation::get-answer[snippets='path-parameters,http-response,response-fields']
+=== 답변 삭제
+operation::delete-answer[snippets='http-request,path-parameters']
+
+[[Answer-Comment-API]]
+== Answer Comment API
+
+=== 답변 댓글 등록
+operation::post-answer-comment[snippets='http-request,http-response,response-headers,request-fields,path-parameters']
+=== 답변 댓글 수정
+operation::patch-answer-comment[snippets='http-request,http-response,request-fields,path-parameters']
+=== 답변 댓글 조회
+operation::get-answer-comment[snippets='path-parameters,http-response,response-fields']
+=== 답변 댓글 삭제
+operation::delete-answer-comment[snippets='http-request,path-parameters']
+
+[[Answer-Vote-API]]
+== Answer Vote API
+
+=== 답변 좋아요 등록
+operation::post-answer-vote[snippets='http-request,http-response,path-parameters']
+=== 답변 좋아요 삭제
+operation::delete-answer-vote[snippets='http-request,path-parameters']
