@@ -8,7 +8,7 @@ import {
   MailSvg,
   GlassesSvg,
   SOIconSvg
-} from '../../assets/Header/HeaderSVG';
+} from '../../../assets/Header/HeaderSVG';
 
 const SvgList = styled.ol`
   display: flex;

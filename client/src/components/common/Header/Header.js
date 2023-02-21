@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import HeaderLogo from '../../assets/Header/HeaderLogo.JPG';
+import HeaderLogo from '../../../assets/Header/HeaderLogo.JPG';
 import UserNav from './UserNav';
 import ProductsNav from './ProductsNav';
 import Search from './Search';
 import LoginNav from './LoginNav';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
-import { SOLogoSvg } from '../../assets/Header/HeaderSVG';
+import { SOLogoSvg } from '../../../assets/Header/HeaderSVG';
 
 const StyledHeader = styled.div`
   top: 3px;
