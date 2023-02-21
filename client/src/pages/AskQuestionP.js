@@ -7,19 +7,14 @@ import { useState } from 'react';
 import Header from '../components/Common/Header/Header';
 import Footer from '../components/Common/Footer';
 
-const Page = styled.div`
-  // 헤더, 푸터 작업 완료되면 지워도 되는 코드
-  display: grid;
-  grid-template-rows: 50px auto 100px;
-  background-color: #f7f8f8;
-`;
-
 const Main = styled.main`
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin: 0px 20px;
+  margin-top: 53px;
+  margin-left: 20px;
+  margin-right: 20px;
 `;
 
 const MainHeading = styled.div`
@@ -159,7 +154,7 @@ function AskQuestionPage() {
   };
 
   return (
-    <Page className='page'>
+    <>
       <Header />
       <Main>
         <MainHeading>
@@ -262,7 +257,7 @@ function AskQuestionPage() {
         </MainBody>
       </Main>
       <Footer />
-    </Page>
+    </>
   );
 }
 
