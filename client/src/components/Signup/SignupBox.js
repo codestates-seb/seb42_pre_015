@@ -1,5 +1,10 @@
-import { GoogleBtn, GithubBtn, FacebookBtn, GeneralBtn } from '../Buttons';
-import BoxStyle from '../Login/LoginStyle';
+import {
+  GoogleBtn,
+  GithubBtn,
+  FacebookBtn,
+  GeneralBtn
+} from '../common/Buttons';
+import BoxStyle from '../common/Login/LoginStyle';
 import { useState } from 'react';
 import { ErrorSVG, SignUpSVG } from '../../assets/LoginSVG';
 const SignupBox = () => {
