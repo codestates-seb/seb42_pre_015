@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ReactComponent as SpotPencil } from '../../assets/AskQuestionP/spotPencil.svg';
+import { SpotPencilSvg } from '../../assets/AskQPage';
 
 const BoxContainer = styled.div`
   height: max-content;
@@ -51,7 +51,7 @@ function WritingTipBox({ title, content }) {
       <div className='box-heading'>{title}</div>
       <BoxContentContainer>
         <div>
-          <SpotPencil />
+          <SpotPencilSvg />
         </div>
         <div className='box-content'>
           <p>{content}</p>

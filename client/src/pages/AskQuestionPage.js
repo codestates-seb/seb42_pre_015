@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import WritingTipBox from '../components/AskQuestionP/WritingTipBox';
 import WritingGoodQBox from '../components/AskQuestionP/WritingGoodQBox';
 import TagInput from '../components/common/TagInput';
-import { ReactComponent as AskQuestionBackground } from '../assets/AskQuestionP/askquestion-background.svg';
+import { ReactComponent as AskQuestionBackground } from '../assets/askquestion-background.svg';
 import { useState } from 'react';
 
 const Page = styled.div`
