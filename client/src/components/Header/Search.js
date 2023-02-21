@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { ReactComponent as GlassesIcon } from '../../assets/Header/GlassesIcon.svg';
 import { useEffect, useRef, useState } from 'react';
+import { GlassesIcon } from '../../assets/Header/Header.Svg';
 
 const SearchForm = styled.form`
   width: 100%;
@@ -114,12 +114,13 @@ export default function Search({ isLogin }) {
 
   return (
     <SearchForm>
-      <SearchIcon ref={searchIconRef}>
-        <GlassesIcon
-          onClick={() => {
-            setIsSearchClick(pre => !pre);
-          }}
-        />
+      <SearchIcon
+        ref={searchIconRef}
+        onClick={() => {
+          setIsSearchClick(pre => !pre);
+        }}
+      >
+        <GlassesIcon />
       </SearchIcon>
       {isLogin ? (
         <SearchInput

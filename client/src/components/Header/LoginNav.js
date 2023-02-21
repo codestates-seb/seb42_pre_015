@@ -1,12 +1,14 @@
 import styled from 'styled-components';
-import { ReactComponent as MessagesIcon } from '../../assets/Header/MessagesIcon.svg';
-import { ReactComponent as Achievements } from '../../assets/Header/Achievements .svg';
-import { ReactComponent as HelpIcon } from '../../assets/Header/HelpIcon.svg';
-import { ReactComponent as CommunityIcon } from '../../assets/Header/CommunityIcon.svg';
-import { ReactComponent as InboxMailIcon } from '../../assets/Header/InboxMailIcon.svg';
-import { ReactComponent as GlassesIcon } from '../../assets/Header/GlassesIcon.svg';
 import SOLogo from '../../assets/Header/SOLogo.png';
 import { useEffect, useRef, useState } from 'react';
+import {
+  MessagesIcon,
+  Achievements,
+  HelpIcon,
+  CommunityIcon,
+  InboxMailIcon,
+  GlassesIcon
+} from '../../assets/Header/Header.Svg';
 
 const SvgList = styled.ol`
   display: flex;
