@@ -3,6 +3,9 @@ package preproject.underdog.user.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import preproject.underdog.answer.entity.Answer;
+import preproject.underdog.answer.entity.AnswerComment;
+import preproject.underdog.answer.entity.AnswerVote;
 import preproject.underdog.auditing.TimeManager;
 
 import javax.persistence.*;
@@ -18,7 +21,7 @@ public class User extends TimeManager {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long userId;
 
-    @Column(nullable = false)
+    @Column
     private String name;
 
     @Column(nullable = false, updatable = false, unique = true)
@@ -38,16 +41,34 @@ public class User extends TimeManager {
 //
 //    @OneToMany(mappedBy = "user")
 //    private List<QuestionComment> questionCommentList = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "user")
-//    private List<Answer> answerList = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "user")
-//    private List<AnswerVote> answerVoteList = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "user")
-//    private List<AnswerComment> answerCommentList = new ArrayList<>();
 
-    // 양방향 매핑 세터 추가
+    @OneToMany(mappedBy = "user")
+    private List<Answer> answerList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user")
+    private List<AnswerVote> answerVoteList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<AnswerComment> answerCommentList = new ArrayList<>();
+
+    public void setAnswer(Answer answer) {
+        this.getAnswerList().add(answer);
+        if(answer.getUser()!=this){
+            answer.setUser(this);
+        }
+    }
+
+    public void setAnswerVote(AnswerVote answerVote) {
+        this.getAnswerVoteList().add(answerVote);
+        if(answerVote.getUser()!=this){
+            answerVote.setUser(this);
+        }
+    }
+
+    public void setAnswerComment(AnswerComment answerComment) {
+        this.getAnswerCommentList().add(answerComment);
+        if(answerComment.getUser()!=this){
+            answerComment.setUser(this);
+        }
+    }
 }
