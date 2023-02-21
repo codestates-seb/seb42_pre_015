@@ -1,4 +1,4 @@
-export const GlobeIcon = () => {
+export const GlobeSVG = () => {
   return (
     <svg
       aria-hidden='true'

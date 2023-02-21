@@ -1,8 +1,6 @@
 import styled from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEarthAmericas } from '@fortawesome/free-solid-svg-icons';
-// import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import { GlobeSVG } from '../../assets/NavSvg';
 
 const NavContainer = styled.div`
   width: 164px;
@@ -56,20 +54,13 @@ const Nav = () => {
       <div>PUBLIC</div>
       <nav>
         <ol>
-          {/* <Link to='/'> */}
           <MenuContainer
             onClick={() => setIsClicked('questions')}
             className={isClicked === 'questions' ? 'current' : null}
           >
-            <FontAwesomeIcon
-              id='icon'
-              icon={faEarthAmericas}
-              size='lg'
-              style={{ color: 'black' }}
-            />
+            <GlobeSVG />
             <div>Questions</div>
           </MenuContainer>
-          {/* </Link> */}
 
           <MenuContainer>
             <div>Tags</div>
