@@ -6,6 +6,7 @@ import { ReactComponent as AskQuestionBackground } from '../assets/askquestion-b
 import { useState } from 'react';
 import Header from '../components/Common/Header/Header';
 import Footer from '../components/Common/Footer';
+import { GeneralBtn } from '../components/Common/Buttons';
 
 const Main = styled.main`
   display: flex;
@@ -99,7 +100,7 @@ const InputBox = styled.div`
 
 const Buttons = styled.div`
   > button {
-    background: lightblue;
+    /* background: lightblue; */
     margin: 0px 10px 15px 0px;
     width: 120px;
     height: 40px;
@@ -244,13 +245,13 @@ function AskQuestionPage() {
             ) : null}
           </div>
           <Buttons className='buttons'>
-            <button
+            <GeneralBtn
               type='submit'
               onClick={handleValidation}
               disabled={titleErrorMsg || contentErrorMsg}
             >
               Post your question
-            </button>
+            </GeneralBtn>
             <button>Discard draft</button>
           </Buttons>
         </MainBody>
