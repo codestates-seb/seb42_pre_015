@@ -1,4 +1,4 @@
-export const Achievements = () => {
+export const AchievementsSvg = () => {
   return (
     <svg
       aria-hidden='true'
@@ -11,7 +11,7 @@ export const Achievements = () => {
     </svg>
   );
 };
-export const CommunityIcon = () => {
+export const CommunitySvg = () => {
   return (
     <svg
       aria-hidden='true'
@@ -24,7 +24,7 @@ export const CommunityIcon = () => {
     </svg>
   );
 };
-export const GlassesIcon = () => {
+export const GlassesSvg = () => {
   return (
     <svg
       aria-hidden='true'
@@ -37,7 +37,7 @@ export const GlassesIcon = () => {
     </svg>
   );
 };
-export const HelpIcon = () => {
+export const HelpSvg = () => {
   return (
     <svg
       aria-hidden='true'
@@ -50,7 +50,7 @@ export const HelpIcon = () => {
     </svg>
   );
 };
-export const InboxMailIcon = () => {
+export const MailSvg = () => {
   return (
     <svg
       aria-hidden='true'
@@ -63,7 +63,7 @@ export const InboxMailIcon = () => {
     </svg>
   );
 };
-export const MessagesIcon = () => {
+export const MessageSvg = () => {
   return (
     <svg
       aria-hidden='true'
@@ -73,6 +73,40 @@ export const MessagesIcon = () => {
       viewBox='0 0 20 18'
     >
       <path d='M4.63 1h10.56a2 2 0 0 1 1.94 1.35L20 10.79V15a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-4.21l2.78-8.44c.25-.8 1-1.36 1.85-1.35Zm8.28 12 2-2h2.95l-2.44-7.32a1 1 0 0 0-.95-.68H5.35a1 1 0 0 0-.95.68L1.96 11h2.95l2 2h6Z'></path>
+    </svg>
+  );
+};
+export const SOIconSvg = () => {
+  return (
+    <svg
+      aria-hidden='true'
+      className='native svg-icon iconLogoGlyphMd'
+      width='16'
+      height='16'
+      viewBox='0 0 32 37'
+    >
+      <path d='M26 33v-9h4v13H0V24h4v9h22Z' fill='#BCBBBB'></path>
+      <path
+        d='m21.5 0-2.7 2 9.9 13.3 2.7-2L21.5 0ZM26 18.4 13.3 7.8l2.1-2.5 12.7 10.6-2.1 2.5ZM9.1 15.2l15 7 1.4-3-15-7-1.4 3Zm14 10.79.68-2.95-16.1-3.35L7 23l16.1 2.99ZM23 30H7v-3h16v3Z'
+        fill='#F48024'
+      ></path>
+    </svg>
+  );
+};
+export const SOLogoSvg = () => {
+  return (
+    <svg
+      aria-hidden='true'
+      className='native svg-icon iconLogoGlyphMd'
+      width='25'
+      height='25'
+      viewBox='0 0 32 37'
+    >
+      <path d='M26 33v-9h4v13H0V24h4v9h22Z' fill='#BCBBBB'></path>
+      <path
+        d='m21.5 0-2.7 2 9.9 13.3 2.7-2L21.5 0ZM26 18.4 13.3 7.8l2.1-2.5 12.7 10.6-2.1 2.5ZM9.1 15.2l15 7 1.4-3-15-7-1.4 3Zm14 10.79.68-2.95-16.1-3.35L7 23l16.1 2.99ZM23 30H7v-3h16v3Z'
+        fill='#F48024'
+      ></path>
     </svg>
   );
 };

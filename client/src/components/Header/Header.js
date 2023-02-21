@@ -1,25 +1,27 @@
 import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import HeaderLogo from '../assets/Header/HeaderLogo.JPG';
-import UserNav from './Header/UserNav';
-import ProductsNav from './Header/ProductsNav';
-import Search from './Header/Search';
-import LoginNav from './Header/LoginNav';
-import StackOverflowMini from '../assets/Header/StackOverflowMini.png';
-import HamburgerIcon from '../assets/Header/HamburgerIcon.png';
+import HeaderLogo from '../../assets/Header/HeaderLogo.JPG';
+import UserNav from './UserNav';
+import ProductsNav from './ProductsNav';
+import Search from './Search';
+import LoginNav from './LoginNav';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { SOLogoSvg } from '../../assets/Header/HeaderSVG';
 
 const StyledHeader = styled.div`
   top: 3px;
   width: 100%;
   height: 50px;
   background-color: #f8f9f9;
-  position: fixed;
+  position: sticky;
   z-index: 10;
   margin: 0 auto;
 `;
 
 const HeaderLine = styled.div`
-  position: fixed;
+  position: sticky;
+  top: 0px;
   width: 100%;
   height: 3px;
   background-color: #f48225;
@@ -44,12 +46,10 @@ const HeaderLogoImg = styled.img`
     display: none;
   }
 `;
-const HeaderLogoImgMini = styled.img`
+const HeaderLogoImgMini = styled.div`
   display: none;
   @media (max-width: 640px) {
     display: block;
-    width: 25px;
-    height: 25px;
     margin-top: -4px;
     margin: 0 10px;
     cursor: pointer;
@@ -73,22 +73,15 @@ const NavigationBtn = styled.button`
     display: ${props => props.display || 'block'};
   }
 `;
-const HamburgerIconImg = styled.img`
-  display: none;
-  @media (max-width: 640px) {
-    display: block;
-    cursor: pointer;
-    width: 25px;
-    height: 25px;
-    margin-left: 15px;
-    margin-right: 5px;
-  }
-`;
+
 const HamburgerBtn = styled.button`
   display: none;
   @media (max-width: 640px) {
     display: block;
     background: none;
+    cursor: pointer;
+    margin-left: 15px;
+    margin-right: 5px;
   }
 `;
 const LogBtn = styled.div`
@@ -125,9 +118,11 @@ function Header() {
       <StyledHeader>
         <HeaderContainer>
           <HamburgerBtn>
-            <HamburgerIconImg src={HamburgerIcon} alt='' />
+            <FontAwesomeIcon icon={faBars} size='xl' />
           </HamburgerBtn>
-          <HeaderLogoImgMini src={StackOverflowMini} alt='StackOverflowMini' />
+          <HeaderLogoImgMini>
+            <SOLogoSvg />
+          </HeaderLogoImgMini>
           <HeaderLogoImg src={HeaderLogo} alt='HeaderLogo' />
           {isLogin ? (
             <NavigationBtn

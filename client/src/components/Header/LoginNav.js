@@ -1,14 +1,14 @@
 import styled from 'styled-components';
-import SOLogo from '../../assets/Header/SOLogo.png';
 import { useEffect, useRef, useState } from 'react';
 import {
-  MessagesIcon,
-  Achievements,
-  HelpIcon,
-  CommunityIcon,
-  InboxMailIcon,
-  GlassesIcon
-} from '../../assets/Header/Header.Svg';
+  MessageSvg,
+  AchievementsSvg,
+  HelpSvg,
+  CommunitySvg,
+  MailSvg,
+  GlassesSvg,
+  SOIconSvg
+} from '../../assets/Header/HeaderSVG';
 
 const SvgList = styled.ol`
   display: flex;
@@ -81,12 +81,8 @@ const InBoxMessegeTop = styled.div`
 `;
 const InBoxMessegeLeft = styled.div`
   display: flex;
-  img {
-    width: 16px;
-    height: 16px;
-    margin-right: 8px;
-  }
   span {
+    margin-left: 8px;
     color: rgb(82, 89, 96);
     font-size: 12px;
   }
@@ -231,7 +227,7 @@ export default function LoginNav() {
         ref={messagesRef}
       >
         <p>
-          <MessagesIcon></MessagesIcon>
+          <MessageSvg></MessageSvg>
         </p>
         {isMessagesIconClick ? (
           <UsersNavigation height='423px'>
@@ -242,12 +238,12 @@ export default function LoginNav() {
             <InBoxMessege>
               <InBoxMessegeTop>
                 <InBoxMessegeLeft>
-                  <img src={SOLogo} alt='SOLogo'></img>
+                  <SOIconSvg />
                   <span>Welcome</span>
                 </InBoxMessegeLeft>
                 <InBoxMessegeRight>
                   <a href='/#'>Feb 15 at 6:59</a>
-                  <InboxMailIcon />
+                  <MailSvg />
                 </InBoxMessegeRight>
               </InBoxMessegeTop>
               <InBoxMessageBottom>
@@ -267,7 +263,7 @@ export default function LoginNav() {
         ref={achievementsRef}
       >
         <p>
-          <Achievements></Achievements>
+          <AchievementsSvg></AchievementsSvg>
         </p>
         {isAchievementsClick ? (
           <UsersNavigation left='-337px' height='422px'>
@@ -289,7 +285,7 @@ export default function LoginNav() {
         ref={helpIconRef}
       >
         <p>
-          <HelpIcon />
+          <HelpSvg />
         </p>
         {isHelpIconClick ? (
           <UsersNavigation left='-176px' width='214px' height='328px'>
@@ -323,7 +319,7 @@ export default function LoginNav() {
         ref={communityRef}
       >
         <p>
-          <CommunityIcon></CommunityIcon>
+          <CommunitySvg></CommunitySvg>
         </p>
         {isCommunityIconClick ? (
           <UsersNavigation left='-337px' height='398px'>
@@ -332,7 +328,7 @@ export default function LoginNav() {
             </DropDownHeader>
             <CurrentBody>
               <div>
-                <img src={SOLogo} alt='SOLogo'></img>
+                <SOIconSvg />
                 <a href='/#'>Stack Overflow</a>
               </div>
               <div>
@@ -351,7 +347,7 @@ export default function LoginNav() {
             <CurrentBody>
               <div>
                 <p>ㄴ</p>
-                <img src={SOLogo} alt='SOLogo'></img>
+                <SOIconSvg />
                 <a href='/#'>Meta Stack Overflow</a>
               </div>
             </CurrentBody>
@@ -360,7 +356,7 @@ export default function LoginNav() {
             </DropDownHeader>
             <CurrentBody>
               <div>
-                <img src={SOLogo} alt='SOLogo'></img>
+                <SOIconSvg />
                 <a href='/#'>Stack Overflow</a>
               </div>
               <div>
@@ -373,14 +369,14 @@ export default function LoginNav() {
             </DropDownHeader>
             <SearchForm>
               <SearchIcon>
-                <GlassesIcon />
+                <GlassesSvg />
               </SearchIcon>
               <SearchInput placeholder='Find a Stack Exchange community'></SearchInput>
             </SearchForm>
             <InBoxMessege bt='none'>
               <InBoxMessegeTop>
                 <InBoxMessegeLeft>
-                  <img src={SOLogo} alt='SOLogo'></img>
+                  <SOIconSvg />
                   <span>3D Printing</span>
                 </InBoxMessegeLeft>
               </InBoxMessegeTop>
@@ -391,7 +387,7 @@ export default function LoginNav() {
             <InBoxMessege bt='none'>
               <InBoxMessegeTop>
                 <InBoxMessegeLeft>
-                  <img src={SOLogo} alt='SOLogo'></img>
+                  <SOIconSvg />
                   <span>Academia</span>
                 </InBoxMessegeLeft>
               </InBoxMessegeTop>
@@ -404,7 +400,7 @@ export default function LoginNav() {
             <InBoxMessege bt='none'>
               <InBoxMessegeTop>
                 <InBoxMessegeLeft>
-                  <img src={SOLogo} alt='SOLogo'></img>
+                  <SOIconSvg />
                   <span>Amateur Radio</span>
                 </InBoxMessegeLeft>
               </InBoxMessegeTop>
