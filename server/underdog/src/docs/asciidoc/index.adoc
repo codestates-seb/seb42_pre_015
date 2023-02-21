@@ -1,0 +1,31 @@
+= Underdog-Pre-Project
+:sectnums:
+:toc: left
+:toclevels: 4
+:toc-title: Underdog
+:source-highlighter: prettify
+
+[[Answer-API]]
+== Answer API
+
+[[User-단일-조회]]
+=== 답변글 등록
+operation::post-answers[snippets='curl-request,http-request,http-response,httpie-request,path-parameters,request-body,request-fields,response-body']
+=== 답변글 수정
+operation::patch-answers[snippets='http-request,http-response,response-headers,request-fields']
+=== 답변글 삭제
+operation::delete-answer[snippets='http-request,http-response,response-headers,request-fields']
+=== 답변글 보기
+operation::delete-answer[snippets='http-request,http-response,response-headers,request-fields']
+=== 댓글 등록
+operation::post-comment[snippets='curl-request,http-request,http-response,httpie-request,path-parameters,request-body,request-fields,response-body']
+=== 댓글 삭제
+operation::delete-comment[snippets='http-request,http-response,response-headers,request-fields']
+=== 댓글 편집
+operation::delete-comment[snippets='http-request,http-response,response-headers,request-fields']
+=== 댓글 보기
+operation::delete-comment[snippets='http-request,http-response,response-headers,request-fields']
+=== Vote 실행
+operation::delete-vote[snippets='http-request,http-response,response-headers,request-fields']
+=== Vote 취소
+operation::delete-vote[snippets='http-request,http-response,response-headers,request-fields']

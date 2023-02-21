@@ -35,3 +35,9 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### yml
+*.yml
+
+### gradle
+*.gradle
