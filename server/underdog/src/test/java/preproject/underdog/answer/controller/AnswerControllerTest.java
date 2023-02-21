@@ -20,7 +20,6 @@ import preproject.underdog.answer.dto.answer.AnswerRespDto;
 import preproject.underdog.answer.dto.comment.CommentPatchDto;
 import preproject.underdog.answer.dto.comment.CommentPostDto;
 import preproject.underdog.answer.dto.comment.CommentRespDto;
-import preproject.underdog.answer.dto.vote.VotePostDto;
 import preproject.underdog.answer.entity.Answer;
 import preproject.underdog.answer.entity.AnswerComment;
 import preproject.underdog.answer.entity.AnswerVote;
@@ -312,9 +311,6 @@ class AnswerControllerTest {
 
     @Test
     void doVote() throws Exception{
-        VotePostDto post = new VotePostDto(1L, 1L);
-        String content = gson.toJson(post);
-
         Answer answer = new Answer();
         answer.setAnswerId(1L);
 
@@ -328,7 +324,6 @@ class AnswerControllerTest {
         mockMvc.perform(RestDocumentationRequestBuilders.post("/question/{question-id}/answer/vote/{answer-id}/{user-id}", + questionId,answerId,userId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(content)
                 ).andExpect(status().isOk())
                 .andDo(document("post-answer-vote",
                                 preprocessRequest(prettyPrint()),

@@ -7,11 +7,8 @@ import preproject.underdog.answer.dto.answer.AnswerRespDto;
 import preproject.underdog.answer.dto.comment.CommentPatchDto;
 import preproject.underdog.answer.dto.comment.CommentPostDto;
 import preproject.underdog.answer.dto.comment.CommentRespDto;
-import preproject.underdog.answer.dto.vote.VotePostDto;
-import preproject.underdog.answer.dto.vote.VoteRespDto;
 import preproject.underdog.answer.entity.Answer;
 import preproject.underdog.answer.entity.AnswerComment;
-import preproject.underdog.answer.entity.AnswerVote;
 
 @Mapper(componentModel = "spring")
 public interface AnswerMapper {
@@ -27,8 +24,4 @@ public interface AnswerMapper {
     AnswerComment commentPatchDtoToAnswerComment(CommentPatchDto commentPatchDto);
 
     CommentRespDto commentToAnswerCommentRespDto(AnswerComment answerComment);
-
-    AnswerVote votePostDtoToAnswerVote(VotePostDto votePostDto);
-
-    VoteRespDto voteToAnswerVoteRespDto(AnswerVote answerVote);
 }
