@@ -3,7 +3,7 @@ import {
   Googlelogo,
   GitHublogo,
   Facebooklogo
-} from '../../assets/Login_assets/Logos';
+} from '../assets/Login_assets/LoginLogos';
 
 const ButtonWrapper = styled.button`
   background-color: ${({ bgColor }) => bgColor};
@@ -18,9 +18,7 @@ const ButtonWrapper = styled.button`
   &:hover {
     background-color: ${({ hoverBgColor }) => hoverBgColor};
   }
-  .icon {
-    margin-right: 10px;
-  }
+
   ${({ isLoginButton }) =>
     isLoginButton && `box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.25);`}
   .span-style {
@@ -73,8 +71,7 @@ const FacebookButton = () => {
       height='42px'
     >
       <span className='span-style'>
-        <Facebooklogo className='icon' />
-        Log in with Facebook
+        <Facebooklogo className='icon' /> Log in with Facebook
       </span>
     </ButtonWrapper>
   );

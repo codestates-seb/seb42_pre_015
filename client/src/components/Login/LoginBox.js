@@ -3,12 +3,12 @@ import {
   GithubButton,
   FacebookButton,
   LoginButton
-} from './OAuthBottons';
+} from '../Bottons';
 import BoxStyle from '../Login/LoginStyle';
 
 import { useState } from 'react';
-import { StackOverlogo } from '../../assets/Login_assets/Logos';
-import { ErrorIcon, SignUpIcon } from '../../assets/Login_assets/Icons';
+import { StackOverlogo } from '../../assets/Login_assets/LoginLogos';
+import { ErrorIcon, SignUpIcon } from '../../assets/Login_assets/LoginIcons';
 
 const LoginBox = () => {
   const [email, setEmail] = useState('');

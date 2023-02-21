@@ -1,9 +1,9 @@
 import LoginBox from '../components/Login/LoginBox';
 import styled from 'styled-components';
-import Footer from '../components/Login/Footer';
+import Footer from '../components/Footer';
 
 const LoginPageStyle = styled.div`
-  background-color: hsl(27, 100%, 97%);
+  background-color: #f9f9f9;
   .login-page {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
