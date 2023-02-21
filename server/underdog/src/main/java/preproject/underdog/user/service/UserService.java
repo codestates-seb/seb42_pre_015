@@ -1,6 +1,7 @@
 package preproject.underdog.user.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import preproject.underdog.user.entity.User;
 import preproject.underdog.user.repository.UserRepository;
@@ -13,6 +14,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
     public User createUser(User user){
         Optional<User> optionalUser = userRepository.findByEmail(user.getEmail());
 
@@ -22,6 +24,8 @@ public class UserService {
         // 비밀번호가 틀린 경우, 새로운 비밀번호를 생성할 수 있는 링크를 메일로 보냄
         // 즉, 두 가지 경우 모두 새로운 비밀번호를 생성할 수 있는 링크를 메일로 보낸다.
         // 이벤트 퍼블리셔 사용.//
+
+        if(user.getPassword()!=null) user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         return userRepository.save(user);
     }

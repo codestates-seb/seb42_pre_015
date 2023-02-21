@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.util.UriComponentsBuilder;
 import preproject.underdog.user.dto.UserDto;
 import preproject.underdog.user.entity.User;
 import preproject.underdog.user.mapper.UserMapper;

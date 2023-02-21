@@ -18,7 +18,7 @@ public class User extends TimeManager {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long userId;
 
-    @Column(nullable = false)
+    @Column
     private String name;
 
     @Column(nullable = false, updatable = false, unique = true)
@@ -49,5 +49,5 @@ public class User extends TimeManager {
 //    private List<AnswerComment> answerCommentList = new ArrayList<>();
 
     // 양방향 매핑 세터 추가
-
+    // cascade 추가
 }
