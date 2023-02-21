@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { GoogleSVG, GitHubSVG, FacebookSVG } from '../assets/LoginSVG';
+import { GoogleSVG, GitHubSVG, FacebookSVG } from '../../assets/LoginSVG';
 
 const ButtonWrapper = styled.button`
   background-color: ${({ bgColor }) => bgColor};

@@ -1,6 +1,6 @@
-import LoginBox from '../components/Login/LoginBox';
+import LoginBox from '../components/common/Login/LoginBox';
 import styled from 'styled-components';
-import Footer from '../components/Footer';
+import Footer from '../components/common/Footer';
 
 const LoginPageStyle = styled.div`
   background-color: #f9f9f9;
