@@ -2,8 +2,8 @@ import { GoogleBtn, GithubBtn, FacebookBtn, GeneralBtn } from '../Buttons';
 import BoxStyle from '../Login/LoginStyle';
 
 import { useState } from 'react';
-import { SOiconSVG } from '../../assets/CommonSVG';
-import { ErrorSVG, SignUpSVG } from '../../assets/LoginSVG';
+import { SOiconSVG } from '../../../assets/CommonSVG';
+import { ErrorSVG, SignUpSVG } from '../../../assets/LoginSVG';
 
 const LoginBox = () => {
   const [email, setEmail] = useState('');
