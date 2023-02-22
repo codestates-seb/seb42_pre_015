@@ -24,6 +24,7 @@ const HeaderLine = styled.div`
   top: 0px;
   width: 100%;
   height: 3px;
+  z-index: 10;
   background-color: #f48225;
 `;
 

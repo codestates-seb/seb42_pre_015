@@ -1,11 +1,10 @@
 import GlobalStyles from './GlobalStyles';
-import { AnswerNav } from './pages/EditNav';
+import AnswerEditP from './pages/AnswerEditP.js';
 function App() {
   return (
     <>
       <GlobalStyles />
-      <AnswerNav></AnswerNav>
-      <div style={{ height: '1000px' }}></div>
+      <AnswerEditP />
     </>
   );
 }

@@ -66,7 +66,7 @@ const QECancelBtn = styled.button`
 const QEAtag = styled.a`
   color: rgb(131, 141, 149);
 `;
-export function QuestionEditP() {
+export function QuestionEditMain() {
   return (
     <QEditContainer>
       <QEHelpBox>
@@ -126,7 +126,7 @@ export function QuestionEditP() {
   );
 }
 
-export function AnswerEditP() {
+export function AnswerEditMain() {
   return (
     <QEditContainer>
       <QEHelpBox margin='80px'>

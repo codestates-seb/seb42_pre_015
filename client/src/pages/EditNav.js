@@ -1,11 +1,9 @@
 import styled from 'styled-components';
 
 const QENavContainer = styled.div`
-  position: fixed;
-  top: ${props => props.top || '0px'};
   width: 365px;
   margin-top: 5px;
-  z-index: 3;
+  z-index: 10;
   border-radius: 3px;
   border: 1px solid rgb(241, 229, 188);
 `;
@@ -42,15 +40,16 @@ const QENavMain = styled.div`
   }
 `;
 const QENavAdiv = styled.div`
+  display: flex;
+  flex-direction: column;
   text-align: right;
   a {
-    display: block;
     margin-bottom: 5px;
   }
 `;
-export function EditTagNav({ top }) {
+export function EditTagNav() {
   return (
-    <QENavContainer top={top}>
+    <QENavContainer>
       <QENavTop>
         <p>How to Tag</p>
       </QENavTop>
@@ -110,9 +109,9 @@ export function EditTitleNav() {
     </QENavContainer>
   );
 }
-export function EditBodyNav({ top }) {
+export function EditBodyNav() {
   return (
-    <QENavContainer top={top}>
+    <QENavContainer>
       <QENavTop>
         <p>How to Format</p>
       </QENavTop>
@@ -153,15 +152,15 @@ export function EditBodyNav({ top }) {
 }
 
 const AnswerNavContainer = styled.div`
-  position: relative;
+  margin-top: 23px;
 `;
 
 export function AnswerNav() {
   return (
     <AnswerNavContainer>
       <EditTitleNav />
-      <EditBodyNav top='210px' />
-      <EditTagNav top='700px' />
+      <EditBodyNav />
+      <EditTagNav />
     </AnswerNavContainer>
   );
 }
