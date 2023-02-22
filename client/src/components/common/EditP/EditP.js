@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { GeneralBtn } from '../components/common/Buttons';
+import { GeneralBtn } from '../Buttons';
 
 const QEditContainer = styled.div`
   width: 100%;

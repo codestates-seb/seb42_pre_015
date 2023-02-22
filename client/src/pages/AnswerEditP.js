@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { AnswerEditMain } from './EditP';
-import { AnswerNav } from './EditNav';
+import { AnswerEditMain } from '../components/common/EditP/EditP';
+import { AnswerNav } from '../components/common/EditP/EditNav';
 import Nav from '../components/common/Nav';
 import Header from '../components/common/Header/Header';
 import Footer from '../components/common/Footer';
