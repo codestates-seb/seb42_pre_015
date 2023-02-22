@@ -11,6 +11,7 @@ const CommentContainer = styled.div`
     > button {
       background-color: #fff;
       color: #abb1b7;
+      font-size: 13px;
       &:hover {
         color: #5cb8fc;
       }
