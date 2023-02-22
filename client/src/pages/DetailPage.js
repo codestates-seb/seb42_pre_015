@@ -25,7 +25,6 @@ const Main = styled.main`
 
 const Title = styled.div`
   min-height: 45px;
-  background-color: red;
   display: flex;
   align-items: center;
   justify-content: space-between;
