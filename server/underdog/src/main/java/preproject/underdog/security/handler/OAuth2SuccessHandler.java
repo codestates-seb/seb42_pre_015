@@ -39,9 +39,9 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     }
 
     private void saveUser(String email) {
-        User User = new User();
-        User.setEmail(email);
-        userService.createUser(User);
+        User user = new User();
+        user.setEmail(email);
+        userService.createUser(user);
     }
 
     private void redirect(HttpServletRequest request, HttpServletResponse response, String username,
@@ -83,8 +83,14 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         queryParams.add("access_token", accessToken);
         queryParams.add("refresh_token", refreshToken);
 
-        return UriComponentsBuilder.newInstance().scheme("http").host("localhost")
+        return UriComponentsBuilder
+                .newInstance()
+                .scheme("http")
+                .host("localhost")
 //                .port(80)
-                .path("/receive-token.html").queryParams(queryParams).build().toUri();
+                .path("/receive-token.html")
+                .queryParams(queryParams)
+                .build()
+                .toUri();
     }
 }

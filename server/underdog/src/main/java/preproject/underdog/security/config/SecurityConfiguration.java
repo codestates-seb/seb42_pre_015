@@ -50,6 +50,7 @@ public class SecurityConfiguration {
                 .apply(new CustomFilterConfigurer())
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
+                        .antMatchers("/login").permitAll()
                         .antMatchers(HttpMethod.POST, "/user").permitAll()
                         .anyRequest().authenticated()) // 요청별 권한 작성하기
                 .oauth2Login(oauth2 -> oauth2
