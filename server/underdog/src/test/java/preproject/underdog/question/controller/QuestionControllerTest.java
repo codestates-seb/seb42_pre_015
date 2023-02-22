@@ -57,8 +57,9 @@ class QuestionControllerTest {
         ConstraintDescriptions requestConstraints = new ConstraintDescriptions(QuestionPostDto.class);
         List<String> contentAttribute = requestConstraints.descriptionsForProperty("content");
         List<String> titleAttribute = requestConstraints.descriptionsForProperty("title");
+        List<String > userIdAttribute = requestConstraints.descriptionsForProperty("userId");
 
-        QuestionPostDto post = new QuestionPostDto("title", "content");
+        QuestionPostDto post = new QuestionPostDto(1L, "title","content");
         String content = gson.toJson(post);
 
         ResultActions actions =
@@ -67,7 +68,6 @@ class QuestionControllerTest {
                                 .accept(MediaType.APPLICATION_JSON)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(content)
-
                 );
         actions
                 .andExpect(status().isCreated())
@@ -76,12 +76,14 @@ class QuestionControllerTest {
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         requestFields(
-                                fieldWithPath("title").type(JsonFieldType.STRING).description("제목").attributes(key("constraints").value(titleAttribute)),
-                                fieldWithPath("content").type(JsonFieldType.STRING).description("본문").attributes(key("constraints").value(contentAttribute))),
-                                responseHeaders(
-                                        headerWithName(HttpHeaders.LOCATION).description("등록된 질문의 URI")
-                                )
-                        ));
+                                fieldWithPath("userId").type(JsonFieldType.NUMBER).description("유저 Id").attributes(key("constraints").value(userIdAttribute)),
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("제목").attributes(key("constraints").value(titleAttribute)).optional(),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("본문").attributes(key("constraints").value(contentAttribute)).optional()),
+
+                        responseHeaders(
+                                headerWithName(HttpHeaders.LOCATION).description("등록된 질문의 URI")
+                        )
+                ));
     }
 
     @Test
