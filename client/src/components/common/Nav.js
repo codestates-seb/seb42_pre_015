@@ -4,9 +4,12 @@ import { GlobeSVG } from '../../assets/NavSvg';
 
 const NavContainer = styled.div`
   width: 164px;
-  height: 180px;
+  min-width: 164px;
+  height: 100%;
   position: sticky;
+  top: 53px;
   padding-top: 10px;
+  z-index: 9;
   > div {
     height: 8%;
     width: 100%;
