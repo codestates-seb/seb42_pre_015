@@ -3,12 +3,18 @@ import Vote from './Vote';
 import ProfileCard from './ProfileCard';
 import Comment from './Comment';
 import Tag from '../common/Tag';
+import Answer from './Answer';
 
 const QuestionContainer = styled.div`
   display: flex;
+  flex-direction: column;
   /* background-color: beige; */
   width: 100%;
   height: 100%;
+  margin-bottom: 20px;
+  > div {
+    display: flex;
+  }
 `;
 
 const QuestionWrapper = styled.div`
@@ -17,6 +23,7 @@ const QuestionWrapper = styled.div`
   > p {
     white-space: normal;
     font-size: 15px;
+    line-height: 22.5px;
     margin-bottom: 15px;
   }
 `;
@@ -43,33 +50,38 @@ const ControlOptions = styled.div`
 
 function Question() {
   return (
-    <QuestionContainer>
-      <Vote />
-      <QuestionWrapper>
-        <p>
-          This being the case, I would have expected the following line to take
-          an inordinate amount of time because, in order to determine whether 1
-          quadrillion is in the range, a quadrillion values would have to be
-          generated:
-        </p>
-        <Tag />
-        <Box>
-          <ControlOptions>
-            <div>
-              <a href='/'>Share</a>
-            </div>
-            <div>
-              <a href='/'>Edit</a>
-            </div>
-            <div>
-              <span>Follow</span>
-            </div>
-          </ControlOptions>
-          <ProfileCard />
-        </Box>
-        <Comment />
-      </QuestionWrapper>
-    </QuestionContainer>
+    <>
+      <QuestionContainer>
+        <div>
+          <Vote />
+          <QuestionWrapper>
+            <p>
+              This being the case, I would have expected the following line to
+              take an inordinate amount of time because, in order to determine
+              whether 1 quadrillion is in the range, a quadrillion values would
+              have to be generated:
+            </p>
+            <Tag />
+            <Box>
+              <ControlOptions>
+                <div>
+                  <a href='/'>Share</a>
+                </div>
+                <div>
+                  <a href='/'>Edit</a>
+                </div>
+                <div>
+                  <span>Follow</span>
+                </div>
+              </ControlOptions>
+              <ProfileCard />
+            </Box>
+            <Comment />
+          </QuestionWrapper>
+        </div>
+        <Answer />
+      </QuestionContainer>
+    </>
   );
 }
 
