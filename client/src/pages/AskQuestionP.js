@@ -1,12 +1,13 @@
 import styled from 'styled-components';
 import WritingTipBox from '../components/AskQuestionP/WritingTipBox';
 import WritingGoodQBox from '../components/AskQuestionP/WritingGoodQBox';
-import TagInput from '../components/Common/TagInput';
 import { ReactComponent as AskQuestionBackground } from '../assets/askquestion-background.svg';
 import { useState } from 'react';
-import Header from '../components/Common/Header/Header';
-import Footer from '../components/Common/Footer';
-import { GeneralBtn } from '../components/Common/Buttons';
+// import Footer from '../components/Common/Footer';
+import Header from '../components/common/Header/Header';
+import TagInput from '../components/common/TagInput';
+import Footer from '../components/common/Footer';
+import { GeneralBtn } from '../components/common/Buttons';
 
 const Main = styled.main`
   display: flex;
@@ -103,16 +104,8 @@ const Buttons = styled.div`
   display: flex;
   justify-content: flex-start;
   margin-bottom: 15px;
-  > .discard-draft-btn {
-    font-size: 13px;
-    margin-left: 10px;
-    border-radius: 3px;
-    width: 100px;
-    color: '#A92329';
-    background-color: '#fff';
-    &:hover {
-      background-color: '#FEF0F0';
-    }
+  > button {
+    margin-right: 10px;
   }
 `;
 
@@ -262,7 +255,12 @@ function AskQuestionPage() {
             >
               Post your question
             </GeneralBtn>
-            <button className='discard-draft-btn'>Discard draft</button>
+            <GeneralBtn
+              type='discard'
+              className='discard-btn'
+              BtnText='Discard draft'
+              width='100px'
+            />
           </Buttons>
         </MainBody>
       </Main>

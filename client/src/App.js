@@ -1,6 +1,4 @@
 import GlobalStyles from './GlobalStyles';
-// import WritingTipBox from './components/WritingTipBox';
-// import WritingGoodQBox from './components/AskQuestionP/WritingGoodQBox';
 import AskQuestionPage from './pages/AskQuestionP';
 
 function App() {
@@ -8,8 +6,6 @@ function App() {
     <>
       <GlobalStyles />
       <AskQuestionPage />
-      {/* <WritingTipBox /> */}
-      {/* <WritingGoodQBox /> */}
     </>
   );
 }
