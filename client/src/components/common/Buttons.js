@@ -7,7 +7,7 @@ const ButtonWrapper = styled.button`
   border: 1px solid rgba(0, 0, 0, 0);
   padding: 10.4px;
   border-radius: 3px;
-  width: 100%;
+  width: ${({ width }) => width};
   height: ${({ height }) => height};
   cursor: pointer;
   font-size: 13px;
@@ -30,8 +30,8 @@ const GoogleBtn = () => {
       bgColor='#fff'
       color='#000'
       hoverBgColor='#eee'
-      activeBgColor='#ddd'
       height='38px'
+      width='100%'
     >
       <span className='span-style'>
         <GoogleSVG className='icon' />
@@ -47,8 +47,8 @@ const GithubBtn = () => {
       bgColor='#222'
       color='#fff'
       hoverBgColor='#000'
-      activeBgColor='#333'
       height='38px'
+      width='100%'
     >
       <span className='span-style'>
         <GitHubSVG className='icon' /> Log in with GitHub
@@ -63,8 +63,8 @@ const FacebookBtn = () => {
       bgColor='#3b5998'
       color='#fff'
       hoverBgColor='#2f477a'
-      activeBgColor='#293e69'
       height='38px'
+      width='100%'
     >
       <span className='span-style'>
         <FacebookSVG className='icon' /> Log in with Facebook
@@ -73,14 +73,14 @@ const FacebookBtn = () => {
   );
 };
 
-const GeneralBtn = ({ BtnText = 'Log in', bgColor, height }) => {
+const GeneralBtn = ({ BtnText = 'Log in', bgColor, height, width }) => {
   return (
     <ButtonWrapper
       bgColor={bgColor || 'rgb(10, 149, 255)'}
       color='rgb(255, 255, 255)'
-      hoverBgColor='#2f477a'
-      activeBgColor='#293e69'
+      hoverBgColor='#0069C1'
       height={height || '38px'}
+      width={width || '100%'}
       GeneralBtnShadow
     >
       {BtnText}
