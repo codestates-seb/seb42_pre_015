@@ -8,7 +8,11 @@ const ButtonWrapper = styled.button`
   padding: 10.4px;
   border-radius: 3px;
   width: ${({ width }) => width};
+<<<<<<< HEAD
   height: 38px;
+=======
+  height: ${({ height }) => height};
+>>>>>>> d8b3118f30107383d972d0c5ff01752f08aab9ac
   cursor: pointer;
   font-size: 13px;
   &:hover {
@@ -30,8 +34,13 @@ const GoogleBtn = ({ onClick }) => {
       bgColor='#fff'
       color='#000'
       hoverBgColor='#eee'
+<<<<<<< HEAD
       width='100%'
       onClick={onClick}
+=======
+      height='38px'
+      width='100%'
+>>>>>>> d8b3118f30107383d972d0c5ff01752f08aab9ac
     >
       <span className='span-style'>
         <GoogleSVG className='icon' />
@@ -47,8 +56,13 @@ const GithubBtn = ({ onClick }) => {
       bgColor='#222'
       color='#fff'
       hoverBgColor='#000'
+<<<<<<< HEAD
       width='100%'
       onClick={onClick}
+=======
+      height='38px'
+      width='100%'
+>>>>>>> d8b3118f30107383d972d0c5ff01752f08aab9ac
     >
       <span className='span-style'>
         <GitHubSVG className='icon' /> Log in with GitHub
@@ -63,8 +77,13 @@ const FacebookBtn = ({ onClick }) => {
       bgColor='#3b5998'
       color='#fff'
       hoverBgColor='#2f477a'
+<<<<<<< HEAD
       width='100%'
       onClick={onClick}
+=======
+      height='38px'
+      width='100%'
+>>>>>>> d8b3118f30107383d972d0c5ff01752f08aab9ac
     >
       <span className='span-style'>
         <FacebookSVG className='icon' /> Log in with Facebook
@@ -73,6 +92,7 @@ const FacebookBtn = ({ onClick }) => {
   );
 };
 
+<<<<<<< HEAD
 // On = blue , Off = grey?
 
 const GeneralBtn = ({ BtnText = 'Fill Text', type, width, onClick }) => {
@@ -93,6 +113,15 @@ const GeneralBtn = ({ BtnText = 'Fill Text', type, width, onClick }) => {
       bgColor={bgColor}
       color={color}
       hoverBgColor={hoverBgColor}
+=======
+const GeneralBtn = ({ BtnText = 'Log in', bgColor, height, width }) => {
+  return (
+    <ButtonWrapper
+      bgColor={bgColor || 'rgb(10, 149, 255)'}
+      color='rgb(255, 255, 255)'
+      hoverBgColor='#0069C1'
+      height={height || '38px'}
+>>>>>>> d8b3118f30107383d972d0c5ff01752f08aab9ac
       width={width || '100%'}
       GeneralBtnShadow
       onClick={onClick}
