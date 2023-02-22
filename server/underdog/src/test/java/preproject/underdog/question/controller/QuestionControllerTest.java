@@ -104,8 +104,8 @@ class QuestionControllerTest {
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint()),
                                 requestFields(
-                                        fieldWithPath("content").type(JsonFieldType.STRING).description("제목 수정 내용").attributes(key("constraints").value(contentAttribute)),
-                                        fieldWithPath("title").type(JsonFieldType.STRING).description("본문 수정 내용").attributes(key("constraints").value(titleAttribute))
+                                        fieldWithPath("content").type(JsonFieldType.STRING).description("제목 수정 내용").attributes(key("constraints").value(contentAttribute)).optional(),
+                                        fieldWithPath("title").type(JsonFieldType.STRING).description("본문 수정 내용").attributes(key("constraints").value(titleAttribute)).optional()
                                 ),
                                 pathParameters(
                                         parameterWithName("question-id").description("질문 id")
