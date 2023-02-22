@@ -72,7 +72,8 @@ public class SecurityConfiguration {
         public void configure(HttpSecurity builder) throws Exception {  // (2-2)
             AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);  // (2-3)
 
-            CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(jwtTokenizer, authenticationManager);  // (2-4)
+            CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(jwtTokenizer, authenticationManager);// (2-4)
+//            customAuthenticationFilter.setFilterProcessesUrl("/auth/login"); //request URL - 디폴트는 /login
 //            customAuthenticationFilter.setAuthenticationSuccessHandler(new CustomAuthenticationSuccessHandler());  // (3) 추가
 //            customAuthenticationFilter.setAuthenticationFailureHandler(new CustomAuthenticationFailureHandler());
 //
