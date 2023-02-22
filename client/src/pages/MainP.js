@@ -1,6 +1,10 @@
 import styled from 'styled-components';
 import { GeneralBtn } from '../components/common/Buttons';
 import Data from '../data/MOCK_DATA.json';
+import { AnswerNav } from '../components/common/EditP/EditNav';
+import Nav from '../components/common/Nav';
+import Header from '../components/common/Header/Header';
+import Footer from '../components/common/Footer';
 
 const MainPContainer = styled.div`
   padding: 24px;
@@ -85,8 +89,7 @@ const UserContainer = styled.div`
   }
 `;
 
-export default function Main() {
-  console.log(Data);
+export function MainComponent() {
   return (
     <div>
       <MainPContainer>
@@ -136,5 +139,50 @@ export default function Main() {
         );
       })}
     </div>
+  );
+}
+
+const Container = styled.div`
+  width: 100%;
+`;
+const APHeader = styled.div`
+  width: 100%;
+  height: 54px;
+`;
+const MainContainer = styled.div`
+  display: flex;
+  width: 100%;
+  max-width: 1264px;
+  margin: 0 auto;
+`;
+const Main = styled.div`
+  max-width: 800px;
+`;
+const RightNav = styled.div`
+  width: 370px;
+  min-width: 370px;
+`;
+const AFooter = styled.div`
+  width: 100%;
+`;
+export default function MainP() {
+  return (
+    <Container>
+      <APHeader>
+        <Header />
+      </APHeader>
+      <MainContainer>
+        <Nav />
+        <Main>
+          <MainComponent />
+        </Main>
+        <RightNav>
+          <AnswerNav />
+        </RightNav>
+      </MainContainer>
+      <AFooter>
+        <Footer />
+      </AFooter>
+    </Container>
   );
 }

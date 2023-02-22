@@ -4,19 +4,19 @@ import { GoogleSVG, GitHubSVG, FacebookSVG } from '../../assets/LoginSVG';
 const ButtonWrapper = styled.button`
   background-color: ${({ bgColor }) => bgColor};
   color: ${({ color }) => color};
-  border: 1px solid gainsboro;
-  border-radius: 5px;
-  width: 100%;
-  height: ${({ height }) => height};
+  border: 1px solid rgba(0, 0, 0, 0);
+  padding: 10.4px;
+  border-radius: 3px;
+  width: ${({ width }) => width};
+  height: 38px;
   cursor: pointer;
-  transition: background-color 0.2s;
-  font-size: 15px;
+  font-size: 13px;
   &:hover {
     background-color: ${({ hoverBgColor }) => hoverBgColor};
   }
-
-  ${({ isLoginButton }) =>
-    isLoginButton && `box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.25);`}
+  ${({ GeneralBtnShadow }) =>
+    GeneralBtnShadow &&
+    `box-shadow: rgba(255, 255,255, 0.4) 0px 1px 0px 0px inset;`}
   .span-style {
     display: inline-flex;
     align-items: center;
@@ -24,14 +24,14 @@ const ButtonWrapper = styled.button`
   }
 `;
 
-const GoogleBtn = () => {
+const GoogleBtn = ({ onClick }) => {
   return (
     <ButtonWrapper
       bgColor='#fff'
       color='#000'
       hoverBgColor='#eee'
-      activeBgColor='#ddd'
-      height='42px'
+      width='100%'
+      onClick={onClick}
     >
       <span className='span-style'>
         <GoogleSVG className='icon' />
@@ -41,14 +41,14 @@ const GoogleBtn = () => {
   );
 };
 
-const GithubBtn = () => {
+const GithubBtn = ({ onClick }) => {
   return (
     <ButtonWrapper
       bgColor='#222'
       color='#fff'
       hoverBgColor='#000'
-      activeBgColor='#333'
-      height='42px'
+      width='100%'
+      onClick={onClick}
     >
       <span className='span-style'>
         <GitHubSVG className='icon' /> Log in with GitHub
@@ -57,14 +57,14 @@ const GithubBtn = () => {
   );
 };
 
-const FacebookBtn = () => {
+const FacebookBtn = ({ onClick }) => {
   return (
     <ButtonWrapper
       bgColor='#3b5998'
       color='#fff'
       hoverBgColor='#2f477a'
-      activeBgColor='#293e69'
-      height='42px'
+      width='100%'
+      onClick={onClick}
     >
       <span className='span-style'>
         <FacebookSVG className='icon' /> Log in with Facebook
@@ -73,15 +73,33 @@ const FacebookBtn = () => {
   );
 };
 
-const GeneralBtn = ({ BtnText = 'Log in' }) => {
+// On = blue , Off = grey?
+
+const GeneralBtn = ({ BtnText = 'Fill Text', type, width, onClick }) => {
+  let bgColor, color, hoverBgColor;
+  if (type === 'off') {
+    bgColor = 'rgb(225, 236, 244)';
+    color = 'rgb(57, 115, 157)';
+    hoverBgColor = '#b3d3ea';
+    // on
+  } else if (type === 'discard') {
+    bgColor = '#fff';
+    color = '#A92329';
+    hoverBgColor = '#FEF0F0';
+  } else {
+    bgColor = 'rgb(10, 149, 255)';
+    color = 'rgb(255, 255, 255)';
+    hoverBgColor = '#0069C1';
+  }
+
   return (
     <ButtonWrapper
-      bgColor='#0895ff'
-      color='#fff'
-      hoverBgColor='#2f477a'
-      activeBgColor='#293e69'
-      height='42px'
-      isLoginButton
+      bgColor={bgColor}
+      color={color}
+      hoverBgColor={hoverBgColor}
+      width={width || '100%'}
+      GeneralBtnShadow
+      onClick={onClick}
     >
       {BtnText}
     </ButtonWrapper>

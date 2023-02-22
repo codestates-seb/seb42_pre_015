@@ -1,13 +1,12 @@
 import GlobalStyles from './GlobalStyles';
-import Main from './pages/MainP';
+import MainP from './pages/MainP';
 
 function App() {
   return (
     <>
       <GlobalStyles />
-      <Main />
+      <MainP />
     </>
   );
 }
-
 export default App;
