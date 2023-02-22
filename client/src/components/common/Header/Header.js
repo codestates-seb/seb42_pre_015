@@ -5,6 +5,7 @@ import UserNav from './UserNav';
 import ProductsNav from './ProductsNav';
 import Search from './Search';
 import LoginNav from './LoginNav';
+import { GeneralBtn } from '../Buttons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { SOLogoSvg } from '../../../assets/Header/HeaderSVG';
@@ -84,14 +85,14 @@ const HamburgerBtn = styled.button`
     margin-right: 5px;
   }
 `;
-const LogBtn = styled.div`
-  padding: 8px 10.4px;
-  border: 1px solid black;
-  background-color: blue;
-  font-size: 14px;
-  border-radius: 4px;
-  margin-right: 5px;
-`;
+// const LogBtn = styled.div`
+//   padding: 8px 10.4px;
+//   border: 1px solid black;
+//   background-color: blue;
+//   font-size: 14px;
+//   border-radius: 4px;
+//   margin-right: 5px;
+// `;
 function Header() {
   const [isLogin, setIsLogIn] = useState(false);
   const [isProductsClick, setIsProductsClick] = useState(false);
@@ -149,15 +150,20 @@ function Header() {
           {isLogin ? (
             <UserNav />
           ) : (
-            <LogBtn
+            <GeneralBtn
+              type='off'
+              width={'80px'}
+              BtnText='Log in'
               onClick={() => {
                 setIsLogIn(true);
               }}
-            >
-              Log in
-            </LogBtn>
+            ></GeneralBtn>
           )}
-          {isLogin ? <LoginNav /> : <LogBtn>Sign up</LogBtn>}
+          {isLogin ? (
+            <LoginNav />
+          ) : (
+            <GeneralBtn width={'80px'} BtnText='Sign up'></GeneralBtn>
+          )}
         </HeaderContainer>
       </StyledHeader>
     </>
