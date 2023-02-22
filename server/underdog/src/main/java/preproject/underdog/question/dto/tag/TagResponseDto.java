@@ -12,5 +12,5 @@ import java.util.List;
 public class TagResponseDto {
     private long tagId;
     private long questionId;
-    private String tagName;
+    private String name;
 }

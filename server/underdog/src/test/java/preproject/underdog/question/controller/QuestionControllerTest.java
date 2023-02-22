@@ -379,7 +379,7 @@ class QuestionControllerTest {
     @Test
     void getQuestionTags() throws Exception {
         List<TagResponseDto> response = List.of(TagResponseDto.builder()
-                .questionId(1L).tagId(1L).tagName("dd").build());
+                .questionId(1L).tagId(1L).name("dd").build());
         long questionId = 1L;
         String content = gson.toJson(response);
 
@@ -397,7 +397,7 @@ class QuestionControllerTest {
                         responseFields(
                                 fieldWithPath("[0].questionId").type(JsonFieldType.NUMBER).description("질문글 id"),
                                 fieldWithPath("[0].tagId").type(JsonFieldType.NUMBER).description("태그 id"),
-                                fieldWithPath("[0].tagName").type(JsonFieldType.STRING).description("태그 이름")
+                                fieldWithPath("[0].name").type(JsonFieldType.STRING).description("태그 이름")
                         )));
     }
 

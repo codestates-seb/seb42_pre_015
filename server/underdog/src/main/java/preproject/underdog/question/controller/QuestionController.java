@@ -138,7 +138,7 @@ public class QuestionController {
     @GetMapping("/{question-id}/tag")
     public ResponseEntity getQuestionTags(@PathVariable("question-id") long questionId) {
         List<TagResponseDto> response = List.of(TagResponseDto.builder()
-                .questionId(1L).tagId(1L).tagName("dd").build());
+                .questionId(1L).tagId(1L).name("dd").build());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
