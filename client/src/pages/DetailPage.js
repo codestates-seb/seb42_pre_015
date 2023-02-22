@@ -2,6 +2,9 @@ import styled from 'styled-components';
 import Header from '../components/common/Header/Header';
 import Footer from '../components/common/Footer';
 import Nav from '../components/common/Nav';
+import { GeneralBtn } from '../components/common/Buttons';
+import Vote from '../components/DetailP/Vote';
+import ProfileCard from '../components/DetailP/ProfileCard';
 
 const Body = styled.div`
   margin-top: 53px;
@@ -23,11 +26,31 @@ const Main = styled.main`
 const Title = styled.div`
   min-height: 45px;
   background-color: red;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  > h1 {
+    /* width: calc(100% - 100px); */
+    font-size: 27px;
+    white-space: normal;
+  }
 `;
 
 const Info = styled.div`
   min-height: 30px;
-  background-color: yellow;
+  /* background-color: yellow; */
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #dee2e5;
+  padding-bottom: 8px;
+  margin-bottom: 16px;
+  > ul {
+    display: flex;
+    > li {
+      margin-right: 10px;
+      color: #5f6871;
+    }
+  }
 `;
 
 const Content = styled.div`
@@ -40,9 +63,9 @@ const Content = styled.div`
   }
 `;
 
-const Article = styled.div`
-  background-color: purple;
-  border: 3px solid blue;
+const Article = styled.article`
+  /* background-color: purple; */
+  /* border: 3px solid blue; */
   min-width: calc(100% - 300px);
   // side를 채워넣으면 height를 max-content로 바꿉니다.
   height: 200px;
@@ -51,7 +74,7 @@ const Article = styled.div`
   }
 `;
 
-const Side = styled.div`
+const Side = styled.aside`
   background-color: lightcoral;
   min-width: 300px;
   // side를 채워넣으면 height를 max-content로 바꿉니다.
@@ -61,17 +84,30 @@ const Side = styled.div`
   }
 `;
 
-function Test() {
+function DetailPage() {
   return (
     <>
       <Header />
       <Body>
         <Nav />
         <Main>
-          <Title className='title'>title</Title>
-          <Info className='info'>info</Info>
+          <Title className='title'>
+            <h1>Not able to create histogram using matplotlib</h1>
+            <GeneralBtn BtnText='Ask Question' width='100px' />
+          </Title>
+          <Info className='info'>
+            <ul>
+              <li>Asked today</li>
+              <li>Modified today</li>
+              <li>Viewed 50 times</li>
+            </ul>
+          </Info>
           <Content className='main'>
-            <Article>Article</Article>
+            <Article>
+              Article
+              <Vote />
+              <ProfileCard />
+            </Article>
             <Side />
           </Content>
         </Main>
@@ -81,4 +117,4 @@ function Test() {
   );
 }
 
-export default Test;
+export default DetailPage;
