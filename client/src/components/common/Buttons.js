@@ -82,6 +82,10 @@ const GeneralBtn = ({ BtnText = 'Fill Text', type, width, onClick }) => {
     color = 'rgb(57, 115, 157)';
     hoverBgColor = '#b3d3ea';
     // on
+  } else if (type === 'discard') {
+    bgColor = '#fff';
+    color = '#A92329';
+    hoverBgColor = '#FEF0F0';
   } else {
     bgColor = 'rgb(10, 149, 255)';
     color = 'rgb(255, 255, 255)';
