@@ -3,6 +3,7 @@ package preproject.underdog.user.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import preproject.underdog.answer.entity.Answer;
 import preproject.underdog.auditing.TimeManager;
 
 import javax.persistence.*;
@@ -39,8 +40,8 @@ public class User extends TimeManager {
 //    @OneToMany(mappedBy = "user")
 //    private List<QuestionComment> questionCommentList = new ArrayList<>();
 //
-//    @OneToMany(mappedBy = "user")
-//    private List<Answer> answerList = new ArrayList<>();
+    @OneToMany(mappedBy = "user")
+    private List<Answer> answerList = new ArrayList<>();
 //
 //    @OneToMany(mappedBy = "user")
 //    private List<AnswerVote> answerVoteList = new ArrayList<>();
@@ -49,5 +50,10 @@ public class User extends TimeManager {
 //    private List<AnswerComment> answerCommentList = new ArrayList<>();
 
     // 양방향 매핑 세터 추가
-
+    public void setAnswer(Answer answer) {
+        this.getAnswerList().add(answer);
+        if (answer.getUser() != this) {
+            answer.setUser(this);
+        }
+    }
 }

@@ -19,6 +19,4 @@ public class CommentPostDto {
     private String content;
     @NotNull
     private Long userId;
-    @NotNull
-    private Long answerId;
 }

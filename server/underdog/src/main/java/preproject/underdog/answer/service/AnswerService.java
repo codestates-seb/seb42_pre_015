@@ -1,5 +1,6 @@
 package preproject.underdog.answer.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import preproject.underdog.answer.entity.Answer;
@@ -10,12 +11,18 @@ import preproject.underdog.answer.repository.CommentRepository;
 import preproject.underdog.answer.repository.VoteRepository;
 import preproject.underdog.exception.BusinessLogicException;
 import preproject.underdog.exception.ExceptionCode;
+import preproject.underdog.question.entity.Question;
+import preproject.underdog.question.repository.QuestionRepository;
+import preproject.underdog.user.entity.User;
+import preproject.underdog.user.repository.UserRepository;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class AnswerService {
 
     private final AnswerRepository answerRepository;
@@ -24,21 +31,22 @@ public class AnswerService {
 
     private final VoteRepository voteRepository;
 
-    public AnswerService(AnswerRepository answerRepository, CommentRepository commentRepository, VoteRepository voteRepository) {
-        this.answerRepository = answerRepository;
-        this.commentRepository = commentRepository;
-        this.voteRepository = voteRepository;
-    }
+    private final QuestionRepository questionRepository;
+
+    private final UserRepository userRepository;
+
+
 
     @Transactional
-    public Answer createAnswer(Answer answer) { //답변 작성
+    public Answer createAnswer(Answer answer) {
+        //질문 등록자가 회원인가?? -> 시큐리티 or verify logic
         return answerRepository.save(answer);
     }
 
     @Transactional
     public Answer updateAnswer(Answer answer) { //답변 수정
         Answer findAnswer = findVerifiedAnswer(answer.getAnswerId());
-        return answerRepository.save(answer);
+        return answerRepository.save(findAnswer);
     }
 
     @Transactional
@@ -48,7 +56,9 @@ public class AnswerService {
     }
 
     public Answer getAnswer(long answerId) {
+
         Answer answer = new Answer();
+//        Answer answer = answerRepository.findById(answerId);
         return answer;
     }
 
@@ -67,13 +77,16 @@ public class AnswerService {
         return comment;
     }
 
+    public void findByQId(long questionId) {
+//        Answer answerWithQ = answerRepository.findById();
+    }
     @Transactional
-    public AnswerVote doVote(AnswerVote vote) {
-        return voteRepository.save(vote);
+    public void doVote(long answerId, long userId) {
+        return;
     }
 
     @Transactional
-    public void undoVote(long answerVoteId) {
+    public void undoVote(long answerId, long userId) {
         return;
     }
 
@@ -86,11 +99,10 @@ public class AnswerService {
 
     public Answer findVerifiedAnswer(long answerId) {
 
-        Optional<Answer> optionalAnswer = answerRepository.findById(answerId);
+        Optional<Answer> optionalAnswer = answerRepository.findById(answerId);//optionalAnswer를 레포에서 answerId로 조회
         Answer findAnswer =
-                optionalAnswer.orElseThrow(() ->
+                optionalAnswer.orElseThrow(() ->//findAnswer=optionalAnswer -> 반환/ 아니면 에러반환
                         new BusinessLogicException(ExceptionCode.ANSWER_NOT_FOUND));
-
         return findAnswer;
     }
 

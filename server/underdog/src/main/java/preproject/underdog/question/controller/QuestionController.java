@@ -37,6 +37,7 @@ public class QuestionController {
     public ResponseEntity postQuestion(@Valid @RequestBody QuestionPostDto questionPostDto) {
 //        Question question = questionService.createQuestion(mapper.questionPostDtoToQuestion(questionPostDto));
 //        Question question = new Question();
+//        Question question =
         URI location = UriCreator.createUri(QUESTION_DEFAULT_URL, 1l);
 
         return ResponseEntity.created(location).build();

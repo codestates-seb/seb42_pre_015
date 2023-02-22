@@ -47,6 +47,7 @@ public class AnswerMapperImpl implements AnswerMapper {
         Answer answer = new Answer();
 
         answer.setContent( answerPostDto.getContent() );
+        answer.setUserId( answerPostDto.getUserId() );
 
         return answer;
     }
@@ -76,6 +77,7 @@ public class AnswerMapperImpl implements AnswerMapper {
         AnswerComment answerComment = new AnswerComment();
 
         answerComment.setContent( commentPostDto.getContent() );
+        answerComment.setUserId( commentPostDto.getUserId() );
 
         return answerComment;
     }

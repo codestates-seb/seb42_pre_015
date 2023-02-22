@@ -13,15 +13,15 @@ import preproject.underdog.answer.entity.AnswerComment;
 @Mapper(componentModel = "spring")
 public interface AnswerMapper {
 
-    Answer answerPatchDtoToAnswer(AnswerPatchDto answerPatchDto);
+    Answer answerPatchDtoToAnswer(AnswerPatchDto answerPatchDto);//DTO -> ENTITY
 
-    Answer answerPostDtoToAnswer(AnswerPostDto answerPostDto);
+    Answer answerPostDtoToAnswer(AnswerPostDto answerPostDto);//DTO -> ENTITY
 
-    AnswerRespDto answerToAnswerRespDto(Answer answer);
+    AnswerRespDto answerToAnswerRespDto(Answer answer);//ENTITY -> DTO
 
-    AnswerComment commentPostDtoToAnswerComment(CommentPostDto commentPostDto);
+    AnswerComment commentPostDtoToAnswerComment(CommentPostDto commentPostDto);//DTO -> ENTITY
 
-    AnswerComment commentPatchDtoToAnswerComment(CommentPatchDto commentPatchDto);
+    AnswerComment commentPatchDtoToAnswerComment(CommentPatchDto commentPatchDto);//DTO -> ENTITY
 
-    CommentRespDto commentToAnswerCommentRespDto(AnswerComment answerComment);
+    CommentRespDto commentToAnswerCommentRespDto(AnswerComment answerComment);//ENTITY -> DTO
 }

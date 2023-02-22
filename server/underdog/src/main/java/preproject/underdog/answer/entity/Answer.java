@@ -39,5 +39,17 @@ public class Answer extends BaseTimeEntity {
     @OneToMany(mappedBy = "answer")
     private List<AnswerComment> comments = new ArrayList<>();
 
-//    private String answerImageURL;
+    public void setQuestion(Question question) {
+        this.question = question;
+        if (!question.getAnswerList().contains(this)) {
+            question.getAnswerList().add(this);
+        }
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+        if (!user.getAnswerList().contains(this)) {
+            user.getAnswerList().add(this);
+        }
+    }
 }

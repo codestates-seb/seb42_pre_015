@@ -37,6 +37,7 @@ dependencies {
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
 
 	implementation 'com.google.code.gson:gson:2.9.0'
+	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.6'//value 보기 테스트
 }
 
 tasks.named('test') {

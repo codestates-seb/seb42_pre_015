@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import preproject.underdog.answer.entity.Answer;
 import preproject.underdog.auditing.Auditable;
 import preproject.underdog.tag.entity.Tag;
 
@@ -33,4 +34,13 @@ public class Question extends Auditable {
     private List<QuestionVote> votes = new ArrayList<>();
     @OneToMany(mappedBy = "tagName", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Tag> tags = new HashSet<>();
+    @OneToMany
+    private List<Answer> answerList = new ArrayList<>();
+
+    public void setAnswer(Answer answer) {
+            this.getAnswerList().add(answer);
+            if (answer.getQuestion() != this) {
+                answer.setQuestion(this);
+            }
+    }
 }
