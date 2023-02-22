@@ -10,9 +10,8 @@ const VoteContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-right: 15px;
   width: 45px;
-  height: 100%;
-  margin-right: 16px;
   > div {
     font-size: 1.8rem;
     color: #5f6871;

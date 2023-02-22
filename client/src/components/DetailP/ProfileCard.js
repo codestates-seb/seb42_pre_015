@@ -16,6 +16,7 @@ const ProfileCardContainer = styled.div`
 const UserInfoContainer = styled.div`
   display: flex;
   align-items: center;
+  margin-top: 5px;
   > .user-image {
     width: 32px;
     height: 32px;

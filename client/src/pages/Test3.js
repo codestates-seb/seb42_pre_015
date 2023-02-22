@@ -3,6 +3,8 @@ import Header from '../components/common/Header/Header';
 import Footer from '../components/common/Footer';
 import Nav from '../components/common/Nav';
 
+import Question from '../components/DetailP/Question';
+
 const Body = styled.div`
   margin-top: 53px;
   display: flex;
@@ -45,7 +47,8 @@ const Article = styled.div`
   border: 3px solid blue;
   min-width: calc(100% - 300px);
   // side를 채워넣으면 height를 max-content로 바꿉니다.
-  height: 200px;
+  height: max-content;
+  padding-right: 15px;
   @media screen and (max-width: 980px) {
     min-width: 100%;
   }
@@ -53,6 +56,7 @@ const Article = styled.div`
 
 const Side = styled.div`
   background-color: lightcoral;
+  border: 3px solid black;
   min-width: 300px;
   // side를 채워넣으면 height를 max-content로 바꿉니다.
   height: 200px;
@@ -71,7 +75,10 @@ function Test() {
           <Title className='title'>title</Title>
           <Info className='info'>info</Info>
           <Content className='main'>
-            <Article>Article</Article>
+            <Article>
+              Article
+              <Question />
+            </Article>
             <Side />
           </Content>
         </Main>

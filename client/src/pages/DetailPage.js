@@ -3,8 +3,11 @@ import Header from '../components/common/Header/Header';
 import Footer from '../components/common/Footer';
 import Nav from '../components/common/Nav';
 import { GeneralBtn } from '../components/common/Buttons';
-import Vote from '../components/DetailP/Vote';
-import ProfileCard from '../components/DetailP/ProfileCard';
+// import Vote from '../components/DetailP/Vote';
+// import ProfileCard from '../components/DetailP/ProfileCard';
+// import Comment from '../components/DetailP/Comment';
+
+import Question from '../components/DetailP/Question';
 
 const Body = styled.div`
   margin-top: 53px;
@@ -64,10 +67,11 @@ const Content = styled.div`
 
 const Article = styled.article`
   /* background-color: purple; */
-  /* border: 3px solid blue; */
+  border: 3px solid blue;
   min-width: calc(100% - 300px);
-  // side를 채워넣으면 height를 max-content로 바꿉니다.
-  height: 200px;
+  // ! side를 채워넣으면 height를 max-content로 바꿉니다.
+  height: max-content;
+  padding-right: 15px;
   @media screen and (max-width: 980px) {
     min-width: 100%;
   }
@@ -75,9 +79,10 @@ const Article = styled.article`
 
 const Side = styled.aside`
   background-color: lightcoral;
+  border-right: 5px solid green;
   min-width: 300px;
-  // side를 채워넣으면 height를 max-content로 바꿉니다.
-  height: 200px;
+  // !side를 채워넣으면 height를 max-content로 바꿉니다.
+  min-height: 200px;
   @media screen and (max-width: 980px) {
     min-width: 100%;
   }
@@ -103,9 +108,7 @@ function DetailPage() {
           </Info>
           <Content className='main'>
             <Article>
-              Article
-              <Vote />
-              <ProfileCard />
+              <Question />
             </Article>
             <Side />
           </Content>
