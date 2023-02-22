@@ -99,11 +99,20 @@ const InputBox = styled.div`
 `;
 
 const Buttons = styled.div`
-  > button {
-    /* background: lightblue; */
-    margin: 0px 10px 15px 0px;
-    width: 120px;
-    height: 40px;
+  width: 70%;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 15px;
+  > .discard-draft-btn {
+    font-size: 13px;
+    margin-left: 10px;
+    border-radius: 3px;
+    width: 100px;
+    color: '#A92329';
+    background-color: '#fff';
+    &:hover {
+      background-color: '#FEF0F0';
+    }
   }
 `;
 
@@ -244,15 +253,16 @@ function AskQuestionPage() {
               />
             ) : null}
           </div>
-          <Buttons className='buttons'>
+          <Buttons>
             <GeneralBtn
               type='submit'
-              onClick={handleValidation}
               disabled={titleErrorMsg || contentErrorMsg}
+              BtnText='Post your question'
+              width={'140px'}
             >
               Post your question
             </GeneralBtn>
-            <button>Discard draft</button>
+            <button className='discard-draft-btn'>Discard draft</button>
           </Buttons>
         </MainBody>
       </Main>

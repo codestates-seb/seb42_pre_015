@@ -4,19 +4,19 @@ import { GoogleSVG, GitHubSVG, FacebookSVG } from '../../assets/LoginSVG';
 const ButtonWrapper = styled.button`
   background-color: ${({ bgColor }) => bgColor};
   color: ${({ color }) => color};
-  border: 1px solid gainsboro;
-  border-radius: 5px;
-  width: 100%;
+  border: 1px solid rgba(0, 0, 0, 0);
+  padding: 10.4px;
+  border-radius: 3px;
+  width: ${({ width }) => width};
   height: ${({ height }) => height};
   cursor: pointer;
-  transition: background-color 0.2s;
-  font-size: 15px;
+  font-size: 13px;
   &:hover {
     background-color: ${({ hoverBgColor }) => hoverBgColor};
   }
-
-  ${({ isLoginButton }) =>
-    isLoginButton && `box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.25);`}
+  ${({ GeneralBtnShadow }) =>
+    GeneralBtnShadow &&
+    `box-shadow: rgba(255, 255,255, 0.4) 0px 1px 0px 0px inset;`}
   .span-style {
     display: inline-flex;
     align-items: center;
@@ -30,8 +30,8 @@ const GoogleBtn = () => {
       bgColor='#fff'
       color='#000'
       hoverBgColor='#eee'
-      activeBgColor='#ddd'
-      height='42px'
+      height='38px'
+      width='100%'
     >
       <span className='span-style'>
         <GoogleSVG className='icon' />
@@ -47,8 +47,8 @@ const GithubBtn = () => {
       bgColor='#222'
       color='#fff'
       hoverBgColor='#000'
-      activeBgColor='#333'
-      height='42px'
+      height='38px'
+      width='100%'
     >
       <span className='span-style'>
         <GitHubSVG className='icon' /> Log in with GitHub
@@ -63,8 +63,8 @@ const FacebookBtn = () => {
       bgColor='#3b5998'
       color='#fff'
       hoverBgColor='#2f477a'
-      activeBgColor='#293e69'
-      height='42px'
+      height='38px'
+      width='100%'
     >
       <span className='span-style'>
         <FacebookSVG className='icon' /> Log in with Facebook
@@ -73,15 +73,15 @@ const FacebookBtn = () => {
   );
 };
 
-const GeneralBtn = ({ BtnText = 'Log in' }) => {
+const GeneralBtn = ({ BtnText = 'Log in', bgColor, height, width }) => {
   return (
     <ButtonWrapper
-      bgColor='#0895ff'
-      color='#fff'
-      hoverBgColor='#2f477a'
-      activeBgColor='#293e69'
-      height='42px'
-      isLoginButton
+      bgColor={bgColor || 'rgb(10, 149, 255)'}
+      color='rgb(255, 255, 255)'
+      hoverBgColor='#0069C1'
+      height={height || '38px'}
+      width={width || '100%'}
+      GeneralBtnShadow
     >
       {BtnText}
     </ButtonWrapper>
