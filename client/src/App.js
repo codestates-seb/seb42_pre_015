@@ -1,11 +1,11 @@
 import GlobalStyles from './GlobalStyles';
-import { GeneralBtn } from './components/Common/Buttons';
+import QuestionEditP from './pages/QestionEditP';
 
 function App() {
   return (
     <>
       <GlobalStyles />
-      <GeneralBtn />
+      <QuestionEditP />
     </>
   );
 }
