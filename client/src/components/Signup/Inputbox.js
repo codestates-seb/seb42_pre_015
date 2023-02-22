@@ -11,26 +11,39 @@ const InputboxStyle = styled.div`
     height: 35px;
     width: 100%;
     margin: 5px 0;
-    .error-svg {
-      position: absolute;
-      top: 12px;
-      left: 230px;
-      @media (max-width: 640px) {
-        left: 190px;
-      }
-    }
   }
   h1 {
     font-size: 1.25rem;
     font-weight: bold;
   }
+  .Password-message {
+    white-space: pre-line;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    color: grey;
+    font-size: 13px;
+  }
+`;
+const ErrorMessages = styled.div`
+  margin-bottom: 13px;
+  color: red;
+`;
+const ErrorPosition = styled.svg`
+  position: absolute;
+  top: 14px;
+  left: 230px;
+  @media (max-width: 640px) {
+    position: absolute;
+    left: 190px;
+  }
 `;
 
 const Inputbox = () => {
-  const [DPname, setDPname] = useState('');
+  const [name, setname] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessages, setErrorMessages] = useState({
+    name: '',
     email: '',
     password: ''
   });
@@ -44,18 +57,23 @@ const Inputbox = () => {
       setPassword(value);
       setErrorMessages({ ...errorMessages, password: '' });
     } else if (name === 'displayname') {
-      setDPname(value);
-      setErrorMessages({ ...errorMessages, password: '' });
+      setname(value);
+      setErrorMessages({ ...errorMessages, name: '' });
     }
   };
 
   // login-button 제출 에러
   const handleSubmit = e => {
     e.preventDefault();
+    const nameError = !email.trim() ? 'displayname cannot be empty' : '';
     const emailError = !email.trim() ? 'Email cannot be empty' : '';
     const passwordError = !password.trim() ? 'Password cannot be empty' : '';
 
-    setErrorMessages({ email: emailError, password: passwordError });
+    setErrorMessages({
+      email: emailError,
+      password: passwordError,
+      name: nameError
+    });
   };
 
   const handleClick = () => {
@@ -66,25 +84,23 @@ const Inputbox = () => {
     <>
       <InputboxStyle>
         <form className='signup-form' onSubmit={handleSubmit}>
-          <div className='signup-form__email'>
+          <div className='signup-form__displayname'>
             <h1>Display name</h1>
             <div style={{ position: 'relative' }}>
               <input
                 type='displayname'
                 name='displayname'
-                value={DPname}
+                value={name}
                 onChange={handleInput}
                 className='signup-form__text'
               />
-              {errorMessages.email && (
-                <div className='error-svg'>
-                  <ErrorSVG />
-                </div>
-              )}
+              <ErrorPosition>
+                {errorMessages.name && <ErrorSVG className='error-svg' />}
+              </ErrorPosition>
             </div>
-            {errorMessages.email && (
-              <div style={{ color: 'red' }}>{errorMessages.email}</div>
-            )}
+            <ErrorMessages>
+              {errorMessages.name && <div>{errorMessages.name}</div>}
+            </ErrorMessages>
           </div>
           <div className='signup-form__email'>
             <h1>Email</h1>
@@ -96,15 +112,13 @@ const Inputbox = () => {
                 onChange={handleInput}
                 className='signup-form__text'
               />
-              {errorMessages.email && (
-                <div className='error-svg'>
-                  <ErrorSVG />
-                </div>
-              )}
+              <ErrorPosition>
+                {errorMessages.email && <ErrorSVG className='error-svg' />}
+              </ErrorPosition>
             </div>
-            {errorMessages.email && (
-              <div style={{ color: 'red' }}>{errorMessages.email}</div>
-            )}
+            <ErrorMessages>
+              {errorMessages.email && <div>{errorMessages.email}</div>}
+            </ErrorMessages>
           </div>
           <div className='signup-form__password'>
             <h1>Password</h1>
@@ -116,16 +130,14 @@ const Inputbox = () => {
                 onChange={handleInput}
                 className='signup-form__text'
               />
-              {errorMessages.password && (
-                <div className='error-svg'>
-                  <ErrorSVG />
-                </div>
-              )}
+              <ErrorPosition>
+                {errorMessages.password && <ErrorSVG className='error-svg' />}
+              </ErrorPosition>
             </div>
-            {errorMessages.password && (
-              <div style={{ color: 'red' }}>{errorMessages.password}</div>
-            )}
-            <div className='checkbox'>
+            <ErrorMessages>
+              {errorMessages.password && <div>{errorMessages.password}</div>}
+            </ErrorMessages>
+            <div className='Password-message'>
               Passwords must contain at least eight characters, including at
               least 1 letter and 1 number.
             </div>

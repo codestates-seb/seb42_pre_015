@@ -10,14 +10,15 @@ const BoxStyle = styled.div`
     row-gap: 20px;
     width: 307.09px;
     @media (max-width: 640px) {
-      width: 290px;
+      width: 270px;
     }
   }
   .input-box {
     background-color: white;
     padding: 24px;
     height: 706px;
-    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 10px 24px hsla(0, 0%, 0%, 0.05),
+      0 20px 48px hsla(0, 0%, 0%, 0.05), 0 1px 4px hsla(0, 0%, 0%, 0.1);
     border-radius: 5px;
   }
   .support-messages {
@@ -34,9 +35,6 @@ const BoxStyle = styled.div`
         }
       }
     }
-  }
-  .checkbox {
-    white-space: pre-line;
   }
 `;
 

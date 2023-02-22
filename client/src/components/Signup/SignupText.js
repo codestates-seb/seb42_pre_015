@@ -1,11 +1,13 @@
 import styled from 'styled-components';
 import { TextSVG1, TextSVG2, TextSVG3, TextSVG4 } from '../../assets/SignupSVG';
 const TextStyle = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   .text-box {
-    width: max-content;
     height: 300px;
     background-color: #f9f9f9;
-    margin-left: 150px;
+    grid-column-start: 2;
+
     > h1 {
       font-size: 30px;
       text-align: right;
