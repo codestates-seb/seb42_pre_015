@@ -1,17 +1,10 @@
 import GlobalStyles from './GlobalStyles';
-import {
-  // QestionEditTagNav,
-  // QestionEditTitleNav,
-  QestionEditBodyNav
-} from './pages/QestionEditNav';
-
+import { AnswerNav } from './pages/EditNav';
 function App() {
   return (
     <>
       <GlobalStyles />
-      {/* <QestionEditTagNav />
-      <QestionEditTitleNav></QestionEditTitleNav> */}
-      <QestionEditBodyNav />
+      <AnswerNav></AnswerNav>
       <div style={{ height: '1000px' }}></div>
     </>
   );
