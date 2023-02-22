@@ -112,11 +112,6 @@ export function QuestionEditMain() {
       </QEP>
       <QELable htmlFor='tags'>Tags</QELable>
       <QEInput id='tags' placeholder='e.g. (vba css json)' />
-      <QELable htmlFor='summary'>Edit Summary</QELable>
-      <QEInput
-        id='summary'
-        placeholder='briefly explain your changes (corrected spelling, fixed grammar, improved formatting)'
-      />
       <div style={{ marginBottom: '12px' }}>
         <GeneralBtn width={'80px'} BtnText='Save edits'></GeneralBtn>
         <QECancelBtn>Cancel</QECancelBtn>

@@ -1,10 +1,10 @@
 import GlobalStyles from './GlobalStyles';
-import AnswerEditP from './pages/AnswerEditP.js';
+import QuestionEditP from './pages/QuestionEditP.js';
 function App() {
   return (
     <>
       <GlobalStyles />
-      <AnswerEditP />
+      <QuestionEditP />
     </>
   );
 }
