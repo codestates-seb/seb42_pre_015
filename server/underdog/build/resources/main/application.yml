@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/underdog?serverTimezone=Asia/Seoul
+    username: root
+    password: lysi070511@
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    show-sql: true
+    hibernate:
+      highlight_sql: true
+      format_sql: true
+      ddl-auto: create
+  logging:
+    level:
+      org:
+        hibernate:
+          SQL: DEBUG
+          type:
+            descriptor:
+              sql:
+                BasicBinder: TRACE
+        springframework:
+          orm:
+            jpa: DEBUG
+
