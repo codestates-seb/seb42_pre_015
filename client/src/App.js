@@ -1,13 +1,13 @@
 import GlobalStyles from './GlobalStyles';
 // import DetailPage from './pages/DetailPage';
-import Test2 from './pages/Test2';
+import Test3 from './pages/Test3';
 
 function App() {
   return (
     <>
       <GlobalStyles />
       {/* <DetailPage /> */}
-      <Test2 />
+      <Test3 />
     </>
   );
 }

@@ -3,34 +3,10 @@ import Header from '../components/common/Header/Header';
 import Footer from '../components/common/Footer';
 import Nav from '../components/common/Nav';
 
-// const Header = styled.div`
-//   //! Header 컴포넌트를 불러오면 삭제해도 되는 코드입니다.
-//   grid-area: header;
-//   background-color: blue;
-//   position: fixed;
-//   top: 0px;
-//   width: 100vw;
-//   height: 53px;
-// `;
-
-// const Footer = styled.div`
-//   //! Footer 컴포넌트를 불러오면 삭제해도 되는 코드입니다.
-//   height: 300px;
-//   background-color: brown;
-// `;
-
 const Body = styled.div`
+  margin-top: 53px;
   display: flex;
   justify-content: center;
-  width: 100vw;
-  margin-top: 53px;
-  > div {
-    min-width: 164px;
-  }
-
-  > main {
-    min-width: 350px;
-  }
 `;
 
 const Main = styled.main`
@@ -94,28 +70,12 @@ const Side = styled.div`
   }
 `;
 
-// const Nav = styled.div`
-//   //! Nav 컴포넌트를 불러오면 삭제해도 되는 코드입니다.
-//   background-color: yellow;
-//   /* min-width: 164px; */
-//   height: 250px;
-//   position: sticky;
-//   top: 53px;
-//   border: 10px solid red;
-
-//   @media screen and (max-width: 640px) {
-//     display: none;
-//   }
-// `;
-
 function Test() {
   return (
     <>
       <Header />
       <Body>
-        <div className='nav-wrapper'>
-          <Nav />
-        </div>
+        <Nav />
         <Main>
           <div className='title'>title</div>
           <div className='info'>info</div>

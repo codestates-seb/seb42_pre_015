@@ -25,6 +25,7 @@ const HeaderLine = styled.div`
   width: 100%;
   height: 3px;
   background-color: #f48225;
+  z-index: 10;
 `;
 
 const HeaderContainer = styled.div`
