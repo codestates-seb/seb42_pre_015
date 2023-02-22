@@ -4,7 +4,7 @@ import { GoogleSVG, GitHubSVG, FacebookSVG } from '../../assets/LoginSVG';
 const ButtonWrapper = styled.button`
   background-color: ${({ bgColor }) => bgColor};
   color: ${({ color }) => color};
-  border: 1px solid rgba(0, 0, 0, 0);
+  border: 1px solid #ccc;
   padding: 10.4px;
   border-radius: 3px;
   width: ${({ width }) => width};
