@@ -2,17 +2,6 @@ import styled from 'styled-components';
 import { GeneralBtn } from '../components/common/Buttons';
 import Data from '../data/MOCK_DATA.json';
 
-// const Test = styled.div`
-//   width: 100%;
-//   height: 100%;
-//   display: flex;
-//   justify-content: center;
-//   > div {
-//     width: 800px;
-//     height: 100%;
-//     border: 1px solid black;
-//   }
-// `;
 const MainPContainer = styled.div`
   padding: 24px;
 `;
