@@ -34,6 +34,7 @@ public class UserService {
         if(user.getPassword()!=null) user.setPassword(passwordEncoder.encode(user.getPassword()));
         List<String> roles = authorityUtils.createRoles(user.getEmail());
         user.setRoles(roles);
+        //회원가입 시, 로그인 처리하기(토큰 발급)
 
         return userRepository.save(user);
     }

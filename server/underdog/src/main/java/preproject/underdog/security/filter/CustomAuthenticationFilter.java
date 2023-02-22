@@ -47,6 +47,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
         String accessToken = delegateAccessToken(user);   // (4-2)
         String refreshToken = delegateRefreshToken(user); // (4-3)
+        // 리프레시 토큰 DB에 저장하는 로직 만들기
 
         response.setHeader("Authorization", "Bearer " + accessToken);  // (4-4)
         response.setHeader("Refresh", refreshToken);                   // (4-5)

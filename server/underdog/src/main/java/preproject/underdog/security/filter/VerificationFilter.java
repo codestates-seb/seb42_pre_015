@@ -34,7 +34,7 @@ public class VerificationFilter extends OncePerRequestFilter {  // (1)
         } catch (SignatureException se) {
             request.setAttribute("exception", se);
         } catch (ExpiredJwtException ee) {
-            request.setAttribute("exception", ee);
+            request.setAttribute("exception", ee); // 액세스 토큰 만료시, 리프레시 토큰 확인 및 비교 로직 구성. 유효시 액세스/리프레시 토큰 재발급.
         } catch (Exception e) {
             request.setAttribute("exception", e);
         }
