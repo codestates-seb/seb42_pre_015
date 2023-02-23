@@ -14,11 +14,8 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor//API 작성 후 삭제
 public class CommentPostDto {
-
     @NotEmpty(message = "답변 내용을 작성해야 합니다.")
     private String content;
     @NotNull
     private Long userId;
-    @NotNull
-    private Long answerId;
 }

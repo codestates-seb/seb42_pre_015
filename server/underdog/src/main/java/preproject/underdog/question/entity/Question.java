@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import preproject.underdog.auditing.Auditable;
 import preproject.underdog.tag.entity.Tag;
+import preproject.underdog.user.entity.User;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -33,4 +34,8 @@ public class Question extends Auditable {
     private List<QuestionVote> votes = new ArrayList<>();
     @OneToMany(mappedBy = "tagName", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Tag> tags = new HashSet<>();
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }
