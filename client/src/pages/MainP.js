@@ -5,6 +5,7 @@ import { MainNav } from '../components/common/EditP/EditNav';
 import Nav from '../components/common/Nav';
 import Header from '../components/common/Header/Header';
 import Footer from '../components/common/Footer';
+import Tag from '../components/common/Tag';
 
 const MainPContainer = styled.div`
   padding: 24px 0 0 24px;
@@ -166,6 +167,7 @@ export function MainComponent() {
               </QuestionDesContainer>
               <QuestionBottom>
                 <TagContainer>
+                  <Tag></Tag>
                   <button>Java</button>
                   <button>Python</button>
                   <button>Java Script</button>
