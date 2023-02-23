@@ -23,7 +23,6 @@ const TagContainer = styled.ul`
     }
   }
 `;
-
 const Tag = () => {
   return (
     <TagContainer id='tags'>
