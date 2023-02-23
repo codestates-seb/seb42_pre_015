@@ -5,24 +5,29 @@ const HeadingContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   height: 35px;
+  margin-bottom: 15px;
 
   > h2 {
-    font-size: 19px;
+    font-size: 22px;
   }
 `;
 
-function AnswerHeading() {
+function AnswerHeading({ answerData }) {
   return (
-    <HeadingContainer>
-      <h2>5 Answers</h2>
-      <div>
-        <label htmlFor='answer-sort-method-select'>Sorted by</label>
-        <select name='pets' id='answer-sort-method-select'>
-          <option value='dog'>Highest score (default)</option>
-          <option value='cat'>Date created</option>
-        </select>
-      </div>
-    </HeadingContainer>
+    <>
+      {answerData && (
+        <HeadingContainer>
+          <h2>{answerData.length} Answers</h2>
+          <div>
+            <label htmlFor='answer-sort-method-select'>Sorted by</label>
+            <select name='pets' id='answer-sort-method-select'>
+              <option value='dog'>Highest score (default)</option>
+              <option value='cat'>Date created</option>
+            </select>
+          </div>
+        </HeadingContainer>
+      )}
+    </>
   );
 }
 

@@ -17,14 +17,26 @@ const VoteContainer = styled.div`
   }
 `;
 
-function Vote() {
+function Vote({ questionData, answer }) {
   return (
-    <VoteContainer>
-      <ArrowUpSvg />
-      <div>12</div>
-      <ArrowDownSvg />
-      <SaveUnSelectedSvg />
-    </VoteContainer>
+    <>
+      {questionData && (
+        <VoteContainer>
+          <ArrowUpSvg />
+          <div>{questionData.voteCount}</div>
+          <ArrowDownSvg />
+          <SaveUnSelectedSvg />
+        </VoteContainer>
+      )}
+      {answer && (
+        <VoteContainer>
+          <ArrowUpSvg />
+          <div>{answer.voteCount}</div>
+          <ArrowDownSvg />
+          <SaveUnSelectedSvg />
+        </VoteContainer>
+      )}
+    </>
   );
 }
 

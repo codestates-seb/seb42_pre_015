@@ -7,6 +7,7 @@ const CommentContainer = styled.div`
   flex-direction: column;
   border-top: 1px solid #dee2e5;
   padding: 6px;
+  margin-bottom: 15px;
   > div {
     > .add-comment-btn {
       background-color: #fff;

@@ -36,35 +36,34 @@ const ControlOptions = styled.div`
   }
 `;
 
-function Question() {
+function Question({ questionData }) {
   return (
-    <QuestionContainer>
-      <Vote />
-      <QuestionWrapper>
-        <p>
-          This being the case, I would have expected the following line to take
-          an inordinate amount of time because, in order to determine whether 1
-          quadrillion is in the range, a quadrillion values would have to be
-          generated:
-        </p>
-        <Tag />
-        <QuestionInfo>
-          <ControlOptions>
-            <div>
-              <a href='/'>Share</a>
-            </div>
-            <div>
-              <a href='/'>Edit</a>
-            </div>
-            <div>
-              <span>Delete</span>
-            </div>
-          </ControlOptions>
-          <ProfileCard />
-        </QuestionInfo>
-        <Comment />
-      </QuestionWrapper>
-    </QuestionContainer>
+    <>
+      {questionData && (
+        <QuestionContainer>
+          <Vote questionData={questionData} />
+          <QuestionWrapper>
+            <p>{questionData.content}</p>
+            <Tag questionData={questionData} />
+            <QuestionInfo>
+              <ControlOptions>
+                <div>
+                  <a href='/'>Share</a>
+                </div>
+                <div>
+                  <a href='/'>Edit</a>
+                </div>
+                <div>
+                  <span>Delete</span>
+                </div>
+              </ControlOptions>
+              <ProfileCard questionData={questionData} />
+            </QuestionInfo>
+            <Comment />
+          </QuestionWrapper>
+        </QuestionContainer>
+      )}
+    </>
   );
 }
 

@@ -7,17 +7,19 @@ const AnswerSection = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  margin-top: 15px;
+  margin-top: 20px;
 `;
 
-function Answer() {
+function Answer({ answerData }) {
   return (
     <>
-      <AnswerSection>
-        <AnswerHeading />
-        <AnswerBody />
-        <PostAnswer />
-      </AnswerSection>
+      {answerData && (
+        <AnswerSection>
+          <AnswerHeading answerData={answerData} />
+          <AnswerBody answerData={answerData} />
+          <PostAnswer />
+        </AnswerSection>
+      )}
     </>
   );
 }

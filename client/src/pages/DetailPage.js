@@ -5,6 +5,7 @@ import Nav from '../components/common/Nav';
 import { GeneralBtn } from '../components/common/Buttons';
 import Question from '../components/DetailP/Question';
 import Answer from '../components/DetailP/Answer';
+import { questionData, answerData } from '../data/dummyData';
 
 const Body = styled.div`
   margin-top: 53px;
@@ -90,6 +91,10 @@ const NavContainer = styled.div`
 `;
 
 function DetailPage() {
+  // const { questoinId } = useParams();
+  // const [questionData, questionIsPending, questionError] = useFetch(`http://localhost:3001/question/${questoinId}`)
+
+  // const [answerData, answerIsPending, answerError] = useFetch(`http://localhost:3001/question/${questoinId}/answer`)
   return (
     <>
       <Header />
@@ -97,29 +102,30 @@ function DetailPage() {
         <NavContainer>
           <Nav />
         </NavContainer>
-        <Main>
-          <Title className='title'>
-            <h1>Not able to create histogram using matplotlib</h1>
-            <GeneralBtn BtnText='Ask Question' width='100px' />
-          </Title>
-          <Info className='info'>
-            <ul>
-              <li>Asked today</li>
-              <li>Modified today</li>
-              <li>Viewed 50 times</li>
-            </ul>
-          </Info>
-          <Content className='main'>
-            <Article>
-              {/* <Question /> */}
-              <Question />
-              <Answer />
-            </Article>
-            <Side>
-              <div>Something...</div>
-            </Side>
-          </Content>
-        </Main>
+        {questionData && answerData && (
+          <Main>
+            <Title className='title'>
+              <h1>{questionData.title}</h1>
+              <GeneralBtn BtnText='Ask Question' width='100px' />
+            </Title>
+            <Info className='info'>
+              <ul>
+                <li>Asked {questionData.createdAt}</li>
+                <li>Modified {questionData.modifiedAt}</li>
+                <li>Viewed {questionData.viewCount} times</li>
+              </ul>
+            </Info>
+            <Content className='main'>
+              <Article>
+                <Question questionData={questionData} />
+                <Answer answerData={answerData} />
+              </Article>
+              <Side>
+                <div>Something...</div>
+              </Side>
+            </Content>
+          </Main>
+        )}
       </Body>
       <Footer />
     </>

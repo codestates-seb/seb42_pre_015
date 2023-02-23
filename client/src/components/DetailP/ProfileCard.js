@@ -29,18 +29,29 @@ const UserInfoContainer = styled.div`
     color: #0069c1;
   }
 `;
-function ProfileCard() {
+function ProfileCard({ questionData, answer }) {
   return (
-    <ProfileCardContainer>
-      <div className='created-time'>asked May 6, 2015 at 15:32</div>
-      <UserInfoContainer>
-        <div className='user-image'></div>
-        <div className='username'>HY</div>
-      </UserInfoContainer>
-    </ProfileCardContainer>
+    <>
+      {questionData && (
+        <ProfileCardContainer>
+          <div className='created-time'>asked {questionData.createdAt}</div>
+          <UserInfoContainer>
+            <div className='user-image'></div>
+            <div className='username'>{questionData.userName}</div>
+          </UserInfoContainer>
+        </ProfileCardContainer>
+      )}
+      {answer && (
+        <ProfileCardContainer>
+          <div className='created-time'>Answered {answer.createdAt}</div>
+          <UserInfoContainer>
+            <div className='user-image'></div>
+            <div className='username'>{answer.userName}</div>
+          </UserInfoContainer>
+        </ProfileCardContainer>
+      )}
+    </>
   );
 }
 
 export default ProfileCard;
-
-// 0069C1

@@ -5,6 +5,8 @@ import Comment from './Comment';
 
 const AnswerContainer = styled.div`
   display: flex;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #dee2e5;
 `;
 
 const AnswerWrapper = styled.div`
@@ -34,34 +36,34 @@ const ControlOptions = styled.div`
     }
   }
 `;
-function AnswerBody() {
+function AnswerBody({ answerData }) {
   return (
-    <AnswerContainer>
-      <Vote />
-      <AnswerWrapper>
-        <p>
-          This being the case, I would have expected the following line to take
-          an inordinate amount of time because, in order to determine whether 1
-          quadrillion is in the range, a quadrillion values would have to be
-          generated:d
-        </p>
-        <AnswerInfo>
-          <ControlOptions>
-            <div>
-              <a href='/'>Share</a>
-            </div>
-            <div>
-              <a href='/'>Edit</a>
-            </div>
-            <div>
-              <span>Delete</span>
-            </div>
-          </ControlOptions>
-          <ProfileCard />
-        </AnswerInfo>
-        <Comment />
-      </AnswerWrapper>
-    </AnswerContainer>
+    <>
+      {answerData &&
+        answerData.map(answer => (
+          <AnswerContainer key={answer.answerId}>
+            <Vote answer={answer} />
+            <AnswerWrapper>
+              <p>{answer.content}</p>
+              <AnswerInfo>
+                <ControlOptions>
+                  <div>
+                    <a href='/'>Share</a>
+                  </div>
+                  <div>
+                    <a href='/'>Edit</a>
+                  </div>
+                  <div>
+                    <span>Delete</span>
+                  </div>
+                </ControlOptions>
+                <ProfileCard answer={answer} />
+              </AnswerInfo>
+              <Comment />
+            </AnswerWrapper>
+          </AnswerContainer>
+        ))}
+    </>
   );
 }
 export default AnswerBody;
