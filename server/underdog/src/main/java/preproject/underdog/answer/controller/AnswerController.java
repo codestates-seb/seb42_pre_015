@@ -13,6 +13,7 @@ import preproject.underdog.answer.dto.comment.CommentPostDto;
 import preproject.underdog.answer.dto.comment.CommentRespDto;
 import preproject.underdog.answer.entity.Answer;
 import preproject.underdog.answer.entity.AnswerComment;
+import preproject.underdog.answer.entity.AnswerVote;
 import preproject.underdog.answer.mapper.AnswerMapper;
 import preproject.underdog.answer.service.AnswerService;
 import preproject.underdog.question.entity.Question;
@@ -33,12 +34,12 @@ public class AnswerController {
     private final AnswerService answerService;
     private final AnswerMapper answerMapper;
 
-    @PostMapping
+    @PostMapping//완성
     public ResponseEntity postAnswer(@RequestBody @Valid AnswerPostDto post,
                                      @PathVariable("question-id") @Positive long questionId) {//왜 userId 안저장되지??
         Answer postAnswer = answerMapper.answerPostDtoToAnswer(post);
-//        postAnswer.setQuestion(new Question());
-//        postAnswer.getQuestion().setQuestionId(questionId);
+        postAnswer.setQuestion(new Question());
+        postAnswer.getQuestion().setQuestionId(questionId);
         Answer createdAnswer = answerService.createAnswer(postAnswer);
         URI location = Uri.createUri("/question/"+ Long.toString(questionId) +"/answer/", Long.toString(createdAnswer.getAnswerId()));
         return ResponseEntity.created(location).build();
@@ -61,17 +62,19 @@ public class AnswerController {
 
     @GetMapping
     public ResponseEntity getAnswer(@PathVariable("question-id") @Positive long questionId) {
-        return new ResponseEntity(HttpStatus.OK);
+        List<Answer> answers = answerService.getAnswer(questionId);
+        List<AnswerRespDto> responses = answerMapper.answerListToAnswerRespDto(answers);
+        return new ResponseEntity(responses, HttpStatus.OK);
     }
 
-    @DeleteMapping("{answer-id}")
+    @DeleteMapping("{answer-id}")//완성
     public ResponseEntity deleteAnswer(@PathVariable("answer-id") @Positive long answerId,
                                        @PathVariable("question-id") @Positive long questionId) {
         answerService.deleteAnswer(answerId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PostMapping("/{answer-id}/comments")
+    @PostMapping("/{answer-id}/comments")//완성
     public ResponseEntity postComment(@PathVariable("question-id") @Positive long questionId,
                                       @PathVariable("answer-id") @Positive long answerId,
                                       @RequestBody @Valid CommentPostDto post) {
@@ -91,12 +94,27 @@ public class AnswerController {
                                        @PathVariable("answer-comment-id") @Positive long answerCommentId,
                                        @RequestBody @Valid CommentPatchDto patch) {
         AnswerComment comment = answerMapper.commentPatchDtoToAnswerComment(patch);
-        comment.setAnswerCommentId(answerCommentId);
+        comment.setAnswer(new Answer());
+        comment.getAnswer().setAnswerId(answerId);
         AnswerComment updated = answerService.patchComment(comment);
         return new ResponseEntity(answerMapper.commentToAnswerCommentRespDto(updated), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{answer-id}/{answer-comment-id}")
+    @GetMapping("/{answer-id}/comment")
+    public ResponseEntity getComment(@PathVariable("question-id") @Positive long questionId,
+                                     @PathVariable("answer-id") @Positive long answerId) {
+        List<AnswerComment> comments = answerService.getComment(answerId);
+        List<CommentRespDto> responses = answerMapper.commentListToAnswerRespDto(comments);
+        return new ResponseEntity(responses, HttpStatus.OK);
+    }
+//    @GetMapping
+//    public ResponseEntity getAnswer(@PathVariable("question-id") @Positive long questionId) {
+//        List<Answer> answers = answerService.getAnswer(questionId);
+//        List<AnswerRespDto> responses = answerMapper.answerListToAnswerRespDto(answers);
+//        return new ResponseEntity(responses, HttpStatus.OK);
+//    }
+
+    @DeleteMapping("/{answer-id}/{answer-comment-id}")//완성
     public ResponseEntity deleteComment(@PathVariable("answer-id") @Positive long answerId,
                                         @PathVariable("question-id") @Positive long questionId,
                                         @PathVariable("answer-comment-id") @Positive long answerCommentId) {
@@ -104,24 +122,17 @@ public class AnswerController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("/{answer-id}/comment")
-    public ResponseEntity getComment(@PathVariable("question-id") @Positive long questionId) {
-        List<CommentRespDto> response = List.of(CommentRespDto.builder()
-                .answerCommentId(1L).answerId(1L).content("test").userId(1L).questionId(1L).createdAt(LocalDateTime.of(2023, 4, 3, 3, 3, 0)).modifiedAt(LocalDateTime.of(2023, 4, 3, 3, 3, 0)).build());
-
-        return new ResponseEntity(response, HttpStatus.OK);
-    }
-
     @PostMapping("vote/{answer-id}/{user-id}")
     public ResponseEntity doVote(@PathVariable("answer-id") @Positive long answerId,
                                  @PathVariable("user-id") @Positive long userId) {
-//        AnswerVote createdVote = answerService.doVote();
+        answerService.doVote(answerId, userId);
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @DeleteMapping("vote/{answer-id}/{user-id}")
     public ResponseEntity undoVote(@PathVariable("answer-id") @Positive long answerId,
                                    @PathVariable("user-id") @Positive long userId) {
+        answerService.undoVote(answerId, userId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }

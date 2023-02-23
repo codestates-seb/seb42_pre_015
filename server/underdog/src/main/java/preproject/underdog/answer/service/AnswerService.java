@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import preproject.underdog.answer.entity.Answer;
 import preproject.underdog.answer.entity.AnswerComment;
-import preproject.underdog.answer.entity.AnswerVote;
 import preproject.underdog.answer.repository.AnswerRepository;
 import preproject.underdog.answer.repository.CommentRepository;
 import preproject.underdog.answer.repository.VoteRepository;
@@ -13,11 +12,8 @@ import preproject.underdog.exception.BusinessLogicException;
 import preproject.underdog.exception.ExceptionCode;
 import preproject.underdog.question.entity.Question;
 import preproject.underdog.question.repository.QuestionRepository;
-import preproject.underdog.user.entity.User;
 import preproject.underdog.user.repository.UserRepository;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,26 +22,23 @@ import java.util.Optional;
 public class AnswerService {
 
     private final AnswerRepository answerRepository;
-
     private final CommentRepository commentRepository;
-
-    private final VoteRepository voteRepository;
-
     private final QuestionRepository questionRepository;
 
-    private final UserRepository userRepository;
 
 
 
     @Transactional
     public Answer createAnswer(Answer answer) {
         //질문 등록자가 회원인가?? -> 시큐리티 or verify logic
+        //질문 있는지 검증?
         return answerRepository.save(answer);
     }
 
     @Transactional
     public Answer updateAnswer(Answer answer) { //답변 수정
-        Answer findAnswer = findVerifiedAnswer(answer.getAnswerId());
+        Answer findAnswer = findVerifiedAnswer(answer.getAnswerId());//답변 존재하는지 검증
+
         return answerRepository.save(findAnswer);
     }
 
@@ -55,45 +48,45 @@ public class AnswerService {
         answerRepository.delete(answer);
     }
 
-    public Answer getAnswer(long answerId) {
-
-        Answer answer = new Answer();
-//        Answer answer = answerRepository.findById(answerId);
+    public List<Answer> getAnswer(long questionId) {
+        List<Answer> answer = answerRepository.findByQuestionId(questionId);
         return answer;
     }
 
     @Transactional
     public AnswerComment postComment(AnswerComment comment) {
+        Answer verifyAnswer = findVerifiedAnswer(comment.getAnswer().getAnswerId());
         return commentRepository.save(comment);
     }
 
     @Transactional
     public AnswerComment patchComment(AnswerComment comment){
-        return commentRepository.save(comment);
+        AnswerComment verifyComment = findVerifiedComment(comment.getAnswerCommentId());
+        return commentRepository.save(verifyComment);
     }
 
-    public AnswerComment getComment(long answerId) {
-        AnswerComment comment = new AnswerComment();
+    public List<AnswerComment> getComment(long answerId) {
+        Answer findAnswer = findVerifiedAnswer(answerId);
+        List<AnswerComment> comment = answerRepository.findByAnswerId(findAnswer.getAnswerId());
         return comment;
-    }
-
-    public void findByQId(long questionId) {
-//        Answer answerWithQ = answerRepository.findById();
-    }
-    @Transactional
-    public void doVote(long answerId, long userId) {
-        return;
-    }
-
-    @Transactional
-    public void undoVote(long answerId, long userId) {
-        return;
     }
 
     @Transactional
     public void deleteComment(long answerCommentId) {
         AnswerComment comment = findVerifiedComment(answerCommentId);
         commentRepository.delete(comment);
+    }
+
+    @Transactional
+    public void doVote(long answerId, long userId) {
+        Answer findAnswer = findVerifiedAnswer(answerId);
+        answerRepository.upVote(findAnswer.getAnswerId(), userId);
+    }
+
+    @Transactional
+    public void undoVote(long answerId, long userId) {
+        Answer findAnswer = findVerifiedAnswer(answerId);
+        answerRepository.downVote(findAnswer.getAnswerId(), userId);
     }
 
 
@@ -116,5 +109,12 @@ public class AnswerService {
         return findComment;
     }
 
+    public Question findVerifiedQuestion(long questionId) {
+        Optional<Question> optionalQuestion = questionRepository.findById(questionId);
+        Question findQuestion =
+                optionalQuestion.orElseThrow(() ->
+                        new BusinessLogicException(ExceptionCode.QUESTION_NOT_FOUND));
+        return findQuestion;
+    }
 
 }

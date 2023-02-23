@@ -36,14 +36,14 @@ public class User extends TimeManager {
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
-    private List<Question> questionList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user")
-    private List<QuestionVote> questionVoteList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user")
-    private List<QuestionComment> questionCommentList = new ArrayList<>();
+//    @OneToMany(mappedBy = "user")
+//    private List<Question> questionList = new ArrayList<>();
+//
+//    @OneToMany(mappedBy = "user")
+//    private List<QuestionVote> questionVoteList = new ArrayList<>();
+//
+//    @OneToMany(mappedBy = "user")
+//    private List<QuestionComment> questionCommentList = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
     private List<Answer> answerList = new ArrayList<>();
@@ -54,26 +54,26 @@ public class User extends TimeManager {
     @OneToMany(mappedBy = "user")
     private List<AnswerComment> answerCommentList = new ArrayList<>();
 
-    public void setQuestion(Question question) {
-        this.getQuestionList().add(question);
-        if(question.getUser()!=this){
-            question.setUser(this);
-        }
-    }
+//    public void setQuestion(Question question) {
+//        this.getQuestionList().add(question);
+//        if(question.getUser()!=this){
+//            question.setUser(this);
+//        }
+//    }
 
-    public void setQuestionVote(QuestionVote questionVote) {
-        this.getQuestionVoteList().add(questionVote);
-        if(questionVote.getUser()!=this){
-            questionVote.setUser(this);
-        }
-    }
-
-    public void setQuestionComment(QuestionComment questionComment) {
-        this.getQuestionCommentList().add(questionComment);
-        if(questionComment.getUser()!=this){
-            questionComment.setUser(this);
-        }
-    }
+//    public void setQuestionVote(QuestionVote questionVote) {
+//        this.getQuestionVoteList().add(questionVote);
+//        if(questionVote.getUser()!=this){
+//            questionVote.setUser(this);
+//        }
+//    }
+//
+//    public void setQuestionComment(QuestionComment questionComment) {
+//        this.getQuestionCommentList().add(questionComment);
+//        if(questionComment.getUser()!=this){
+//            questionComment.setUser(this);
+//        }
+//    }
 
     public void setAnswer(Answer answer) {
         this.getAnswerList().add(answer);

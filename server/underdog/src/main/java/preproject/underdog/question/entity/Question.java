@@ -37,6 +37,7 @@ public class Question extends Auditable {
     @OneToMany
     private List<Answer> answerList = new ArrayList<>();
 
+
     public void setAnswer(Answer answer) {
             this.getAnswerList().add(answer);
             if (answer.getQuestion() != this) {
