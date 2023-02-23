@@ -3,6 +3,7 @@ import Vote from './Vote';
 import Tag from '../common/Tag';
 import ProfileCard from './ProfileCard';
 import Comment from './Comment';
+import { questionCommentData } from '../../data/dummyData';
 
 const QuestionContainer = styled.div`
   display: flex;
@@ -59,7 +60,7 @@ function Question({ questionData }) {
               </ControlOptions>
               <ProfileCard questionData={questionData} />
             </QuestionInfo>
-            <Comment />
+            <Comment questionCommentData={questionCommentData} />
           </QuestionWrapper>
         </QuestionContainer>
       )}

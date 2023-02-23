@@ -5,7 +5,7 @@ import { GeneralBtn } from '../common/Buttons';
 const CommentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  border-top: 1px solid #dee2e5;
+  /* border-top: 1px solid #dee2e5; */
   padding: 6px;
   margin-bottom: 15px;
   > div {
@@ -23,7 +23,8 @@ const CommentContainer = styled.div`
 const CommentWrapper = styled.div`
   width: 100%;
   font-size: 13px;
-  margin-bottom: 15px;
+  margin-bottom: 8px;
+  border-top: 1px solid #dee2e5;
   > .comment {
     margin-right: 3px;
     font-size: 13px;
@@ -62,28 +63,54 @@ const AddCommentContainer = styled.div`
   }
 `;
 
-function Comment() {
+function Comment({ questionCommentData, answerCommentData1 }) {
+  // const { questoinId } = useParams();
+  // const [answerCommentData, answerCommentIsPending, answerCommentError] = useFetch(`http://localhost:3001/question/${questoinId}/answer/${answerId}`/comment)
   return (
-    <CommentContainer>
-      <CommentWrapper>
-        <span className='comment content'>
-          Can you share source for that? Even if that sounds legit, it would be
-          good to back these claims by actual code -
-        </span>
-        <span className='comment name'>Matthew</span>
-        <span className='comment date'>Mar 11, 2020 at 17:22 </span>
-        {/* Show this only when the user has the authorization. */}
-        <SmallPenSVG className='comment edit-btn' />
-        <span className='comment delete-btn'>X</span>
-      </CommentWrapper>
-      <div>
-        <button className='add-comment-btn'>Add a comment</button>
-      </div>
-      <AddCommentContainer>
-        <textarea />
-        <GeneralBtn BtnText='Add Comment' width='110px' height='40px' />
-      </AddCommentContainer>
-    </CommentContainer>
+    <>
+      {questionCommentData && (
+        <CommentContainer>
+          {questionCommentData.map(comment => (
+            <CommentWrapper key={comment.questionCommentId}>
+              <span className='comment content'>{comment.content}</span>
+              <span className='comment name'>{comment.userName}</span>
+              <span className='comment date'>{comment.createdAt}</span>
+              {/* Show this only when the user has the authorization. */}
+              <SmallPenSVG className='comment edit-btn' />
+              <span className='comment delete-btn'>X</span>
+            </CommentWrapper>
+          ))}
+          <div>
+            <button className='add-comment-btn'>Add a comment</button>
+          </div>
+          <AddCommentContainer>
+            <textarea />
+            <GeneralBtn BtnText='Add Comment' width='110px' height='40px' />
+          </AddCommentContainer>
+        </CommentContainer>
+      )}
+      {answerCommentData1 && (
+        <CommentContainer>
+          {answerCommentData1.map(comment => (
+            <CommentWrapper key={comment.answerCommentId}>
+              <span className='comment content'>{comment.content}</span>
+              <span className='comment name'>{comment.userName}</span>
+              <span className='comment date'>{comment.createdAt}</span>
+              {/* Show this only when the user has the authorization. */}
+              <SmallPenSVG className='comment edit-btn' />
+              <span className='comment delete-btn'>X</span>
+            </CommentWrapper>
+          ))}
+          <div>
+            <button className='add-comment-btn'>Add a comment</button>
+          </div>
+          <AddCommentContainer>
+            <textarea />
+            <GeneralBtn BtnText='Add Comment' width='110px' height='40px' />
+          </AddCommentContainer>
+        </CommentContainer>
+      )}
+    </>
   );
 }
 

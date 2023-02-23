@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import Vote from './Vote';
 import ProfileCard from './ProfileCard';
 import Comment from './Comment';
+import { answerCommentData1 } from '../../data/dummyData';
 
 const AnswerContainer = styled.div`
   display: flex;
@@ -37,6 +38,9 @@ const ControlOptions = styled.div`
   }
 `;
 function AnswerBody({ answerData }) {
+  // ! API test할때 동적으로 answerCommentData가 바뀌는지 확인해야함
+  // const { questoinId } = useParams();
+  // const [answerCommentData, answerCommentIsPending, answerCommentError] = useFetch(`http://localhost:3001/question/${questoinId}/answer/${answerId}`/comment)
   return (
     <>
       {answerData &&
@@ -59,7 +63,7 @@ function AnswerBody({ answerData }) {
                 </ControlOptions>
                 <ProfileCard answer={answer} />
               </AnswerInfo>
-              <Comment />
+              <Comment answerCommentData1={answerCommentData1} />
             </AnswerWrapper>
           </AnswerContainer>
         ))}

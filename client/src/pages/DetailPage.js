@@ -92,9 +92,12 @@ const NavContainer = styled.div`
 
 function DetailPage() {
   // const { questoinId } = useParams();
-  // const [questionData, questionIsPending, questionError] = useFetch(`http://localhost:3001/question/${questoinId}`)
+  // const [questionData, questionIsPending, questionError] = useFetch(`http://localhost:3001/question/${questionId}`)
+  // const [answerData, answerIsPending, answerError] = useFetch(`http://localhost:3001/question/${questionId}/answer`)
 
-  // const [answerData, answerIsPending, answerError] = useFetch(`http://localhost:3001/question/${questoinId}/answer`)
+  // const { questoinId } = useParams();
+  // const [answerCommentData, answerCommentIsPending, answerCommentError] = useFetch(`http://localhost:3001/question/${questionId}/answer/${answer-id}`/comment)
+
   return (
     <>
       <Header />
