@@ -88,6 +88,12 @@ const UserContainer = styled.div`
     margin: 0 2px;
   }
 `;
+const NavContainer = styled.div`
+  border-right: 1px solid #d0d4d7;
+  @media screen and (max-width: 640px) {
+    display: none;
+  }
+`;
 
 export function MainComponent() {
   return (
@@ -172,7 +178,9 @@ export default function MainP() {
         <Header />
       </APHeader>
       <MainContainer>
-        <Nav />
+        <NavContainer>
+          <Nav />
+        </NavContainer>
         <Main>
           <MainComponent />
         </Main>
