@@ -167,7 +167,7 @@ export function MainComponent() {
               </QuestionDesContainer>
               <QuestionBottom>
                 <TagContainer>
-                  <Tag></Tag>
+                  <Tag />
                   <button>Java</button>
                   <button>Python</button>
                   <button>Java Script</button>
