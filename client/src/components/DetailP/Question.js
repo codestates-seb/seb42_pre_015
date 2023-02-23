@@ -3,7 +3,9 @@ import Vote from './Vote';
 import Tag from '../common/Tag';
 import ProfileCard from './ProfileCard';
 import Comment from './Comment';
-import { questionCommentData } from '../../data/dummyData';
+// import { questionCommentData } from '../../data/dummyData';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const QuestionContainer = styled.div`
   display: flex;
@@ -38,6 +40,15 @@ const ControlOptions = styled.div`
 `;
 
 function Question({ questionData }) {
+  const BASE_URL = 'http://localhost:3001';
+  const [questionCommentData, setquestionCommentData] = useState(null);
+
+  useEffect(() => {
+    axios.get(`${BASE_URL}/questionCommentData`).then(res => {
+      setquestionCommentData(res.data);
+    });
+  }, []);
+
   return (
     <>
       {questionData && (

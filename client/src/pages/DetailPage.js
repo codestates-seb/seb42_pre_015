@@ -5,7 +5,9 @@ import Nav from '../components/common/Nav';
 import { GeneralBtn } from '../components/common/Buttons';
 import Question from '../components/DetailP/Question';
 import Answer from '../components/DetailP/Answer';
-import { questionData, answerData } from '../data/dummyData';
+// import { questionData, answerData } from '../data/dummyData';
+import axios from 'axios';
+import { useState, useEffect } from 'react';
 
 const Body = styled.div`
   margin-top: 53px;
@@ -91,12 +93,26 @@ const NavContainer = styled.div`
 `;
 
 function DetailPage() {
-  // const { questoinId } = useParams();
+  // ! QuestionList랑 연결하고 나서는 url 동적으로 만들기
+  // const { questionId } = useParams();
   // const [questionData, questionIsPending, questionError] = useFetch(`http://localhost:3001/question/${questionId}`)
   // const [answerData, answerIsPending, answerError] = useFetch(`http://localhost:3001/question/${questionId}/answer`)
 
-  // const { questoinId } = useParams();
-  // const [answerCommentData, answerCommentIsPending, answerCommentError] = useFetch(`http://localhost:3001/question/${questionId}/answer/${answer-id}`/comment)
+  const BASE_URL = 'http://localhost:3001';
+  const [questionData, setQuestionData] = useState(null);
+  const [answerData, setAnswerData] = useState(null);
+
+  useEffect(() => {
+    axios.get(`${BASE_URL}/questionData`).then(res => {
+      setQuestionData(res.data);
+    });
+  }, []);
+
+  useEffect(() => {
+    axios.get(`${BASE_URL}/answerData`).then(res => {
+      setAnswerData(res.data);
+    });
+  }, []);
 
   return (
     <>
