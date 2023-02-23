@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { GeneralBtn } from '../Buttons';
+import TagInput from '../TagInput';
 
 const QEditContainer = styled.div`
   width: 100%;
@@ -111,8 +112,8 @@ export function QuestionEditMain() {
         please.
       </QEP>
       <QELable htmlFor='tags'>Tags</QELable>
-      <QEInput id='tags' placeholder='e.g. (vba css json)' />
-      <div style={{ marginBottom: '12px' }}>
+      <TagInput id='tags' placeholder='e.g. (vba css json)' />
+      <div style={{ marginBottom: '12px', marginTop: '12px' }}>
         <GeneralBtn width={'80px'} BtnText='Save edits'></GeneralBtn>
         <QECancelBtn>Cancel</QECancelBtn>
       </div>
