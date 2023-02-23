@@ -54,7 +54,7 @@ function AnswerBody() {
               <a href='/'>Edit</a>
             </div>
             <div>
-              <span>Follow</span>
+              <span>Delete</span>
             </div>
           </ControlOptions>
           <ProfileCard />
