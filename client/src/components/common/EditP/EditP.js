@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import { GeneralBtn } from '../Buttons';
 import TagInput from '../TagInput';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 const QEditContainer = styled.div`
   width: 100%;
@@ -31,13 +33,13 @@ const QEInput = styled.input`
   border-radius: 3px;
   margin-bottom: 15px;
 `;
-const QETextarea = styled.textarea`
-  height: 284px;
-  width: 100%;
-  border: 1px solid rgb(186, 191, 196);
-  border-radius: 3px;
-  margin-bottom: 15px;
-`;
+// const QETextarea = styled.textarea`
+//   height: 284px;
+//   width: 100%;
+//   border: 1px solid rgb(186, 191, 196);
+//   border-radius: 3px;
+//   margin-bottom: 15px;
+// `;
 const QEP = styled.p`
   width: 100%;
   white-space: normal;
@@ -68,6 +70,13 @@ const QECancelBtn = styled.button`
 const QEAtag = styled.a`
   color: rgb(131, 141, 149);
 `;
+const StyledReactQuill = styled(ReactQuill)`
+  height: 284px;
+  margin-bottom: 50px;
+  .ql-editor {
+    height: 100%;
+  }
+`;
 export function QuestionEditMain() {
   return (
     <QEditContainer>
@@ -89,7 +98,7 @@ export function QuestionEditMain() {
         id='title'
       ></QEInput>
       <QELable htmlFor='body'>Body</QELable>
-      <QETextarea id='body'></QETextarea>
+      <StyledReactQuill id='body' className='AnswerText' />
       <QEP>
         I have an unregistered user that works with my application, getting some
         progress. I keep this progress in local storage. Then, when the user
@@ -141,7 +150,7 @@ export function AnswerEditMain() {
       <QELable htmlFor='Answer' fontsize='17px' margin='14px'>
         Answer
       </QELable>
-      <QETextarea id='Answer'></QETextarea>
+      <StyledReactQuill id='Answer' className='AnswerText' />
       <QEP>
         I have an unregistered user that works with my application, getting some
         progress. I keep this progress in local storage. Then, when the user
