@@ -27,4 +27,18 @@ public class AnswerComment extends BaseTimeEntity {
     private Answer answer;
     @Nullable
     private String content;
+
+    public void setUser(User user) {//User 양방향 매핑 메소드
+        this.user = user;
+        if (!user.getAnswerCommentList().contains(this)) {
+            user.getAnswerCommentList().add(this);
+        }
+    }
+
+    public void setAnswer(Answer answer) {//Answer 양방향 매핑 메소드
+        this.answer = answer;
+        if (!answer.getComments().contains(this)) {
+            answer.getComments().add(this);
+        }
+    }
 }
