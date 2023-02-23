@@ -20,6 +20,7 @@ const Main = styled.main`
   flex-direction: column;
   padding: 24px 16px;
   width: 80%;
+  border-left: 1px solid #d0d4d7;
   @media screen and (max-width: 980px) {
     flex-direction: column;
     width: 95%;
@@ -71,7 +72,7 @@ const Article = styled.article`
   min-width: calc(100% - 300px);
   // ! side를 채워넣으면 height를 max-content로 바꿉니다.
   height: max-content;
-  padding-right: 15px;
+  padding-right: 16px;
   @media screen and (max-width: 980px) {
     min-width: 100%;
   }
