@@ -6,7 +6,6 @@ import Comment from './Comment';
 
 const QuestionContainer = styled.div`
   display: flex;
-  border: 3px solid brown;
 `;
 
 const QuestionWrapper = styled.div`
@@ -19,16 +18,14 @@ const QuestionWrapper = styled.div`
   }
 `;
 
-const Box = styled.div`
+const QuestionInfo = styled.div`
   display: flex;
-  border: 1px solid black;
   justify-content: space-between;
   margin: 24px 0px;
 `;
 
 const ControlOptions = styled.div`
   display: flex;
-  border: 1px solid black;
   width: 100px;
   justify-content: space-between;
   > div {
@@ -51,7 +48,7 @@ function Question() {
           generated:
         </p>
         <Tag />
-        <Box>
+        <QuestionInfo>
           <ControlOptions>
             <div>
               <a href='/'>Share</a>
@@ -64,7 +61,7 @@ function Question() {
             </div>
           </ControlOptions>
           <ProfileCard />
-        </Box>
+        </QuestionInfo>
         <Comment />
       </QuestionWrapper>
     </QuestionContainer>

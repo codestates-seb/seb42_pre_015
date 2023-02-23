@@ -6,7 +6,7 @@ const PostAnswerContainer = styled.div`
   flex-direction: column;
   > h2 {
     font-size: 19px;
-    margin-bottom: 15px;
+    margin: 20px 0px;
   }
   > textarea {
     width: 100%;

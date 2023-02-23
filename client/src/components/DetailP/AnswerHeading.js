@@ -4,9 +4,7 @@ const HeadingContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: beige;
   height: 35px;
-  margin-bottom: 16px;
 
   > h2 {
     font-size: 19px;

@@ -6,8 +6,6 @@ import {
 } from '../../assets/DetailSvg';
 
 const VoteContainer = styled.div`
-  border: 1px solid black;
-  background-color: lightpink;
   display: flex;
   flex-direction: column;
   align-items: center;
