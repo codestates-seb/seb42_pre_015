@@ -1,13 +1,16 @@
 import styled from 'styled-components';
 import { GeneralBtn } from '../components/common/Buttons';
 import Data from '../data/MOCK_DATA.json';
-import { AnswerNav } from '../components/common/EditP/EditNav';
+import { MainNav } from '../components/common/EditP/EditNav';
 import Nav from '../components/common/Nav';
 import Header from '../components/common/Header/Header';
 import Footer from '../components/common/Footer';
 
 const MainPContainer = styled.div`
-  padding: 24px;
+  padding: 24px 0 0 24px;
+  @media screen and (max-width: 980px) {
+    padding: 24px;
+  }
 `;
 const MainTopTitle = styled.div`
   display: flex;
@@ -22,15 +25,18 @@ const MainTopBtnGather = styled.div`
   display: flex;
   justify-content: right;
   align-items: center;
-  margin-bottom: 16px;
 `;
 const MainTopBtn = styled.button`
   padding: 10.4px;
   margin: 0;
   color: #6a737c;
   border: 1px solid rgb(159, 166, 173);
-  background-color: white;
+  background-color: ${props => props.bgcolor || 'white'};
   border-radius: ${props => props.borderRadius || '0px'};
+  &:hover {
+    background-color: #f8f9f9;
+    color: #525960;
+  }
 `;
 const QuestionContainer = styled.div`
   padding: 16px;
@@ -41,14 +47,18 @@ const QuestionContainer = styled.div`
 const QuestionVote = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   min-width: 108px;
   text-align: right;
   font-size: 13px;
   margin: 0 16px 4px 0;
+  > p {
+    padding-bottom: 10px;
+  }
+  @media screen and (max-width: 980px) {
+    display: none;
+  }
 `;
 const Question = styled.div`
-  min-width: 640px;
   > div {
     margin: -2px 0 5px 0;
 
@@ -58,6 +68,9 @@ const Question = styled.div`
       text-decoration: none;
       color: rgb(0, 116, 204);
     }
+  }
+  @media screen and (max-width: 980px) {
+    padding-right: 13px;
   }
 `;
 const QuestionBottom = styled.div`
@@ -94,24 +107,42 @@ const NavContainer = styled.div`
     display: none;
   }
 `;
+const MainFilterContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  > p {
+    font-size: 17px;
+    color: rgb(35, 38, 41);
+  }
+`;
 
+const QuestionDesContainer = styled.div`
+  > p {
+    white-space: normal;
+    font-size: 13px;
+    margin-bottom: 8px;
+  }
+`;
 export function MainComponent() {
   return (
     <div>
       <MainPContainer>
         <MainTopTitle>
-          <h1>Top Questions</h1>
-          <div style={{ width: '70px' }}>
-            <GeneralBtn>Ask Question</GeneralBtn>
-          </div>
+          <h1>All Questions</h1>
+          <GeneralBtn BtnText='Ask Question' width='98px' height='40px' />
         </MainTopTitle>
-        <MainTopBtnGather>
-          <MainTopBtn borderRadius='4px 0 0 4px'>Interesting</MainTopBtn>
-          <MainTopBtn>Bountied</MainTopBtn>
-          <MainTopBtn>Hot</MainTopBtn>
-          <MainTopBtn>Week</MainTopBtn>
-          <MainTopBtn borderRadius='0 4px 4px 0'>Month</MainTopBtn>
-        </MainTopBtnGather>
+        <MainFilterContainer>
+          <p>23,530,547 questions</p>
+          <MainTopBtnGather>
+            <MainTopBtn borderRadius='4px 0 0 4px' bgcolor='#e3e6e8'>
+              Newest
+            </MainTopBtn>
+            <MainTopBtn>Oldest</MainTopBtn>
+            <MainTopBtn borderRadius='0 4px 4px 0'>Vote</MainTopBtn>
+          </MainTopBtnGather>
+        </MainFilterContainer>
       </MainPContainer>
       {Data.map((el, index) => {
         return (
@@ -125,6 +156,14 @@ export function MainComponent() {
               <div>
                 <a href='/#'>{el.question}</a>
               </div>
+              <QuestionDesContainer>
+                <p>
+                  I have github pages everything is working just fine except for
+                  the images stuff. Ive tried everything to make the image show
+                  up on my GitHub pages site but nothing is working here is the
+                  c
+                </p>
+              </QuestionDesContainer>
               <QuestionBottom>
                 <TagContainer>
                   <button>Java</button>
@@ -165,12 +204,17 @@ const Main = styled.div`
   max-width: 800px;
 `;
 const RightNav = styled.div`
-  width: 370px;
-  min-width: 370px;
+  width: 300px;
+  min-width: 300px;
+  margin-left: 24px;
+  @media screen and (max-width: 980px) {
+    display: none;
+  }
 `;
 const AFooter = styled.div`
   width: 100%;
 `;
+
 export default function MainP() {
   return (
     <Container>
@@ -185,7 +229,7 @@ export default function MainP() {
           <MainComponent />
         </Main>
         <RightNav>
-          <AnswerNav />
+          <MainNav />
         </RightNav>
       </MainContainer>
       <AFooter>

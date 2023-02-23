@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const QENavContainer = styled.div`
-  width: 365px;
+  width: ${props => props.width || '365px'};
   margin-top: 5px;
   z-index: 10;
   border-radius: 3px;
@@ -161,6 +161,47 @@ export function AnswerNav() {
       <EditTitleNav />
       <EditBodyNav />
       <EditTagNav />
+    </AnswerNavContainer>
+  );
+}
+
+export function MainNav() {
+  return (
+    <AnswerNavContainer>
+      <QENavContainer width='298px'>
+        <QENavTop>
+          <p style={{ fontWeight: '700', fontSize: '12px' }}>
+            The Overflow Blog
+          </p>
+        </QENavTop>
+        <QENavMain liMargin='10px'>
+          <ul>
+            <li>Authorization on Rails (Ep. 540)</li>
+            <li>
+              Shorten the distance between production data and insight (Ep. 541)
+              sponsored post
+            </li>
+          </ul>
+        </QENavMain>
+        <QENavTop>
+          <p style={{ fontWeight: '700', fontSize: '12px' }}>
+            Featured on Meta
+          </p>
+        </QENavTop>
+        <QENavMain liMargin='10px'>
+          <ul>
+            <li>Ticket smash for [status-review] tag: Part Deux</li>
+            <li>
+              We&lsquo;ve added a &ldquo;Necessary cookies only&rdquo; option to
+              the cookie consent popup
+            </li>
+            <li>We’ve made changes to our Privacy Notice for Collectives™</li>
+            <li>The [amazon] tag is being burninated</li>
+            <li>Microsoft Azure Collective launch and proposed tag changes</li>
+            <li>Temporary policy: ChatGPT is banned</li>
+          </ul>
+        </QENavMain>
+      </QENavContainer>
     </AnswerNavContainer>
   );
 }
