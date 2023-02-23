@@ -15,6 +15,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import preproject.underdog.security.filter.CustomAuthenticationFilter;
 import preproject.underdog.security.filter.VerificationFilter;
+import preproject.underdog.security.handler.CustomAuthenticationSuccessHandler;
 import preproject.underdog.security.handler.OAuth2SuccessHandler;
 import preproject.underdog.security.jwt.JwtTokenizer;
 import preproject.underdog.security.utils.CustomAuthorityUtils;
@@ -36,6 +37,7 @@ public class SecurityConfiguration {
                 .and()
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+
                 .and()
                 .httpBasic().disable()
                 .formLogin().disable()
@@ -45,10 +47,12 @@ public class SecurityConfiguration {
                 .logout().logoutUrl("/logout").permitAll()
                 .logoutSuccessUrl("/") // 로그아웃 성공 시 이동 페이지
                 .and()
+
                 .cors().configurationSource(corsConfigurationSource())
                 .and()
                 .apply(new CustomFilterConfigurer())
                 .and()
+
                 .authorizeHttpRequests(authorize -> authorize
                         .antMatchers("/login").permitAll()
                         .antMatchers(HttpMethod.POST, "/user").permitAll()
@@ -77,7 +81,7 @@ public class SecurityConfiguration {
 
             CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(jwtTokenizer, authenticationManager);// (2-4)
 //            customAuthenticationFilter.setFilterProcessesUrl("/auth/login"); //request URL - 디폴트는 /login
-//            customAuthenticationFilter.setAuthenticationSuccessHandler(new CustomAuthenticationSuccessHandler());  // (3) 추가
+            customAuthenticationFilter.setAuthenticationSuccessHandler(new CustomAuthenticationSuccessHandler());  // (3) 추가
 //            customAuthenticationFilter.setAuthenticationFailureHandler(new CustomAuthenticationFailureHandler());
 //
             VerificationFilter verificationFilter = new VerificationFilter(jwtTokenizer, authorityUtils);
