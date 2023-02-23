@@ -3,7 +3,7 @@ import Header from '../components/common/Header/Header';
 import Footer from '../components/common/Footer';
 import Nav from '../components/common/Nav';
 
-import Question from '../components/DetailP/Question';
+import Question from '../components/DetailP/QuestionTemp';
 
 const Body = styled.div`
   margin-top: 53px;

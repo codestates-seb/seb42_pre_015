@@ -9,7 +9,7 @@ const AnswerContainer = styled.div`
   /* background-color: beige; */
   width: 100%;
   height: 100%;
-  margin-bottom: 20px;
+  /* margin-bottom: 16px; */
   border-bottom: 1px solid #dee2e5;
   > div {
     display: flex;

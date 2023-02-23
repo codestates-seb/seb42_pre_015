@@ -7,11 +7,12 @@ import {
 
 const VoteContainer = styled.div`
   border: 1px solid black;
+  background-color: lightpink;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-right: 15px;
-  width: 45px;
+  padding-right: 16px;
+  width: 48px;
   > div {
     font-size: 1.8rem;
     color: #5f6871;

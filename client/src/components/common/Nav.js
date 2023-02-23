@@ -9,16 +9,19 @@ const NavContainer = styled.div`
   top: 53px;
   padding-top: 10px;
   z-index: 9;
+  background-color: blue;
   > div {
-    height: 8%;
+    /* height: 14px; */
     width: 100%;
     color: #525960;
     padding-left: 13px;
     margin-bottom: 5px;
+    background-color: aliceblue;
   }
   > nav {
-    height: 92%;
+    /* height: 92%; */
     width: 100%;
+    background-color: aliceblue;
   }
 
   @media screen and (max-width: 640px) {

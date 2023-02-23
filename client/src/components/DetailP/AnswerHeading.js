@@ -5,8 +5,8 @@ const HeadingContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   background-color: beige;
-  height: 32px;
-  margin-top: 15px;
+  height: 35px;
+  margin-bottom: 16px;
 
   > h2 {
     font-size: 19px;
