@@ -30,24 +30,4 @@ public class UserController {
         URI location = Uri.createUri(DEFAULT_URI, Long.toString(createdUser.getUserId()));
         return ResponseEntity.created(location).build();
     }
-
-//    @PatchMapping
-//    public ResponseEntity patchUser() {
-//
-//    }
-//
-//    @GetMapping
-//    public ResponseEntity getUser() {
-//
-//    }
-//
-//    @GetMapping
-//    public ResponseEntity getUsers() {
-//
-//    }
-//
-//    @DeleteMapping
-//    public ResponseEntity deleteUser() {
-//
-//    }
 }

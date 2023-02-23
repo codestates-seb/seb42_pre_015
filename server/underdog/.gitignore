@@ -35,6 +35,12 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### yml
+*.yml
+
+### gradle
+*.gradle
 .DS_Store
 ../.DS_Store
 ../../.DS_Store
