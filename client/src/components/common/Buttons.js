@@ -4,11 +4,11 @@ import { GoogleSVG, GitHubSVG, FacebookSVG } from '../../assets/LoginSVG';
 const ButtonWrapper = styled.button`
   background-color: ${({ bgColor }) => bgColor};
   color: ${({ color }) => color};
-  border: 1px solid rgba(0, 0, 0, 0);
-  padding: 10.4px;
+  border: 1px solid #ccc;
+  padding: ${({ padding }) => padding};
   border-radius: 3px;
   width: ${({ width }) => width};
-  height: 38px;
+  height: ${({ height }) => height};
   cursor: pointer;
   font-size: 13px;
   &:hover {
@@ -32,6 +32,8 @@ const GoogleBtn = ({ onClick }) => {
       hoverBgColor='#eee'
       width='100%'
       onClick={onClick}
+      height='38px'
+      padding='10.4px;'
     >
       <span className='span-style'>
         <GoogleSVG className='icon' />
@@ -49,6 +51,8 @@ const GithubBtn = ({ onClick }) => {
       hoverBgColor='#000'
       width='100%'
       onClick={onClick}
+      height='38px'
+      padding='10.4px;'
     >
       <span className='span-style'>
         <GitHubSVG className='icon' /> Log in with GitHub
@@ -65,6 +69,8 @@ const FacebookBtn = ({ onClick }) => {
       hoverBgColor='#2f477a'
       width='100%'
       onClick={onClick}
+      height='38px'
+      padding='10.4px;'
     >
       <span className='span-style'>
         <FacebookSVG className='icon' /> Log in with Facebook
@@ -75,7 +81,14 @@ const FacebookBtn = ({ onClick }) => {
 
 // On = blue , Off = grey?
 
-const GeneralBtn = ({ BtnText = 'Fill Text', type, width, onClick }) => {
+const GeneralBtn = ({
+  BtnText = 'Fill Text',
+  type,
+  width,
+  onClick,
+  height,
+  padding
+}) => {
   let bgColor, color, hoverBgColor;
   if (type === 'off') {
     bgColor = 'rgb(225, 236, 244)';
@@ -100,6 +113,8 @@ const GeneralBtn = ({ BtnText = 'Fill Text', type, width, onClick }) => {
       width={width || '100%'}
       GeneralBtnShadow
       onClick={onClick}
+      height={height || '38px'}
+      padding={padding || '10.4px;'}
     >
       {BtnText}
     </ButtonWrapper>
