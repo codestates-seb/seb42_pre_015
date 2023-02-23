@@ -10,17 +10,13 @@ import preproject.underdog.answer.dto.comment.CommentPatchDto;
 import preproject.underdog.answer.dto.comment.CommentPostDto;
 import preproject.underdog.answer.dto.comment.CommentRespDto;
 import preproject.underdog.answer.dto.comment.CommentRespDto.CommentRespDtoBuilder;
-import preproject.underdog.answer.dto.vote.VotePostDto;
-import preproject.underdog.answer.dto.vote.VoteRespDto;
-import preproject.underdog.answer.dto.vote.VoteRespDto.VoteRespDtoBuilder;
 import preproject.underdog.answer.entity.Answer;
 import preproject.underdog.answer.entity.AnswerComment;
-import preproject.underdog.answer.entity.AnswerVote;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-02-21T02:12:10+0900",
-    comments = "version: 1.4.2.Final, compiler: javac, environment: Java 11.0.17 (Azul Systems, Inc.)"
+    date = "2023-02-23T15:19:46+0900",
+    comments = "version: 1.4.2.Final, compiler: javac, environment: Java 18 (Oracle Corporation)"
 )
 @Component
 public class AnswerMapperImpl implements AnswerMapper {
@@ -109,27 +105,5 @@ public class AnswerMapperImpl implements AnswerMapper {
         commentRespDto.modifiedAt( answerComment.getModifiedAt() );
 
         return commentRespDto.build();
-    }
-
-    @Override
-    public AnswerVote votePostDtoToAnswerVote(VotePostDto votePostDto) {
-        if ( votePostDto == null ) {
-            return null;
-        }
-
-        AnswerVote answerVote = new AnswerVote();
-
-        return answerVote;
-    }
-
-    @Override
-    public VoteRespDto voteToAnswerVoteRespDto(AnswerVote answerVote) {
-        if ( answerVote == null ) {
-            return null;
-        }
-
-        VoteRespDtoBuilder voteRespDto = VoteRespDto.builder();
-
-        return voteRespDto.build();
     }
 }

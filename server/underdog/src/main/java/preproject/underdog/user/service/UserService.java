@@ -25,4 +25,10 @@ public class UserService {
 
         return userRepository.save(user);
     }
+
+    public User verifyUser(long userId){
+        Optional<User> optionalUser = userRepository.findById(userId);
+        User foundUser = optionalUser.orElseThrow(() -> new RuntimeException("유저 없음"));
+        return foundUser;
+    }
 }

@@ -5,47 +5,47 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import preproject.underdog.answer.entity.Answer;
 import preproject.underdog.answer.entity.AnswerComment;
+import preproject.underdog.answer.entity.AnswerVote;
+import preproject.underdog.answer.repository.AnswerCommentRepository;
 import preproject.underdog.answer.repository.AnswerRepository;
-import preproject.underdog.answer.repository.CommentRepository;
-import preproject.underdog.answer.repository.VoteRepository;
 import preproject.underdog.exception.BusinessLogicException;
 import preproject.underdog.exception.ExceptionCode;
 import preproject.underdog.question.entity.Question;
-import preproject.underdog.question.repository.QuestionRepository;
-import preproject.underdog.user.repository.UserRepository;
+import preproject.underdog.question.repository.QuestionRepo;
+import preproject.underdog.question.service.QuestionService;
+import preproject.underdog.user.entity.User;
+import preproject.underdog.user.service.UserService;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class AnswerService {
 
     private final AnswerRepository answerRepository;
-    private final CommentRepository commentRepository;
-    private final QuestionRepository questionRepository;
+    private final AnswerCommentRepository answerCommentRepository;
+    private final QuestionRepo questionRepository;
+    private final QuestionService questionService;
+    private final UserService userService;
 
 
-
-
-    @Transactional
-    public Answer createAnswer(Answer answer) {
-        //질문 등록자가 회원인가?? -> 시큐리티 or verify logic
-        //질문 있는지 검증?
+    public Answer createAnswer(Answer answer, Long questionId) {
+        Question question = questionService.findQuestionById(questionId);
+        userService.verifyUser(answer.getUser().getUserId());
+        answer.setQuestion(question);
         return answerRepository.save(answer);
     }
 
-    @Transactional
-    public Answer updateAnswer(Answer answer) { //답변 수정
-        Answer findAnswer = findVerifiedAnswer(answer.getAnswerId());//답변 존재하는지 검증
+    public Answer updateAnswer(Answer answer, long questionId, long userId) {
+        questionService.findQuestionById(questionId);
+        userService.verifyUser(userId);
+        Answer findAnswer = findVerifiedAnswer(answer.getAnswerId());
+
+        findAnswer.setContent(answer.getContent());
 
         return answerRepository.save(findAnswer);
-    }
-
-    @Transactional
-    public void deleteAnswer(long answerId) { //답변 삭제
-        Answer answer = findVerifiedAnswer(answerId);
-        answerRepository.delete(answer);
     }
 
     public List<Answer> getAnswer(long questionId) {
@@ -53,42 +53,70 @@ public class AnswerService {
         return answer;
     }
 
-    @Transactional
-    public AnswerComment postComment(AnswerComment comment) {
-        Answer verifyAnswer = findVerifiedAnswer(comment.getAnswer().getAnswerId());
-        return commentRepository.save(comment);
+    public void deleteAnswer(long questionId, long answerId) {
+        questionService.findQuestionById(questionId);
+        Answer answer = findVerifiedAnswer(answerId);
+        answerRepository.deleteById(answerId);
     }
 
-    @Transactional
-    public AnswerComment patchComment(AnswerComment comment){
+    public AnswerComment postComment(AnswerComment comment, long questionId, long answerId) {
+        questionService.findQuestionById(questionId);
+        Answer verifyAnswer = findVerifiedAnswer(answerId);
+        comment.setAnswer(verifyAnswer);
+        return answerCommentRepository.save(comment);
+    }
+
+    public AnswerComment patchComment(AnswerComment comment, long questionId, long answerId, long userId){
+        questionService.findQuestionById(questionId);
+        userService.verifyUser(userId);
+        findVerifiedAnswer(answerId);
         AnswerComment verifyComment = findVerifiedComment(comment.getAnswerCommentId());
-        return commentRepository.save(verifyComment);
+
+        verifyComment.setContent(comment.getContent());
+        return answerCommentRepository.save(verifyComment);
     }
 
-    public List<AnswerComment> getComment(long answerId) {
+    public List<AnswerComment> getComment(long answerId, long questionId) {
+        questionService.findQuestionById(questionId);
         Answer findAnswer = findVerifiedAnswer(answerId);
-        List<AnswerComment> comment = answerRepository.findByAnswerId(findAnswer.getAnswerId());
+        List<AnswerComment> comment = answerRepository.findByAnswerId(answerId);
         return comment;
     }
 
-    @Transactional
-    public void deleteComment(long answerCommentId) {
+    public void deleteComment(long answerCommentId, long questionId, long answerId, long userId) {
+        questionService.findQuestionById(questionId);
+        findVerifiedAnswer(answerId);
+        userService.verifyUser(userId);
         AnswerComment comment = findVerifiedComment(answerCommentId);
-        commentRepository.delete(comment);
+
+        answerCommentRepository.delete(comment);
     }
 
-    @Transactional
-    public void doVote(long answerId, long userId) {
+    public void doVote(long questionId, long answerId, long userId) {
+        questionService.findQuestionById(questionId);
+        userService.verifyUser(userId);
         Answer findAnswer = findVerifiedAnswer(answerId);
-        answerRepository.upVote(findAnswer.getAnswerId(), userId);
+        answerRepository.upVote(answerId, userId);
+        findAnswer.setVoteCount(findAnswer.getVoteCount()+1);
     }
 
-    @Transactional
-    public void undoVote(long answerId, long userId) {
+    public void undoVote(long questionId, long answerId, long userId) {
+        questionService.findQuestionById(questionId);
+        User user = userService.verifyUser(userId);
         Answer findAnswer = findVerifiedAnswer(answerId);
-        answerRepository.downVote(findAnswer.getAnswerId(), userId);
-    }
 
+        AnswerVote answerVote = findAnswer.getVotes().stream()
+                .filter(v -> v.getUser() == user)
+                .findFirst()
+                .orElseThrow(RuntimeException::new);
+
+        if(findAnswer.getVotes().contains(answerVote)) {
+            answerRepository.downVote(answerId, userId);
+            findAnswer.setVoteCount(findAnswer.getVoteCount() - 1);
+            answerRepository.save(findAnswer);
+        }
+        else throw new RuntimeException("취소할 좋아요가 없습니다.");
+    }
 
     public Answer findVerifiedAnswer(long answerId) {
 
@@ -101,7 +129,7 @@ public class AnswerService {
 
     public AnswerComment findVerifiedComment(long answerCommentId) {
 
-        Optional<AnswerComment> optionalAnswer = commentRepository.findById(answerCommentId);
+        Optional<AnswerComment> optionalAnswer = answerCommentRepository.findById(answerCommentId);
         AnswerComment findComment =
                 optionalAnswer.orElseThrow(() ->
                         new BusinessLogicException(ExceptionCode.COMMENT_NOT_FOUND));

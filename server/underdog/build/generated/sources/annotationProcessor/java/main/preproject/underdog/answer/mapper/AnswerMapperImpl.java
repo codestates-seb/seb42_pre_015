@@ -19,7 +19,7 @@ import preproject.underdog.user.entity.User;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-02-23T14:29:52+0900",
+    date = "2023-02-23T21:32:51+0900",
     comments = "version: 1.4.2.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-7.6.jar, environment: Java 11.0.17 (Azul Systems, Inc.)"
 )
 @Component
@@ -65,6 +65,7 @@ public class AnswerMapperImpl implements AnswerMapper {
         answerRespDto.name( answerUserName( answer ) );
         answerRespDto.answerId( answer.getAnswerId() );
         answerRespDto.content( answer.getContent() );
+        answerRespDto.voteCount( answer.getVoteCount() );
         answerRespDto.createdAt( answer.getCreatedAt() );
         answerRespDto.modifiedAt( answer.getModifiedAt() );
 
@@ -123,6 +124,7 @@ public class AnswerMapperImpl implements AnswerMapper {
         commentRespDto.userId( answerCommentUserUserId( answerComment ) );
         commentRespDto.answerId( answerCommentAnswerAnswerId( answerComment ) );
         commentRespDto.name( answerCommentUserName( answerComment ) );
+        commentRespDto.questionId( answerCommentAnswerQuestionQuestionId( answerComment ) );
         commentRespDto.answerCommentId( answerComment.getAnswerCommentId() );
         commentRespDto.content( answerComment.getContent() );
         commentRespDto.createdAt( answerComment.getCreatedAt() );
@@ -255,5 +257,24 @@ public class AnswerMapperImpl implements AnswerMapper {
             return null;
         }
         return name;
+    }
+
+    private Long answerCommentAnswerQuestionQuestionId(AnswerComment answerComment) {
+        if ( answerComment == null ) {
+            return null;
+        }
+        Answer answer = answerComment.getAnswer();
+        if ( answer == null ) {
+            return null;
+        }
+        Question question = answer.getQuestion();
+        if ( question == null ) {
+            return null;
+        }
+        Long questionId = question.getQuestionId();
+        if ( questionId == null ) {
+            return null;
+        }
+        return questionId;
     }
 }
