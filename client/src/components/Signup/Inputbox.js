@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import { GeneralBtn } from '../common/Buttons';
 import Captcha from './Captcha';
 import { ErrorSVG } from '../../assets/LoginSVG';
@@ -39,45 +40,103 @@ const ErrorPosition = styled.svg`
 `;
 
 const Inputbox = () => {
-  const [name, setname] = useState('');
+  const [displayName, setDisplayName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [errorMessages, setErrorMessages] = useState({
-    name: '',
-    email: '',
-    password: ''
-  });
+  const [displayNameError, setDisplayNameError] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
 
-  const handleInput = e => {
-    const { name, value } = e.target;
-    if (name === 'email') {
-      setEmail(value);
-      setErrorMessages({ ...errorMessages, email: '' });
-    } else if (name === 'password') {
-      setPassword(value);
-      setErrorMessages({ ...errorMessages, password: '' });
-    } else if (name === 'displayname') {
-      setname(value);
-      setErrorMessages({ ...errorMessages, name: '' });
+  // 유효성 검사
+
+  useEffect(() => {
+    setDisplayNameError(validateDisplayName(displayName));
+  }, [displayName]);
+
+  useEffect(() => {
+    setEmailError(validateEmail(email));
+  }, [email]);
+
+  useEffect(() => {
+    setPasswordError(validatePassword(password));
+  }, [password]);
+
+  const validateDisplayName = name => {
+    const Constraint = /^[a-zA-Z가-힣\s]+$/;
+    if (!name) {
+      return 'Display name cannot be empty';
+    } else if (!Constraint.test(name)) {
+      return 'Display name must match the regular expression';
     }
+    return '';
   };
 
-  // login-button 제출 에러
-  const handleSubmit = e => {
+  const validateEmail = email => {
+    const Constraint = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email) {
+      return 'Email cannot be empty';
+    } else if (!Constraint.test(email)) {
+      return 'Email must be a well-formed email address';
+    }
+    return '';
+  };
+
+  const validatePassword = password => {
+    const Constraint = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    if (!password) {
+      return 'Password cannot be empty';
+    } else if (!Constraint.test(password)) {
+      return 'Password must match the regular expression ';
+    }
+    return '';
+  };
+
+  // 제출 버튼 event
+
+  const handleSubmit = async e => {
     e.preventDefault();
-    const nameError = !email.trim() ? 'displayname cannot be empty' : '';
-    const emailError = !email.trim() ? 'Email cannot be empty' : '';
-    const passwordError = !password.trim() ? 'Password cannot be empty' : '';
+    const displayNameError = validateDisplayName(displayName);
+    const emailError = validateEmail(email);
+    const passwordError = validatePassword(password);
 
-    setErrorMessages({
-      email: emailError,
-      password: passwordError,
-      name: nameError
-    });
-  };
+    if (displayNameError || emailError || passwordError) {
+      setDisplayNameError(displayNameError);
+      setEmailError(emailError);
+      setPasswordError(passwordError);
+      window.alert('please fill in the whole forms');
+      return;
+    }
 
-  const handleClick = () => {
-    console.log('Button clicked!');
+    // HTTP Request
+    try {
+      const response = await axios.post(
+        'http://localhost:8080/user',
+        {
+          name: displayName,
+          email: email,
+          password: password
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json;charset=UTF-8',
+            Accept: 'application/json'
+          }
+        }
+      );
+      console.log(response.data);
+      setDisplayName('');
+      setEmail('');
+      setPassword('');
+      setDisplayNameError('');
+      setEmailError('');
+      setPasswordError('');
+
+      // Response header 저장
+      const userURI = response.headers['location'];
+      console.log(userURI);
+    } catch (error) {
+      alert(error);
+    }
   };
 
   return (
@@ -88,18 +147,23 @@ const Inputbox = () => {
             <h1>Display name</h1>
             <div style={{ position: 'relative' }}>
               <input
-                type='displayname'
-                name='displayname'
-                value={name}
-                onChange={handleInput}
+                type='text'
+                name='displayName'
+                value={displayName}
+                onChange={e => setDisplayName(e.target.value)}
+                onBlur={() =>
+                  setDisplayNameError(validateDisplayName(displayName))
+                }
                 className='signup-form__text'
               />
               <ErrorPosition>
-                {errorMessages.name && <ErrorSVG className='error-svg' />}
+                {displayNameError && <ErrorSVG className='error-svg' />}
               </ErrorPosition>
             </div>
             <ErrorMessages>
-              {errorMessages.name && <div>{errorMessages.name}</div>}
+              {displayNameError && (
+                <div className='error-message'>{displayNameError}</div>
+              )}
             </ErrorMessages>
           </div>
           <div className='signup-form__email'>
@@ -109,15 +173,16 @@ const Inputbox = () => {
                 type='email'
                 name='email'
                 value={email}
-                onChange={handleInput}
+                onChange={e => setEmail(e.target.value)}
+                onBlur={() => setEmailError(validateEmail(email))}
                 className='signup-form__text'
               />
               <ErrorPosition>
-                {errorMessages.email && <ErrorSVG className='error-svg' />}
+                {emailError && <ErrorSVG className='error-svg' />}
               </ErrorPosition>
             </div>
             <ErrorMessages>
-              {errorMessages.email && <div>{errorMessages.email}</div>}
+              {emailError && <div className='error-message'>{emailError}</div>}
             </ErrorMessages>
           </div>
           <div className='signup-form__password'>
@@ -127,15 +192,18 @@ const Inputbox = () => {
                 type='password'
                 name='password'
                 value={password}
-                onChange={handleInput}
+                onChange={e => setPassword(e.target.value)}
+                onBlur={() => setPasswordError(validateEmail(password))}
                 className='signup-form__text'
               />
               <ErrorPosition>
-                {errorMessages.password && <ErrorSVG className='error-svg' />}
+                {passwordError && <ErrorSVG className='error-svg' />}
               </ErrorPosition>
             </div>
             <ErrorMessages>
-              {errorMessages.password && <div>{errorMessages.password}</div>}
+              {passwordError && (
+                <div className='error-message'>{passwordError}</div>
+              )}
             </ErrorMessages>
             <div className='Password-message'>
               Passwords must contain at least eight characters, including at
@@ -143,7 +211,7 @@ const Inputbox = () => {
             </div>
           </div>
           <Captcha />
-          <GeneralBtn BtnText='Sign up' onClick={handleClick} />
+          <GeneralBtn BtnText='Sign up' onClick={handleSubmit} />
         </form>
       </InputboxStyle>
     </>
