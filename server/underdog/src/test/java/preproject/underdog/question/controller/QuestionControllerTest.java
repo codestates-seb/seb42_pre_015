@@ -57,8 +57,9 @@ class QuestionControllerTest {
         ConstraintDescriptions requestConstraints = new ConstraintDescriptions(QuestionPostDto.class);
         List<String> contentAttribute = requestConstraints.descriptionsForProperty("content");
         List<String> titleAttribute = requestConstraints.descriptionsForProperty("title");
+        List<String > userIdAttribute = requestConstraints.descriptionsForProperty("userId");
 
-        QuestionPostDto post = new QuestionPostDto("title", "content");
+        QuestionPostDto post = new QuestionPostDto(1L, "title","content");
         String content = gson.toJson(post);
 
         ResultActions actions =
@@ -67,7 +68,6 @@ class QuestionControllerTest {
                                 .accept(MediaType.APPLICATION_JSON)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(content)
-
                 );
         actions
                 .andExpect(status().isCreated())
@@ -76,8 +76,10 @@ class QuestionControllerTest {
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         requestFields(
-                                fieldWithPath("title").type(JsonFieldType.STRING).description("제목").attributes(key("constraints").value(titleAttribute)),
-                                fieldWithPath("content").type(JsonFieldType.STRING).description("본문").attributes(key("constraints").value(contentAttribute))),
+                                fieldWithPath("userId").type(JsonFieldType.NUMBER).description("유저 Id").attributes(key("constraints").value(userIdAttribute)),
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("제목").attributes(key("constraints").value(titleAttribute)).optional(),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("본문").attributes(key("constraints").value(contentAttribute)).optional()),
+
                                 responseHeaders(
                                         headerWithName(HttpHeaders.LOCATION).description("등록된 질문의 URI")
                                 )
@@ -162,9 +164,6 @@ class QuestionControllerTest {
     void getQuestion() throws Exception {
         Long questionId = 1L;
 
-        QuestionResponseDto response = new QuestionResponseDto(1L, 1L, "ss", "dd", 1, 1,
-                LocalDateTime.of(2023, 4, 3, 3, 3, 0),
-                LocalDateTime.of(2023, 4, 3, 3, 3, 1));
 
         mockMvc.perform(get("/question/{question-id}", questionId))
                 .andExpect(status().isOk())
@@ -209,7 +208,7 @@ class QuestionControllerTest {
         List<String> userIdAttribute = requestConstraints.descriptionsForProperty("userId");
 
         long questionId = 1L;
-        QuestionCommentPostDto post = new QuestionCommentPostDto("content", 1L);
+        QuestionCommentPostDto post = new QuestionCommentPostDto(1L,"content");
         String content = gson.toJson(post);
 
         ResultActions actions =
@@ -244,9 +243,6 @@ class QuestionControllerTest {
         QuestionCommentPatchDto patch = new QuestionCommentPatchDto("content");
         String content = gson.toJson(patch);
 
-        QuestionCommentResponseDto response = new QuestionCommentResponseDto(1L, 1L, 1L, "content",
-                LocalDateTime.of(2023, 4, 3, 3, 3, 0),
-                LocalDateTime.of(2023, 4, 3, 3, 3, 1));
 
         ResultActions actions =
                 mockMvc.perform(RestDocumentationRequestBuilders.patch("/question/{question-id}/comment/{comment-id}", +questionId, commentId)

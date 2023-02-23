@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import preproject.underdog.dto.PageDto;
+import preproject.underdog.question.dto.comment.QuestionCommentPatchDto;
 import preproject.underdog.question.dto.comment.QuestionCommentPostDto;
 import preproject.underdog.question.dto.comment.QuestionCommentResponseDto;
 import preproject.underdog.question.dto.question.QuestionPatchDto;
@@ -16,6 +17,11 @@ import preproject.underdog.question.dto.question.QuestionResponseDto;
 import preproject.underdog.question.dto.tag.TagPostDto;
 import preproject.underdog.question.dto.tag.TagResponseDto;
 import preproject.underdog.question.entity.Question;
+import preproject.underdog.question.entity.QuestionComment;
+import preproject.underdog.question.entity.QuestionTag;
+import preproject.underdog.question.mapper.QuestionMapper;
+import preproject.underdog.question.service.QuestionService;
+import preproject.underdog.tag.entity.Tag;
 import preproject.underdog.utils.Uri;
 import preproject.underdog.utils.UriCreator;
 
@@ -30,14 +36,15 @@ import java.util.List;
 @Validated //Question 관련 컨트롤러 메서드
 public class QuestionController {
     private final static String QUESTION_DEFAULT_URL = "/question";
-//    private QuestionService questionService;
-//    private QuestionMapper mapper;
+    private QuestionService questionService;
+    private QuestionMapper mapper;
 
     @PostMapping
     public ResponseEntity postQuestion(@Valid @RequestBody QuestionPostDto questionPostDto) {
-//        Question question = questionService.createQuestion(mapper.questionPostDtoToQuestion(questionPostDto));
-//        Question question = new Question();
-        URI location = UriCreator.createUri(QUESTION_DEFAULT_URL, 1l);
+        Question question = mapper.questionPostDtoToQuestion(questionPostDto);
+        Question createQuestion = questionService.createQuestion(question);
+
+        URI location = UriCreator.createUri(QUESTION_DEFAULT_URL, createQuestion.getQuestionId());
 
         return ResponseEntity.created(location).build();
     }
@@ -45,37 +52,33 @@ public class QuestionController {
     @PatchMapping("/{question-id}")
     public ResponseEntity patchQuestion(@PathVariable("question-id") @Positive long questionId,
                                         @Valid @RequestBody QuestionPatchDto questionPatchDto) {
+        Question question = mapper.questionPatchDtoToQuestion(questionPatchDto);
+        Question editedQuestion = questionService.editQuestion(question);
 
-        QuestionResponseDto response = new QuestionResponseDto(1L, 1L, "title", "content",
-                1, 1, LocalDateTime.of(2023, 4, 3, 3, 3, 0),
-                LocalDateTime.of(2023, 4, 3, 3, 3, 0));
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    @GetMapping
-    public ResponseEntity getQuestions(Pageable pageable) {
-        List<QuestionResponseDto> response = List.of(QuestionResponseDto.builder()
-                .questionId(1L).voteCount(1).viewCount(1).content("test").title("dd").questionId(1L).userId(1L)
-                .createdAt(LocalDateTime.of(2023, 4, 3, 3, 3, 0))
-                .modifiedAt(LocalDateTime.of(2023, 4, 3, 3, 3, 0)).build());
-
-        Page<Question> questionPage = new PageImpl<>(List.of(new Question()));
-
-        return new ResponseEntity<>(new PageDto<>(response, questionPage), HttpStatus.OK);
+        return new ResponseEntity<>(mapper.questionToQuestionResponseDto(editedQuestion), HttpStatus.OK);
     }
 
     @GetMapping("/{question-id}")
     public ResponseEntity getQuestion(@PathVariable("question-id") @Positive long questionId) {
-        QuestionResponseDto response = new QuestionResponseDto(1L, 1L, "ss", "dd", 1, 1,
-                LocalDateTime.of(2023, 4, 3, 3, 3, 0),
-                LocalDateTime.of(2023, 4, 3, 3, 3, 1));
+       Question question = questionService.getQuestion(questionId);
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+
+        return new ResponseEntity<>(mapper.questionToQuestionResponseDto(question), HttpStatus.OK);
     }
+
+    @GetMapping
+    public ResponseEntity getQuestions(Pageable pageable) {
+        Page<Question> questionPage = questionService.getQuestions(pageable);
+        List<Question> questionList = questionPage.getContent();
+
+        return new ResponseEntity<>(new PageDto<>(mapper.questionsToResponseDto(questionList), questionPage), HttpStatus.OK);
+    }
+
 
     @DeleteMapping("/{question-id}")
     public ResponseEntity deleteQuestion(@PathVariable("question-id") @Positive long questionId) {
+        questionService.deleteQuestion(questionId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
@@ -83,35 +86,34 @@ public class QuestionController {
     @PostMapping("/{question-id}/comment")
     public ResponseEntity postComment(@PathVariable("question-id") @Positive long questionId,
                                       @RequestBody QuestionCommentPostDto questionCommentPostDto) {
-        URI location = Uri.createUri("/question/"+ Long.toString(questionId) +"/comment/", Long.toString(1L));
-        return ResponseEntity.created(location).build();
+        QuestionComment questionComment = mapper.commentPostDtoToQuestion(questionCommentPostDto);
+
+        QuestionComment createComment = questionService.createQuestionComment(questionComment, questionId);
+
+        return new ResponseEntity(mapper.commentToCommentResponseDto(createComment), HttpStatus.OK);
     }
 
     @PatchMapping("/{question-id}/comment/{comment-id}")
     public ResponseEntity patchComment(@PathVariable("question-id") @Positive long questionId,
                                        @PathVariable("comment-id") @Positive long commentId,
-                                       @RequestBody QuestionPatchDto questionPatchDto) {
+                                       @RequestBody QuestionCommentPatchDto questionPatchDto) {
+        QuestionComment questionComment = mapper.commentPatchDtoToQuestion(questionPatchDto);
+        QuestionComment editComment = questionService.editQuestionComment(questionComment, questionId, commentId);
 
-        QuestionCommentResponseDto response = new QuestionCommentResponseDto(1L, 1L, 1L, "content",
-                LocalDateTime.of(2023, 4, 3, 3, 3, 0),
-                LocalDateTime.of(2023, 4, 3, 3, 3, 1));
-        return new ResponseEntity(response, HttpStatus.OK);
+        return new ResponseEntity(mapper.commentToCommentResponseDto(editComment), HttpStatus.OK);
     }
 
     @GetMapping("/{question-id}/comment")
     public ResponseEntity getComments(@PathVariable("question-id") long questionId) {
-        List<QuestionCommentResponseDto> response = List.of(QuestionCommentResponseDto.builder()
-                .questionId(1L).content("test").userId(1L)
-                .createdAt(LocalDateTime.of(2023, 4, 3, 3, 3, 0))
-                .modifiedAt(LocalDateTime.of(2023, 4, 3, 3, 3, 0)).questionCommentId(1l).build());
-//        List<Comment> comments = commentService.getCommentsByQuestionId(questionId);
-//        return comments.stream().map(CommentDto::new).collect(Collectors.toList());
-        return new ResponseEntity(response, HttpStatus.OK);
+        List<QuestionComment> comments = questionService.getQuestionComments(questionId);
+
+        return new ResponseEntity(mapper.commentsToResponseDto(comments), HttpStatus.OK);
     }
 
     @DeleteMapping("/{question-id}/comment/{comment-id}")
     public ResponseEntity deleteComment(@PathVariable("question-id") long questionId,
                                          @PathVariable("comment-id") long commentId){
+        questionService.deleteQuestionComment(commentId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
@@ -119,12 +121,14 @@ public class QuestionController {
     @PostMapping("/{question-id}/vote/{user-id}")
     public ResponseEntity postVote(@PathVariable("question-id") long questionId,
                                    @PathVariable("user-id") long userId) {
+        questionService.createVote(userId, questionId);
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @DeleteMapping("/{question-id}/vote/{user-id}")
     public ResponseEntity deleteVote(@PathVariable("question-id") long questionId,
                                      @PathVariable("user-id") long userId) {
+       questionService.cancelVote(questionId, userId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
@@ -132,13 +136,16 @@ public class QuestionController {
     @PostMapping("/{question-id}/tag")
     public ResponseEntity postTag(@PathVariable("question-id") long questionId,
                                   @Valid @RequestBody TagPostDto tagPostDto) {
-        return new ResponseEntity(HttpStatus.OK);
+        Tag tag = mapper.tagPostDtoToTag(tagPostDto);
+        Tag createdTag = questionService.createTag(tag);
+
+        return new ResponseEntity(mapper.tagToTagResponseDto(createdTag), HttpStatus.OK);
     }
 
     @GetMapping("/{question-id}/tag")
     public ResponseEntity getQuestionTags(@PathVariable("question-id") long questionId) {
-        List<TagResponseDto> response = List.of(TagResponseDto.builder()
-                .questionId(1L).tagId(1L).tagName("dd").build());
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        List<QuestionTag> questionTags = questionService.getQuestionTags(questionId);
+
+        return new ResponseEntity<>(mapper.tagsToResponseDto(questionTags), HttpStatus.OK);
     }
 }

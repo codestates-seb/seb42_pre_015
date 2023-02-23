@@ -5,10 +5,9 @@ import lombok.*;
 import java.util.List;
 
 @AllArgsConstructor
-@Getter
-@Setter
-@Builder
 @NoArgsConstructor
+@Builder
+@Getter
 public class TagResponseDto {
     private long tagId;
     private long questionId;

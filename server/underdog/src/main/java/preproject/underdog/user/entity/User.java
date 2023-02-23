@@ -3,7 +3,13 @@ package preproject.underdog.user.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import preproject.underdog.answer.entity.Answer;
+import preproject.underdog.answer.entity.AnswerComment;
+import preproject.underdog.answer.entity.AnswerVote;
 import preproject.underdog.auditing.TimeManager;
+import preproject.underdog.question.entity.Question;
+import preproject.underdog.question.entity.QuestionComment;
+import preproject.underdog.question.entity.QuestionVote;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -30,23 +36,23 @@ public class User extends TimeManager {
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
 
-//    @OneToMany(mappedBy = "user")
-//    private List<Question> questionList = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "user")
-//    private List<QuestionVote> questionVoteList = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "user")
-//    private List<QuestionComment> questionCommentList = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "user")
-//    private List<Answer> answerList = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "user")
-//    private List<AnswerVote> answerVoteList = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "user")
-//    private List<AnswerComment> answerCommentList = new ArrayList<>();
+    @OneToMany(mappedBy = "user")
+    private List<Question> questionList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<QuestionVote> questionVoteList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<QuestionComment> questionCommentList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Answer> answerList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<AnswerVote> answerVoteList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<AnswerComment> answerCommentList = new ArrayList<>();
 
     // 양방향 매핑 세터 추가
 
