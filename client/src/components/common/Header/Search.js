@@ -55,9 +55,11 @@ const SearchInputNavigation = styled.div`
     display: block;
   }
   @media (max-width: 640px) {
+    position: static;
     left: -150px;
+    top: 90px;
     max-width: 670px;
-    min-width: 470px;
+    min-width: 430px;
   }
 `;
 const SearchDiv = styled.div`
@@ -85,6 +87,42 @@ const SearchNavFont2 = styled.span`
   color: rgb(106, 115, 124);
   max-width: 100%;
   white-space: normal;
+`;
+const MobilInput = styled.input`
+  display: none;
+  @media (max-width: 640px) {
+    display: block;
+    margin-bottom: 5px;
+    width: 100%;
+    padding: 7.8px 9.1px 7.8px 32px;
+    background-color: rgb(255, 255, 255);
+    border: 1px solid hsl(210, 8%, 75%);
+    &:focus {
+      outline: none;
+      -webkit-box-shadow: 0px 0px 8px 1px hsl(206, 90%, 69.5%);
+      box-shadow: 0px 0px 8px 1px hsl(206, 90%, 69.5%);
+    }
+  }
+`;
+const MobilNav = styled.div`
+  @media (max-width: 640px) {
+    position: absolute;
+    padding: 5px;
+    width: 98vw;
+    top: 40px;
+    left: -150px;
+    z-index: 100;
+  }
+`;
+const MobilIcon = styled.div`
+  display: none;
+  @media (max-width: 640px) {
+    display: block;
+    position: absolute;
+    top: 10px;
+    left: 14px;
+    opacity: 0.5;
+  }
 `;
 export default function Search({ isLogin }) {
   const searchRef = useRef(null);
@@ -143,46 +181,52 @@ export default function Search({ isLogin }) {
       )}
 
       {isSearchClick ? (
-        <SearchInputNavigation ref={searchNavRef}>
-          <SearchDiv>
-            <div>
+        <MobilNav ref={searchNavRef}>
+          <MobilInput></MobilInput>
+          <MobilIcon>
+            <GlassesSvg />
+          </MobilIcon>
+          <SearchInputNavigation>
+            <SearchDiv>
               <div>
-                <SearchNavFont>[tag]</SearchNavFont>
-                <SearchNavFont2>&nbsp;serch within a tag</SearchNavFont2>
+                <div>
+                  <SearchNavFont>[tag]</SearchNavFont>
+                  <SearchNavFont2>&nbsp;serch within a tag</SearchNavFont2>
+                </div>
+                <div>
+                  <SearchNavFont>user:1234</SearchNavFont>
+                  <SearchNavFont2>&nbsp;serch by author</SearchNavFont2>
+                </div>
+                <div>
+                  <SearchNavFont>&quot;words here&quot;</SearchNavFont>
+                  <SearchNavFont2>&nbsp;exact phrase</SearchNavFont2>
+                </div>
+                <div>
+                  <SearchNavFont>collective:&quot;Name&quot;</SearchNavFont>
+                  <SearchNavFont2>&nbsp;collective content</SearchNavFont2>
+                </div>
               </div>
               <div>
-                <SearchNavFont>user:1234</SearchNavFont>
-                <SearchNavFont2>&nbsp;serch by author</SearchNavFont2>
+                <div>
+                  <SearchNavFont>answers:0</SearchNavFont>
+                  <SearchNavFont2>&nbsp;unanswered questions</SearchNavFont2>
+                </div>
+                <div>
+                  <SearchNavFont>score:3</SearchNavFont>
+                  <SearchNavFont2>&nbsp;post with a 3+ score</SearchNavFont2>
+                </div>
+                <div>
+                  <SearchNavFont>is:question</SearchNavFont>
+                  <SearchNavFont2>&nbsp;type of post</SearchNavFont2>
+                </div>
+                <div>
+                  <SearchNavFont>isaccepted:yes</SearchNavFont>
+                  <SearchNavFont2>&nbsp;search within status</SearchNavFont2>
+                </div>
               </div>
-              <div>
-                <SearchNavFont>&quot;words here&quot;</SearchNavFont>
-                <SearchNavFont2>&nbsp;exact phrase</SearchNavFont2>
-              </div>
-              <div>
-                <SearchNavFont>collective:&quot;Name&quot;</SearchNavFont>
-                <SearchNavFont2>&nbsp;collective content</SearchNavFont2>
-              </div>
-            </div>
-            <div>
-              <div>
-                <SearchNavFont>answers:0</SearchNavFont>
-                <SearchNavFont2>&nbsp;unanswered questions</SearchNavFont2>
-              </div>
-              <div>
-                <SearchNavFont>score:3</SearchNavFont>
-                <SearchNavFont2>&nbsp;post with a 3+ score</SearchNavFont2>
-              </div>
-              <div>
-                <SearchNavFont>is:question</SearchNavFont>
-                <SearchNavFont2>&nbsp;type of post</SearchNavFont2>
-              </div>
-              <div>
-                <SearchNavFont>isaccepted:yes</SearchNavFont>
-                <SearchNavFont2>&nbsp;search within status</SearchNavFont2>
-              </div>
-            </div>
-          </SearchDiv>
-        </SearchInputNavigation>
+            </SearchDiv>
+          </SearchInputNavigation>
+        </MobilNav>
       ) : null}
     </SearchForm>
   );
