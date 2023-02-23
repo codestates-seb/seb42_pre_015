@@ -5,7 +5,7 @@ const ButtonWrapper = styled.button`
   background-color: ${({ bgColor }) => bgColor};
   color: ${({ color }) => color};
   border: 1px solid #ccc;
-  padding: 10.4px;
+  padding: ${({ padding }) => padding};
   border-radius: 3px;
   width: ${({ width }) => width};
   height: ${({ height }) => height};
@@ -32,6 +32,8 @@ const GoogleBtn = ({ onClick }) => {
       hoverBgColor='#eee'
       width='100%'
       onClick={onClick}
+      height='38px'
+      padding='10.4px;'
     >
       <span className='span-style'>
         <GoogleSVG className='icon' />
@@ -49,6 +51,8 @@ const GithubBtn = ({ onClick }) => {
       hoverBgColor='#000'
       width='100%'
       onClick={onClick}
+      height='38px'
+      padding='10.4px;'
     >
       <span className='span-style'>
         <GitHubSVG className='icon' /> Log in with GitHub
@@ -65,6 +69,8 @@ const FacebookBtn = ({ onClick }) => {
       hoverBgColor='#2f477a'
       width='100%'
       onClick={onClick}
+      height='38px'
+      padding='10.4px;'
     >
       <span className='span-style'>
         <FacebookSVG className='icon' /> Log in with Facebook
@@ -80,7 +86,12 @@ const GeneralBtn = ({
   type,
   width,
   onClick,
+<<<<<<< HEAD
   height
+=======
+  height,
+  padding
+>>>>>>> 6c4fbb6145445a2463f48d40d28b0f6df27e08d3
 }) => {
   let bgColor, color, hoverBgColor;
   if (type === 'off') {
@@ -107,6 +118,8 @@ const GeneralBtn = ({
       height={height || '38px'}
       GeneralBtnShadow
       onClick={onClick}
+      height={height || '38px'}
+      padding={padding || '10.4px;'}
     >
       {BtnText}
     </ButtonWrapper>
