@@ -9,7 +9,6 @@ import { GeneralBtn } from '../Buttons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { SOLogoSvg } from '../../../assets/Header/HeaderSVG';
-import { GeneralBtn } from '../Buttons';
 
 const StyledHeader = styled.div`
   top: 3px;
@@ -153,16 +152,6 @@ function Header() {
           {isLogin ? (
             <UserNav />
           ) : (
-<<<<<<< HEAD
-            <GeneralBtn
-              type='off'
-              width={'80px'}
-              BtnText='Log in'
-              onClick={() => {
-                setIsLogIn(true);
-              }}
-            ></GeneralBtn>
-=======
             <div style={{ marginRight: '7px' }}>
               <GeneralBtn
                 onClick={() => {
@@ -175,14 +164,10 @@ function Header() {
                 padding='0 10.4px'
               />
             </div>
->>>>>>> 6c4fbb6145445a2463f48d40d28b0f6df27e08d3
           )}
           {isLogin ? (
             <LoginNav />
           ) : (
-<<<<<<< HEAD
-            <GeneralBtn width={'80px'} BtnText='Sign up'></GeneralBtn>
-=======
             <div style={{ marginRight: '7px' }}>
               <GeneralBtn
                 BtnText='Sign up'
@@ -191,7 +176,6 @@ function Header() {
                 padding='0 10.4px'
               />
             </div>
->>>>>>> 6c4fbb6145445a2463f48d40d28b0f6df27e08d3
           )}
         </HeaderContainer>
       </StyledHeader>

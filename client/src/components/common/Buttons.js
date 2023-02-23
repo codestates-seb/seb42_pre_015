@@ -86,12 +86,9 @@ const GeneralBtn = ({
   type,
   width,
   onClick,
-<<<<<<< HEAD
-  height
-=======
+
   height,
   padding
->>>>>>> 6c4fbb6145445a2463f48d40d28b0f6df27e08d3
 }) => {
   let bgColor, color, hoverBgColor;
   if (type === 'off') {
@@ -118,7 +115,6 @@ const GeneralBtn = ({
       height={height || '38px'}
       GeneralBtnShadow
       onClick={onClick}
-      height={height || '38px'}
       padding={padding || '10.4px;'}
     >
       {BtnText}
