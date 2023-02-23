@@ -20,7 +20,6 @@ const Main = styled.main`
   flex-direction: column;
   padding: 24px 16px;
   width: 80%;
-  border-left: 1px solid #d0d4d7;
   @media screen and (max-width: 980px) {
     flex-direction: column;
     width: 95%;
@@ -89,12 +88,21 @@ const Side = styled.aside`
   }
 `;
 
+const NavContainer = styled.div`
+  border-right: 1px solid #d0d4d7;
+  @media screen and (max-width: 640px) {
+    display: none;
+  }
+`;
+
 function DetailPage() {
   return (
     <>
       <Header />
       <Body>
-        <Nav />
+        <NavContainer>
+          <Nav />
+        </NavContainer>
         <Main>
           <Title className='title'>
             <h1>Not able to create histogram using matplotlib</h1>
