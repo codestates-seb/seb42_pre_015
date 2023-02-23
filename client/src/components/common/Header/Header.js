@@ -8,6 +8,7 @@ import LoginNav from './LoginNav';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { SOLogoSvg } from '../../../assets/Header/HeaderSVG';
+import { GeneralBtn } from '../Buttons';
 
 const StyledHeader = styled.div`
   top: 3px;
@@ -17,6 +18,8 @@ const StyledHeader = styled.div`
   position: fixed;
   z-index: 10;
   margin: 0 auto;
+  box-shadow: 0 1px 2px hsla(0, 0%, 0%, 0.05), 0 1px 4px hsla(0, 0%, 0%, 0.05),
+    0 2px 8px hsla(0, 0%, 0%, 0.05);
 `;
 
 const HeaderLine = styled.div`
@@ -84,14 +87,7 @@ const HamburgerBtn = styled.button`
     margin-right: 5px;
   }
 `;
-const LogBtn = styled.div`
-  padding: 8px 10.4px;
-  border: 1px solid black;
-  background-color: blue;
-  font-size: 14px;
-  border-radius: 4px;
-  margin-right: 5px;
-`;
+
 function Header() {
   const [isLogin, setIsLogIn] = useState(false);
   const [isProductsClick, setIsProductsClick] = useState(false);
@@ -149,15 +145,31 @@ function Header() {
           {isLogin ? (
             <UserNav />
           ) : (
-            <LogBtn
-              onClick={() => {
-                setIsLogIn(true);
-              }}
-            >
-              Log in
-            </LogBtn>
+            <div style={{ marginRight: '7px' }}>
+              <GeneralBtn
+                onClick={() => {
+                  setIsLogIn(true);
+                }}
+                BtnText='Log in'
+                type='off'
+                width='57px'
+                height='32px'
+                padding='0 10.4px'
+              />
+            </div>
           )}
-          {isLogin ? <LoginNav /> : <LogBtn>Sign up</LogBtn>}
+          {isLogin ? (
+            <LoginNav />
+          ) : (
+            <div style={{ marginRight: '7px' }}>
+              <GeneralBtn
+                BtnText='Sign up'
+                width='66px'
+                height='32px'
+                padding='0 10.4px'
+              />
+            </div>
+          )}
         </HeaderContainer>
       </StyledHeader>
     </>
