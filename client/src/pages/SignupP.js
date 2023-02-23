@@ -4,7 +4,7 @@ import SignupText from '../components/Signup/SignupText';
 import Header from '../components/common/Header/Header';
 
 const AllBoxStyle = styled.div`
-  background-color: #f9f9f9;
+  background-color: #f1f2f3;
   body {
     height: 100%;
     width: 100%;

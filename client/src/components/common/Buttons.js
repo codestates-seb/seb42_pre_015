@@ -8,7 +8,7 @@ const ButtonWrapper = styled.button`
   padding: 10.4px;
   border-radius: 3px;
   width: ${({ width }) => width};
-  height: 38px;
+  height: ${({ height }) => height};
   cursor: pointer;
   font-size: 13px;
   &:hover {
@@ -75,7 +75,13 @@ const FacebookBtn = ({ onClick }) => {
 
 // On = blue , Off = grey?
 
-const GeneralBtn = ({ BtnText = 'Fill Text', type, width, onClick }) => {
+const GeneralBtn = ({
+  BtnText = 'Fill Text',
+  type,
+  width,
+  onClick,
+  height
+}) => {
   let bgColor, color, hoverBgColor;
   if (type === 'off') {
     bgColor = 'rgb(225, 236, 244)';
@@ -98,6 +104,7 @@ const GeneralBtn = ({ BtnText = 'Fill Text', type, width, onClick }) => {
       color={color}
       hoverBgColor={hoverBgColor}
       width={width || '100%'}
+      height={height || '38px'}
       GeneralBtnShadow
       onClick={onClick}
     >
