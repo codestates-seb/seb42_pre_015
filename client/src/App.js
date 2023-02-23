@@ -1,12 +1,12 @@
 import GlobalStyles from './GlobalStyles';
-import QuestionEditP from './pages/QuestionEditP.js';
+import MainP from './pages/MainP';
+
 function App() {
   return (
     <>
       <GlobalStyles />
-      <QuestionEditP />
+      <MainP />
     </>
   );
 }
-
 export default App;
