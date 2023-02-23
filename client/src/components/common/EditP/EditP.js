@@ -60,6 +60,7 @@ const QECancelBtn = styled.button`
   border-radius: 4px;
   background-color: white;
   color: #4c92d3;
+  cursor: pointer;
   &:hover {
     background-color: #f0f8ff;
   }
@@ -125,7 +126,7 @@ export function QuestionEditMain() {
 export function AnswerEditMain() {
   return (
     <QEditContainer>
-      <QEHelpBox margin='80px'>
+      <QEHelpBox margin='20px'>
         <p style={{ marginBottom: '13px' }}>
           Your edit will be placed in a queue until it is peer reviewed.
         </p>
@@ -164,7 +165,11 @@ export function AnswerEditMain() {
         please.
       </QEP>
       <div style={{ marginBottom: '12px' }}>
-        <GeneralBtn width={'80px'} BtnText='Save edits'></GeneralBtn>
+        <GeneralBtn
+          width={'80px'}
+          BtnText='Save edits'
+          padding='0px'
+        ></GeneralBtn>
         <QECancelBtn>Cancel</QECancelBtn>
       </div>
       <QEAtag href='/#'>Add a comment</QEAtag>
