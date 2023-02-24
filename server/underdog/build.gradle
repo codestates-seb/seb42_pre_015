@@ -2,22 +2,22 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '2.7.8'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
-	id "org.asciidoctor.jvm.convert" version "3.3.2"
+//	id "org.asciidoctor.jvm.convert" version "3.3.2"
 }
 
 group = 'pre-project'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
-configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
-}
-
-ext {
-	snippetsDir = file('build/generated-snippets')
-}
+//configurations {
+//	compileOnly {
+//		extendsFrom annotationProcessor
+//	}
+//}
+//
+//ext {
+//	snippetsDir = file('build/generated-snippets')
+//}
 
 repositories {
 	mavenCentral()
@@ -52,29 +52,29 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
-bootJar {
-	dependsOn asciidoctor
-	copy {
-		from "${asciidoctor.outputDir}"
-		into 'BOOT-INF/classes/static/docs'
-	}
-}
-
-asciidoctor {
-	dependsOn test
-	inputs.dir snippetsDir
-}
-
-asciidoctor.doFirst {
-	delete file('src/main/resources/static/docs')
-}
-
-task copyDocument(type: Copy) {
-	dependsOn asciidoctor
-	from file("build/docs/asciidoc")
-	into file("src/main/resources/static/docs")
-}
-
-build {
-	dependsOn copyDocument
-}
+//bootJar {
+//	dependsOn asciidoctor
+//	copy {
+//		from "${asciidoctor.outputDir}"
+//		into 'BOOT-INF/classes/static/docs'
+//	}
+//}
+//
+//asciidoctor {
+//	dependsOn test
+//	inputs.dir snippetsDir
+//}
+//
+//asciidoctor.doFirst {
+//	delete file('src/main/resources/static/docs')
+//}
+//
+//task copyDocument(type: Copy) {
+//	dependsOn asciidoctor
+//	from file("build/docs/asciidoc")
+//	into file("src/main/resources/static/docs")
+//}
+//
+//build {
+//	dependsOn copyDocument
+//}
