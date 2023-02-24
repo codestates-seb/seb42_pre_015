@@ -54,7 +54,7 @@ public class QuestionService {
     }
 
     public Page<Question> getQuestions(Pageable pageable) { //질문글 전체 조회
-        Pageable pageRequest = PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize(), pageable.getSort());
+        Pageable pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), pageable.getSort());
         return questionRepository.findAll(pageRequest);
     }
 
