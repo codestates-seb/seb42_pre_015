@@ -17,7 +17,11 @@ function Answer({ answerData, setAnswerData, questionId }) {
         <AnswerSection>
           <AnswerHeading answerData={answerData} />
           <AnswerBody questionId={questionId} answerData={answerData} />
-          <PostAnswer questionId={questionId} setAnswerData={setAnswerData} />
+          <PostAnswer
+            questionId={questionId}
+            setAnswerData={setAnswerData}
+            answerData={answerData}
+          />
         </AnswerSection>
       )}
     </>

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { GeneralBtn } from '../common/Buttons';
 import Editor from '../common/Editor';
-import axios from 'axios';
+// import axios from 'axios';
 import { useState } from 'react';
 
 const PostAnswerContainer = styled.div`
@@ -27,20 +27,28 @@ const PostAnswerContainer = styled.div`
   }
 `;
 
-function PostAnswer({ setAnswerData, questionId }) {
-  const BASE_URL = 'http://localhost:3001';
+function PostAnswer({ setAnswerData, questionId, answerData }) {
+  //   const BASE_URL = 'http://localhost:3001';
   const [answerInput, setAnswerInput] = useState('');
 
   const handlePostAnswer = () => {
     // ! html 그대로 서버와 주고받고 화면에 렌더링 시킬 수 있는 법 찾아보기
     const newAnswer = {
+      answerId: 1,
+      content: answerInput,
       userId: 1,
-      content: answerInput
+      name: '홍길동',
+      questionId: 3,
+      voteCount: 0,
+      createdAt: '2023-02-24T18:14:46',
+      modifiedAt: '2023-02-24T18:17:16'
     };
     // ! 실전 URI: `${BASE_URL}/question/{questionId}/answer`
-    axios.post(`${BASE_URL}/answerData`, { newAnswer }).then(res => {
-      setAnswerData(res.data);
-    });
+    // axios.post(`${BASE_URL}/answerData`, { newAnswer }).then(res => {
+    //   setAnswerData(res.data);
+    // });
+
+    setAnswerData({ ...answerData }, newAnswer);
   };
 
   return (

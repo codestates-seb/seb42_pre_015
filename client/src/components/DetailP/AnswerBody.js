@@ -3,6 +3,7 @@ import Vote from './Vote';
 import ProfileCard from './ProfileCard';
 import Comment from './Comment';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const AnswerContainer = styled.div`
   display: flex;
@@ -42,6 +43,10 @@ function AnswerBody({ answerData, questionId }) {
   // const [answerCommentData, answerCommentIsPending, answerCommentError] = useFetch(`http://localhost:3001/question/${questoinId}/answer/${answerId}`/comment)
 
   const navigate = useNavigate();
+  const handleAnswerDelete = () => {
+    //! delete 마저 구현하기
+    axios.delete('/');
+  };
 
   return (
     <>
@@ -64,7 +69,7 @@ function AnswerBody({ answerData, questionId }) {
                     Edit
                   </button>
 
-                  <button href='/'>Delete</button>
+                  <button onClick={handleAnswerDelete}>Delete</button>
                 </ControlOptions>
                 <ProfileCard answer={answer} />
               </AnswerInfo>
