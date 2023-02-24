@@ -9,6 +9,7 @@ import Answer from '../components/DetailP/Answer';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { MainNav } from '../components/common/SideNav';
+import { useNavigate } from 'react-router-dom';
 
 const Body = styled.div`
   margin-top: 53px;
@@ -99,6 +100,7 @@ function DetailPage() {
   // const [questionData, questionIsPending, questionError] = useFetch(`http://localhost:3001/question/${questionId}`)
   // const [answerData, answerIsPending, answerError] = useFetch(`http://localhost:3001/question/${questionId}/answer`)
 
+  const navigate = useNavigate();
   const BASE_URL = 'http://localhost:3001';
   const [questionData, setQuestionData] = useState(null);
   const [answerData, setAnswerData] = useState(null);
@@ -126,7 +128,11 @@ function DetailPage() {
           <Main>
             <Title className='title'>
               <h1>{questionData.title}</h1>
-              <GeneralBtn BtnText='Ask Question' width='100px' />
+              <GeneralBtn
+                BtnText='Ask Question'
+                width='100px'
+                onClick={() => navigate('/ask')}
+              />
             </Title>
             <Info className='info'>
               <ul>
