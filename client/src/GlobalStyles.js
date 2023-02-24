@@ -15,6 +15,9 @@ const GlobalStyles = createGlobalStyle`
     width: 100vw;
     height: 100vh;
   }
+  .root {
+    height: 100vh;
+  }
 
   ol, ul {
     list-style: none;

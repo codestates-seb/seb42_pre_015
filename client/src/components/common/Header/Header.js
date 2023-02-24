@@ -28,6 +28,7 @@ const HeaderLine = styled.div`
   width: 100%;
   height: 3px;
   background-color: #f48225;
+  z-index: 10;
 `;
 
 const HeaderContainer = styled.div`
@@ -87,14 +88,7 @@ const HamburgerBtn = styled.button`
     margin-right: 5px;
   }
 `;
-// const LogBtn = styled.div`
-//   padding: 8px 10.4px;
-//   border: 1px solid black;
-//   background-color: blue;
-//   font-size: 14px;
-//   border-radius: 4px;
-//   margin-right: 5px;
-// `;
+
 function Header() {
   const [isLogin, setIsLogIn] = useState(false);
   const [isProductsClick, setIsProductsClick] = useState(false);

@@ -10,14 +10,12 @@ const NavContainer = styled.div`
   padding-top: 10px;
   z-index: 9;
   > div {
-    height: 8%;
     width: 100%;
     color: #525960;
     padding-left: 13px;
     margin-bottom: 5px;
   }
   > nav {
-    height: 92%;
     width: 100%;
   }
 `;

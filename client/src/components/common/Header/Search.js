@@ -108,7 +108,7 @@ const MobilNav = styled.div`
   @media (max-width: 640px) {
     position: absolute;
     padding: 5px;
-    width: 98vw;
+    width: 95vw;
     top: 40px;
     left: -150px;
     z-index: 100;
