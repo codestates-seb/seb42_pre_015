@@ -1,0 +1,42 @@
+  {
+    "questionData": {
+      "data": [
+        {
+          "questionId": 1,
+          "userId": 1,
+          "userName": "홍길동",
+          "title": "제목임",
+          "content": "본문임",
+          "viewCount": 2,
+          "voteCount": 0,
+          "tags": [
+            "ab",
+            "ba"
+          ],
+          "createdAt": "2023-02-24T11:08:50",
+          "modifiedAt": "2023-02-24T11:44:37"
+        },
+        {
+          "questionId": 3,
+          "userId": 1,
+          "userName": "홍길동",
+          "title": "제목",
+          "content": "본문",
+          "viewCount": 0,
+          "voteCount": 0,
+          "tags": [
+            "aa",
+            "bb"
+          ],
+          "createdAt": "2023-02-24T11:38:03",
+          "modifiedAt": "2023-02-24T11:38:03"
+        }
+      ],
+      "pageInfo": {
+        "pageNumber": 1,
+        "size": 20,
+        "totalPages": 1,
+        "totalElements": 2
+      }
+    }
+  }
