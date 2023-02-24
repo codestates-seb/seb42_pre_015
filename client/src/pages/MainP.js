@@ -1,11 +1,13 @@
 import styled from 'styled-components';
 import { GeneralBtn } from '../components/common/Buttons';
-import Data from '../data/MOCK_DATA.json';
+// import Data from '../data/MOCK_DATA.json';
 import { MainNav } from '../components/common/SideNav';
 import Nav from '../components/common/Nav';
 import Header from '../components/common/Header/Header';
 import Footer from '../components/common/Footer';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
 const MainPContainer = styled.div`
   padding: 24px 0 0 16px;
@@ -127,6 +129,19 @@ const QuestionDesContainer = styled.div`
   }
 `;
 export function MainComponent() {
+  const [AllQestion, SetAllQuestion] = useState([]);
+  const serverUrl = 'http://localhost:3001';
+  useEffect(() => {
+    axios
+      .get(`${serverUrl}/questionData`)
+      .then(res => {
+        SetAllQuestion(res.data.data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
+
   const navigate = useNavigate();
   return (
     <div>
@@ -153,25 +168,20 @@ export function MainComponent() {
           </MainTopBtnGather>
         </MainFilterContainer>
       </MainPContainer>
-      {Data.map((el, index) => {
+      {AllQestion.map((el, index) => {
         return (
           <QuestionContainer key={index}>
             <QuestionVote>
-              <p>{el.vote} votes</p>
+              <p>{el.voteCount} votes</p>
               <p style={{ color: 'rgb(82,89,96)' }}>{el.answer} answers</p>
-              <p style={{ color: 'rgb(82,89,96)' }}>{el.views} views</p>
+              <p style={{ color: 'rgb(82,89,96)' }}>{el.viewCount} views</p>
             </QuestionVote>
             <Question>
               <div>
-                <a href='/#'>{el.question}</a>
+                <a href='/#'>{el.title}</a>
               </div>
               <QuestionDesContainer>
-                <p>
-                  I have github pages everything is working just fine except for
-                  the images stuff. Ive tried everything to make the image show
-                  up on my GitHub pages site but nothing is working here is the
-                  c
-                </p>
+                <p>{el.content}</p>
               </QuestionDesContainer>
               <QuestionBottom>
                 <TagContainer>
@@ -180,11 +190,13 @@ export function MainComponent() {
                   <button>Java Script</button>
                 </TagContainer>
                 <UserContainer>
-                  <a href='/#'>{el.Writer}</a>
+                  <a href='/#'>{el.userName}</a>
                   <span>{el.asked}</span>
                   <a href='/#'>
                     modified{' '}
-                    <span style={{ color: 'rgb(82,89,96)' }}>{el.date}</span>
+                    <span style={{ color: 'rgb(82,89,96)' }}>
+                      {el.modifiedAt}
+                    </span>
                   </a>
                 </UserContainer>
               </QuestionBottom>
