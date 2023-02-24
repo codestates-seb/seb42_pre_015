@@ -40,6 +40,7 @@ public class VerificationFilter extends OncePerRequestFilter {  // (1)
             request.setAttribute("exception", se);
         } catch (ExpiredJwtException ee) {
             verifyRefreshJws(request, response);   // 액세스 토큰 만료시, 리프레시 토큰 확인
+            request.setAttribute("exception", ee);
         } catch (Exception e) {
             request.setAttribute("exception", e);
         }

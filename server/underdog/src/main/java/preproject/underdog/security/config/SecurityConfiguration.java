@@ -50,6 +50,13 @@ public class SecurityConfiguration {
                 .logoutSuccessUrl("/") // 로그아웃 성공 시 이동 페이지
                 .and()
 
+//                .rememberMe()
+//                .key("uniqueAndSecret")
+//                .rememberMeCookieName("my-remember-me-cookie")
+//                .tokenValiditySeconds(24 * 60 * 60) // 24 hours
+//                .rememberMeParameter("remember-me")
+//                .userDetailsService(userDetailsService);
+
                 .cors().configurationSource(corsConfigurationSource())
                 .and()
                 .apply(new CustomFilterConfigurer())
@@ -57,10 +64,11 @@ public class SecurityConfiguration {
 
                 .authorizeHttpRequests(authorize -> authorize
                         .antMatchers("/login").permitAll()
-                        .antMatchers(HttpMethod.POST, "/user").permitAll()
+                        .antMatchers("/user").permitAll()
+                        .antMatchers(HttpMethod.GET, "/question/**").permitAll()
                         .anyRequest().authenticated()) // 요청별 권한 작성하기
                 .oauth2Login(oauth2 -> oauth2
-                        .successHandler(new OAuth2SuccessHandler(jwtTokenizer, authorityUtils, userService)));
+                        .successHandler(new OAuth2SuccessHandler(jwtTokenizer, userService)));
 
         return http.build();
     }

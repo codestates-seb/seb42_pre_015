@@ -24,7 +24,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private final JwtTokenizer jwtTokenizer;
-    private final CustomAuthorityUtils authorityUtils;
     private final UserService userService;
 
     @Override
@@ -32,50 +31,27 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
                                         Authentication authentication) throws IOException, java.io.IOException {
         var oAuth2User = (OAuth2User) authentication.getPrincipal();
         String email = String.valueOf(oAuth2User.getAttributes().get("email")); // (3)
-        List<String> authorities = authorityUtils.createRoles(email);           // (4)
 
-        saveUser(email);  // (5)
-        redirect(request, response, email, authorities);  // (6)
+        User user = saveUser(email);// (5)
+        redirect(request, response, user);  // (6)
     }
 
-    private void saveUser(String email) {
+    private User saveUser(String email) {
         User user = new User();
         user.setEmail(email);
-        userService.createUser(user);
+        return userService.createUser(user);
     }
 
-    private void redirect(HttpServletRequest request, HttpServletResponse response, String username,
-                          List<String> authorities) throws IOException, java.io.IOException {
-        String accessToken = delegateAccessToken(username, authorities);  // (6-1)
-        String refreshToken = delegateRefreshToken(username);     // (6-2)
+    private void redirect(HttpServletRequest request, HttpServletResponse response, User user)
+            throws IOException, java.io.IOException {
+        String accessToken = jwtTokenizer.delegateAccessToken(user);
+        String refreshToken = jwtTokenizer.delegateRefreshToken(user);
 
-        String uri = createURI(accessToken, refreshToken).toString();   // (6-3)
-        getRedirectStrategy().sendRedirect(request, response, uri);   // (6-4)
-    }
+        response.setHeader("Authorization", "Bearer " + accessToken);
+        response.setHeader("Refresh", refreshToken);
 
-    private String delegateAccessToken(String username, List<String> authorities) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("username", username);
-        claims.put("roles", authorities);
-
-        String subject = username;
-        Date expiration = jwtTokenizer.getTokenExpiration(jwtTokenizer.getAccessTokenExpirationMinutes());
-
-        String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
-
-        String accessToken = jwtTokenizer.generateAccessToken(claims, subject, expiration, base64EncodedSecretKey);
-
-        return accessToken;
-    }
-
-    private String delegateRefreshToken(String username) {
-        String subject = username;
-        Date expiration = jwtTokenizer.getTokenExpiration(jwtTokenizer.getRefreshTokenExpirationMinutes());
-        String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
-
-        String refreshToken = jwtTokenizer.generateRefreshToken(subject, expiration, base64EncodedSecretKey);
-
-        return refreshToken;
+//        String uri = createURI(accessToken, refreshToken).toString();   // (6-3)
+        getRedirectStrategy().sendRedirect(request, response, null);   // (6-4)
     }
 
     private URI createURI(String accessToken, String refreshToken) {
