@@ -8,6 +8,7 @@ import Footer from '../components/common/Footer';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import Pagination from 'react-js-pagination';
 
 const MainPContainer = styled.div`
   padding: 24px 0 0 16px;
@@ -45,7 +46,7 @@ const QuestionContainer = styled.div`
   padding: 16px;
   display: flex;
   border-top: 1px solid rgb(227, 230, 232);
-  border-bottom: 1px solid rgb(227, 230, 232);
+  /* border-bottom: 1px solid rgb(227, 230, 232); */
 `;
 const QuestionVote = styled.div`
   display: flex;
@@ -128,14 +129,57 @@ const QuestionDesContainer = styled.div`
     margin-bottom: 8px;
   }
 `;
+
+const PageNationContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+  padding-left: 24px;
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    li {
+      display: flex;
+      align-items: center;
+      border: 1px solid rgb(214, 217, 220);
+      height: 25px;
+      border-radius: 3px;
+      margin: 0 3px;
+      padding: 0 8px;
+      background-color: 'white';
+      &:hover {
+        background-color: 'gray';
+      }
+      &.active {
+        background-color: #f48225;
+        a {
+          cursor: default;
+          color: white;
+          font-size: 13px;
+        }
+      }
+    }
+  }
+`;
+
 export function MainComponent() {
-  const [AllQestion, SetAllQuestion] = useState([]);
+  const [AllQestion, setAllQuestion] = useState([]);
+  const [PageNationData, setPageNationData] = useState([]);
+  const [activePage, setActivePage] = useState(1);
+
+  const handlePageChange = pageNumber => {
+    setActivePage(pageNumber);
+    console.log(pageNumber);
+  };
+
   const serverUrl = 'http://localhost:3001';
   useEffect(() => {
     axios
       .get(`${serverUrl}/questionData`)
       .then(res => {
-        SetAllQuestion(res.data.data);
+        setAllQuestion(res.data.data);
+        setPageNationData(res.data.pageInfo);
       })
       .catch(error => {
         console.error(error);
@@ -158,7 +202,7 @@ export function MainComponent() {
           />
         </MainTopTitle>
         <MainFilterContainer>
-          <p>23,530,547 questions</p>
+          <p>{PageNationData.totalElements} questions</p>
           <MainTopBtnGather>
             <MainTopBtn borderRadius='4px 0 0 4px' bgcolor='#e3e6e8'>
               Newest
@@ -204,6 +248,17 @@ export function MainComponent() {
           </QuestionContainer>
         );
       })}
+      <PageNationContainer>
+        <Pagination
+          activePage={activePage}
+          itemsCountPerPage={20}
+          totalItemsCount={450}
+          pageRangeDisplayed={5}
+          onChange={handlePageChange}
+          prevPageText='Prev'
+          nextPageText='Next'
+        />
+      </PageNationContainer>
     </div>
   );
 }
