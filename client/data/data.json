@@ -1,0 +1,57 @@
+{
+    "questionData": {
+        "questionId": 1,
+        "userId": 1,
+        "userName": "HYLIM",
+        "title": "How do I merge two dictionaries in a single expression in Python?",
+        "content": "I want to merge two dictionaries into a new dictionary.",
+        "viewCount": 1,
+        "voteCount": 1038,
+        "tags": ["JavaScript", "Python", "Java", "React", "VSCode"],
+        "createdAt": "2023-02-23T17:20:17",
+        "modifiedAt": "2023-02-23T17:37:39.65594"
+      }, 
+
+      "questionCommentData": [
+        {
+          "questionCommentId": 1,
+          "userId": 1,
+          "userName": "May",
+          "questionId": 1,
+          "content": "This is question comment 1",
+          "createdAt": "2023-04-03T03:03:00",
+          "modifiedAt": "2023-04-03T03:03:00"
+        },
+        {
+            "questionCommentId": 2,
+            "userId": 2,
+            "userName": "Shao",
+            "questionId": 1,
+            "content": "This is question comment 2",
+            "createdAt": "2023-04-03T03:03:00",
+            "modifiedAt": "2023-04-03T03:03:00"
+          }
+        ], 
+        "answerData": [
+            {
+              "answerId": 1,
+              "content": "This is answer 1",
+              "userId": 1,
+              "userName": "Tom",
+              "questionId": 1,
+              "voteCount": 123,
+              "createdAt": "2023-04-03T03:03:00",
+              "modifiedAt": "2023-04-03T03:03:00"
+            },
+            {
+              "answerId": 2,
+              "content": "This is answer 2",
+              "userId": 2,
+              "userName": "ABCD",
+              "questionId": 1,
+              "voteCount": 17,
+              "createdAt": "2023-04-03T03:03:00",
+              "modifiedAt": "2023-04-03T03:03:00"
+            }
+          ]
+}
