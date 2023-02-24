@@ -23,12 +23,16 @@ const TagContainer = styled.ul`
     }
   }
 `;
-const Tag = () => {
+const Tag = ({ questionData }) => {
+  console.log(questionData.name);
   return (
     <TagContainer id='tags'>
-      <li className='tag'>
-        <span className='tag-title'>JavaScript</span>
-      </li>
+      {questionData &&
+        questionData.tags.map((tag, index) => (
+          <li key={index} className='tag'>
+            <span className='tag-title'>{tag}</span>
+          </li>
+        ))}
     </TagContainer>
   );
 };

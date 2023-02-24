@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const QENavContainer = styled.div`
-  width: ${props => props.width || '365px'};
+  width: ${props => props.width || 'static'};
   margin-top: 5px;
   z-index: 10;
   border-radius: 3px;
@@ -153,6 +153,9 @@ export function EditBodyNav() {
 
 const AnswerNavContainer = styled.div`
   margin-top: 23px;
+  position: ${props => props.position || 'static'};
+  width: ${props => props.width || '100%'};
+  min-width: ${props => props.minwidth || '100%'};
 `;
 
 export function AnswerNav() {
@@ -161,6 +164,14 @@ export function AnswerNav() {
       <EditTitleNav />
       <EditBodyNav />
       <EditTagNav />
+    </AnswerNavContainer>
+  );
+}
+export function QuestionNav() {
+  return (
+    <AnswerNavContainer position='fixed' width='370px' minwidth='370px'>
+      <EditTitleNav />
+      <EditBodyNav />
     </AnswerNavContainer>
   );
 }
