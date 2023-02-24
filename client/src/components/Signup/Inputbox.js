@@ -192,7 +192,7 @@ const Inputbox = () => {
                 name='password'
                 value={password}
                 onChange={e => setPassword(e.target.value)}
-                onBlur={() => setPasswordError(validateEmail(password))}
+                onBlur={() => setPasswordError(validatePassword(password))}
                 className='signup-form__text'
               />
               <ErrorPosition>
