@@ -1,11 +1,11 @@
 import GlobalStyles from './GlobalStyles';
-import MainP from './pages/MainP';
+import AnswerEditP from './pages/AnswerEditP';
 
 function App() {
   return (
     <>
       <GlobalStyles />
-      <MainP />
+      <AnswerEditP />
     </>
   );
 }
