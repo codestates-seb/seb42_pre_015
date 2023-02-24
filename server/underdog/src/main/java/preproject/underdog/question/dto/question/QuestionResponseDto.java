@@ -24,4 +24,8 @@ public class QuestionResponseDto {
     private List<String> tags;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 }

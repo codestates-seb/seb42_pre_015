@@ -36,7 +36,6 @@ public class QuestionController {
         Question createQuestion = questionService.createQuestion(question);
         // responseDto에 userName 넣어줘야 함.
         QuestionResponseDto responseDto = mapper.questionToQuestionResponseDto(createQuestion);
-        responseDto.getUserName();
         return new ResponseEntity(responseDto, HttpStatus.CREATED);
     }
 

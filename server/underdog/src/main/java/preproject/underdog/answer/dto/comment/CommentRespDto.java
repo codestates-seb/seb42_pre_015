@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor//API 작성 후 삭제
 public class CommentRespDto {
-
     private Long answerCommentId;
     private Long answerId;
     private String content;
@@ -23,4 +22,8 @@ public class CommentRespDto {
     private Long questionId;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }
