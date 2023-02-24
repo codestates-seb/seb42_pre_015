@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 
-export const TagInput = styled.div`
+export const InputContainer = styled.div`
   display: flex;
   align-items: center;
   height: 37px;
@@ -9,11 +9,9 @@ export const TagInput = styled.div`
   padding-left: 4px;
   border: 1px solid #ced2d5;
   border-radius: 3px;
-
   > ul {
     display: flex;
     height: 23px;
-
     > .tag {
       height: 100%;
       display: flex;
@@ -60,7 +58,7 @@ export const TagInput = styled.div`
   }
 `;
 
-const TagsInput = () => {
+const TagInput = () => {
   const initialTags = ['java', 'javascript'];
 
   const [tags, setTags] = useState(initialTags);
@@ -84,7 +82,7 @@ const TagsInput = () => {
 
   return (
     <>
-      <TagInput>
+      <InputContainer>
         <ul id='tags'>
           {tags.map((tag, index) => (
             <li key={index} className='tag'>
@@ -103,9 +101,9 @@ const TagsInput = () => {
           type='text'
           onKeyUp={event => (event.key === 'Enter' ? addTags(event) : null)}
         />
-      </TagInput>
+      </InputContainer>
     </>
   );
 };
 
-export default TagsInput;
+export default TagInput;

@@ -4,18 +4,18 @@ import { GlobeSVG } from '../../assets/NavSvg';
 
 const NavContainer = styled.div`
   width: 164px;
-  height: 180px;
+  min-width: 164px;
   position: sticky;
+  top: 53px;
   padding-top: 10px;
+  z-index: 9;
   > div {
-    height: 8%;
     width: 100%;
     color: #525960;
     padding-left: 13px;
     margin-bottom: 5px;
   }
   > nav {
-    height: 92%;
     width: 100%;
   }
 `;
