@@ -20,7 +20,6 @@ import preproject.underdog.utils.Uri;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.net.URI;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -31,11 +30,11 @@ public class AnswerController {
     private final AnswerService answerService;
     private final AnswerMapper answerMapper;
 
-    @PostMapping
+    @PostMapping//완성
     public ResponseEntity postAnswer(@RequestBody @Valid AnswerPostDto post,
                                      @PathVariable("question-id") @Positive long questionId) {
         Answer postAnswer = answerMapper.answerPostDtoToAnswer(post);
-        Answer createdAnswer = answerService.createAnswer(postAnswer);
+        Answer createdAnswer = answerService.createAnswer(postAnswer, questionId);
         URI location = Uri.createUri("/question/"+ Long.toString(questionId) +"/answer/", Long.toString(createdAnswer.getAnswerId()));
         return ResponseEntity.created(location).build();
     }
@@ -45,74 +44,75 @@ public class AnswerController {
                                       @PathVariable("question-id") @Positive long questionId,
                                       @RequestBody @Valid AnswerPatchDto patch) {
         Answer answer = answerMapper.answerPatchDtoToAnswer(patch);
-        answer.setAnswerId(answerId);
-        Answer updated = answerService.updateAnswer(answer);
+        answer.setAnswerId(answerId);//필요한가? -> 필요 -> patch에 answerId 정보 없음
+        Answer updated = answerService.updateAnswer(answer, questionId);
         return new ResponseEntity(answerMapper.answerToAnswerRespDto(updated), HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity getAnswer(@PathVariable("question-id") @Positive long questionId) {
-        List<AnswerRespDto> response = List.of(AnswerRespDto.builder()
-                .answerId(1L).voteCount(1L).content("test").questionId(1L).userId(1L).createdAt(LocalDateTime.of(2023, 4, 3, 3, 3, 0)).modifiedAt(LocalDateTime.of(2023, 4, 3, 3, 3, 0)).build());
-
-        return new ResponseEntity(response, HttpStatus.OK);
+        List<Answer> answers = answerService.getAnswer(questionId);
+        List<AnswerRespDto> responses = answerMapper.answerListToAnswerRespDto(answers);
+        return new ResponseEntity(responses, HttpStatus.OK);
     }
 
-    @DeleteMapping("{answer-id}")
+    @DeleteMapping("{answer-id}")//완성
     public ResponseEntity deleteAnswer(@PathVariable("answer-id") @Positive long answerId,
                                        @PathVariable("question-id") @Positive long questionId) {
-        answerService.deleteAnswer(answerId);
+        answerService.deleteAnswer(questionId, answerId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PostMapping("/{answer-id}/comments")
+    @PostMapping("/{answer-id}/comment")//완성
     public ResponseEntity postComment(@PathVariable("question-id") @Positive long questionId,
                                       @PathVariable("answer-id") @Positive long answerId,
                                       @RequestBody @Valid CommentPostDto post) {
         AnswerComment postComment = answerMapper.commentPostDtoToAnswerComment(post);
-        AnswerComment createdAnswer = answerService.postComment(postComment);
-        URI location = Uri.createUri("/question/"+ Long.toString(questionId) +"/answer/"+Long.toString(answerId)
-                +"/comments/", Long.toString(createdAnswer.getAnswerCommentId()));
+        AnswerComment createdAnswerComment = answerService.postComment(postComment, questionId, answerId);
+        URI location = Uri.createUri("/question/"+ Long.toString(questionId) +"/answer/"+Long.toString(answerId)+"/comment/", Long.toString(createdAnswerComment.getAnswerCommentId()));
         return ResponseEntity.created(location).build();
     }
 
-    @PatchMapping("/{answer-id}/{answer-comment-id}")
+    @PatchMapping("/{answer-id}/comment/{answer-comment-id}")
     public ResponseEntity patchComment(@PathVariable("question-id") @Positive long questionId,
                                        @PathVariable("answer-id") @Positive long answerId,
                                        @PathVariable("answer-comment-id") @Positive long answerCommentId,
                                        @RequestBody @Valid CommentPatchDto patch) {
         AnswerComment comment = answerMapper.commentPatchDtoToAnswerComment(patch);
         comment.setAnswerCommentId(answerCommentId);
-        AnswerComment updated = answerService.patchComment(comment);
+        AnswerComment updated = answerService.patchComment(comment, questionId, answerId);
         return new ResponseEntity(answerMapper.commentToAnswerCommentRespDto(updated), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{answer-id}/{answer-comment-id}")
+    @GetMapping("/{answer-id}/comments")
+    public ResponseEntity getComment(@PathVariable("question-id") @Positive long questionId,
+                                     @PathVariable("answer-id") @Positive long answerId) {
+        List<AnswerComment> comments = answerService.getComment(answerId, questionId);
+        List<CommentRespDto> responses = answerMapper.commentListToAnswerRespDto(comments);
+        return new ResponseEntity(responses, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{answer-id}/comment/{answer-comment-id}")//완성
     public ResponseEntity deleteComment(@PathVariable("answer-id") @Positive long answerId,
                                         @PathVariable("question-id") @Positive long questionId,
                                         @PathVariable("answer-comment-id") @Positive long answerCommentId) {
-        answerService.deleteComment(answerCommentId);
+        answerService.deleteComment(answerCommentId, questionId, answerId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("/{answer-id}/comment")
-    public ResponseEntity getComment(@PathVariable("question-id") @Positive long questionId) {
-        List<CommentRespDto> response = List.of(CommentRespDto.builder()
-                .answerCommentId(1L).answerId(1L).content("test").userId(1L).questionId(1L).createdAt(LocalDateTime.of(2023, 4, 3, 3, 3, 0)).modifiedAt(LocalDateTime.of(2023, 4, 3, 3, 3, 0)).build());
-
-        return new ResponseEntity(response, HttpStatus.OK);
-    }
-
-    @PostMapping("vote/{answer-id}/{user-id}")
+    @PostMapping("{answer-id}/vote/user/{user-id}")
     public ResponseEntity doVote(@PathVariable("answer-id") @Positive long answerId,
+                                 @PathVariable("question-id") @Positive long questionId,
                                  @PathVariable("user-id") @Positive long userId) {
-//        AnswerVote createdVote = answerService.doVote();
+        answerService.doVote(questionId, answerId, userId);
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @DeleteMapping("vote/{answer-id}/{user-id}")
+    @DeleteMapping("{answer-id}/vote/user/{user-id}")
     public ResponseEntity undoVote(@PathVariable("answer-id") @Positive long answerId,
+                                   @PathVariable("question-id") @Positive long questionId,
                                    @PathVariable("user-id") @Positive long userId) {
+        answerService.undoVote(questionId, answerId, userId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }

@@ -19,6 +19,7 @@ public class CommentRespDto {
     private Long answerId;
     private String content;
     private Long userId;
+    private String name;
     private Long questionId;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;

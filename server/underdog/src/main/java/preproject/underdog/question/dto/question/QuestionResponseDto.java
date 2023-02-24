@@ -8,17 +8,19 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Getter
 @AllArgsConstructor
-@Builder
 @NoArgsConstructor
+@Builder
+@Getter
 public class QuestionResponseDto {
     private long questionId;
     private long userId;
+    private String userName;
     private String title;
     private String content;
     private int viewCount;
     private int voteCount;
+    private List<String> tags;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 }

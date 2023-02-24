@@ -1,19 +1,17 @@
 package preproject.underdog.question.dto.comment;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @AllArgsConstructor
-@Getter
-@Setter
+@NoArgsConstructor
 @Builder
+@Getter
 public class QuestionCommentResponseDto {
     private long questionCommentId;
     private long userId;
+    private String userName;
     private long questionId;
     private String content;
     private LocalDateTime createdAt;
