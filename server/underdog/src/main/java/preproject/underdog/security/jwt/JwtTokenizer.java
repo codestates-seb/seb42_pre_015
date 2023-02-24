@@ -9,11 +9,13 @@ import io.jsonwebtoken.security.Keys;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import preproject.underdog.user.entity.User;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 @Component
@@ -91,5 +93,30 @@ public class JwtTokenizer {
         calendar.add(Calendar.MINUTE, expirationMinutes);
         Date expiration = calendar.getTime();
         return expiration;
+    }
+
+    public String delegateAccessToken(User user) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("username", user.getEmail());
+        claims.put("roles", user.getRoles());
+
+        String subject = user.getEmail();
+        Date expiration = getTokenExpiration(getAccessTokenExpirationMinutes());
+
+        String base64EncodedSecretKey = encodeBase64SecretKey(getSecretKey());
+
+        String accessToken = generateAccessToken(claims, subject, expiration, base64EncodedSecretKey);
+
+        return accessToken;
+    }
+
+    public String delegateRefreshToken(User user) {
+        String subject = user.getEmail();
+        Date expiration = getTokenExpiration(getRefreshTokenExpirationMinutes());
+        String base64EncodedSecretKey = encodeBase64SecretKey(getSecretKey());
+
+        String refreshToken = generateRefreshToken(subject, expiration, base64EncodedSecretKey);
+
+        return refreshToken;
     }
 }

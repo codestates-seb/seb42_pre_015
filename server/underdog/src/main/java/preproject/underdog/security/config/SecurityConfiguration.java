@@ -19,6 +19,7 @@ import preproject.underdog.security.handler.CustomAuthenticationSuccessHandler;
 import preproject.underdog.security.handler.OAuth2SuccessHandler;
 import preproject.underdog.security.jwt.JwtTokenizer;
 import preproject.underdog.security.utils.CustomAuthorityUtils;
+import preproject.underdog.user.repository.UserRepository;
 import preproject.underdog.user.service.UserService;
 
 import java.util.Arrays;
@@ -29,6 +30,7 @@ public class SecurityConfiguration {
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
     private final UserService userService;
+    private final UserRepository userRepository;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -84,7 +86,7 @@ public class SecurityConfiguration {
             customAuthenticationFilter.setAuthenticationSuccessHandler(new CustomAuthenticationSuccessHandler());  // (3) 추가
 //            customAuthenticationFilter.setAuthenticationFailureHandler(new CustomAuthenticationFailureHandler());
 //
-            VerificationFilter verificationFilter = new VerificationFilter(jwtTokenizer, authorityUtils);
+            VerificationFilter verificationFilter = new VerificationFilter(jwtTokenizer, authorityUtils, userRepository);
 
             builder
                     .addFilter(customAuthenticationFilter)

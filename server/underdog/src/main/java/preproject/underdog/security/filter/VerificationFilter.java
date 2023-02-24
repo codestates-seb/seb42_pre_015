@@ -1,6 +1,8 @@
 package preproject.underdog.security.filter;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -11,6 +13,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import preproject.underdog.security.jwt.JwtTokenizer;
 import preproject.underdog.security.utils.CustomAuthorityUtils;
 import preproject.underdog.user.entity.User;
+import preproject.underdog.user.repository.UserRepository;
+import preproject.underdog.user.service.UserService;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -18,15 +22,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.module.Configuration;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RequiredArgsConstructor
 public class VerificationFilter extends OncePerRequestFilter {  // (1)
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
+    private final UserRepository userRepository;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
@@ -65,7 +67,16 @@ public class VerificationFilter extends OncePerRequestFilter {  // (1)
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey()); // (3-2)
 
         try {
-            jwtTokenizer.verifySignature(refreshJws, base64EncodedSecretKey); // refresh 토큰 검증
+            Jws<Claims> claims = jwtTokenizer.getClaims(refreshJws, base64EncodedSecretKey);// refresh 토큰 검증
+            //리프레시 토큰 유효 -> 액세스 토큰 재발급.
+            String email = claims.getBody().getSubject();
+            Optional<User> optionalUser = userRepository.findByEmail(email);
+            User user = optionalUser.orElseThrow(()->new RuntimeException("유저 정보 없음"));
+
+            String accessToken = jwtTokenizer.delegateAccessToken(user);   // (4-2)
+            String refreshToken = jwtTokenizer.delegateRefreshToken(user);
+            response.setHeader("Authorization", "Bearer " + accessToken);  // (4-4)
+            response.setHeader("Refresh", refreshToken);
         } catch (SignatureException se) {
             request.setAttribute("exception", se);
         } catch (ExpiredJwtException ee) {
@@ -73,12 +84,6 @@ public class VerificationFilter extends OncePerRequestFilter {  // (1)
         } catch (Exception e) {
             request.setAttribute("exception", e);
         }
-
-        //리프레시 토큰 유효 -> 액세스 토큰 재발급.
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal(); //null
-        String accessToken = delegateAccessToken(user);   // (4-2)
-
-        response.setHeader("Authorization", "Bearer " + accessToken);  // (4-4)
     }
 
     private void setAuthenticationToContext(Map<String, Object> claims) {
@@ -86,20 +91,5 @@ public class VerificationFilter extends OncePerRequestFilter {  // (1)
         List<GrantedAuthority> authorities = authorityUtils.createAuthorities((List) claims.get("roles"));  // (4-2)
         Authentication authentication = new UsernamePasswordAuthenticationToken(username, null, authorities);  // (4-3)
         SecurityContextHolder.getContext().setAuthentication(authentication); // (4-4)
-    }
-
-    private String delegateAccessToken(User user) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("username", user.getEmail());
-        claims.put("roles", user.getRoles());
-
-        String subject = user.getEmail();
-        Date expiration = jwtTokenizer.getTokenExpiration(jwtTokenizer.getAccessTokenExpirationMinutes());
-
-        String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
-
-        String accessToken = jwtTokenizer.generateAccessToken(claims, subject, expiration, base64EncodedSecretKey);
-
-        return accessToken;
     }
 }

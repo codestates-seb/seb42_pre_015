@@ -48,7 +48,7 @@ spring:
 jwt:
   key: ${JWT_SECRET_KEY}
   access-token-expiration-minutes: 1
-  refresh-token-expiration-minutes: 420
+  refresh-token-expiration-minutes: 2
 mail:
   address:
     admin: ${MAIL_ADDRESS_ADMIN}

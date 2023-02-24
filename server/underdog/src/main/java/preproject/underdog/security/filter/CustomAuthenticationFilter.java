@@ -45,8 +45,8 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                                             Authentication authResult) throws ServletException, IOException {
         User user = (User) authResult.getPrincipal();  // (4-1)
 
-        String accessToken = delegateAccessToken(user);   // (4-2)
-        String refreshToken = delegateRefreshToken(user); // (4-3)
+        String accessToken = jwtTokenizer.delegateAccessToken(user);   // (4-2)
+        String refreshToken = jwtTokenizer.delegateRefreshToken(user); // (4-3)
 
         // 리프레시 토큰 DB에 저장하는 로직 만들기
 //        user.setRefreshToken(refreshToken);
@@ -55,32 +55,5 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         response.setHeader("Refresh", refreshToken);                   // (4-5)
 
         this.getSuccessHandler().onAuthenticationSuccess(request, response, authResult);
-    }
-
-    // (5)
-    private String delegateAccessToken(User user) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("username", user.getEmail());
-        claims.put("roles", user.getRoles());
-
-        String subject = user.getEmail();
-        Date expiration = jwtTokenizer.getTokenExpiration(jwtTokenizer.getAccessTokenExpirationMinutes());
-
-        String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
-
-        String accessToken = jwtTokenizer.generateAccessToken(claims, subject, expiration, base64EncodedSecretKey);
-
-        return accessToken;
-    }
-
-    // (6)
-    private String delegateRefreshToken(User user) {
-        String subject = user.getEmail();
-        Date expiration = jwtTokenizer.getTokenExpiration(jwtTokenizer.getRefreshTokenExpirationMinutes());
-        String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
-
-        String refreshToken = jwtTokenizer.generateRefreshToken(subject, expiration, base64EncodedSecretKey);
-
-        return refreshToken;
     }
 }
