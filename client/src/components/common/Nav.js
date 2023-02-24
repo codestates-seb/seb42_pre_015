@@ -26,6 +26,7 @@ const MenuContainer = styled.li`
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  cursor: pointer;
   &.current {
     background-color: #f2f2f3;
     border-right: 3px solid #fc7730;
