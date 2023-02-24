@@ -8,6 +8,7 @@ import Answer from '../components/DetailP/Answer';
 // import { questionData, answerData } from '../data/dummyData';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
+import { MainNav } from '../components/common/SideNav';
 
 const Body = styled.div`
   margin-top: 53px;
@@ -140,7 +141,7 @@ function DetailPage() {
                 <Answer answerData={answerData} />
               </Article>
               <Side>
-                <div>Something...</div>
+                <MainNav />
               </Side>
             </Content>
           </Main>
