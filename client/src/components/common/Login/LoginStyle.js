@@ -10,24 +10,17 @@ const BoxStyle = styled.div`
     @media (max-width: 640px) {
       width: 290px;
     }
-    .all-oauth-box {
-      display: grid;
-      grid-template-rows: repeat(2, 1fr);
-    }
+
     .oauth-box {
       display: grid;
-      grid-template-rows: repeat(3, 1fr);
-      grid-row-start: 2;
-      row-gap: 5px;
+      grid-template-rows: repeat(2, 1fr);
+      margin-top: 20px;
     }
-    .logo-box {
+    .logo {
+      margin-top: 70px;
+      cursor: pointer;
       display: grid;
       place-items: center;
-      grid-template-rows: repeat(2, 1fr);
-      .logo {
-        grid-row-start: 2;
-        cursor: pointer;
-      }
     }
   }
   .login-box {
@@ -54,13 +47,16 @@ const BoxStyle = styled.div`
     height: 35px;
     width: 100%;
     margin: 5px 0;
+    @media (max-width: 640px) {
+      width: 100%;
+    }
   }
   .error-svg {
     position: absolute;
     top: 12px;
     left: 230px;
     @media (max-width: 640px) {
-      left: 190px;
+      left: 210px;
     }
   }
   .support-messages {

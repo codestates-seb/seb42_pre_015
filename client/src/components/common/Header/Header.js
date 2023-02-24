@@ -9,6 +9,7 @@ import { GeneralBtn } from '../Buttons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { SOLogoSvg } from '../../../assets/Header/HeaderSVG';
+import { useNavigate } from 'react-router-dom';
 
 const StyledHeader = styled.div`
   top: 3px;
@@ -91,11 +92,11 @@ const HamburgerBtn = styled.button`
 `;
 
 function Header() {
-  const [isLogin, setIsLogIn] = useState(false);
+  const [isLogin, setIsLogin] = useState(false);
   const [isProductsClick, setIsProductsClick] = useState(false);
 
   const dropdownRef = useRef(null);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const handleWindowClick = e => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -121,7 +122,13 @@ function Header() {
           <HeaderLogoImgMini>
             <SOLogoSvg />
           </HeaderLogoImgMini>
-          <HeaderLogoImg src={HeaderLogo} alt='HeaderLogo' />
+          <HeaderLogoImg
+            src={HeaderLogo}
+            alt='HeaderLogo'
+            onClick={() => {
+              navigate('/');
+            }}
+          />
           {isLogin ? (
             <NavigationBtn
               onClick={() => setIsProductsClick(true)}
@@ -149,19 +156,23 @@ function Header() {
           ) : (
             <div style={{ marginRight: '7px' }}>
               <GeneralBtn
-                onClick={() => {
-                  setIsLogIn(true);
-                }}
                 BtnText='Log in'
                 type='off'
                 width='57px'
                 height='32px'
                 padding='0 10.4px'
+                onClick={() => {
+                  navigate('/login');
+                }}
               />
             </div>
           )}
           {isLogin ? (
-            <LoginNav />
+            <LoginNav
+              setIsLogin={() => {
+                setIsLogin(false);
+              }}
+            />
           ) : (
             <div style={{ marginRight: '7px' }}>
               <GeneralBtn
@@ -169,6 +180,9 @@ function Header() {
                 width='66px'
                 height='32px'
                 padding='0 10.4px'
+                onClick={() => {
+                  navigate('/signup');
+                }}
               />
             </div>
           )}

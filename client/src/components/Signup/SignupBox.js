@@ -51,7 +51,7 @@ const SignupBox = () => {
           </div>
           <div className='support-messages'>
             <div>
-              Already have an accout? <a href='/'> Log in </a>
+              Already have an accout? <a href='/login'> Log in </a>
             </div>
             <div>
               Are you an employer?

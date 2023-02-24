@@ -5,9 +5,10 @@ import { MainNav } from '../components/common/SideNav';
 import Nav from '../components/common/Nav';
 import Header from '../components/common/Header/Header';
 import Footer from '../components/common/Footer';
+import { useNavigate } from 'react-router-dom';
 
 const MainPContainer = styled.div`
-  padding: 24px 0 0 24px;
+  padding: 24px 0 0 16px;
   @media screen and (max-width: 980px) {
     padding: 24px;
   }
@@ -126,12 +127,20 @@ const QuestionDesContainer = styled.div`
   }
 `;
 export function MainComponent() {
+  const navigate = useNavigate();
   return (
     <div>
       <MainPContainer>
         <MainTopTitle>
           <h1>All Questions</h1>
-          <GeneralBtn BtnText='Ask Question' width='98px' height='40px' />
+          <GeneralBtn
+            BtnText='Ask Question'
+            width='98px'
+            height='40px'
+            onClick={() => {
+              navigate('/ask');
+            }}
+          />
         </MainTopTitle>
         <MainFilterContainer>
           <p>23,530,547 questions</p>
@@ -206,7 +215,7 @@ const Main = styled.div`
 const RightNav = styled.div`
   width: 300px;
   min-width: 300px;
-  margin-left: 24px;
+  margin-left: 16px;
   @media screen and (max-width: 980px) {
     display: none;
   }
