@@ -40,13 +40,12 @@ public class QuestionController {
         return ResponseEntity.created(location).build();
     }
 
-    @PatchMapping("/{question-id}/user/{user-id}")
+    @PatchMapping("/{question-id}")
     public ResponseEntity patchQuestion(@PathVariable("question-id") @Positive long questionId,
-                                        @PathVariable("user-id") @Positive long userId,
                                         @Valid @RequestBody QuestionPatchDto questionPatchDto) {
         Question question = mapper.questionPatchDtoToQuestion(questionPatchDto);
         question.setQuestionId(questionId);
-        Question editedQuestion = questionService.editQuestion(question, userId);
+        Question editedQuestion = questionService.editQuestion(question);
         return new ResponseEntity<>(mapper.questionToQuestionResponseDto(editedQuestion), HttpStatus.OK);
     }
 
@@ -78,17 +77,16 @@ public class QuestionController {
         return new ResponseEntity(mapper.commentToCommentResponseDto(createComment), HttpStatus.OK);
     }
 
-    @PatchMapping("/{question-id}/comment/{comment-id}/user/{user-id}")
+    @PatchMapping("/{question-id}/comment/{comment-id}")
     public ResponseEntity patchComment(@PathVariable("question-id") @Positive long questionId,
                                        @PathVariable("comment-id") @Positive long commentId,
-                                       @PathVariable("user-id") @Positive long userId,
                                        @RequestBody QuestionCommentPatchDto questionPatchDto) {
         QuestionComment questionComment = mapper.commentPatchDtoToQuestionComment(questionPatchDto);
-        QuestionComment editComment = questionService.editQuestionComment(questionComment, questionId, commentId, userId);
+        QuestionComment editComment = questionService.editQuestionComment(questionComment, questionId, commentId);
         return new ResponseEntity(mapper.commentToCommentResponseDto(editComment), HttpStatus.OK);
     }
 
-    @GetMapping("/{question-id}/comment") // 질문글 코멘트 정렬은 프론트에서
+    @GetMapping("/{question-id}/comments") // 질문글 코멘트 정렬은 프론트에서
     public ResponseEntity getComments(@PathVariable("question-id") long questionId) {
         List<QuestionComment> comments = questionService.getQuestionComments(questionId);
         return new ResponseEntity(mapper.commentsToResponseDto(comments), HttpStatus.OK);
@@ -97,7 +95,7 @@ public class QuestionController {
     @DeleteMapping("/{question-id}/comment/{comment-id}")
     public ResponseEntity deleteComment(@PathVariable("question-id") long questionId,
                                          @PathVariable("comment-id") long commentId){
-        questionService.deleteQuestionComment(commentId);
+        questionService.deleteQuestionComment(questionId, commentId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 

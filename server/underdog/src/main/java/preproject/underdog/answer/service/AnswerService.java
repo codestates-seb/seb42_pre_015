@@ -38,10 +38,10 @@ public class AnswerService {
         return answerRepository.save(answer);
     }
 
-    public Answer updateAnswer(Answer answer, long questionId, long userId) {
+    public Answer updateAnswer(Answer answer, long questionId) {
         questionService.findQuestionById(questionId);
-        userService.verifyUser(userId);
         Answer findAnswer = findVerifiedAnswer(answer.getAnswerId());
+        userService.verifyUser(findAnswer.getUser().getUserId()); // -> 작성자인지 검증 시큐리티로
 
         findAnswer.setContent(answer.getContent());
 
@@ -56,6 +56,7 @@ public class AnswerService {
     public void deleteAnswer(long questionId, long answerId) {
         questionService.findQuestionById(questionId);
         Answer answer = findVerifiedAnswer(answerId);
+        // 답변 작성자가 맞는지 검증 -> 시큐리티
         answerRepository.deleteById(answerId);
     }
 
@@ -66,11 +67,11 @@ public class AnswerService {
         return answerCommentRepository.save(comment);
     }
 
-    public AnswerComment patchComment(AnswerComment comment, long questionId, long answerId, long userId){
+    public AnswerComment patchComment(AnswerComment comment, long questionId, long answerId){
         questionService.findQuestionById(questionId);
-        userService.verifyUser(userId);
         findVerifiedAnswer(answerId);
         AnswerComment verifyComment = findVerifiedComment(comment.getAnswerCommentId());
+        // 댓글 작성자가 본인인지 검증 -> 시큐리티
 
         verifyComment.setContent(comment.getContent());
         return answerCommentRepository.save(verifyComment);
@@ -83,11 +84,11 @@ public class AnswerService {
         return comment;
     }
 
-    public void deleteComment(long answerCommentId, long questionId, long answerId, long userId) {
+    public void deleteComment(long answerCommentId, long questionId, long answerId) {
         questionService.findQuestionById(questionId);
         findVerifiedAnswer(answerId);
-        userService.verifyUser(userId);
         AnswerComment comment = findVerifiedComment(answerCommentId);
+        // 댓글 작성자가 본인인지 검증 -> 시큐리티
 
         answerCommentRepository.delete(comment);
     }
