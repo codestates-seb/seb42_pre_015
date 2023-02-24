@@ -263,6 +263,7 @@ function AskQuestionPage() {
               className='discard-btn'
               BtnText='Discard draft'
               width='100px'
+              onClick={() => navigate('/')}
             />
           </Buttons>
         </MainBody>
