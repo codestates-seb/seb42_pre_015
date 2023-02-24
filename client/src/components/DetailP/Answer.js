@@ -16,7 +16,7 @@ function Answer({ answerData, setAnswerData, questionId }) {
       {answerData && (
         <AnswerSection>
           <AnswerHeading answerData={answerData} />
-          <AnswerBody answerData={answerData} />
+          <AnswerBody questionId={questionId} answerData={answerData} />
           <PostAnswer questionId={questionId} setAnswerData={setAnswerData} />
         </AnswerSection>
       )}

@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import Vote from './Vote';
 import ProfileCard from './ProfileCard';
 import Comment from './Comment';
+import { useNavigate } from 'react-router-dom';
 
 const AnswerContainer = styled.div`
   display: flex;
@@ -29,17 +30,19 @@ const ControlOptions = styled.div`
   display: flex;
   width: 100px;
   justify-content: space-between;
-  > div {
-    > a,
-    span {
-      color: grey;
-    }
+  > button,
+  span {
+    background-color: #fff;
+    color: grey;
   }
 `;
-function AnswerBody({ answerData }) {
+function AnswerBody({ answerData, questionId }) {
   // ! API test할때 동적으로 answerCommentData가 바뀌는지 확인해야함
   // const { questoinId } = useParams();
   // const [answerCommentData, answerCommentIsPending, answerCommentError] = useFetch(`http://localhost:3001/question/${questoinId}/answer/${answerId}`/comment)
+
+  const navigate = useNavigate();
+
   return (
     <>
       {answerData &&
@@ -50,15 +53,18 @@ function AnswerBody({ answerData }) {
               <p>{answer.content}</p>
               <AnswerInfo>
                 <ControlOptions>
-                  <div>
-                    <a href='/'>Share</a>
-                  </div>
-                  <div>
-                    <a href='/'>Edit</a>
-                  </div>
-                  <div>
-                    <span>Delete</span>
-                  </div>
+                  <button>Share</button>
+                  <button
+                    onClick={() =>
+                      navigate(
+                        `/question/${questionId}/answeredit/${answer.answerId}`
+                      )
+                    }
+                  >
+                    Edit
+                  </button>
+
+                  <button href='/'>Delete</button>
                 </ControlOptions>
                 <ProfileCard answer={answer} />
               </AnswerInfo>
