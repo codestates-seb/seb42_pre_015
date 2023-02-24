@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import Vote from './Vote';
 import ProfileCard from './ProfileCard';
 import Comment from './Comment';
-import { answerCommentData1 } from '../../data/dummyData';
 
 const AnswerContainer = styled.div`
   display: flex;
@@ -63,7 +62,7 @@ function AnswerBody({ answerData }) {
                 </ControlOptions>
                 <ProfileCard answer={answer} />
               </AnswerInfo>
-              <Comment answerCommentData1={answerCommentData1} />
+              <Comment />
             </AnswerWrapper>
           </AnswerContainer>
         ))}
