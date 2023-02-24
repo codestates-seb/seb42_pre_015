@@ -14,6 +14,13 @@ const PostAnswerContainer = styled.div`
     > .ql-container {
       font-size: 15px;
       min-height: 200px;
+      > .ql-editor {
+        &:focus {
+          border: 1px solid #409ad6;
+          box-shadow: 0 0 0 4px #d9e9f6;
+          outline: none;
+        }
+      }
     }
   }
 `;
