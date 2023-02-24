@@ -8,6 +8,7 @@ import Header from '../components/common/Header/Header';
 import TagInput from '../components/common/TagInput';
 import Footer from '../components/common/Footer';
 import { GeneralBtn } from '../components/common/Buttons';
+import { useNavigate } from 'react-router-dom';
 
 const Main = styled.main`
   display: flex;
@@ -110,6 +111,7 @@ const Buttons = styled.div`
 `;
 
 function AskQuestionPage() {
+  const navigate = useNavigate();
   // Writing Tip Box 팝업을 위한 상태
   const [isClicked, setIsClicked] = useState(null);
 
@@ -252,6 +254,7 @@ function AskQuestionPage() {
               disabled={titleErrorMsg || contentErrorMsg}
               BtnText='Post your question'
               width={'140px'}
+              onClick={() => navigate('/')}
             >
               Post your question
             </GeneralBtn>
