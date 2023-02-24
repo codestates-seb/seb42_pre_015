@@ -122,7 +122,13 @@ function Header() {
           <HeaderLogoImgMini>
             <SOLogoSvg />
           </HeaderLogoImgMini>
-          <HeaderLogoImg src={HeaderLogo} alt='HeaderLogo' />
+          <HeaderLogoImg
+            src={HeaderLogo}
+            alt='HeaderLogo'
+            onClick={() => {
+              navigate('/');
+            }}
+          />
           {isLogin ? (
             <NavigationBtn
               onClick={() => setIsProductsClick(true)}
