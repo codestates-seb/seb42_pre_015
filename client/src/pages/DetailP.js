@@ -95,11 +95,11 @@ const NavContainer = styled.div`
 `;
 
 function DetailPage() {
+  const questionId = 1;
   // ! QuestionList랑 연결하고 나서는 url 동적으로 만들기
   // const { questionId } = useParams();
   // const [questionData, questionIsPending, questionError] = useFetch(`http://localhost:3001/question/${questionId}`)
   // const [answerData, answerIsPending, answerError] = useFetch(`http://localhost:3001/question/${questionId}/answer`)
-
   const navigate = useNavigate();
   const BASE_URL = 'http://localhost:3001';
   const [questionData, setQuestionData] = useState(null);
@@ -144,7 +144,11 @@ function DetailPage() {
             <Content className='main'>
               <Article>
                 <Question questionData={questionData} />
-                <Answer answerData={answerData} />
+                <Answer
+                  answerData={answerData}
+                  questionId={questionId}
+                  setAnswerData={setAnswerData}
+                />
               </Article>
               <Side>
                 <MainNav />

@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import { GeneralBtn } from '../common/Buttons';
 import Editor from '../common/Editor';
+import axios from 'axios';
+import { useState } from 'react';
 
 const PostAnswerContainer = styled.div`
   display: flex;
@@ -25,13 +27,31 @@ const PostAnswerContainer = styled.div`
   }
 `;
 
-function PostAnswer() {
+function PostAnswer({ setAnswerData, questionId }) {
+  const BASE_URL = 'http://localhost:3001';
+  const [answerInput, setAnswerInput] = useState('');
+
+  const handlePostAnswer = () => {
+    // ! html 그대로 서버와 주고받고 화면에 렌더링 시킬 수 있는 법 찾아보기
+    const newAnswer = {
+      userId: 1,
+      content: answerInput
+    };
+    // ! 실전 URI: `${BASE_URL}/question/{questionId}/answer`
+    axios.post(`${BASE_URL}/answerData`, { newAnswer }).then(res => {
+      setAnswerData(res.data);
+    });
+  };
+
   return (
     <PostAnswerContainer>
       <h2>Your Answer</h2>
-      {/* <textarea></textarea> */}
-      <Editor />
-      <GeneralBtn BtnText='Post Your Answer' width='128px' />
+      <Editor answerInput={answerInput} setAnswerInput={setAnswerInput} />
+      <GeneralBtn
+        BtnText='Post Your Answer'
+        width='128px'
+        onClick={handlePostAnswer}
+      />
     </PostAnswerContainer>
   );
 }

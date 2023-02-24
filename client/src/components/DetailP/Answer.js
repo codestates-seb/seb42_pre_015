@@ -10,14 +10,14 @@ const AnswerSection = styled.div`
   margin-top: 20px;
 `;
 
-function Answer({ answerData }) {
+function Answer({ answerData, setAnswerData, questionId }) {
   return (
     <>
       {answerData && (
         <AnswerSection>
           <AnswerHeading answerData={answerData} />
           <AnswerBody answerData={answerData} />
-          <PostAnswer />
+          <PostAnswer questionId={questionId} setAnswerData={setAnswerData} />
         </AnswerSection>
       )}
     </>
