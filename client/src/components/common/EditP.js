@@ -3,6 +3,9 @@ import { GeneralBtn } from './Buttons';
 import TagInput from './TagInput';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useParams, useNavigate } from 'react-router-dom';
 
 const QEditContainer = styled.div`
   width: 100%;
@@ -33,21 +36,7 @@ const QEInput = styled.input`
   border-radius: 3px;
   margin-bottom: 15px;
 `;
-const QEP = styled.p`
-  width: 100%;
-  white-space: normal;
-  margin-bottom: 15px;
-`;
-const QECode = styled.pre`
-  width: 100%;
-  background-color: rgb(246, 246, 246);
-  padding: 12px;
-  margin-bottom: 19.5px;
-  max-height: 600px;
-  code {
-    white-space: normal;
-  }
-`;
+
 const QECancelBtn = styled.button`
   margin-left: 17px;
   height: 38px;
@@ -70,7 +59,37 @@ const StyledReactQuill = styled(ReactQuill)`
     height: 100%;
   }
 `;
+const ShowConentData = styled.div`
+  margin: 70px 0 30px 0;
+  p {
+    white-space: normal;
+  }
+`;
 export function QuestionEditMain() {
+  const [QuestionData, setQuestionData] = useState([]);
+  const [QuestionInputData, setQuestionInputData] = useState();
+  const [title, setTilte] = useState();
+  const { questionId } = useParams();
+  const navigate = useNavigate();
+
+  const BASE_URL = 'http://localhost:3001';
+  useEffect(() => {
+    axios
+      .get(`${BASE_URL}/question`)
+      // 찐은 `/question/${questionId}` 임.
+      .then(res => {
+        setQuestionData(res.data);
+        setTilte(res.data.title);
+        setQuestionInputData(res.data.content);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
+  console.log(QuestionData);
+  const handleInputChange = event => {
+    setTilte(event.target.value);
+  };
   return (
     <QEditContainer>
       <QEHelpBox>
@@ -85,47 +104,89 @@ export function QuestionEditMain() {
           hyperlinks.
         </p>
       </QEHelpBox>
+
       <QELable htmlFor='Title'>Title</QELable>
       <QEInput
         placeholder='How to avoid sending a brunch of requests to update data in DB'
         id='title'
+        value={title}
+        onChange={handleInputChange}
       ></QEInput>
       <QELable htmlFor='body'>Body</QELable>
-      <StyledReactQuill id='body' className='AnswerText' />
-      <QEP>
-        I have an unregistered user that works with my application, getting some
-        progress. I keep this progress in local storage. Then, when the user
-        decides to register, I send a PUT request to sync his progress with DB.
-      </QEP>
-      <QEP>
-        For that I track its status and when it&lsquo;s become authenticated and
-        the progress parameter empty, I send a PUT request, but the problem is
-        it sends dozens of PUT requests to update the progress instead of one.
-      </QEP>
-      <QECode>
-        <code>
-          For that I track its status and when it&lsquo;s become authenticated
-          and the progress parameter empty, I send a PUT request, but the
-          problem is it sends dozens of PUT requests to update the progress
-          instead of one.
-        </code>
-      </QECode>
-      <QEP>
-        P.S. If it should be done in another way, share your ideas with me
-        please.
-      </QEP>
+      <Editor
+        QuestionInputData={QuestionInputData}
+        setQuestionInputData={setQuestionInputData}
+      />
+      <ShowConentData
+        dangerouslySetInnerHTML={{
+          __html: QuestionInputData
+        }}
+      />
       <QELable htmlFor='tags'>Tags</QELable>
       <TagInput id='tags' placeholder='e.g. (vba css json)' />
       <div style={{ marginBottom: '12px', marginTop: '12px' }}>
         <GeneralBtn width={'80px'} BtnText='Save edits'></GeneralBtn>
-        <QECancelBtn>Cancel</QECancelBtn>
+        <QECancelBtn
+          onClick={() => {
+            navigate(`/question/${questionId}`);
+          }}
+        >
+          Cancel
+        </QECancelBtn>
       </div>
       <QEAtag href='/#'>Add a comment</QEAtag>
     </QEditContainer>
   );
 }
 
+function Editor({ QuestionInputData, setQuestionInputData }) {
+  const handleText = content => {
+    setQuestionInputData(content);
+  };
+
+  return <StyledReactQuill value={QuestionInputData} onChange={handleText} />;
+}
+
+export default Editor;
+
 export function AnswerEditMain() {
+  const [AllAnswerData, AllsetAnswerData] = useState([]);
+  const [AnswerInputData, setAnswerInputData] = useState('');
+  const [answer, setAnswer] = useState(null);
+  const { questionId, answerId } = useParams();
+  const navigate = useNavigate();
+
+  const BASE_URL = 'http://localhost:3001';
+  useEffect(() => {
+    axios
+      .get(`${BASE_URL}/answer`)
+      // 찐은 `/question/${questionId}/answer` 임.
+      .then(res => {
+        AllsetAnswerData(res.data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
+
+  useEffect(() => {
+    const filteredAnswer = AllAnswerData.find(el => {
+      return el.answerId === parseInt(answerId);
+    });
+    setAnswer(filteredAnswer);
+  }, [AllAnswerData, answerId]);
+  console.log(answer);
+
+  useEffect(() => {
+    if (answer) {
+      setAnswerInputData(answer.content);
+    }
+  }, [answer]);
+
+  if (!answer) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <QEditContainer>
       <QEHelpBox margin='20px'>
@@ -143,36 +204,28 @@ export function AnswerEditMain() {
       <QELable htmlFor='Answer' fontsize='17px' margin='14px'>
         Answer
       </QELable>
-      <StyledReactQuill id='Answer' className='AnswerText' />
-      <QEP>
-        I have an unregistered user that works with my application, getting some
-        progress. I keep this progress in local storage. Then, when the user
-        decides to register, I send a PUT request to sync his progress with DB.
-      </QEP>
-      <QEP>
-        For that I track its status and when it&lsquo;s become authenticated and
-        the progress parameter empty, I send a PUT request, but the problem is
-        it sends dozens of PUT requests to update the progress instead of one.
-      </QEP>
-      <QECode>
-        <code>
-          For that I track its status and when it&lsquo;s become authenticated
-          and the progress parameter empty, I send a PUT request, but the
-          problem is it sends dozens of PUT requests to update the progress
-          instead of one.
-        </code>
-      </QECode>
-      <QEP>
-        P.S. If it should be done in another way, share your ideas with me
-        please.
-      </QEP>
+      <Editor
+        QuestionInputData={AnswerInputData}
+        setQuestionInputData={setAnswerInputData}
+      />
+      <ShowConentData
+        dangerouslySetInnerHTML={{
+          __html: AnswerInputData
+        }}
+      />
       <div style={{ marginBottom: '12px' }}>
         <GeneralBtn
           width={'80px'}
           BtnText='Save edits'
           padding='0px'
         ></GeneralBtn>
-        <QECancelBtn>Cancel</QECancelBtn>
+        <QECancelBtn
+          onClick={() => {
+            navigate(`/question/${questionId}`);
+          }}
+        >
+          Cancel
+        </QECancelBtn>
       </div>
       <QEAtag href='/#'>Add a comment</QEAtag>
     </QEditContainer>
