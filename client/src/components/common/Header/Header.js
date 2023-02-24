@@ -5,10 +5,10 @@ import UserNav from './UserNav';
 import ProductsNav from './ProductsNav';
 import Search from './Search';
 import LoginNav from './LoginNav';
+import { GeneralBtn } from '../Buttons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { SOLogoSvg } from '../../../assets/Header/HeaderSVG';
-import { GeneralBtn } from '../Buttons';
 
 const StyledHeader = styled.div`
   top: 3px;

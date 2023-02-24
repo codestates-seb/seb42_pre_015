@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Footer from '../components/common/Footer';
 
 const LoginPageStyle = styled.div`
-  background-color: #f9f9f9;
+  background-color: #f1f2f3;
   .login-page {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
