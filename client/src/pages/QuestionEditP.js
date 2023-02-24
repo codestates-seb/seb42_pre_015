@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { QuestionEditMain } from '../components/common/EditP/EditP';
-import { QuestionNav } from '../components/common/EditP/EditNav';
+import { QuestionEditMain } from '../components/common/EditP';
+import { QuestionEditNav } from '../components/common/SideNav';
 import Nav from '../components/common/Nav';
 import Header from '../components/common/Header/Header';
 import Footer from '../components/common/Footer';
@@ -51,7 +51,7 @@ export default function QuestionEditP() {
           <QuestionEditMain />
         </Main>
         <RightNav>
-          <QuestionNav />
+          <QuestionEditNav />
         </RightNav>
       </MainContainer>
       <AFooter>
