@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { useState } from 'react';
 import { GlobeSVG } from '../../assets/NavSvg';
+import { useNavigate } from 'react-router-dom';
 
 const NavContainer = styled.div`
   width: 164px;
@@ -25,6 +26,7 @@ const MenuContainer = styled.li`
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  cursor: pointer;
   &.current {
     background-color: #f2f2f3;
     border-right: 3px solid #fc7730;
@@ -47,16 +49,22 @@ const MenuContainer = styled.li`
 `;
 
 const Nav = () => {
-  const [isClicked, setIsClicked] = useState('questions');
+  const [currentLocation, setCurrentLocation] = useState('/');
+  const navigate = useNavigate();
+
+  const handleTabClick = location => {
+    setCurrentLocation(location);
+    navigate(location);
+  };
 
   return (
     <NavContainer>
       <div>PUBLIC</div>
       <nav>
-        <ol>
+        <ul>
           <MenuContainer
-            onClick={() => setIsClicked('questions')}
-            className={isClicked === 'questions' ? 'current' : null}
+            onClick={() => handleTabClick('/')}
+            className={currentLocation === '/' ? 'current' : null}
           >
             <GlobeSVG />
             <div>Questions</div>
@@ -71,7 +79,7 @@ const Nav = () => {
           <MenuContainer>
             <div>Companies</div>
           </MenuContainer>
-        </ol>
+        </ul>
       </nav>
     </NavContainer>
   );

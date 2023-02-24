@@ -158,16 +158,15 @@ const AnswerNavContainer = styled.div`
   min-width: ${props => props.minwidth || '100%'};
 `;
 
-export function AnswerNav() {
+export function AnswerEditNav() {
   return (
-    <AnswerNavContainer>
+    <AnswerNavContainer position='fixed' width='370px' minwidth='370px'>
       <EditTitleNav />
       <EditBodyNav />
-      <EditTagNav />
     </AnswerNavContainer>
   );
 }
-export function QuestionNav() {
+export function QuestionEditNav() {
   return (
     <AnswerNavContainer position='fixed' width='370px' minwidth='370px'>
       <EditTitleNav />

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { GeneralBtn } from '../Buttons';
-import TagInput from '../TagInput';
+import { GeneralBtn } from './Buttons';
+import TagInput from './TagInput';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
@@ -33,13 +33,6 @@ const QEInput = styled.input`
   border-radius: 3px;
   margin-bottom: 15px;
 `;
-// const QETextarea = styled.textarea`
-//   height: 284px;
-//   width: 100%;
-//   border: 1px solid rgb(186, 191, 196);
-//   border-radius: 3px;
-//   margin-bottom: 15px;
-// `;
 const QEP = styled.p`
   width: 100%;
   white-space: normal;
