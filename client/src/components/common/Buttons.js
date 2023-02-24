@@ -86,6 +86,7 @@ const GeneralBtn = ({
   type,
   width,
   onClick,
+
   height,
   padding
 }) => {
@@ -111,9 +112,9 @@ const GeneralBtn = ({
       color={color}
       hoverBgColor={hoverBgColor}
       width={width || '100%'}
+      height={height || '38px'}
       GeneralBtnShadow
       onClick={onClick}
-      height={height || '38px'}
       padding={padding || '10.4px;'}
     >
       {BtnText}
