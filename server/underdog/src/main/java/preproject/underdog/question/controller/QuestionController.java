@@ -16,11 +16,9 @@ import preproject.underdog.question.entity.Question;
 import preproject.underdog.question.entity.QuestionComment;
 import preproject.underdog.question.mapper.QuestionMapper;
 import preproject.underdog.question.service.QuestionService;
-import preproject.underdog.utils.UriCreator;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -36,8 +34,7 @@ public class QuestionController {
     public ResponseEntity postQuestion(@Valid @RequestBody QuestionPostDto questionPostDto) {
         Question question = mapper.questionPostDtoToQuestion(questionPostDto);
         Question createQuestion = questionService.createQuestion(question);
-        URI location = UriCreator.createUri(QUESTION_DEFAULT_URL, createQuestion.getQuestionId());
-        return ResponseEntity.created(location).build();
+        return new ResponseEntity(mapper.questionToQuestionResponseDto(createQuestion), HttpStatus.CREATED);
     }
 
     @PatchMapping("/{question-id}")

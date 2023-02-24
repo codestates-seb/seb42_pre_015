@@ -21,6 +21,7 @@ public interface QuestionMapper {
     Question questionPatchDtoToQuestion(QuestionPatchDto questionPatchDto);
     @Mapping(source = "user.userId", target = "userId")
     @Mapping(source = "user.name", target = "userName")
+    @Mapping(target = "answerCount", expression = "java(question.getAnswerList()!= null ? question.getAnswerList().size():0)")
     QuestionResponseDto questionToQuestionResponseDto(Question question);
 
     @Mapping(source = "userId", target = "user.userId")

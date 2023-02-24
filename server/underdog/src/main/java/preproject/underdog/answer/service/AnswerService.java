@@ -54,8 +54,9 @@ public class AnswerService {
     }
 
     public void deleteAnswer(long questionId, long answerId) {
-        questionService.findQuestionById(questionId);
+        Question question = questionService.findQuestionById(questionId);
         Answer answer = findVerifiedAnswer(answerId);
+
         // 답변 작성자가 맞는지 검증 -> 시큐리티
         answerRepository.deleteById(answerId);
     }
