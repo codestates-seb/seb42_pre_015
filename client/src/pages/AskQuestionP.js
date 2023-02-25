@@ -4,7 +4,6 @@ import WritingGoodQBox from '../components/AskQuestionP/WritingGoodQBox';
 import { ReactComponent as AskQuestionBackground } from '../assets/askquestion-background.svg';
 import { useState } from 'react';
 // import Footer from '../components/Common/Footer';
-import Header from '../components/common/Header/Header';
 import TagInput from '../components/common/TagInput';
 import Footer from '../components/common/Footer';
 import { GeneralBtn } from '../components/common/Buttons';
@@ -170,7 +169,6 @@ function AskQuestionPage() {
 
   return (
     <>
-      <Header />
       <Main>
         <MainHeading>
           <div className='main-heading-title'>

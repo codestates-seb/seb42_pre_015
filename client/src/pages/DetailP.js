@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import Header from '../components/common/Header/Header';
 import Footer from '../components/common/Footer';
 import Nav from '../components/common/Nav';
 import { GeneralBtn } from '../components/common/Buttons';
@@ -126,7 +125,6 @@ function DetailPage() {
 
   return (
     <>
-      <Header />
       <Body>
         <NavContainer>
           <Nav />
