@@ -5,7 +5,7 @@ import { MainNav } from '../components/common/SideNav';
 import Nav from '../components/common/Nav';
 import Header from '../components/common/Header/Header';
 import Footer from '../components/common/Footer';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Pagination from 'react-js-pagination';
@@ -46,7 +46,6 @@ const QuestionContainer = styled.div`
   padding: 16px;
   display: flex;
   border-top: 1px solid rgb(227, 230, 232);
-  /* border-bottom: 1px solid rgb(227, 230, 232); */
 `;
 const QuestionVote = styled.div`
   display: flex;
@@ -65,12 +64,17 @@ const QuestionVote = styled.div`
 const Question = styled.div`
   > div {
     margin: -2px 0 5px 0;
-
     > a {
       font-size: 17px;
       white-space: normal;
       text-decoration: none;
       color: rgb(0, 116, 204);
+      line-height: 1.5;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
     }
   }
   @media screen and (max-width: 980px) {
@@ -127,6 +131,12 @@ const QuestionDesContainer = styled.div`
     white-space: normal;
     font-size: 13px;
     margin-bottom: 8px;
+    line-height: 1.5;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
   }
 `;
 
@@ -222,7 +232,7 @@ export function MainComponent() {
             </QuestionVote>
             <Question>
               <div>
-                <a href='/#'>{el.title}</a>
+                <Link to={`/question/${el.questionId}`}>{el.title}</Link>
               </div>
               <QuestionDesContainer>
                 <p>{el.content}</p>
