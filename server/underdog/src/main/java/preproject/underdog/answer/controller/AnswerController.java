@@ -76,7 +76,7 @@ public class AnswerController {
                                        @RequestBody @Valid CommentPatchDto patch) {
         AnswerComment comment = answerMapper.commentPatchDtoToAnswerComment(patch);
         comment.setAnswerCommentId(answerCommentId);
-        List<AnswerComment> answerCommentList = answerService.patchComment(comment, questionId, answerId);
+        List<AnswerComment> answerCommentList = answerService.patchComment(comment, questionId, answerId, answerCommentId);
         return new ResponseEntity(answerMapper.commentListToAnswerRespDto(answerCommentList), HttpStatus.OK);
     }
 
@@ -96,19 +96,17 @@ public class AnswerController {
         return new ResponseEntity<>(answerMapper.commentListToAnswerRespDto(answerCommentList), HttpStatus.OK);
     }
 
-    @PostMapping("{answer-id}/vote/user/{user-id}")
+    @PostMapping("{answer-id}/vote")
     public ResponseEntity doVote(@PathVariable("answer-id") @Positive long answerId,
-                                 @PathVariable("question-id") @Positive long questionId,
-                                 @PathVariable("user-id") @Positive long userId) {
-        answerService.doVote(questionId, answerId, userId);
+                                 @PathVariable("question-id") @Positive long questionId) {
+        answerService.doVote(questionId, answerId);
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @DeleteMapping("{answer-id}/vote/user/{user-id}")
     public ResponseEntity undoVote(@PathVariable("answer-id") @Positive long answerId,
-                                   @PathVariable("question-id") @Positive long questionId,
-                                   @PathVariable("user-id") @Positive long userId) {
-        answerService.undoVote(questionId, answerId, userId);
+                                   @PathVariable("question-id") @Positive long questionId) {
+        answerService.undoVote(questionId, answerId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }
