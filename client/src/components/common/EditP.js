@@ -156,10 +156,13 @@ export function AnswerEditMain() {
   const { questionId, answerId } = useParams();
   const navigate = useNavigate();
 
-  const BASE_URL = 'http://localhost:3001';
+  // const BASE_URL = 'http://localhost:3001';
+  // const BASE_URL =
+  //   'http://ec2-3-34-45-167.ap-northeast-2.compute.amazonaws.com:8080';
   useEffect(() => {
     axios
-      .get(`${BASE_URL}/answer`)
+      // .get(`${BASE_URL}/answer`)
+      .get(`/question/${questionId}/answer`)
       // 찐은 `/question/${questionId}/answer` 임.
       .then(res => {
         AllsetAnswerData(res.data);
@@ -169,6 +172,17 @@ export function AnswerEditMain() {
       });
   }, []);
 
+  useEffect(() => {
+    axios
+      .get(`/question/${questionId}`)
+      .then(res => {
+        console.log(res.data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
+  console.log(AllAnswerData);
   useEffect(() => {
     const filteredAnswer = AllAnswerData.find(el => {
       return el.answerId === parseInt(answerId);
