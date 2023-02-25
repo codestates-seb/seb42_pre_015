@@ -67,20 +67,20 @@ const ShowConentData = styled.div`
 `;
 export function QuestionEditMain() {
   const [QuestionData, setQuestionData] = useState([]);
-  const [QuestionInputData, setQuestionInputData] = useState();
-  const [title, setTilte] = useState();
+  const [QuestionInputData, setQuestionInputData] = useState('');
+  const [title, setTilte] = useState('');
   const { questionId } = useParams();
   const navigate = useNavigate();
 
-  const BASE_URL = 'http://localhost:3001';
   useEffect(() => {
     axios
-      .get(`${BASE_URL}/question`)
+      .get(`/question/${questionId}`)
       // 찐은 `/question/${questionId}` 임.
       .then(res => {
         setQuestionData(res.data);
         setTilte(res.data.title);
         setQuestionInputData(res.data.content);
+        console.log('질문겟해옴ㅋㅋ');
       })
       .catch(error => {
         console.error(error);
@@ -88,7 +88,7 @@ export function QuestionEditMain() {
   }, []);
   console.log(QuestionData);
   const handleInputChange = event => {
-    setTilte(event.target.value);
+    setTilte(event.target.value || '');
   };
   return (
     <QEditContainer>
@@ -125,7 +125,26 @@ export function QuestionEditMain() {
       <QELable htmlFor='tags'>Tags</QELable>
       <TagInput id='tags' placeholder='e.g. (vba css json)' />
       <div style={{ marginBottom: '12px', marginTop: '12px' }}>
-        <GeneralBtn width={'80px'} BtnText='Save edits'></GeneralBtn>
+        <GeneralBtn
+          width={'80px'}
+          BtnText='Save edits'
+          onClick={() => {
+            const data = {
+              title: title,
+              content: QuestionInputData,
+              tags: ['ab', 'ba']
+            };
+            axios
+              .patch(`/question/${questionId}`, data)
+              .then(response => {
+                console.log(response.data);
+              })
+              .catch(error => {
+                console.error(error.response);
+              });
+            navigate(`/question/${questionId}`);
+          }}
+        ></GeneralBtn>
         <QECancelBtn
           onClick={() => {
             navigate(`/question/${questionId}`);
@@ -156,47 +175,31 @@ export function AnswerEditMain() {
   const { questionId, answerId } = useParams();
   const navigate = useNavigate();
 
-  // const BASE_URL = 'http://localhost:3001';
-  // const BASE_URL =
-  //   'http://ec2-3-34-45-167.ap-northeast-2.compute.amazonaws.com:8080';
   useEffect(() => {
     axios
-      // .get(`${BASE_URL}/answer`)
       .get(`/question/${questionId}/answer`)
-      // 찐은 `/question/${questionId}/answer` 임.
       .then(res => {
         AllsetAnswerData(res.data);
+        console.log('엑시오스받음');
       })
       .catch(error => {
         console.error(error);
       });
   }, []);
 
-  useEffect(() => {
-    axios
-      .get(`/question/${questionId}`)
-      .then(res => {
-        console.log(res.data);
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  }, []);
-  console.log(AllAnswerData);
   useEffect(() => {
     const filteredAnswer = AllAnswerData.find(el => {
       return el.answerId === parseInt(answerId);
     });
     setAnswer(filteredAnswer);
   }, [AllAnswerData, answerId]);
-  console.log(answer);
 
   useEffect(() => {
     if (answer) {
       setAnswerInputData(answer.content);
     }
   }, [answer]);
-
+  console.log(AnswerInputData);
   if (!answer) {
     return <div>Loading...</div>;
   }
@@ -232,6 +235,18 @@ export function AnswerEditMain() {
           width={'80px'}
           BtnText='Save edits'
           padding='0px'
+          onClick={() => {
+            const data = { content: AnswerInputData };
+            axios
+              .patch(`/question/${questionId}/answer/${answerId}`, data)
+              .then(response => {
+                console.log(response.data);
+              })
+              .catch(error => {
+                console.error(error.response);
+              });
+            navigate(`/question/${questionId}`);
+          }}
         ></GeneralBtn>
         <QECancelBtn
           onClick={() => {
