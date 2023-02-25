@@ -116,7 +116,7 @@ public class AnswerService {
             findAnswer.setVoteCount(findAnswer.getVoteCount() - 1);
             answerRepository.save(findAnswer);
         }
-        else throw new RuntimeException("취소할 좋아요가 없습니다.");
+        else throw new BusinessLogicException(ExceptionCode.VOTE_NOT_FOUND);
     }
 
     public Answer findVerifiedAnswer(long answerId) {
@@ -133,7 +133,7 @@ public class AnswerService {
         Optional<AnswerComment> optionalAnswer = answerCommentRepository.findById(answerCommentId);
         AnswerComment findComment =
                 optionalAnswer.orElseThrow(() ->
-                        new BusinessLogicException(ExceptionCode.COMMENT_NOT_FOUND));
+                        new BusinessLogicException(ExceptionCode.ANSWER_COMMENT_NOT_FOUND));
 
         return findComment;
     }
