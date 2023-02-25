@@ -8,7 +8,7 @@ spring:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     show-sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         highlight_sql: true
@@ -52,8 +52,8 @@ spring:
               - profile
 jwt:
   key: ${JWT_SECRET_KEY}
-  access-token-expiration-minutes: 1
-  refresh-token-expiration-minutes: 2
+  access-token-expiration-minutes: 30
+  refresh-token-expiration-minutes: 420
 mail:
   address:
     admin: ${MAIL_ADDRESS_ADMIN}

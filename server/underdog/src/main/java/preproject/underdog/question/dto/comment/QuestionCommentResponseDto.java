@@ -16,8 +16,4 @@ public class QuestionCommentResponseDto {
     private String content;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
 }

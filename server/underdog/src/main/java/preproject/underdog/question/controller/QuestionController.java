@@ -36,7 +36,7 @@ public class QuestionController {
         Question createQuestion = questionService.createQuestion(question);
         // responseDto에 userName 넣어줘야 함.
         QuestionResponseDto responseDto = mapper.questionToQuestionResponseDto(createQuestion);
-        return new ResponseEntity(responseDto, HttpStatus.CREATED); // 질문 전체 리스트 반환
+        return new ResponseEntity(responseDto, HttpStatus.CREATED);
     }
 
     @PatchMapping("/{question-id}")
@@ -72,8 +72,8 @@ public class QuestionController {
     public ResponseEntity postComment(@PathVariable("question-id") @Positive long questionId,
                                       @RequestBody QuestionCommentPostDto questionCommentPostDto) {
         QuestionComment questionComment = mapper.commentPostDtoToQuestionComment(questionCommentPostDto);
-        QuestionComment createComment = questionService.createQuestionComment(questionComment, questionId);
-        return new ResponseEntity(mapper.commentToCommentResponseDto(createComment), HttpStatus.OK); // 전체 코멘트 리스트 반환
+        List<QuestionComment> questionCommentList = questionService.createQuestionComment(questionComment, questionId);
+        return new ResponseEntity(mapper.commentsToResponseDto(questionCommentList), HttpStatus.OK);
     }
 
     @PatchMapping("/{question-id}/comment/{comment-id}")
@@ -81,8 +81,8 @@ public class QuestionController {
                                        @PathVariable("comment-id") @Positive long commentId,
                                        @RequestBody QuestionCommentPatchDto questionPatchDto) {
         QuestionComment questionComment = mapper.commentPatchDtoToQuestionComment(questionPatchDto);
-        QuestionComment editComment = questionService.editQuestionComment(questionComment, questionId, commentId);
-        return new ResponseEntity(mapper.commentToCommentResponseDto(editComment), HttpStatus.OK); // 전체 코멘트 리스트 반환
+        List<QuestionComment> questionCommentList = questionService.editQuestionComment(questionComment, questionId, commentId);
+        return new ResponseEntity(mapper.commentsToResponseDto(questionCommentList), HttpStatus.OK);
     }
 
     @GetMapping("/{question-id}/comments") // 질문글 코멘트 정렬은 프론트에서
@@ -94,22 +94,20 @@ public class QuestionController {
     @DeleteMapping("/{question-id}/comment/{comment-id}")
     public ResponseEntity deleteComment(@PathVariable("question-id") long questionId,
                                          @PathVariable("comment-id") long commentId){
-        questionService.deleteQuestionComment(questionId, commentId);
-        return new ResponseEntity(HttpStatus.NO_CONTENT); // 전체 코멘트 리스트 반환
+        List<QuestionComment> questionCommentList = questionService.deleteQuestionComment(questionId, commentId);
+        return new ResponseEntity(mapper.commentsToResponseDto(questionCommentList), HttpStatus.OK);
     }
 
     //vote 기능 메서드
-    @PostMapping("/{question-id}/vote/user/{user-id}")
-    public ResponseEntity postVote(@PathVariable("question-id") long questionId,
-                                   @PathVariable("user-id") long userId) {
-        questionService.createVote(userId, questionId);
+    @PostMapping("/{question-id}/vote") // 엔드포인트 수정됨
+    public ResponseEntity postVote(@PathVariable("question-id") long questionId){
+        questionService.createVote(questionId);
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @DeleteMapping("/{question-id}/vote/user/{user-id}")
-    public ResponseEntity deleteVote(@PathVariable("question-id") long questionId,
-                                     @PathVariable("user-id") long userId) {
-       questionService.cancelVote(questionId, userId);
+    @DeleteMapping("/{question-id}/vote")
+    public ResponseEntity deleteVote(@PathVariable("question-id") long questionId){
+       questionService.cancelVote(questionId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }

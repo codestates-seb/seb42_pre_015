@@ -16,8 +16,6 @@ import java.util.List;
 @Setter
 @Getter
 public class QuestionPostDto {
-    @NotNull
-    private long userId;
     @NotEmpty(message = "질문 제목을 작성해야 합니다.")
     private String title;
     @NotEmpty(message = "질문 내용을 작성해야 합니다.")
