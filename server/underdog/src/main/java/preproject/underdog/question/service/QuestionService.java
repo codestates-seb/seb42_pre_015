@@ -6,6 +6,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import preproject.underdog.exception.BusinessLogicException;
+import preproject.underdog.exception.ExceptionCode;
 import preproject.underdog.question.entity.Question;
 import preproject.underdog.question.entity.QuestionComment;
 import preproject.underdog.question.entity.QuestionVote;
@@ -26,13 +28,14 @@ public class QuestionService {
     private final QuestionCommentRepo questionCommentRepo;
     private final UserService userService;
 
-    public Question createQuestion(Question question) { //질문글 등록
+    public Question createQuestion(Question question) {
+        //회원인지 검증 로직 추가
         return questionRepository.save(question);
     }
 
-    public Question editQuestion(Question question, Long userId) { //유저 추가
+    public Question editQuestion(Question question) {
         Question findQuestion = findQuestionById(question.getQuestionId());
-        userService.verifyUser(userId);
+        // 작성자 검증 로직 추가
 
         Optional.ofNullable(question.getTitle())
                 .ifPresent(title -> findQuestion.setTitle(title));
@@ -57,23 +60,26 @@ public class QuestionService {
 
     public void deleteQuestion(long questionId) { //질문글 삭제
         Question findQuestion = findQuestionById(questionId);
+        // 작성자 검증 로직 추가
         questionRepository.deleteById(questionId);
     }
 
-    public QuestionComment createQuestionComment(QuestionComment comment, long questionId) {
+    public List<QuestionComment> createQuestionComment(QuestionComment comment, long questionId) {
         Question foundQuestion = findQuestionById(questionId); // 질문이 있는지 검증
-        User foundUser = userService.verifyUser(comment.getUser().getUserId());
+        User foundUser = userService.verifyUser(comment.getUser().getUserId()); // -> 회원인지 시큐리티로 검증
 
         comment.setQuestion(foundQuestion);
         comment.setUser(foundUser);
-
         foundQuestion.getQuestionCommentList().add(comment);
-        return questionCommentRepo.save(comment);
+        questionCommentRepo.save(comment);
+
+        return questionCommentRepo.findByQuestionId(foundQuestion.getQuestionId());
     }
 
-    public QuestionComment editQuestionComment(QuestionComment comment, long questionId, long commentId, long userId) {
+    public List<QuestionComment> editQuestionComment(QuestionComment comment, long questionId, long commentId) {
         Question findQuestion = findQuestionById(questionId);
-        User user = userService.verifyUser(userId);
+        findVerifiedComment(commentId);
+        // 작성자 검증 로직 추가
 
         QuestionComment findComment = findQuestion.getQuestionCommentList().stream()
                 .filter(d -> d.getQuestionCommentId() == commentId)
@@ -81,16 +87,22 @@ public class QuestionService {
                 .orElseThrow(RuntimeException::new);
 
         findComment.setContent(comment.getContent());
-        return questionCommentRepo.save(findComment);
+        questionCommentRepo.save(findComment);
+
+        return questionCommentRepo.findByQuestionId(findQuestion.getQuestionId());
     }
 
     public List<QuestionComment> getQuestionComments(long questionId) {
         Question question = findQuestionById(questionId);
-        return question.getQuestionCommentList();
+        return questionCommentRepo.findByQuestionId(question.getQuestionId());
     }
 
-    public void deleteQuestionComment(long commentId) {
+    public List<QuestionComment> deleteQuestionComment(long questionId, long commentId) {
+        Question question = findQuestionById(questionId);
+        findVerifiedComment(commentId);
+        //작성자 확인
         questionCommentRepo.deleteById(commentId);
+        return questionCommentRepo.findByQuestionId(question.getQuestionId());
     }
 
     public void createVote(long userId, long questionId) {
@@ -121,5 +133,15 @@ public class QuestionService {
         Optional<Question> optionalQuestion = questionRepository.findById(questionId);
         Question question = optionalQuestion.orElseThrow(() -> new RuntimeException("질문 없음"));
         return question;
+    }
+
+    public QuestionComment findVerifiedComment(long questionCommentId) {
+
+        Optional<QuestionComment> optionalQuestionComment = questionCommentRepo.findById(questionCommentId);
+        QuestionComment findComment =
+                optionalQuestionComment.orElseThrow(() ->
+                        new BusinessLogicException(ExceptionCode.COMMENT_NOT_FOUND));
+
+        return findComment;
     }
 }

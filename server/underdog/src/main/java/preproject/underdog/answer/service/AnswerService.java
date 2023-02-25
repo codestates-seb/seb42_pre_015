@@ -31,21 +31,23 @@ public class AnswerService {
     private final UserService userService;
 
 
-    public Answer createAnswer(Answer answer, Long questionId) {
+    public List<Answer> createAnswer(Answer answer, Long questionId) {
         Question question = questionService.findQuestionById(questionId);
         userService.verifyUser(answer.getUser().getUserId());
         answer.setQuestion(question);
-        return answerRepository.save(answer);
+        answerRepository.save(answer);
+
+        return answerRepository.findByQuestionId(question.getQuestionId());
     }
 
-    public Answer updateAnswer(Answer answer, long questionId, long userId) {
-        questionService.findQuestionById(questionId);
-        userService.verifyUser(userId);
+    public List<Answer> updateAnswer(Answer answer, long questionId) {
+        Question question = questionService.findQuestionById(questionId);
         Answer findAnswer = findVerifiedAnswer(answer.getAnswerId());
+        userService.verifyUser(findAnswer.getUser().getUserId()); // -> 작성자인지 검증 시큐리티로
 
         findAnswer.setContent(answer.getContent());
-
-        return answerRepository.save(findAnswer);
+        answerRepository.save(findAnswer);
+        return answerRepository.findByQuestionId(question.getQuestionId());
     }
 
     public List<Answer> getAnswer(long questionId) {
@@ -53,27 +55,32 @@ public class AnswerService {
         return answer;
     }
 
-    public void deleteAnswer(long questionId, long answerId) {
-        questionService.findQuestionById(questionId);
+    public List<Answer> deleteAnswer(long questionId, long answerId) {
+        Question question = questionService.findQuestionById(questionId);
         Answer answer = findVerifiedAnswer(answerId);
+
+        // 답변 작성자가 맞는지 검증 -> 시큐리티
         answerRepository.deleteById(answerId);
+        return answerRepository.findByQuestionId(question.getQuestionId());
     }
 
-    public AnswerComment postComment(AnswerComment comment, long questionId, long answerId) {
+    public List<AnswerComment> postComment(AnswerComment comment, long questionId, long answerId) {
         questionService.findQuestionById(questionId);
         Answer verifyAnswer = findVerifiedAnswer(answerId);
         comment.setAnswer(verifyAnswer);
-        return answerCommentRepository.save(comment);
+        answerCommentRepository.save(comment);
+        return answerRepository.findByAnswerId(answerId);
     }
 
-    public AnswerComment patchComment(AnswerComment comment, long questionId, long answerId, long userId){
+    public List<AnswerComment> patchComment(AnswerComment comment, long questionId, long answerId){
         questionService.findQuestionById(questionId);
-        userService.verifyUser(userId);
-        findVerifiedAnswer(answerId);
+        Answer answer = findVerifiedAnswer(answerId);
         AnswerComment verifyComment = findVerifiedComment(comment.getAnswerCommentId());
+        // 댓글 작성자가 본인인지 검증 -> 시큐리티
 
         verifyComment.setContent(comment.getContent());
-        return answerCommentRepository.save(verifyComment);
+        answerCommentRepository.save(verifyComment);
+        return answerRepository.findByAnswerId(answer.getAnswerId());
     }
 
     public List<AnswerComment> getComment(long answerId, long questionId) {
@@ -83,13 +90,13 @@ public class AnswerService {
         return comment;
     }
 
-    public void deleteComment(long answerCommentId, long questionId, long answerId, long userId) {
+    public List<AnswerComment> deleteComment(long answerCommentId, long questionId, long answerId) {
         questionService.findQuestionById(questionId);
-        findVerifiedAnswer(answerId);
-        userService.verifyUser(userId);
+        Answer answer = findVerifiedAnswer(answerId);
         AnswerComment comment = findVerifiedComment(answerCommentId);
-
+        // 댓글 작성자가 본인인지 검증 -> 시큐리티
         answerCommentRepository.delete(comment);
+        return answerRepository.findByAnswerId(answer.getAnswerId());
     }
 
     public void doVote(long questionId, long answerId, long userId) {
@@ -136,13 +143,4 @@ public class AnswerService {
 
         return findComment;
     }
-
-    public Question findVerifiedQuestion(long questionId) {
-        Optional<Question> optionalQuestion = questionRepository.findById(questionId);
-        Question findQuestion =
-                optionalQuestion.orElseThrow(() ->
-                        new BusinessLogicException(ExceptionCode.QUESTION_NOT_FOUND));
-        return findQuestion;
-    }
-
 }

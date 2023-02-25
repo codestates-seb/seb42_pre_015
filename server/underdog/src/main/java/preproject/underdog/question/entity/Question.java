@@ -1,9 +1,6 @@
 package preproject.underdog.question.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import preproject.underdog.answer.entity.Answer;
 import preproject.underdog.auditing.Auditable;
@@ -22,7 +19,7 @@ public class Question extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long questionId;
-    @Column(name = "title ", nullable = false)
+    @Column(name = "title", nullable = false)
     private String title;
     @Column(name = "content", nullable = false)
     private String content;
