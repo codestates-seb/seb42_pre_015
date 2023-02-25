@@ -22,6 +22,13 @@ const AnswerWrapper = styled.div`
   }
 `;
 
+const Answercontent = styled.p`
+  white-space: normal;
+  font-size: 15px;
+  line-height: 22.5px;
+  margin-bottom: 24px;
+`;
+
 const AnswerInfo = styled.div`
   display: flex;
   justify-content: space-between;
@@ -66,7 +73,9 @@ function AnswerBody({ answerData, questionId }) {
           <AnswerContainer key={answer.answerId}>
             <Vote answer={answer} />
             <AnswerWrapper>
-              <p>{answer.content}</p>
+              <Answercontent
+                dangerouslySetInnerHTML={{ __html: answer.content }}
+              ></Answercontent>
               <AnswerInfo>
                 <ControlOptions>
                   <button>Share</button>

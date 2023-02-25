@@ -249,7 +249,7 @@ function AskQuestionPage() {
                 typing to see suggestions.
               </p>
               <TagInput
-                formValues={formValues}
+                tags={formValues.tags}
                 handleEditForm={handleEditForm}
               />
             </InputBox>

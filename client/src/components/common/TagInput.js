@@ -58,7 +58,17 @@ export const InputContainer = styled.div`
   }
 `;
 
-const TagInput = ({ formValues, handleEditForm }) => {
+const TagInput = () => {
+  // const initialValue = tags || []
+
+  // !질문 수정 페이지
+  // initial tags === 기존에 있던 태그
+  // 추가 / 삭제 기능이 되야함.
+
+  // !질문 추가 페이지
+  // initial tags === 빈배열.
+  // 추가 / 삭제 기능이 되야함.
+
   const initialTags = ['java', 'javascript'];
 
   const [tags, setTags] = useState(initialTags);

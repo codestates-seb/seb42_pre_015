@@ -55,7 +55,9 @@ function Question({ questionId, questionData }) {
         <QuestionContainer>
           <Vote questionData={questionData} />
           <QuestionWrapper>
-            <p>{questionData.content}</p>
+            <p dangerouslySetInnerHTML={{ __html: questionData.content }}>
+              {/* {questionData.content} */}
+            </p>
             <Tag questionData={questionData} />
             <QuestionInfo>
               <ControlOptions>
