@@ -7,6 +7,7 @@ import QuestionEditP from '../src/pages/QuestionEditP';
 import DetailP from '../src/pages/DetailPage';
 import LoginP from '../src/pages/LoginP';
 import SignupP from '../src/pages/SignupP';
+import Header from './components/common/Header/Header';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <GlobalStyles />
       <BrowserRouter>
         <div className='app'>
+          <Header />
           <Routes>
             <Route exact path='/' element={<MainP />} />
 
