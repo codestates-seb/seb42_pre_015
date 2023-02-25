@@ -7,7 +7,7 @@ import { useState } from 'react';
 import Header from '../components/common/Header/Header';
 import TagInput from '../components/common/TagInput';
 import Footer from '../components/common/Footer';
-// import { GeneralBtn } from '../components/common/Buttons';
+import { GeneralBtn } from '../components/common/Buttons';
 // import { useNavigate } from 'react-router-dom';
 
 import axios from 'axios';
@@ -103,15 +103,15 @@ const InputBox = styled.div`
   }
 `;
 
-// const Buttons = styled.div`
-//   width: 70%;
-//   display: flex;
-//   justify-content: flex-start;
-//   margin-bottom: 15px;
-//   > button {
-//     margin-right: 10px;
-//   }
-// `;
+const Buttons = styled.div`
+  width: 70%;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 15px;
+  > button {
+    margin-right: 10px;
+  }
+`;
 
 function AskQuestionPage() {
   // const navigate = useNavigate();
@@ -159,7 +159,7 @@ function AskQuestionPage() {
   const handleSubmit = e => {
     e.preventDefault();
 
-    const newQuestion = { userId: 1, ...formValues };
+    const newQuestion = { userId: 1, ...formValues, tags: ['test1', 'test2'] };
     console.log('newQuestion:', newQuestion);
 
     axios.post('/question', newQuestion).then(res => {
@@ -259,14 +259,14 @@ function AskQuestionPage() {
               />
             ) : null}
           </div>
-          <button type='submit'>Submit버튼</button>
-          {/* <Buttons>
+          {/* <button type='submit'>Submit버튼</button> */}
+          <Buttons>
             <GeneralBtn
               type='button'
               disabled={titleErrorMsg || contentErrorMsg}
               BtnText='Post your question'
               width={'140px'}
-              onClick={() => navigate('/')}
+              // onClick={() => navigate('/')}
             >
               Post your question
             </GeneralBtn>
@@ -275,9 +275,9 @@ function AskQuestionPage() {
               className='discard-btn'
               BtnText='Discard draft'
               width='100px'
-              onClick={() => navigate('/')}
+              // onClick={() => navigate('/')}
             />
-          </Buttons> */}
+          </Buttons>
         </MainBody>
       </Main>
       <Footer />
