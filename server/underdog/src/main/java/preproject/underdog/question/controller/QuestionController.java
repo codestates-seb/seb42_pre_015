@@ -36,7 +36,7 @@ public class QuestionController {
         Question createQuestion = questionService.createQuestion(question);
         // responseDto에 userName 넣어줘야 함.
         QuestionResponseDto responseDto = mapper.questionToQuestionResponseDto(createQuestion);
-        return new ResponseEntity(responseDto, HttpStatus.CREATED);
+        return new ResponseEntity(responseDto, HttpStatus.CREATED); // 질문 전체 리스트 반환
     }
 
     @PatchMapping("/{question-id}")
@@ -73,7 +73,7 @@ public class QuestionController {
                                       @RequestBody QuestionCommentPostDto questionCommentPostDto) {
         QuestionComment questionComment = mapper.commentPostDtoToQuestionComment(questionCommentPostDto);
         QuestionComment createComment = questionService.createQuestionComment(questionComment, questionId);
-        return new ResponseEntity(mapper.commentToCommentResponseDto(createComment), HttpStatus.OK);
+        return new ResponseEntity(mapper.commentToCommentResponseDto(createComment), HttpStatus.OK); // 전체 코멘트 리스트 반환
     }
 
     @PatchMapping("/{question-id}/comment/{comment-id}")
@@ -82,7 +82,7 @@ public class QuestionController {
                                        @RequestBody QuestionCommentPatchDto questionPatchDto) {
         QuestionComment questionComment = mapper.commentPatchDtoToQuestionComment(questionPatchDto);
         QuestionComment editComment = questionService.editQuestionComment(questionComment, questionId, commentId);
-        return new ResponseEntity(mapper.commentToCommentResponseDto(editComment), HttpStatus.OK);
+        return new ResponseEntity(mapper.commentToCommentResponseDto(editComment), HttpStatus.OK); // 전체 코멘트 리스트 반환
     }
 
     @GetMapping("/{question-id}/comments") // 질문글 코멘트 정렬은 프론트에서
@@ -95,7 +95,7 @@ public class QuestionController {
     public ResponseEntity deleteComment(@PathVariable("question-id") long questionId,
                                          @PathVariable("comment-id") long commentId){
         questionService.deleteQuestionComment(questionId, commentId);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity(HttpStatus.NO_CONTENT); // 전체 코멘트 리스트 반환
     }
 
     //vote 기능 메서드

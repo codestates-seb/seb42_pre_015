@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import preproject.underdog.exception.BusinessLogicException;
 import preproject.underdog.exception.ExceptionCode;
@@ -14,9 +15,11 @@ import preproject.underdog.question.entity.QuestionVote;
 import preproject.underdog.question.repository.QuestionCommentRepo;
 import preproject.underdog.question.repository.QuestionRepo;
 import preproject.underdog.user.entity.User;
+import preproject.underdog.user.repository.UserRepository;
 import preproject.underdog.user.service.UserService;
 
 import javax.transaction.Transactional;
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,8 +30,11 @@ public class QuestionService {
     private final QuestionRepo questionRepository;
     private final QuestionCommentRepo questionCommentRepo;
     private final UserService userService;
+    private final UserRepository userRepository;
 
     public Question createQuestion(Question question) {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
         //회원인지 검증 로직 추가
         return questionRepository.save(question);
     }
