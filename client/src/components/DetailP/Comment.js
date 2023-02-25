@@ -69,7 +69,7 @@ function Comment({
   questionId,
   questionCommentData,
   setQuestionCommentData,
-  answerCommentData1
+  answerCommentData
 }) {
   const [isAddClicked, setIsAddClicked] = useState(false);
   const [newQuestionComment, setNewQuestionComment] = useState('');
@@ -124,9 +124,9 @@ function Comment({
           ) : null}
         </CommentContainer>
       )}
-      {answerCommentData1 && (
+      {answerCommentData && (
         <CommentContainer>
-          {answerCommentData1.map(comment => (
+          {answerCommentData.map(comment => (
             <CommentWrapper key={comment.answerCommentId}>
               <span className='comment content'>{comment.content}</span>
               <span className='comment name'>{comment.userName}</span>

@@ -2,7 +2,8 @@ import styled from 'styled-components';
 import Vote from './Vote';
 import ProfileCard from './ProfileCard';
 import Comment from './Comment';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 
 const AnswerContainer = styled.div`
@@ -39,7 +40,7 @@ const ControlOptions = styled.div`
 `;
 function AnswerBody({ answerData, questionId }) {
   // ! API test할때 동적으로 answerCommentData가 바뀌는지 확인해야함
-  // const { questoinId } = useParams();
+  const { answerId } = useParams();
   // const [answerCommentData, answerCommentIsPending, answerCommentError] = useFetch(`http://localhost:3001/question/${questoinId}/answer/${answerId}`/comment)
 
   const navigate = useNavigate();
@@ -47,6 +48,16 @@ function AnswerBody({ answerData, questionId }) {
     //! delete 마저 구현하기
     axios.delete('/');
   };
+
+  const [answerCommentData, setAnswerCommentData] = useState(null);
+
+  useEffect(() => {
+    axios
+      .get(`/question/${questionId}/answer/${answerId}/comments`)
+      .then(res => {
+        setAnswerCommentData(res.data);
+      });
+  }, [answerId]);
 
   return (
     <>
@@ -73,7 +84,7 @@ function AnswerBody({ answerData, questionId }) {
                 </ControlOptions>
                 <ProfileCard answer={answer} />
               </AnswerInfo>
-              <Comment />
+              <Comment answerCommentData={answerCommentData} />
             </AnswerWrapper>
           </AnswerContainer>
         ))}
