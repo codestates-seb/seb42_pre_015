@@ -100,21 +100,28 @@ function DetailPage() {
   // const { questionId } = useParams();
   // const [questionData, questionIsPending, questionError] = useFetch(`http://localhost:3001/question/${questionId}`)
   // const [answerData, answerIsPending, answerError] = useFetch(`http://localhost:3001/question/${questionId}/answer`)
+
+  // console.log('questionId:', questionId);
   const navigate = useNavigate();
-  const BASE_URL = 'http://localhost:3001';
   const [questionData, setQuestionData] = useState(null);
   const [answerData, setAnswerData] = useState(null);
 
   useEffect(() => {
-    axios.get(`${BASE_URL}/questionData`).then(res => {
+    axios.get(`/question/${questionId}`).then(res => {
+      console.log('res.data:', res.data);
       setQuestionData(res.data);
     });
   }, []);
 
   useEffect(() => {
-    axios.get(`${BASE_URL}/answerData`).then(res => {
-      setAnswerData(res.data);
-    });
+    axios
+      .get(`/question/${questionId}/answer`)
+      .then(res => {
+        console.log('res.data: ', res.data);
+      })
+      .catch(error => {
+        console.error('error:', error);
+      });
   }, []);
 
   return (

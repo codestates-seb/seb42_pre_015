@@ -98,6 +98,7 @@ const TagInput = () => {
         </ul>
         <input
           className='tag-input'
+          name='tags'
           type='text'
           onKeyUp={event => (event.key === 'Enter' ? addTags(event) : null)}
         />
