@@ -142,7 +142,7 @@ public class AnswerService {
         findAnswer.setVoteCount(findAnswer.getVoteCount()+1);
     }
 
-    public void undoVote(long questionId, long answerId) {
+    public void undoVote(long questionId, long answerId) {//userId 제거
         questionService.findQuestionById(questionId);//질문 검증
         Answer findAnswer = findVerifiedAnswer(answerId);//답변 검증
         //유저 검증

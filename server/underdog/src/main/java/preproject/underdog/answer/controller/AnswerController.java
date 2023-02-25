@@ -96,14 +96,14 @@ public class AnswerController {
         return new ResponseEntity<>(answerMapper.commentListToAnswerRespDto(answerCommentList), HttpStatus.OK);
     }
 
-    @PostMapping("{answer-id}/vote")
+    @PostMapping("{answer-id}/vote")//엔드포인트 수정, userId 제거
     public ResponseEntity doVote(@PathVariable("answer-id") @Positive long answerId,
                                  @PathVariable("question-id") @Positive long questionId) {
         answerService.doVote(questionId, answerId);
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @DeleteMapping("{answer-id}/vote/user/{user-id}")
+    @DeleteMapping("{answer-id}/vote")//엔드포인트 수정, userId 제거
     public ResponseEntity undoVote(@PathVariable("answer-id") @Positive long answerId,
                                    @PathVariable("question-id") @Positive long questionId) {
         answerService.undoVote(questionId, answerId);
