@@ -58,13 +58,23 @@ export const InputContainer = styled.div`
   }
 `;
 
-const TagInput = () => {
+const TagInput = ({ formValues, handleEditForm }) => {
   const initialTags = ['java', 'javascript'];
 
   const [tags, setTags] = useState(initialTags);
 
-  const removeTags = indexToRemove => {
+  // const tags = formValues.tags;
+  // console.log('tags:', tags);
+
+  const removeTags = (indexToRemove, id) => {
     setTags(tags.filter(tag => tag !== tags[indexToRemove]));
+    // const updatedTags = todo.tags.filter(tag => tag !== tags[indexToRemove]);
+    // const updatedForm = todos.map(todo => {
+    //   if (todo.id === id) {
+    //     return { ...todo, tags: updatedTags };
+    //   }
+    //   return todo;
+    // });
   };
 
   const addTags = event => {
@@ -75,6 +85,7 @@ const TagInput = () => {
         event.target.value = '';
       } else {
         setTags([...tags, event.target.value]);
+        event.target.value = '';
         event.target.value = '';
       }
     }
