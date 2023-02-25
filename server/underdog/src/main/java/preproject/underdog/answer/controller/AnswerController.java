@@ -15,11 +15,9 @@ import preproject.underdog.answer.entity.Answer;
 import preproject.underdog.answer.entity.AnswerComment;
 import preproject.underdog.answer.mapper.AnswerMapper;
 import preproject.underdog.answer.service.AnswerService;
-import preproject.underdog.utils.Uri;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -35,8 +33,7 @@ public class AnswerController {
                                      @PathVariable("question-id") @Positive long questionId) {
         Answer postAnswer = answerMapper.answerPostDtoToAnswer(post);
         Answer createdAnswer = answerService.createAnswer(postAnswer, questionId);
-        URI location = Uri.createUri("/question/"+ Long.toString(questionId) +"/answer/", Long.toString(createdAnswer.getAnswerId()));
-        return ResponseEntity.created(location).build();
+        return new ResponseEntity(answerMapper.answerToAnswerRespDto(createdAnswer), HttpStatus.CREATED);
     }
 
     @PatchMapping("/{answer-id}")
@@ -69,8 +66,7 @@ public class AnswerController {
                                       @RequestBody @Valid CommentPostDto post) {
         AnswerComment postComment = answerMapper.commentPostDtoToAnswerComment(post);
         AnswerComment createdAnswerComment = answerService.postComment(postComment, questionId, answerId);
-        URI location = Uri.createUri("/question/"+ Long.toString(questionId) +"/answer/"+Long.toString(answerId)+"/comment/", Long.toString(createdAnswerComment.getAnswerCommentId()));
-        return ResponseEntity.created(location).build();
+        return new ResponseEntity(answerMapper.commentToAnswerCommentRespDto(createdAnswerComment), HttpStatus.CREATED);
     }
 
     @PatchMapping("/{answer-id}/comment/{answer-comment-id}")

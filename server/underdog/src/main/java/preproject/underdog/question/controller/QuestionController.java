@@ -12,15 +12,14 @@ import preproject.underdog.question.dto.comment.QuestionCommentPatchDto;
 import preproject.underdog.question.dto.comment.QuestionCommentPostDto;
 import preproject.underdog.question.dto.question.QuestionPatchDto;
 import preproject.underdog.question.dto.question.QuestionPostDto;
+import preproject.underdog.question.dto.question.QuestionResponseDto;
 import preproject.underdog.question.entity.Question;
 import preproject.underdog.question.entity.QuestionComment;
 import preproject.underdog.question.mapper.QuestionMapper;
 import preproject.underdog.question.service.QuestionService;
-import preproject.underdog.utils.UriCreator;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -28,7 +27,6 @@ import java.util.List;
 @Validated //Question 관련 컨트롤러 메서드
 @RequiredArgsConstructor
 public class QuestionController {
-    private final static String QUESTION_DEFAULT_URL = "/question";
     private final QuestionService questionService;
     private final QuestionMapper mapper;
 
@@ -36,8 +34,9 @@ public class QuestionController {
     public ResponseEntity postQuestion(@Valid @RequestBody QuestionPostDto questionPostDto) {
         Question question = mapper.questionPostDtoToQuestion(questionPostDto);
         Question createQuestion = questionService.createQuestion(question);
-        URI location = UriCreator.createUri(QUESTION_DEFAULT_URL, createQuestion.getQuestionId());
-        return ResponseEntity.created(location).build();
+        // responseDto에 userName 넣어줘야 함.
+        QuestionResponseDto responseDto = mapper.questionToQuestionResponseDto(createQuestion);
+        return new ResponseEntity(responseDto, HttpStatus.CREATED);
     }
 
     @PatchMapping("/{question-id}")
