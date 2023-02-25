@@ -48,9 +48,9 @@ const SignupText = () => {
             <p>
               Collaborate and share knowledge with a private group for FREE.
               <br />
-              <a href='/' style={{ color: '#0895ff' }}>
+              <span style={{ color: '#0895ff' }}>
                 Get Stack Overflow for Teams free for up to 50 users.
-              </a>
+              </span>
             </p>
           </div>
         </div>

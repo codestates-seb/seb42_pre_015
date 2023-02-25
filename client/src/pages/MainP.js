@@ -3,7 +3,6 @@ import { GeneralBtn } from '../components/common/Buttons';
 import Data from '../data/MOCK_DATA.json';
 import { MainNav } from '../components/common/SideNav';
 import Nav from '../components/common/Nav';
-import Header from '../components/common/Header/Header';
 import Footer from '../components/common/Footer';
 import { useNavigate } from 'react-router-dom';
 
@@ -227,9 +226,7 @@ const AFooter = styled.div`
 export default function MainP() {
   return (
     <Container>
-      <APHeader>
-        <Header />
-      </APHeader>
+      <APHeader></APHeader>
       <MainContainer>
         <NavContainer>
           <Nav />

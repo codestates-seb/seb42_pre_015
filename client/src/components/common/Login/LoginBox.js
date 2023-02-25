@@ -1,4 +1,5 @@
 import { GeneralBtn } from '../Buttons';
+import { Link } from 'react-router-dom';
 import BoxStyle from '../Login/LoginStyle';
 import OAuthBox from '../../Signup/OAuthbox';
 import axios from 'axios';
@@ -146,7 +147,7 @@ const LoginBox = () => {
           {/* Support Message */}
           <div className='support-messages'>
             <div>
-              Don&apos;t have an account?<a href='/signup'> Sign up </a>
+              Don&apos;t have an account?<Link to='/signup'> Sign up </Link>
             </div>
             <div>
               Are you an employer?
