@@ -72,8 +72,8 @@ public class QuestionController {
     public ResponseEntity postComment(@PathVariable("question-id") @Positive long questionId,
                                       @RequestBody QuestionCommentPostDto questionCommentPostDto) {
         QuestionComment questionComment = mapper.commentPostDtoToQuestionComment(questionCommentPostDto);
-        QuestionComment createComment = questionService.createQuestionComment(questionComment, questionId);
-        return new ResponseEntity(mapper.commentToCommentResponseDto(createComment), HttpStatus.OK);
+        List<QuestionComment> questionCommentList = questionService.createQuestionComment(questionComment, questionId);
+        return new ResponseEntity(mapper.commentsToResponseDto(questionCommentList), HttpStatus.OK);
     }
 
     @PatchMapping("/{question-id}/comment/{comment-id}")
@@ -81,8 +81,8 @@ public class QuestionController {
                                        @PathVariable("comment-id") @Positive long commentId,
                                        @RequestBody QuestionCommentPatchDto questionPatchDto) {
         QuestionComment questionComment = mapper.commentPatchDtoToQuestionComment(questionPatchDto);
-        QuestionComment editComment = questionService.editQuestionComment(questionComment, questionId, commentId);
-        return new ResponseEntity(mapper.commentToCommentResponseDto(editComment), HttpStatus.OK);
+        List<QuestionComment> questionCommentList = questionService.editQuestionComment(questionComment, questionId, commentId);
+        return new ResponseEntity(mapper.commentsToResponseDto(questionCommentList), HttpStatus.OK);
     }
 
     @GetMapping("/{question-id}/comments") // 질문글 코멘트 정렬은 프론트에서
@@ -94,8 +94,8 @@ public class QuestionController {
     @DeleteMapping("/{question-id}/comment/{comment-id}")
     public ResponseEntity deleteComment(@PathVariable("question-id") long questionId,
                                          @PathVariable("comment-id") long commentId){
-        questionService.deleteQuestionComment(questionId, commentId);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        List<QuestionComment> questionCommentList = questionService.deleteQuestionComment(questionId, commentId);
+        return new ResponseEntity(mapper.commentsToResponseDto(questionCommentList), HttpStatus.OK);
     }
 
     //vote 기능 메서드

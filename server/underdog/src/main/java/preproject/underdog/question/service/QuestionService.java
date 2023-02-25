@@ -64,18 +64,19 @@ public class QuestionService {
         questionRepository.deleteById(questionId);
     }
 
-    public QuestionComment createQuestionComment(QuestionComment comment, long questionId) {
+    public List<QuestionComment> createQuestionComment(QuestionComment comment, long questionId) {
         Question foundQuestion = findQuestionById(questionId); // 질문이 있는지 검증
         User foundUser = userService.verifyUser(comment.getUser().getUserId()); // -> 회원인지 시큐리티로 검증
 
         comment.setQuestion(foundQuestion);
         comment.setUser(foundUser);
-
         foundQuestion.getQuestionCommentList().add(comment);
-        return questionCommentRepo.save(comment);
+        questionCommentRepo.save(comment);
+
+        return questionCommentRepo.findByQuestionId(foundQuestion.getQuestionId());
     }
 
-    public QuestionComment editQuestionComment(QuestionComment comment, long questionId, long commentId) {
+    public List<QuestionComment> editQuestionComment(QuestionComment comment, long questionId, long commentId) {
         Question findQuestion = findQuestionById(questionId);
         findVerifiedComment(commentId);
         // 작성자 검증 로직 추가
@@ -86,19 +87,22 @@ public class QuestionService {
                 .orElseThrow(RuntimeException::new);
 
         findComment.setContent(comment.getContent());
-        return questionCommentRepo.save(findComment);
+        questionCommentRepo.save(findComment);
+
+        return questionCommentRepo.findByQuestionId(findQuestion.getQuestionId());
     }
 
     public List<QuestionComment> getQuestionComments(long questionId) {
         Question question = findQuestionById(questionId);
-        return question.getQuestionCommentList();
+        return questionCommentRepo.findByQuestionId(question.getQuestionId());
     }
 
-    public void deleteQuestionComment(long questionId, long commentId) {
-        findQuestionById(questionId);
+    public List<QuestionComment> deleteQuestionComment(long questionId, long commentId) {
+        Question question = findQuestionById(questionId);
         findVerifiedComment(commentId);
         //작성자 확인
         questionCommentRepo.deleteById(commentId);
+        return questionCommentRepo.findByQuestionId(question.getQuestionId());
     }
 
     public void createVote(long userId, long questionId) {

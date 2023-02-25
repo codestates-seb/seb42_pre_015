@@ -11,5 +11,4 @@ public class UnderdogApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(UnderdogApplication.class, args);
 	}
-
 }
