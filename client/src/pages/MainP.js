@@ -31,17 +31,38 @@ const MainTopBtnGather = styled.div`
   align-items: center;
 `;
 const MainTopBtn = styled.button`
+  cursor: pointer;
   padding: 10.4px;
   margin: 0;
   color: #6a737c;
   border: 1px solid rgb(159, 166, 173);
-  background-color: ${props => props.bgcolor || 'white'};
+  background-color: ${props => (props.active ? '#e3e6e8' : '#FFFFFF')};
   border-radius: ${props => props.borderRadius || '0px'};
   &:hover {
-    background-color: #f8f9f9;
+    background-color: ${props => (props.active ? '#e3e6e8' : '#f8f9f9')};
     color: #525960;
   }
 `;
+const StylePageContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const StylePageBtn = styled.button`
+  display: flex;
+  align-items: center;
+  border: 1px solid rgb(214, 217, 220);
+  height: 25px;
+  border-radius: 3px;
+  margin: 0 3px;
+  padding: 0 8px;
+  background-color: ${props => (props.active ? '#f48225;' : 'white')};
+  &:hover {
+    background-color: ${props => (props.active ? '#f48225;' : 'gray')};
+  }
+`;
+
 const QuestionContainer = styled.div`
   padding: 16px;
   display: flex;
@@ -147,8 +168,8 @@ const PageNationContainer = styled.div`
   padding-left: 24px;
   .pagination {
     display: flex;
+    align-items: center;
     justify-content: center;
-    margin-top: 20px;
     li {
       display: flex;
       align-items: center;
@@ -177,16 +198,43 @@ export function MainComponent() {
   const [AllQestion, setAllQuestion] = useState([]);
   const [PageNationData, setPageNationData] = useState([]);
   const [activePage, setActivePage] = useState(1);
+  const [activeButton, setActiveButton] = useState(1);
+  const [activePageItemButton, setActivePageItemButton] = useState(15);
+  const [Filter, setFilter] = useState('createdAt,asc');
+
+  const handlePageItemClick = buttonNumber => {
+    setActivePageItemButton(buttonNumber);
+    console.log(buttonNumber);
+  };
+
+  const handleFilterClick = buttonNumber => {
+    setActiveButton(buttonNumber);
+    if (buttonNumber === 1) {
+      console.log(Filter);
+      setFilter('createdAt,asc');
+    } else if (buttonNumber === 2) {
+      console.log(Filter);
+      setFilter('createdAt,desc');
+    } else if (buttonNumber === 3) {
+      console.log(Filter);
+      setFilter('voteCount,asc');
+    }
+  };
 
   const handlePageChange = pageNumber => {
     setActivePage(pageNumber);
     console.log(pageNumber);
   };
 
-  const serverUrl = 'http://localhost:3001';
   useEffect(() => {
     axios
-      .get(`${serverUrl}/questionData`)
+      .get(`/question`, {
+        params: {
+          page: activePage,
+          size: activePageItemButton,
+          sort: Filter
+        }
+      })
       .then(res => {
         setAllQuestion(res.data.data);
         setPageNationData(res.data.pageInfo);
@@ -194,7 +242,7 @@ export function MainComponent() {
       .catch(error => {
         console.error(error);
       });
-  }, []);
+  }, [activePage, activePageItemButton, Filter]);
 
   const navigate = useNavigate();
   return (
@@ -214,11 +262,26 @@ export function MainComponent() {
         <MainFilterContainer>
           <p>{PageNationData.totalElements} questions</p>
           <MainTopBtnGather>
-            <MainTopBtn borderRadius='4px 0 0 4px' bgcolor='#e3e6e8'>
+            <MainTopBtn
+              borderRadius='4px 0 0 4px'
+              active={activeButton === 1}
+              onClick={() => handleFilterClick(1)}
+            >
               Newest
             </MainTopBtn>
-            <MainTopBtn>Oldest</MainTopBtn>
-            <MainTopBtn borderRadius='0 4px 4px 0'>Vote</MainTopBtn>
+            <MainTopBtn
+              active={activeButton === 2}
+              onClick={() => handleFilterClick(2)}
+            >
+              Oldest
+            </MainTopBtn>
+            <MainTopBtn
+              borderRadius='0 4px 4px 0'
+              active={activeButton === 3}
+              onClick={() => handleFilterClick(3)}
+            >
+              Vote
+            </MainTopBtn>
           </MainTopBtnGather>
         </MainFilterContainer>
       </MainPContainer>
@@ -227,7 +290,7 @@ export function MainComponent() {
           <QuestionContainer key={index}>
             <QuestionVote>
               <p>{el.voteCount} votes</p>
-              <p style={{ color: 'rgb(82,89,96)' }}>{el.answer} answers</p>
+              <p style={{ color: 'rgb(82,89,96)' }}>{el.answerCount} answers</p>
               <p style={{ color: 'rgb(82,89,96)' }}>{el.viewCount} views</p>
             </QuestionVote>
             <Question>
@@ -247,9 +310,9 @@ export function MainComponent() {
                   <a href='/#'>{el.userName}</a>
                   <span>{el.asked}</span>
                   <a href='/#'>
-                    modified{' '}
+                    createdAt
                     <span style={{ color: 'rgb(82,89,96)' }}>
-                      {el.modifiedAt}
+                      {el.createdAt}
                     </span>
                   </a>
                 </UserContainer>
@@ -259,15 +322,40 @@ export function MainComponent() {
         );
       })}
       <PageNationContainer>
-        <Pagination
-          activePage={activePage}
-          itemsCountPerPage={20}
-          totalItemsCount={450}
-          pageRangeDisplayed={5}
-          onChange={handlePageChange}
-          prevPageText='Prev'
-          nextPageText='Next'
-        />
+        {PageNationData.totalElements ? (
+          <Pagination
+            activePage={activePage}
+            itemsCountPerPage={activePageItemButton}
+            totalItemsCount={PageNationData.totalElements}
+            pageRangeDisplayed={5}
+            onChange={handlePageChange}
+            prevPageText='Prev'
+            nextPageText='Next'
+          />
+        ) : (
+          <></>
+        )}
+        <StylePageContainer>
+          <StylePageBtn
+            active={activePageItemButton === 15}
+            onClick={() => handlePageItemClick(15)}
+          >
+            15
+          </StylePageBtn>
+          <StylePageBtn
+            active={activePageItemButton === 30}
+            onClick={() => handlePageItemClick(30)}
+          >
+            30
+          </StylePageBtn>
+          <StylePageBtn
+            active={activePageItemButton === 50}
+            onClick={() => handlePageItemClick(50)}
+          >
+            50
+          </StylePageBtn>
+          <p>per page</p>
+        </StylePageContainer>
       </PageNationContainer>
     </div>
   );
