@@ -3,7 +3,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 // import './Editor.css';
 
-function Editor({ answerInput, setAnswerInput }) {
+function Editor({ newAnswer, setNewAnswer }) {
   //   const [text, setText] = useState('');
 
   const modules = {
@@ -44,14 +44,14 @@ function Editor({ answerInput, setAnswerInput }) {
   const handleText = content => {
     // console.log('value:', editor.getText(content));
     // setText(editor.getText(content));
-    setAnswerInput(content);
+    setNewAnswer(content);
   };
 
   return (
     <ReactQuill
       modules={modules}
       formats={formats}
-      value={answerInput}
+      value={newAnswer}
       onChange={handleText}
     />
   );
