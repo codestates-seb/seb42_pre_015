@@ -7,6 +7,7 @@ import TagInput from '../components/common/TagInput';
 import Footer from '../components/common/Footer';
 import { GeneralBtn } from '../components/common/Buttons';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Main = styled.main`
   display: flex;
@@ -109,6 +110,7 @@ const Buttons = styled.div`
 `;
 
 function AskQuestionPage() {
+  const navigate = useNavigate();
   // Writing Tip Box 팝업을 위한 상태
   const [isClicked, setIsClicked] = useState(null);
 
@@ -158,7 +160,7 @@ function AskQuestionPage() {
 
     axios.post('/question', newQuestion).then(res => {
       console.log('res.data: ', res.data);
-      // navigate('/');
+      navigate(`/question/${res.data.questionId}`);
     });
   };
 
