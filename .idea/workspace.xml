@@ -4,14 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4fa2fb37-ad9a-43db-80fc-e2739e87231a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/underdog/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/.gradle/file-system.probe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/underdog/BOOT-INF/classes/static/docs/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/BOOT-INF/classes/static/docs/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/underdog/build/generated/sources/annotationProcessor/java/main/preproject/underdog/answer/mapper/AnswerMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/build/generated/sources/annotationProcessor/java/main/preproject/underdog/answer/mapper/AnswerMapperImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/underdog/build/generated/sources/annotationProcessor/java/main/preproject/underdog/user/mapper/UserMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/build/generated/sources/annotationProcessor/java/main/preproject/underdog/user/mapper/UserMapperImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/underdog/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/src/main/resources/application.yml" afterDir="false" />
-    </list>
+    <list default="true" id="4fa2fb37-ad9a-43db-80fc-e2739e87231a" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
