@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 public class QuestionCommentPostDto {
     @NotNull
-    private long userId;
+    private long userId; // 서비스 로직에 시큐리티 적용 후, 삭제
     @NotEmpty(message = "댓글 내용을 작성해야 합니다.")
     private String content;
 }
