@@ -4,7 +4,82 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4fa2fb37-ad9a-43db-80fc-e2739e87231a" name="Changes" comment="" />
+    <list default="true" id="4fa2fb37-ad9a-43db-80fc-e2739e87231a" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/server/underdog/src/main/java/preproject/underdog/dto/LoginDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/underdog/src/main/java/preproject/underdog/security/config/PasswordEncoderConfiguration.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/underdog/src/main/java/preproject/underdog/security/config/SecurityConfiguration.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/underdog/src/main/java/preproject/underdog/security/filter/CustomAuthenticationFilter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/underdog/src/main/java/preproject/underdog/security/filter/VerificationFilter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/underdog/src/main/java/preproject/underdog/security/handler/CustomAuthenticationSuccessHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/underdog/src/main/java/preproject/underdog/security/handler/OAuth2SuccessHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/underdog/src/main/java/preproject/underdog/security/jwt/JwtTokenizer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/underdog/src/main/java/preproject/underdog/security/userDetailsService/CustomUserDetailsService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/underdog/src/main/java/preproject/underdog/security/utils/CustomAuthorityUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/.gradle/7.6/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/.gradle/7.6/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/.gradle/7.6/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/.gradle/7.6/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/.gradle/7.6/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/.gradle/7.6/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/.gradle/7.6/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/.gradle/7.6/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/.gradle/7.6/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/.gradle/7.6/fileHashes/resourceHashesCache.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/.gradle/file-system.probe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/build/classes/java/main/preproject/UnderdogApplication.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/build/classes/java/main/preproject/underdog/answer/dto/answer/AnswerPatchDto.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/build/classes/java/main/preproject/underdog/answer/dto/answer/AnswerPostDto.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/build/classes/java/main/preproject/underdog/answer/dto/answer/AnswerRespDto$AnswerRespDtoBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/build/classes/java/main/preproject/underdog/answer/dto/comment/CommentPatchDto.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/build/classes/java/main/preproject/underdog/answer/dto/comment/CommentPostDto.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/build/classes/java/main/preproject/underdog/answer/dto/comment/CommentRespDto$CommentRespDtoBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/build/classes/java/main/preproject/underdog/answer/entity/Answer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/build/classes/java/main/preproject/underdog/answer/entity/AnswerComment.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/build/classes/java/main/preproject/underdog/answer/entity/AnswerVote.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/build/classes/java/main/preproject/underdog/answer/mapper/AnswerMapper.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/build/classes/java/main/preproject/underdog/answer/mapper/AnswerMapperImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/build/classes/java/main/preproject/underdog/answer/repository/AnswerRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/build/classes/java/main/preproject/underdog/auditing/Auditable.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/build/classes/java/main/preproject/underdog/auditing/BaseTimeEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/build/classes/java/main/preproject/underdog/auditing/TimeManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/build/classes/java/main/preproject/underdog/dto/PageDto$PageInfo.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/build/classes/java/main/preproject/underdog/dto/PageDto.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/build/classes/java/main/preproject/underdog/exception/BusinessLogicException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/build/classes/java/main/preproject/underdog/exception/ExceptionCode.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/build/classes/java/main/preproject/underdog/question/controller/QuestionController.class" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/build/classes/java/main/preproject/underdog/question/controller/QuestionController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/build/classes/java/main/preproject/underdog/question/dto/comment/QuestionCommentPatchDto.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/build/classes/java/main/preproject/underdog/question/dto/comment/QuestionCommentPostDto.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/build/classes/java/main/preproject/underdog/question/dto/comment/QuestionCommentResponseDto$QuestionCommentResponseDtoBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/build/classes/java/main/preproject/underdog/question/dto/comment/QuestionCommentResponseDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/build/classes/java/main/preproject/underdog/question/dto/comment/QuestionCommentResponseDto.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/build/classes/java/main/preproject/underdog/question/dto/question/QuestionPatchDto.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/build/classes/java/main/preproject/underdog/question/dto/question/QuestionPostDto.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/build/classes/java/main/preproject/underdog/question/dto/question/QuestionResponseDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/build/classes/java/main/preproject/underdog/question/dto/question/QuestionResponseDto.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/build/classes/java/main/preproject/underdog/question/entity/QuestionComment.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/build/classes/java/main/preproject/underdog/question/entity/QuestionVote.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/build/classes/java/main/preproject/underdog/question/service/QuestionService.class" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/build/classes/java/main/preproject/underdog/question/service/QuestionService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/build/classes/java/main/preproject/underdog/user/controller/UserController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/build/classes/java/main/preproject/underdog/user/dto/UserDto$Post.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/build/classes/java/main/preproject/underdog/user/dto/UserDto.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/build/classes/java/main/preproject/underdog/user/entity/User.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/build/classes/java/main/preproject/underdog/user/mapper/UserMapper.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/build/classes/java/main/preproject/underdog/user/mapper/UserMapperImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/build/classes/java/main/preproject/underdog/user/repository/UserRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/build/classes/java/main/preproject/underdog/user/service/UserService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/build/classes/java/main/preproject/underdog/utils/Uri.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/build/generated/sources/annotationProcessor/java/main/preproject/underdog/answer/mapper/AnswerMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/build/generated/sources/annotationProcessor/java/main/preproject/underdog/answer/mapper/AnswerMapperImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/build/generated/sources/annotationProcessor/java/main/preproject/underdog/user/mapper/UserMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/build/generated/sources/annotationProcessor/java/main/preproject/underdog/user/mapper/UserMapperImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/build/resources/main/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/build/resources/main/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/src/main/java/preproject/underdog/question/controller/QuestionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/src/main/java/preproject/underdog/question/controller/QuestionController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/src/main/java/preproject/underdog/question/dto/comment/QuestionCommentPostDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/src/main/java/preproject/underdog/question/dto/comment/QuestionCommentPostDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/src/main/java/preproject/underdog/question/dto/comment/QuestionCommentResponseDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/src/main/java/preproject/underdog/question/dto/comment/QuestionCommentResponseDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/src/main/java/preproject/underdog/question/dto/question/QuestionPostDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/src/main/java/preproject/underdog/question/dto/question/QuestionPostDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/src/main/java/preproject/underdog/question/dto/question/QuestionResponseDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/src/main/java/preproject/underdog/question/dto/question/QuestionResponseDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/src/main/java/preproject/underdog/question/mapper/QuestionMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/src/main/java/preproject/underdog/question/mapper/QuestionMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/src/main/java/preproject/underdog/question/service/QuestionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/src/main/java/preproject/underdog/question/service/QuestionService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/src/main/java/preproject/underdog/user/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/src/main/java/preproject/underdog/user/entity/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/src/main/java/preproject/underdog/user/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/src/main/java/preproject/underdog/user/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/src/main/resources/application.yml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

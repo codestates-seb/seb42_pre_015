@@ -99,17 +99,15 @@ public class QuestionController {
     }
 
     //vote 기능 메서드
-    @PostMapping("/{question-id}/vote/user/{user-id}")
-    public ResponseEntity postVote(@PathVariable("question-id") long questionId,
-                                   @PathVariable("user-id") long userId) {
-        questionService.createVote(userId, questionId);
+    @PostMapping("/{question-id}/vote") // 엔드포인트 수정됨
+    public ResponseEntity postVote(@PathVariable("question-id") long questionId){
+        questionService.createVote(questionId);
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @DeleteMapping("/{question-id}/vote/user/{user-id}")
-    public ResponseEntity deleteVote(@PathVariable("question-id") long questionId,
-                                     @PathVariable("user-id") long userId) {
-       questionService.cancelVote(questionId, userId);
+    @DeleteMapping("/{question-id}/vote")
+    public ResponseEntity deleteVote(@PathVariable("question-id") long questionId){
+       questionService.cancelVote(questionId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }

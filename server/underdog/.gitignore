@@ -37,7 +37,7 @@ out/
 .vscode/
 
 ### yml
-application.yml
+*.yml
 
 ### gradle
 *.gradle
