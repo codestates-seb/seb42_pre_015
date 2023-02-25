@@ -3,14 +3,10 @@ import WritingTipBox from '../components/AskQuestionP/WritingTipBox';
 import WritingGoodQBox from '../components/AskQuestionP/WritingGoodQBox';
 import { ReactComponent as AskQuestionBackground } from '../assets/askquestion-background.svg';
 import { useState } from 'react';
-// import Footer from '../components/Common/Footer';
 import TagInput from '../components/common/TagInput';
 import Footer from '../components/common/Footer';
 import { GeneralBtn } from '../components/common/Buttons';
-// import { useNavigate } from 'react-router-dom';
-
 import axios from 'axios';
-// import { BASE_URL } from '../Globals';
 
 const Main = styled.main`
   display: flex;
@@ -113,7 +109,6 @@ const Buttons = styled.div`
 `;
 
 function AskQuestionPage() {
-  // const navigate = useNavigate();
   // Writing Tip Box 팝업을 위한 상태
   const [isClicked, setIsClicked] = useState(null);
 
@@ -257,14 +252,12 @@ function AskQuestionPage() {
               />
             ) : null}
           </div>
-          {/* <button type='submit'>Submit버튼</button> */}
           <Buttons>
             <GeneralBtn
-              type='button'
+              type='submit'
               disabled={titleErrorMsg || contentErrorMsg}
               BtnText='Post your question'
               width={'140px'}
-              // onClick={() => navigate('/')}
             >
               Post your question
             </GeneralBtn>
@@ -273,7 +266,6 @@ function AskQuestionPage() {
               className='discard-btn'
               BtnText='Discard draft'
               width='100px'
-              // onClick={() => navigate('/')}
             />
           </Buttons>
         </MainBody>

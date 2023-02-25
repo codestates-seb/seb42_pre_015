@@ -39,15 +39,15 @@ const ControlOptions = styled.div`
   }
 `;
 
-function Question({ questionData }) {
-  const BASE_URL = 'http://localhost:3001';
-  const [questionCommentData, setquestionCommentData] = useState(null);
+function Question({ questionId, questionData }) {
+  // const BASE_URL = 'http://localhost:3001';
+  const [questionCommentData, setQuestionCommentData] = useState(null);
 
   useEffect(() => {
-    axios.get(`${BASE_URL}/questionCommentData`).then(res => {
-      setquestionCommentData(res.data);
+    axios.get(`/question/${questionId}/comments`).then(res => {
+      setQuestionCommentData(res.data);
     });
-  }, []);
+  }, [questionId]);
 
   return (
     <>
@@ -71,7 +71,11 @@ function Question({ questionData }) {
               </ControlOptions>
               <ProfileCard questionData={questionData} />
             </QuestionInfo>
-            <Comment questionCommentData={questionCommentData} />
+            <Comment
+              questionId={questionId}
+              questionCommentData={questionCommentData}
+              setQuestionCommentData={setQuestionCommentData}
+            />
           </QuestionWrapper>
         </QuestionContainer>
       )}

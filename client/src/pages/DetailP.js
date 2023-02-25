@@ -8,7 +8,7 @@ import Answer from '../components/DetailP/Answer';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { MainNav } from '../components/common/SideNav';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const Body = styled.div`
   margin-top: 53px;
@@ -94,34 +94,31 @@ const NavContainer = styled.div`
 `;
 
 function DetailPage() {
-  const questionId = 1;
-  // ! QuestionList랑 연결하고 나서는 url 동적으로 만들기
-  // const { questionId } = useParams();
-  // const [questionData, questionIsPending, questionError] = useFetch(`http://localhost:3001/question/${questionId}`)
-  // const [answerData, answerIsPending, answerError] = useFetch(`http://localhost:3001/question/${questionId}/answer`)
-
-  // console.log('questionId:', questionId);
   const navigate = useNavigate();
+  // ! QuestionList랑 연결하고 나서는 url 동적으로 만들기
+  const { questionId } = useParams();
+
   const [questionData, setQuestionData] = useState(null);
   const [answerData, setAnswerData] = useState(null);
 
   useEffect(() => {
     axios.get(`/question/${questionId}`).then(res => {
-      console.log('res.data:', res.data);
+      console.log('questionData:', res.data);
       setQuestionData(res.data);
     });
-  }, []);
+  }, [questionId]);
 
   useEffect(() => {
     axios
       .get(`/question/${questionId}/answer`)
       .then(res => {
-        console.log('res.data: ', res.data);
+        console.log('answerData: ', res.data);
+        setAnswerData(res.data);
       })
       .catch(error => {
         console.error('error:', error);
       });
-  }, []);
+  }, [questionId]);
 
   return (
     <>
@@ -148,7 +145,7 @@ function DetailPage() {
             </Info>
             <Content className='main'>
               <Article>
-                <Question questionData={questionData} />
+                <Question questionId={questionId} questionData={questionData} />
                 <Answer
                   answerData={answerData}
                   questionId={questionId}
