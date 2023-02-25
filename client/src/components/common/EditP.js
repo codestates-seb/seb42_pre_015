@@ -49,9 +49,7 @@ const QECancelBtn = styled.button`
     background-color: #f0f8ff;
   }
 `;
-const QEAtag = styled.a`
-  color: rgb(131, 141, 149);
-`;
+
 const StyledReactQuill = styled(ReactQuill)`
   height: 284px;
   margin-bottom: 50px;
@@ -153,7 +151,6 @@ export function QuestionEditMain() {
           Cancel
         </QECancelBtn>
       </div>
-      <QEAtag href='/#'>Add a comment</QEAtag>
     </QEditContainer>
   );
 }
@@ -256,7 +253,6 @@ export function AnswerEditMain() {
           Cancel
         </QECancelBtn>
       </div>
-      <QEAtag href='/#'>Add a comment</QEAtag>
     </QEditContainer>
   );
 }
