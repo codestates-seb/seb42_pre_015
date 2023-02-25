@@ -164,6 +164,11 @@ function AskQuestionPage() {
     });
   };
 
+  const handleDiscard = () => {
+    setFormValues({ title: '', content: '', tags: '' });
+    navigate('/');
+  };
+
   return (
     <>
       <Main>
@@ -243,7 +248,10 @@ function AskQuestionPage() {
                 Add up to 5 tags to describe what your question is about. Start
                 typing to see suggestions.
               </p>
-              <TagInput />
+              <TagInput
+                formValues={formValues}
+                handleEditForm={handleEditForm}
+              />
             </InputBox>
             {isClicked === 'tagsClicked' ? (
               <WritingTipBox
@@ -268,6 +276,7 @@ function AskQuestionPage() {
               className='discard-btn'
               BtnText='Discard draft'
               width='100px'
+              onClick={handleDiscard}
             />
           </Buttons>
         </MainBody>
