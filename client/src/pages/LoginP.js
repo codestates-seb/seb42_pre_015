@@ -1,6 +1,5 @@
 import LoginBox from '../components/common/Login/LoginBox';
 import styled from 'styled-components';
-import Footer from '../components/common/Footer';
 
 const LoginPageStyle = styled.div`
   background-color: #f1f2f3;
@@ -20,7 +19,6 @@ const LoginPage = () => {
           <LoginBox />
         </div>
       </LoginPageStyle>
-      <Footer />
     </>
   );
 };

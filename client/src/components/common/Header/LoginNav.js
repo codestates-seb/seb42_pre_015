@@ -181,7 +181,7 @@ const SearchInput = styled.input`
   }
 `;
 
-export default function LoginNav() {
+export default function LoginNav({ setIsLogin }) {
   const [isMessagesIconClick, setIsMessagesIconClick] = useState(false);
   const [isAchievementsClick, setIsAchievementsClick] = useState(false);
   const [isHelpIconClick, setIsHelpIconClick] = useState(false);
@@ -334,12 +334,7 @@ export default function LoginNav() {
               <div>
                 <a href='#/'>help</a>
                 <a href='#/'>chat</a>
-                <a
-                  href='#/'
-                  onClick={() => {
-                    console.log('d');
-                  }}
-                >
+                <a href='#/' onClick={setIsLogin}>
                   log out
                 </a>
               </div>

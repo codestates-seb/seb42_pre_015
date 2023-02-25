@@ -1,40 +1,88 @@
-import { GoogleBtn, GithubBtn, FacebookBtn, GeneralBtn } from '../Buttons';
+import { GeneralBtn } from '../Buttons';
+import { Link } from 'react-router-dom';
 import BoxStyle from '../Login/LoginStyle';
-
-import { useState } from 'react';
+import OAuthBox from '../../Signup/OAuthbox';
+import axios from 'axios';
+import { useState, useEffect } from 'react';
 import { SOiconSVG } from '../../../assets/CommonSVG';
 import { ErrorSVG, SignUpSVG } from '../../../assets/LoginSVG';
 
 const LoginBox = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [errorMessages, setErrorMessages] = useState({
-    email: '',
-    password: ''
-  });
-  // login-form 작성 에러
-  const handleInput = e => {
-    const { name, value } = e.target;
-    if (name === 'email') {
-      setEmail(value);
-      setErrorMessages({ ...errorMessages, email: '' });
-    } else if (name === 'password') {
-      setPassword(value);
-      setErrorMessages({ ...errorMessages, password: '' });
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+
+  // 유효성 검사
+  useEffect(() => {
+    setEmailError(validateEmail(email));
+  }, [email]);
+
+  useEffect(() => {
+    setPasswordError(validatePassword(password));
+  }, [password]);
+
+  const validateEmail = email => {
+    const Constraint = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email) {
+      return 'Email cannot be empty';
+    } else if (!Constraint.test(email)) {
+      return 'Email must be a well-formed email address';
     }
+    return '';
   };
 
-  // login-button 제출 에러
-  const handleSubmit = e => {
+  const validatePassword = password => {
+    const Constraint = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    if (!password) {
+      return 'Password cannot be empty';
+    } else if (!Constraint.test(password)) {
+      return 'Password must match the regular expression ';
+    }
+    return '';
+  };
+
+  // 제출 버튼 event
+
+  const handleSubmit = async e => {
     e.preventDefault();
-    const emailError = !email.trim() ? 'Email cannot be empty' : '';
-    const passwordError = !password.trim() ? 'Password cannot be empty' : '';
 
-    setErrorMessages({ email: emailError, password: passwordError });
-  };
+    const emailError = validateEmail(email);
+    const passwordError = validatePassword(password);
 
-  const handleClick = () => {
-    console.log('Button clicked!');
+    if (emailError || passwordError) {
+      setEmailError(emailError);
+      setPasswordError(passwordError);
+      window.alert('please fill in the whole forms');
+      return;
+    }
+
+    // HTTP Request
+    try {
+      const response = await axios.post(
+        'http://localhost:8080/user',
+        {
+          email: email,
+          password: password
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+      console.log(response.data);
+      setEmail('');
+      setPassword('');
+      setEmailError('');
+      setPasswordError('');
+
+      // Response header 저장
+      const userURI = response.headers['location'];
+      console.log(userURI);
+    } catch (error) {
+      alert(error);
+    }
   };
 
   return (
@@ -43,15 +91,11 @@ const LoginBox = () => {
         <div className='all-box'>
           {/* 로고 & OAuth 버튼 */}
           <div className='all-oauth-box'>
-            <div className='logo-box'>
+            <div className='oauth-box'>
               <div className='logo'>
                 <SOiconSVG />
               </div>
-            </div>
-            <div className='oauth-box'>
-              <GoogleBtn />
-              <GithubBtn />
-              <FacebookBtn />
+              <OAuthBox />
             </div>
           </div>
           {/* 로그인 박스  */}
@@ -64,18 +108,17 @@ const LoginBox = () => {
                     type='email'
                     name='email'
                     value={email}
-                    onChange={handleInput}
-                    className='login-form__text'
+                    onChange={e => setEmail(e.target.value)}
+                    onBlur={() => setEmailError(validateEmail(email))}
+                    className='login-form__text '
                   />
-                  {errorMessages.email && (
+                  {emailError && (
                     <div className='error-svg'>
                       <ErrorSVG />
                     </div>
                   )}
                 </div>
-                {errorMessages.email && (
-                  <div style={{ color: 'red' }}>{errorMessages.email}</div>
-                )}
+                {emailError && <div style={{ color: 'red' }}>{emailError}</div>}
               </div>
               <div className='login-form__password'>
                 <h1>Password</h1>
@@ -84,26 +127,27 @@ const LoginBox = () => {
                     type='password'
                     name='password'
                     value={password}
-                    onChange={handleInput}
-                    className='login-form__text'
+                    onChange={e => setPassword(e.target.value)}
+                    onBlur={() => setPasswordError(validatePassword(password))}
+                    className='login-form__text '
                   />
-                  {errorMessages.password && (
+                  {passwordError && (
                     <div className='error-svg'>
                       <ErrorSVG />
                     </div>
                   )}
                 </div>
-                {errorMessages.password && (
-                  <div style={{ color: 'red' }}>{errorMessages.password}</div>
+                {passwordError && (
+                  <div style={{ color: 'red' }}>{passwordError}</div>
                 )}
               </div>
-              <GeneralBtn onClick={handleClick} />
+              <GeneralBtn onClick={handleSubmit} BtnText='Log in' />
             </form>
           </div>
           {/* Support Message */}
           <div className='support-messages'>
             <div>
-              Don&apos;t have an account?<a href='/'> Sign up </a>
+              Don&apos;t have an account?<Link to='/signup'> Sign up </Link>
             </div>
             <div>
               Are you an employer?
