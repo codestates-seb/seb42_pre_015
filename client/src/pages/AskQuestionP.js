@@ -117,9 +117,32 @@ function AskQuestionPage() {
   const [formValues, setFormValues] = useState({
     title: '',
     content: '',
-    tags: ''
+    tags: []
   });
 
+  const handleEditForm = e => {
+    const { name, value } = e.target;
+    setFormValues({ ...formValues, [name]: value });
+  };
+
+  const handleSubmit = e => {
+    e.preventDefault();
+
+    const newQuestion = { userId: 1, ...formValues };
+    console.log('newQuestion:', newQuestion);
+
+    axios.post('/question', newQuestion).then(res => {
+      console.log('res.data: ', res.data);
+      navigate(`/question/${res.data.questionId}`);
+    });
+  };
+
+  const handleDiscard = () => {
+    setFormValues({ title: '', content: '', tags: [] });
+    navigate('/');
+  };
+
+  // ! 유효성 검사 로직
   const [titleErrorMsg, setTitleErrorMsg] = useState('');
   const [contentErrorMsg, setContentErrorMsg] = useState('');
 
@@ -145,28 +168,6 @@ function AskQuestionPage() {
         setContentErrorMsg('');
       }
     }
-  };
-
-  const handleEditForm = e => {
-    const { name, value } = e.target;
-    setFormValues({ ...formValues, [name]: value });
-  };
-
-  const handleSubmit = e => {
-    e.preventDefault();
-
-    const newQuestion = { userId: 1, ...formValues, tags: ['test1', 'test2'] };
-    console.log('newQuestion:', newQuestion);
-
-    axios.post('/question', newQuestion).then(res => {
-      console.log('res.data: ', res.data);
-      navigate(`/question/${res.data.questionId}`);
-    });
-  };
-
-  const handleDiscard = () => {
-    setFormValues({ title: '', content: '', tags: '' });
-    navigate('/');
   };
 
   return (
@@ -250,7 +251,8 @@ function AskQuestionPage() {
               </p>
               <TagInput
                 tags={formValues.tags}
-                handleEditForm={handleEditForm}
+                formValues={formValues}
+                setFormValues={setFormValues}
               />
             </InputBox>
             {isClicked === 'tagsClicked' ? (
