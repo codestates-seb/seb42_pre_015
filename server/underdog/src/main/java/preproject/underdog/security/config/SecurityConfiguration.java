@@ -68,7 +68,7 @@ public class SecurityConfiguration {
                         .antMatchers(HttpMethod.GET, "/question/**").permitAll()
                         .anyRequest().authenticated()) // 요청별 권한 작성하기
                 .oauth2Login(oauth2 -> oauth2
-                        .successHandler(new OAuth2SuccessHandler(jwtTokenizer, userService)));
+                        .successHandler(new OAuth2SuccessHandler(jwtTokenizer, userService )));
 
         return http.build();
     }
@@ -79,6 +79,9 @@ public class SecurityConfiguration {
         corsConfiguration.setAllowedOrigins(Arrays.asList("*"));
         corsConfiguration.setAllowedMethods(Arrays.asList("POST", "PATCH", "GET", "DELETE"));
         corsConfiguration.setAllowedHeaders(Arrays.asList("*"));
+        corsConfiguration.setExposedHeaders(Arrays.asList("Authorization", "Location", "Refresh"));
+        corsConfiguration.addAllowedHeader("Authorization");
+        corsConfiguration.addAllowedHeader("Refresh");
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration);
