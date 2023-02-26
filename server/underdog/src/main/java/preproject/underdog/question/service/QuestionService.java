@@ -136,7 +136,7 @@ public class QuestionService {
         Optional<QuestionComment> optionalQuestionComment = questionCommentRepo.findById(questionCommentId);
         QuestionComment findComment =
                 optionalQuestionComment.orElseThrow(() ->
-                        new BusinessLogicException(ExceptionCode.COMMENT_NOT_FOUND));
+                        new BusinessLogicException(ExceptionCode.QUESTION_COMMENT_NOT_FOUND));
 
         return findComment;
     }
