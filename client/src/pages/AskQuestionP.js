@@ -61,6 +61,14 @@ const MainBody = styled.form`
   }
 `;
 
+const DisabledBtn = styled.button`
+  width: 140px;
+  background-color: #77c4fd;
+  color: rgb(255, 255, 255);
+  border-radius: 3px;
+  font-size: 13px;
+`;
+
 const InputBox = styled.div`
   width: 70%;
   border: 1.5px solid #e0e2e5;
@@ -275,15 +283,19 @@ function AskQuestionPage() {
             ) : null}
           </div>
           <Buttons>
-            <GeneralBtn
-              type='submit'
-              disabled={titleErrorMsg || contentErrorMsg}
-              BtnText='Post your question'
-              width={'140px'}
-              onClick={handleValidation}
-            >
-              Post your question
-            </GeneralBtn>
+            {titleErrorMsg || contentErrorMsg || tagErrorMsg ? (
+              <DisabledBtn>Post a question</DisabledBtn>
+            ) : (
+              <GeneralBtn
+                type='submit'
+                BtnText='Post your question'
+                width={'140px'}
+                onClick={handleValidation}
+              >
+                Post your question
+              </GeneralBtn>
+            )}
+
             <GeneralBtn
               type='discard'
               className='discard-btn'
