@@ -34,7 +34,6 @@ public class QuestionController {
     public ResponseEntity postQuestion(@Valid @RequestBody QuestionPostDto questionPostDto) {
         Question question = mapper.questionPostDtoToQuestion(questionPostDto);
         Question createQuestion = questionService.createQuestion(question);
-        // responseDto에 userName 넣어줘야 함.
         QuestionResponseDto responseDto = mapper.questionToQuestionResponseDto(createQuestion);
         return new ResponseEntity(responseDto, HttpStatus.CREATED);
     }
