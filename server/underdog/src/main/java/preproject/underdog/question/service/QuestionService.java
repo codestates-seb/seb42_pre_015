@@ -142,7 +142,7 @@ public class QuestionService {
 
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         Optional<User> optionalUser = userRepository.findByEmail(principal);
-        User user = optionalUser.orElseThrow(() -> new RuntimeException("회원만 좋아요 취소 가능합니다."));
+        User user = optionalUser.orElseThrow(() -> new BusinessLogicException(ExceptionCode.NO_PERMISSION_CANCEL_VOTE));
 
         QuestionVote questionVote = findQuestion.getQuestionVoteList().stream()
                 .filter(v -> v.getUser() == user)
@@ -159,7 +159,7 @@ public class QuestionService {
 
     public Question findQuestionById(long questionId) {
         Optional<Question> optionalQuestion = questionRepository.findById(questionId);
-        Question question = optionalQuestion.orElseThrow(() -> new RuntimeException("질문 없음"));
+        Question question = optionalQuestion.orElseThrow(() -> new BusinessLogicException(ExceptionCode.QUESTION_NOT_FOUND));
         return question;
     }
 
