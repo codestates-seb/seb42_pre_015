@@ -51,7 +51,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         response.setHeader("Refresh", refreshToken);
 
 //        String uri = createURI(accessToken, refreshToken).toString();   // (6-3)
-        getRedirectStrategy().sendRedirect(request, response, "/");   // (6-4)
+        getRedirectStrategy().sendRedirect(request, response, null);   // (6-4)
     }
 
     private URI createURI(String accessToken, String refreshToken) {
