@@ -9,6 +9,7 @@ export const InputContainer = styled.div`
   padding-left: 4px;
   border: 1px solid #ced2d5;
   border-radius: 3px;
+
   > ul {
     display: flex;
     height: 23px;
@@ -52,13 +53,22 @@ export const InputContainer = styled.div`
     }
   }
   &:focus-within {
-    border: 1.5px solid pink;
-    box-shadow: 0 0 0 4px #d9e9f6;
-    border: 1px solid #409ad6;
+    /* box-shadow: 0 0 0 4px #d9e9f6;
+    border: 1px solid #409ad6; */
+    border: 1px solid ${props => (props.border ? '#DE4F54' : '#409ad6')};
+    box-shadow: ${props =>
+      props.border ? '0 0 0 4px #F6E0E0' : '0 0 0 4px #d9e9f6'};
   }
 `;
 
-const TagInput = ({ tags, formValues, setFormValues }) => {
+const TagInput = ({
+  tags,
+  formValues,
+  setFormValues,
+  handleValidation,
+  tagErrorMsg
+}) => {
+  console.log('errormsg:', tagErrorMsg);
   const handleKeyDown = event => {
     // Disable form submit on enter
     if (event.key === 'Enter') {
@@ -88,7 +98,7 @@ const TagInput = ({ tags, formValues, setFormValues }) => {
 
   return (
     <>
-      <InputContainer>
+      <InputContainer border={tagErrorMsg}>
         <ul id='tags'>
           {tags.map((tag, index) => (
             <li key={index} className='tag'>
@@ -108,6 +118,7 @@ const TagInput = ({ tags, formValues, setFormValues }) => {
           type='text'
           onKeyUp={event => (event.key === 'Enter' ? addTags(event) : null)}
           onKeyDown={handleKeyDown}
+          onBlur={handleValidation}
         />
       </InputContainer>
     </>

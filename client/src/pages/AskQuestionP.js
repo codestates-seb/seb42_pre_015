@@ -139,31 +139,42 @@ function AskQuestionPage() {
     navigate('/');
   };
 
-  // ! 유효성 검사 로직
+  // 유효성 검사
   const [titleErrorMsg, setTitleErrorMsg] = useState('');
   const [contentErrorMsg, setContentErrorMsg] = useState('');
-  const [tagErrorMsg, setTagErrorMsg] = useState('');
+  const [tagErrorMsg, setTagErrorMsg] = useState(false);
 
-  const handleValidation = () => {
+  const handleValidation = e => {
     const { title, content, tags } = formValues;
-
-    if (title.length > 0 && title.length < 15) {
-      setTitleErrorMsg('Title must be at least 15 characters.');
-    } else if (title.length === 0) {
-      setTitleErrorMsg('Title is missing.');
-    } else {
-      setTitleErrorMsg('');
+    console.log('formValues:', formValues.tags.length);
+    if (e.target.name === 'title') {
+      if (title.length > 0 && title.length < 15) {
+        setTitleErrorMsg('Title must be at least 15 characters.');
+      } else if (title.length === 0) {
+        setTitleErrorMsg('Title is missing.');
+      } else {
+        setTitleErrorMsg(false);
+      }
     }
 
-    if (content.length > 0 && content.length < 20) {
-      setContentErrorMsg('Body must be at least 20 characters.');
-    } else if (content.length === 0) {
-      setContentErrorMsg('Body is missing.');
-    } else {
-      setContentErrorMsg('');
+    if (e.target.className.includes('ql-editor')) {
+      if (content.length > 0 && content.length < 20) {
+        setContentErrorMsg('Body must be at least 20 characters.');
+      } else if (content.length === 0) {
+        setContentErrorMsg('Body is missing.');
+      } else {
+        setContentErrorMsg('');
+      }
     }
 
-    if (tags.length === 0) setTagErrorMsg('Please enter at least one tag.');
+    if (e.target.name === 'tags') {
+      if (!tags.length) {
+        console.log('haha');
+        setTagErrorMsg('Please enter at least one tag.');
+      } else {
+        setTagErrorMsg('');
+      }
+    }
   };
 
   return (
@@ -189,11 +200,13 @@ function AskQuestionPage() {
               </p>
               <input
                 type='text'
+                name='title'
                 placeholder='e.g. Is there an R function for finding the index of an element in a vector?'
                 value={formValues.title}
                 onChange={e =>
                   setFormValues({ ...formValues, title: e.target.value })
                 }
+                onBlur={handleValidation}
               ></input>
               {titleErrorMsg && (
                 <p style={{ color: '#DE4F54' }}>{titleErrorMsg}</p>
@@ -223,6 +236,8 @@ function AskQuestionPage() {
                 editorInput={formValues.content}
                 formValues={formValues}
                 setEditorInput={setFormValues}
+                handleValidation={handleValidation}
+                contentErrorMsg={contentErrorMsg}
               />
               {contentErrorMsg && (
                 <p style={{ color: '#DE4F54' }}>{contentErrorMsg}</p>
@@ -245,6 +260,8 @@ function AskQuestionPage() {
                 tags={formValues.tags}
                 formValues={formValues}
                 setFormValues={setFormValues}
+                handleValidation={handleValidation}
+                tagErrorMsg={tagErrorMsg}
               />
               {tagErrorMsg && <p style={{ color: '#DE4F54' }}>{tagErrorMsg}</p>}
             </InputBox>
