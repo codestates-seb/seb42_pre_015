@@ -8,6 +8,7 @@ import Footer from '../components/common/Footer';
 import { GeneralBtn } from '../components/common/Buttons';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Editor from '../components/common/Editor';
 
 const Main = styled.main`
   display: flex;
@@ -76,8 +77,7 @@ const InputBox = styled.div`
     margin: 7px 0px;
     white-space: normal;
   }
-  > input,
-  textarea {
+  > input {
     border: 1px solid #ced2d5;
     border-radius: 3px;
     width: 100%;
@@ -89,9 +89,6 @@ const InputBox = styled.div`
         props.validated ? '0 0 0 4px #d9e9f6' : '0 0 0 4px #F6E0E0'};
       outline: none;
     }
-  }
-  > textarea {
-    height: 250px;
   }
 
   @media screen and (max-width: 1050px) {
@@ -120,10 +117,10 @@ function AskQuestionPage() {
     tags: []
   });
 
-  const handleEditForm = e => {
-    const { name, value } = e.target;
-    setFormValues({ ...formValues, [name]: value });
-  };
+  // const handleEditForm = e => {
+  //   const { name, value } = e.target;
+  //   setFormValues({ ...formValues, [name]: value });
+  // };
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -145,29 +142,28 @@ function AskQuestionPage() {
   // ! 유효성 검사 로직
   const [titleErrorMsg, setTitleErrorMsg] = useState('');
   const [contentErrorMsg, setContentErrorMsg] = useState('');
+  const [tagErrorMsg, setTagErrorMsg] = useState('');
 
-  const handleValidation = e => {
-    const { name, value } = e.target;
+  const handleValidation = () => {
+    const { title, content, tags } = formValues;
 
-    if (name === 'title') {
-      if (value.length > 0 && value.length < 15) {
-        setTitleErrorMsg('Title must be at least 15 characters.');
-      } else if (value.length === 0) {
-        setTitleErrorMsg('Title is missing.');
-      } else {
-        setTitleErrorMsg('');
-      }
+    if (title.length > 0 && title.length < 15) {
+      setTitleErrorMsg('Title must be at least 15 characters.');
+    } else if (title.length === 0) {
+      setTitleErrorMsg('Title is missing.');
+    } else {
+      setTitleErrorMsg('');
     }
 
-    if (name === 'content') {
-      if (value.length > 0 && value.length < 20) {
-        setContentErrorMsg('Body must be at least 20 characters.');
-      } else if (value.length === 0) {
-        setContentErrorMsg('Body is missing.');
-      } else {
-        setContentErrorMsg('');
-      }
+    if (content.length > 0 && content.length < 20) {
+      setContentErrorMsg('Body must be at least 20 characters.');
+    } else if (content.length === 0) {
+      setContentErrorMsg('Body is missing.');
+    } else {
+      setContentErrorMsg('');
     }
+
+    if (tags.length === 0) setTagErrorMsg('Please enter at least one tag.');
   };
 
   return (
@@ -185,7 +181,6 @@ function AskQuestionPage() {
             <InputBox
               onClick={() => setIsClicked('titleClicked')}
               validated={!titleErrorMsg}
-              onBlur={handleValidation}
             >
               <label htmlFor='title'>Title</label>
               <p>
@@ -195,9 +190,10 @@ function AskQuestionPage() {
               <input
                 type='text'
                 placeholder='e.g. Is there an R function for finding the index of an element in a vector?'
-                name='title'
                 value={formValues.title}
-                onChange={handleEditForm}
+                onChange={e =>
+                  setFormValues({ ...formValues, title: e.target.value })
+                }
               ></input>
               {titleErrorMsg && (
                 <p style={{ color: '#DE4F54' }}>{titleErrorMsg}</p>
@@ -212,9 +208,9 @@ function AskQuestionPage() {
           </div>
           <div className='form form-content'>
             <InputBox
+              name='title'
               onClick={() => setIsClicked('contentClicked')}
               validated={!contentErrorMsg}
-              onBlur={handleValidation}
             >
               <label htmlFor='content'>
                 What are the details of your problem?
@@ -223,12 +219,11 @@ function AskQuestionPage() {
                 Introduce the problem and expand on what you put in the title.
                 Minimum 20 characters.
               </p>
-              <textarea
-                type='text'
-                name='content'
-                value={formValues.content}
-                onChange={handleEditForm}
-              ></textarea>
+              <Editor
+                editorInput={formValues.content}
+                formValues={formValues}
+                setEditorInput={setFormValues}
+              />
               {contentErrorMsg && (
                 <p style={{ color: '#DE4F54' }}>{contentErrorMsg}</p>
               )}
@@ -245,15 +240,13 @@ function AskQuestionPage() {
           <div className='form form-tags'>
             <InputBox onClick={() => setIsClicked('tagsClicked')}>
               <label htmlFor='tags'>Tag</label>
-              <p>
-                Add up to 5 tags to describe what your question is about. Start
-                typing to see suggestions.
-              </p>
+              <p>Add up to 5 tags to describe what your question is about.</p>
               <TagInput
                 tags={formValues.tags}
                 formValues={formValues}
                 setFormValues={setFormValues}
               />
+              {tagErrorMsg && <p style={{ color: '#DE4F54' }}>{tagErrorMsg}</p>}
             </InputBox>
             {isClicked === 'tagsClicked' ? (
               <WritingTipBox
@@ -270,6 +263,7 @@ function AskQuestionPage() {
               disabled={titleErrorMsg || contentErrorMsg}
               BtnText='Post your question'
               width={'140px'}
+              onClick={handleValidation}
             >
               Post your question
             </GeneralBtn>

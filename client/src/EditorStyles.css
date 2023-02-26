@@ -1,0 +1,16 @@
+.quill {
+    border-radius: 3px;
+}
+
+.ql-editor {
+    height: 200px;
+    font-size: 20px;
+    border-radius: 3px;
+    font-size: 15px !important;
+}
+
+.ql-editor:focus {
+    border: 1px solid #409ad6;
+    box-shadow: 0 0 0 4px #d9e9f6;
+    outline: none;
+  }
