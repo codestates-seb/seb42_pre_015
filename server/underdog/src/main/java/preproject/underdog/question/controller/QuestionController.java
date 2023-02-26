@@ -34,7 +34,6 @@ public class QuestionController {
     public ResponseEntity postQuestion(@Valid @RequestBody QuestionPostDto questionPostDto) {
         Question question = mapper.questionPostDtoToQuestion(questionPostDto);
         Question createQuestion = questionService.createQuestion(question);
-        // responseDto에 userName 넣어줘야 함.
         QuestionResponseDto responseDto = mapper.questionToQuestionResponseDto(createQuestion);
         return new ResponseEntity(responseDto, HttpStatus.CREATED);
     }
@@ -105,7 +104,7 @@ public class QuestionController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @DeleteMapping("/{question-id}/vote")
+    @DeleteMapping("/{question-id}/vote") // 엔드포인트 수정됨
     public ResponseEntity deleteVote(@PathVariable("question-id") long questionId){
        questionService.cancelVote(questionId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
