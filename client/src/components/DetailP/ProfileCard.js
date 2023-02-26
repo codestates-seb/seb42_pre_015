@@ -35,11 +35,11 @@ function ProfileCard({ questionData, answer }) {
     <>
       {init && (
         <ProfileCardContainer>
-          {init === questionData ? (
-            <div className='created-time'>asked {init.createdAt}</div>
-          ) : (
-            <div className='created-time'>answered {init.createdAt}</div>
-          )}
+          <div className='created-time'>
+            {init === questionData
+              ? `asked ${init.createdAt}`
+              : `answered ${init.createdAt}`}
+          </div>
           <UserInfoContainer>
             <div className='user-image'></div>
             <div className='username'>{init.userName}</div>
