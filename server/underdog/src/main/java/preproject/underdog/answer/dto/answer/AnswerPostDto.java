@@ -5,14 +5,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 @Getter
-@AllArgsConstructor //API 작성 후 삭제
+@AllArgsConstructor
 @NoArgsConstructor
-public class AnswerPostDto {
+public class AnswerPostDto { // userId 삭제, mapper도 수정
     @NotEmpty(message = "답변 내용을 작성해야 합니다.")
     private String content;
-    @NotNull
-    private Long userId;
 }

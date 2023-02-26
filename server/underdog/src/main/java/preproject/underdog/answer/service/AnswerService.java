@@ -12,13 +12,10 @@ import preproject.underdog.answer.repository.AnswerRepository;
 import preproject.underdog.exception.BusinessLogicException;
 import preproject.underdog.exception.ExceptionCode;
 import preproject.underdog.question.entity.Question;
-import preproject.underdog.question.repository.QuestionRepo;
 import preproject.underdog.question.service.QuestionService;
 import preproject.underdog.user.entity.User;
 import preproject.underdog.user.repository.UserRepository;
-import preproject.underdog.user.service.UserService;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,20 +27,19 @@ public class AnswerService {
     private final AnswerRepository answerRepository;
     private final AnswerCommentRepository answerCommentRepository;
     private final QuestionService questionService;
-    private final UserService userService;
     private final UserRepository userRepository;
 
 
     public List<Answer> createAnswer(Answer answer, Long questionId) {
         Question question = questionService.findQuestionById(questionId);
-        userService.verifyUser(answer.getUser().getUserId());
-        answer.setQuestion(question);
-        answerRepository.save(answer);
 
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         Optional<User> optionalUser = userRepository.findByEmail(principal);
         User user = optionalUser.orElseThrow(() -> new RuntimeException("회원만 답변 작성 가능합니다."));
+
         answer.setUser(user);
+        answer.setQuestion(question);
+        answerRepository.save(answer);
 
         return answerRepository.findByQuestionId(question.getQuestionId());
     }
@@ -53,7 +49,9 @@ public class AnswerService {
         Answer findAnswer = findVerifiedAnswer(answer.getAnswerId());
 
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        if(!findAnswer.getUser().getEmail().equals(principal)) new RuntimeException("답변 작성자만 수정 가능합니다.");
+        if(!findAnswer.getUser().getEmail().equals(principal)) throw new RuntimeException("답변 작성자만 수정 가능합니다.");
+
+        if(!question.getAnswerList().contains(findAnswer)) throw new RuntimeException("질문에 해당 답변이 없습니다.");
 
         findAnswer.setContent(answer.getContent());
         answerRepository.save(findAnswer);
@@ -71,39 +69,42 @@ public class AnswerService {
 
         // 답변 작성자가 맞는지 검증 -> 시큐리티
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        if(!answer.getUser().getEmail().equals(principal)) new RuntimeException("답변 작성자만 삭제 가능합니다.");
+        if(!answer.getUser().getEmail().equals(principal)) throw new RuntimeException("답변 작성자만 삭제 가능합니다.");
+
+        if(!question.getAnswerList().contains(answer)) throw new RuntimeException("질문에 해당 답변이 없습니다.");
 
         answerRepository.deleteById(answerId);
         return answerRepository.findByQuestionId(question.getQuestionId());
     }
 
     public List<AnswerComment> postComment(AnswerComment comment, long questionId, long answerId) {
-        questionService.findQuestionById(questionId);//질문 검증
+        Question question = questionService.findQuestionById(questionId);//질문 검증
         Answer verifyAnswer = findVerifiedAnswer(answerId);//답변 검증
-        comment.setAnswer(verifyAnswer);
+        if(!question.getAnswerList().contains(verifyAnswer)) throw new RuntimeException("질문에 해당 답변이 없습니다.");
+
         //유저 검증
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         Optional<User> optionalUser = userRepository.findByEmail(principal);
         User user = optionalUser.orElseThrow(() -> new RuntimeException("회원만 댓글 작성 가능합니다."));
+
+        comment.setAnswer(verifyAnswer);
+        comment.setUser(user);
 
         answerCommentRepository.save(comment);
         return answerRepository.findByAnswerId(answerId);
     }
 
     public List<AnswerComment> patchComment(AnswerComment comment, long questionId, long answerId, long answerCommentId){
-        questionService.findQuestionById(questionId);
+        Question question = questionService.findQuestionById(questionId);
         Answer answer = findVerifiedAnswer(answerId);
-        AnswerComment verifyComment = findVerifiedComment(comment.getAnswerCommentId());
-        // 댓글 작성자가 본인인지 검증 -> 시큐리티
+        AnswerComment verifyComment = findVerifiedComment(answerCommentId);
+
+        if(!(question.getAnswerList().contains(answer) && answer.getComments().contains(verifyComment))) {
+            throw new RuntimeException("질문-답변-댓글 id가 일치하지 않습니다.");
+        }
 
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         if(!verifyComment.getUser().getEmail().equals(principal)) new RuntimeException("댓글 작성자만 수정 가능합니다.");
-
-//        //댓글이 해당 답변에 해당되는지 검증 -> 필요한가?? 얘기해봐야할듯
-//        AnswerComment findComment = answer.getComments().stream()
-//                .filter(d -> d.getAnswerCommentId() == answerCommentId)
-//                .findFirst()
-//                .orElseThrow(RuntimeException::new);
 
         verifyComment.setContent(comment.getContent());
         answerCommentRepository.save(verifyComment);
@@ -111,28 +112,35 @@ public class AnswerService {
     }
 
     public List<AnswerComment> getComment(long answerId, long questionId) {
-        questionService.findQuestionById(questionId);
-        Answer findAnswer = findVerifiedAnswer(answerId);
+        Question question = questionService.findQuestionById(questionId);
+        Answer answer = findVerifiedAnswer(answerId);
+        if(!question.getAnswerList().contains(answer)) throw new RuntimeException("질문에 해당 답변이 없습니다.");
+
         List<AnswerComment> comment = answerRepository.findByAnswerId(answerId);
         return comment;
     }
 
     public List<AnswerComment> deleteComment(long answerCommentId, long questionId, long answerId) {
-        questionService.findQuestionById(questionId);
+        Question question = questionService.findQuestionById(questionId);
         Answer answer = findVerifiedAnswer(answerId);
         AnswerComment comment = findVerifiedComment(answerCommentId);
-        // 댓글 작성자가 본인인지 검증 -> 시큐리티
 
+        if(!(question.getAnswerList().contains(answer) && answer.getComments().contains(comment))) {
+            throw new RuntimeException("질문-답변-댓글 id가 일치하지 않습니다.");
+        }
+
+        // 댓글 작성자가 본인인지 검증 -> 시큐리티
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        if(!comment.getUser().getEmail().equals(principal)) new RuntimeException("댓글 작성자만 삭제 가능합니다.");
+        if(!comment.getUser().getEmail().equals(principal)) throw new RuntimeException("댓글 작성자만 삭제 가능합니다.");
 
         answerCommentRepository.delete(comment);
         return answerRepository.findByAnswerId(answer.getAnswerId());
     }
 
     public void doVote(long questionId, long answerId) {//userId 제거
-        questionService.findQuestionById(questionId);
+        Question question = questionService.findQuestionById(questionId);
         Answer findAnswer = findVerifiedAnswer(answerId);
+        if(!question.getAnswerList().contains(findAnswer)) throw new RuntimeException("질문에 해당 답변이 없습니다.");
 
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         Optional<User> optionalUser = userRepository.findByEmail(principal);
@@ -143,8 +151,10 @@ public class AnswerService {
     }
 
     public void undoVote(long questionId, long answerId) {//userId 제거
-        questionService.findQuestionById(questionId);//질문 검증
+        Question question = questionService.findQuestionById(questionId);//질문 검증
         Answer findAnswer = findVerifiedAnswer(answerId);//답변 검증
+        if(!question.getAnswerList().contains(findAnswer)) throw new RuntimeException("질문에 해당 답변이 없습니다.");
+
         //유저 검증
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         Optional<User> optionalUser = userRepository.findByEmail(principal);

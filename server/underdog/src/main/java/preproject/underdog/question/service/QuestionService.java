@@ -41,7 +41,7 @@ public class QuestionService {
         Question findQuestion = findQuestionById(question.getQuestionId());
 
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        if(!findQuestion.getUser().getEmail().equals(principal)) new RuntimeException("질문 작성자만 수정 가능합니다.");
+        if(!findQuestion.getUser().getEmail().equals(principal)) throw new RuntimeException("질문 작성자만 수정 가능합니다.");
 
         Optional.ofNullable(question.getTitle())
                 .ifPresent(title -> findQuestion.setTitle(title));
@@ -67,7 +67,7 @@ public class QuestionService {
     public void deleteQuestion(long questionId) { //질문글 삭제
         Question findQuestion = findQuestionById(questionId);
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        if(!findQuestion.getUser().getEmail().equals(principal)) new RuntimeException("질문 작성자만 수정 가능합니다.");
+        if(!findQuestion.getUser().getEmail().equals(principal)) throw new RuntimeException("질문 작성자만 수정 가능합니다.");
         questionRepository.deleteById(questionId);
     }
 
@@ -90,7 +90,9 @@ public class QuestionService {
         QuestionComment verifiedComment = findVerifiedComment(commentId);
 
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        if(!verifiedComment.getUser().getEmail().equals(principal)) new RuntimeException("댓글 작성자만 수정 가능합니다.");
+        if(!verifiedComment.getUser().getEmail().equals(principal)) {
+            throw new RuntimeException("댓글 작성자만 수정 가능합니다.");
+        }
 
         //질문에 해당 코멘트가 종속된 관계가 맞는지 확인
         QuestionComment findComment = findQuestion.getQuestionCommentList().stream()
@@ -114,7 +116,7 @@ public class QuestionService {
         QuestionComment verifiedComment = findVerifiedComment(commentId);
 
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        if(!verifiedComment.getUser().getEmail().equals(principal)) new RuntimeException("댓글 작성자만 수정 가능합니다.");
+        if(!verifiedComment.getUser().getEmail().equals(principal)) throw new RuntimeException("댓글 작성자만 수정 가능합니다.");
 
         //질문에 해당 코멘트가 종속된 관계가 맞는지 확인
         findQuestion.getQuestionCommentList().stream()

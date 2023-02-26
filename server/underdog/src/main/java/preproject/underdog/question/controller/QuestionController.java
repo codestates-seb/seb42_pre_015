@@ -104,7 +104,7 @@ public class QuestionController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @DeleteMapping("/{question-id}/vote")
+    @DeleteMapping("/{question-id}/vote") // 엔드포인트 수정됨
     public ResponseEntity deleteVote(@PathVariable("question-id") long questionId){
        questionService.cancelVote(questionId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
