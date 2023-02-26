@@ -12,15 +12,14 @@ import preproject.underdog.question.dto.comment.QuestionCommentPatchDto;
 import preproject.underdog.question.dto.comment.QuestionCommentPostDto;
 import preproject.underdog.question.dto.question.QuestionPatchDto;
 import preproject.underdog.question.dto.question.QuestionPostDto;
+import preproject.underdog.question.dto.question.QuestionResponseDto;
 import preproject.underdog.question.entity.Question;
 import preproject.underdog.question.entity.QuestionComment;
 import preproject.underdog.question.mapper.QuestionMapper;
 import preproject.underdog.question.service.QuestionService;
-import preproject.underdog.utils.UriCreator;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -28,7 +27,6 @@ import java.util.List;
 @Validated //Question 관련 컨트롤러 메서드
 @RequiredArgsConstructor
 public class QuestionController {
-    private final static String QUESTION_DEFAULT_URL = "/question";
     private final QuestionService questionService;
     private final QuestionMapper mapper;
 
@@ -36,8 +34,9 @@ public class QuestionController {
     public ResponseEntity postQuestion(@Valid @RequestBody QuestionPostDto questionPostDto) {
         Question question = mapper.questionPostDtoToQuestion(questionPostDto);
         Question createQuestion = questionService.createQuestion(question);
-        URI location = UriCreator.createUri(QUESTION_DEFAULT_URL, createQuestion.getQuestionId());
-        return ResponseEntity.created(location).build();
+        // responseDto에 userName 넣어줘야 함.
+        QuestionResponseDto responseDto = mapper.questionToQuestionResponseDto(createQuestion);
+        return new ResponseEntity(responseDto, HttpStatus.CREATED);
     }
 
     @PatchMapping("/{question-id}")
@@ -73,8 +72,8 @@ public class QuestionController {
     public ResponseEntity postComment(@PathVariable("question-id") @Positive long questionId,
                                       @RequestBody QuestionCommentPostDto questionCommentPostDto) {
         QuestionComment questionComment = mapper.commentPostDtoToQuestionComment(questionCommentPostDto);
-        QuestionComment createComment = questionService.createQuestionComment(questionComment, questionId);
-        return new ResponseEntity(mapper.commentToCommentResponseDto(createComment), HttpStatus.OK);
+        List<QuestionComment> questionCommentList = questionService.createQuestionComment(questionComment, questionId);
+        return new ResponseEntity(mapper.commentsToResponseDto(questionCommentList), HttpStatus.OK);
     }
 
     @PatchMapping("/{question-id}/comment/{comment-id}")
@@ -82,8 +81,8 @@ public class QuestionController {
                                        @PathVariable("comment-id") @Positive long commentId,
                                        @RequestBody QuestionCommentPatchDto questionPatchDto) {
         QuestionComment questionComment = mapper.commentPatchDtoToQuestionComment(questionPatchDto);
-        QuestionComment editComment = questionService.editQuestionComment(questionComment, questionId, commentId);
-        return new ResponseEntity(mapper.commentToCommentResponseDto(editComment), HttpStatus.OK);
+        List<QuestionComment> questionCommentList = questionService.editQuestionComment(questionComment, questionId, commentId);
+        return new ResponseEntity(mapper.commentsToResponseDto(questionCommentList), HttpStatus.OK);
     }
 
     @GetMapping("/{question-id}/comments") // 질문글 코멘트 정렬은 프론트에서
@@ -95,22 +94,20 @@ public class QuestionController {
     @DeleteMapping("/{question-id}/comment/{comment-id}")
     public ResponseEntity deleteComment(@PathVariable("question-id") long questionId,
                                          @PathVariable("comment-id") long commentId){
-        questionService.deleteQuestionComment(questionId, commentId);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        List<QuestionComment> questionCommentList = questionService.deleteQuestionComment(questionId, commentId);
+        return new ResponseEntity(mapper.commentsToResponseDto(questionCommentList), HttpStatus.OK);
     }
 
     //vote 기능 메서드
-    @PostMapping("/{question-id}/vote/user/{user-id}")
-    public ResponseEntity postVote(@PathVariable("question-id") long questionId,
-                                   @PathVariable("user-id") long userId) {
-        questionService.createVote(userId, questionId);
+    @PostMapping("/{question-id}/vote") // 엔드포인트 수정됨
+    public ResponseEntity postVote(@PathVariable("question-id") long questionId){
+        questionService.createVote(questionId);
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @DeleteMapping("/{question-id}/vote/user/{user-id}")
-    public ResponseEntity deleteVote(@PathVariable("question-id") long questionId,
-                                     @PathVariable("user-id") long userId) {
-       questionService.cancelVote(questionId, userId);
+    @DeleteMapping("/{question-id}/vote")
+    public ResponseEntity deleteVote(@PathVariable("question-id") long questionId){
+       questionService.cancelVote(questionId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }

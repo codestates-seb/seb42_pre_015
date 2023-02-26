@@ -20,4 +20,8 @@ public class AnswerRespDto {
     private Long voteCount;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

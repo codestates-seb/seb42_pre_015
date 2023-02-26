@@ -20,6 +20,7 @@ public class QuestionResponseDto {
     private String content;
     private int viewCount;
     private int voteCount;
+    private int answerCount;
     private List<String> tags;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;

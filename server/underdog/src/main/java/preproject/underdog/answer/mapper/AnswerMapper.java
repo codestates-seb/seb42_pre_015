@@ -21,7 +21,6 @@ public interface AnswerMapper {
     @Mapping(source = "user.userId", target = "userId")
     @Mapping(source = "question.questionId", target = "questionId")
     @Mapping(source = "user.name", target = "name")
-
     AnswerRespDto answerToAnswerRespDto(Answer answer);//ENTITY -> DTO
     @Mapping(source = "answer.votes", target = "voteCount")
     List<AnswerRespDto> answerListToAnswerRespDto(List<Answer> answer);
