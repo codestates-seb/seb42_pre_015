@@ -5,6 +5,7 @@ import styled from 'styled-components';
 
 const StyledEditor = styled.div`
   border-radius: 3px;
+  margin-bottom: 5px;
   &:focus-within {
     border: 1px solid ${props => (props.border ? '#DE4F54' : '#409ad6')};
     box-shadow: ${props =>
@@ -17,7 +18,7 @@ function Editor({
   setEditorInput,
   formValues,
   handleValidation,
-  contentErrorMsg,
+  errorMsg,
   setNewAnswer
 }) {
   const modules = {
@@ -58,11 +59,7 @@ function Editor({
   };
 
   return (
-    <StyledEditor
-      name='content'
-      onBlur={handleValidation}
-      border={contentErrorMsg}
-    >
+    <StyledEditor name='content' onBlur={handleValidation} border={errorMsg}>
       <ReactQuill
         modules={modules}
         formats={formats}
