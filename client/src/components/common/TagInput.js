@@ -59,12 +59,32 @@ export const InputContainer = styled.div`
 `;
 
 const TagInput = () => {
+  // const initialValue = tags || []
+
+  // !질문 수정 페이지
+  // initial tags === 기존에 있던 태그
+  // 추가 / 삭제 기능이 되야함.
+
+  // !질문 추가 페이지
+  // initial tags === 빈배열.
+  // 추가 / 삭제 기능이 되야함.
+
   const initialTags = ['java', 'javascript'];
 
   const [tags, setTags] = useState(initialTags);
 
-  const removeTags = indexToRemove => {
+  // const tags = formValues.tags;
+  // console.log('tags:', tags);
+
+  const removeTags = (indexToRemove, id) => {
     setTags(tags.filter(tag => tag !== tags[indexToRemove]));
+    // const updatedTags = todo.tags.filter(tag => tag !== tags[indexToRemove]);
+    // const updatedForm = todos.map(todo => {
+    //   if (todo.id === id) {
+    //     return { ...todo, tags: updatedTags };
+    //   }
+    //   return todo;
+    // });
   };
 
   const addTags = event => {
@@ -75,6 +95,7 @@ const TagInput = () => {
         event.target.value = '';
       } else {
         setTags([...tags, event.target.value]);
+        event.target.value = '';
         event.target.value = '';
       }
     }
@@ -98,6 +119,7 @@ const TagInput = () => {
         </ul>
         <input
           className='tag-input'
+          name='tags'
           type='text'
           onKeyUp={event => (event.key === 'Enter' ? addTags(event) : null)}
         />

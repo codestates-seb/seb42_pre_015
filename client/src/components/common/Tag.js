@@ -33,6 +33,12 @@ const Tag = ({ tags }) => {
             <span className='tag-title'>{tag}</span>
           </li>
         ))}
+      {questionData &&
+        questionData.tags.map((tag, index) => (
+          <li key={index} className='tag'>
+            <span className='tag-title'>{tag}</span>
+          </li>
+        ))}
     </TagContainer>
   );
 };
