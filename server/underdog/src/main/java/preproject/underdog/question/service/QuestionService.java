@@ -98,7 +98,7 @@ public class QuestionService {
         QuestionComment findComment = findQuestion.getQuestionCommentList().stream()
                 .filter(d -> d.getQuestionCommentId() == commentId)
                 .findFirst()
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(RuntimeException::new); // questionId or commentId가 일치하지 않습니다. bad request
 
         findComment.setContent(comment.getContent());
         questionCommentRepo.save(findComment);
@@ -122,7 +122,7 @@ public class QuestionService {
         findQuestion.getQuestionCommentList().stream()
                 .filter(d -> d.getQuestionCommentId() == commentId)
                 .findFirst()
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(RuntimeException::new);  // questionId or commentId가 일치하지 않습니다. bad request
 
         questionCommentRepo.deleteById(commentId);
         return questionCommentRepo.findByQuestionId(findQuestion.getQuestionId());
@@ -134,6 +134,8 @@ public class QuestionService {
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         Optional<User> optionalUser = userRepository.findByEmail(principal);
         User user = optionalUser.orElseThrow(() -> new BusinessLogicException(ExceptionCode.NO_PERMISSION_DO_VOTE));
+
+        // 로직 추가
 
         questionRepository.upVote(questionId, user.getUserId());
         findQuestion.setVoteCount(findQuestion.getVoteCount() + 1);
@@ -149,7 +151,7 @@ public class QuestionService {
         QuestionVote questionVote = findQuestion.getQuestionVoteList().stream()
                 .filter(v -> v.getUser() == user)
                 .findFirst()
-                .orElseThrow(RuntimeException::new); // 좋아요 했던 사람만 취소 가능
+                .orElseThrow(()-> new BusinessLogicException(ExceptionCode.VOTE_NOT_FOUND)); // 좋아요 했던 사람만 취소 가능. bad request
 
         if(findQuestion.getQuestionVoteList().contains(questionVote)) {
             questionRepository.downVote(questionId, user.getUserId());

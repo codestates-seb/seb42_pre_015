@@ -4,20 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4fa2fb37-ad9a-43db-80fc-e2739e87231a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/underdog/.gradle/7.6/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/.gradle/7.6/executionHistory/executionHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/underdog/.gradle/7.6/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/.gradle/7.6/executionHistory/executionHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/underdog/.gradle/7.6/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/.gradle/7.6/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/underdog/.gradle/7.6/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/.gradle/7.6/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/underdog/.gradle/7.6/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/.gradle/7.6/fileHashes/resourceHashesCache.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/underdog/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/underdog/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/.gradle/file-system.probe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/underdog/build/classes/java/main/preproject/underdog/exception/ExceptionCode.class" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/build/classes/java/main/preproject/underdog/exception/ExceptionCode.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/underdog/src/main/java/preproject/underdog/exception/ExceptionAdvice.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/src/main/java/preproject/underdog/exception/ExceptionAdvice.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/underdog/src/main/java/preproject/underdog/exception/ExceptionCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/src/main/java/preproject/underdog/exception/ExceptionCode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/underdog/src/main/java/preproject/underdog/question/entity/Question.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/src/main/java/preproject/underdog/question/entity/Question.java" afterDir="false" />
-    </list>
+    <list default="true" id="4fa2fb37-ad9a-43db-80fc-e2739e87231a" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
