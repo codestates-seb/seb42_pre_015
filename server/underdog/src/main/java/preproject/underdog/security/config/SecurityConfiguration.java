@@ -18,9 +18,11 @@ import preproject.underdog.security.filter.VerificationFilter;
 import preproject.underdog.security.handler.CustomAccessDeniedHandler;
 import preproject.underdog.security.handler.CustomAuthenticationEntryPoint;
 import preproject.underdog.security.handler.CustomAuthenticationSuccessHandler;
+import preproject.underdog.security.handler.OAuth2SuccessHandler;
 import preproject.underdog.security.jwt.JwtTokenizer;
 import preproject.underdog.security.utils.CustomAuthorityUtils;
 import preproject.underdog.user.repository.UserRepository;
+import preproject.underdog.user.service.UserService;
 
 import java.util.Arrays;
 
@@ -29,6 +31,7 @@ import java.util.Arrays;
 public class SecurityConfiguration {
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
+    private final UserService userService;
     private final UserRepository userRepository;
 
     @Bean
@@ -70,9 +73,9 @@ public class SecurityConfiguration {
                         .antMatchers("/login").permitAll()
                         .antMatchers("/user").permitAll()
                         .antMatchers(HttpMethod.GET, "/question/**").permitAll()
-                        .anyRequest().authenticated()); // 요청별 권한 작성하기
-//                .oauth2Login(oauth2 -> oauth2
-//                        .successHandler(new OAuth2SuccessHandler(jwtTokenizer, userService)));
+                        .anyRequest().authenticated()) // 요청별 권한 작성하기
+                .oauth2Login(oauth2 -> oauth2
+                        .successHandler(new OAuth2SuccessHandler(jwtTokenizer, userService )));
 
         return http.build();
     }
@@ -83,6 +86,9 @@ public class SecurityConfiguration {
         corsConfiguration.setAllowedOrigins(Arrays.asList("*"));
         corsConfiguration.setAllowedMethods(Arrays.asList("POST", "PATCH", "GET", "DELETE"));
         corsConfiguration.setAllowedHeaders(Arrays.asList("*"));
+        corsConfiguration.setExposedHeaders(Arrays.asList("Authorization", "Location", "Refresh"));
+        corsConfiguration.addAllowedHeader("Authorization");
+        corsConfiguration.addAllowedHeader("Refresh");
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration);

@@ -52,7 +52,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 //        user.setRefreshToken(refreshToken);
 
         response.setHeader("Authorization", "Bearer " + accessToken);  // (4-4)
-        response.setHeader("Refresh", refreshToken);                   // (4-5)
+        response.setHeader("Refresh", refreshToken);// (4-5)
 
         this.getSuccessHandler().onAuthenticationSuccess(request, response, authResult);
     }
