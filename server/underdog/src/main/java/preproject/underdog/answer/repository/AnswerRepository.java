@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import preproject.underdog.answer.entity.Answer;
 import preproject.underdog.answer.entity.AnswerComment;
+import preproject.underdog.user.entity.User;
 
 import java.util.List;
 

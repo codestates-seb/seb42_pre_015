@@ -16,6 +16,7 @@ import preproject.underdog.question.service.QuestionService;
 import preproject.underdog.user.entity.User;
 import preproject.underdog.user.repository.UserRepository;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.Optional;
 
@@ -99,7 +100,7 @@ public class AnswerService {
         AnswerComment verifyComment = findVerifiedComment(answerCommentId);
 
         if(!(question.getAnswerList().contains(answer) && answer.getComments().contains(verifyComment))) {
-            throw new RuntimeException("질문-답변-댓글 id가 일치하지 않습니다."); // bad request
+            throw new BusinessLogicException(ExceptionCode.ID_IS_NOT_THE_SAME);
         }
 
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
@@ -126,7 +127,7 @@ public class AnswerService {
         AnswerComment comment = findVerifiedComment(answerCommentId);
 
         if(!(question.getAnswerList().contains(answer) && answer.getComments().contains(comment))) {
-            throw new RuntimeException("질문-답변-댓글 id가 일치하지 않습니다."); //bad request
+            throw new BusinessLogicException(ExceptionCode.ID_IS_NOT_THE_SAME);
         }
 
         // 댓글 작성자가 본인인지 검증 -> 시큐리티
@@ -146,6 +147,8 @@ public class AnswerService {
         Optional<User> optionalUser = userRepository.findByEmail(principal);
         User user = optionalUser.orElseThrow(() -> new BusinessLogicException(ExceptionCode.NO_PERMISSION_DO_VOTE));
 
+        if(!user.getAnswerVoteList().contains(user)) throw new BusinessLogicException(ExceptionCode.CANNOT_VOTE_TWICE);
+
         answerRepository.upVote(answerId, user.getUserId());
         findAnswer.setVoteCount(findAnswer.getVoteCount()+1);
     }
@@ -163,7 +166,7 @@ public class AnswerService {
         AnswerVote answerVote = findAnswer.getVotes().stream()
                 .filter(v -> v.getUser() == user)
                 .findFirst()
-                .orElseThrow(RuntimeException::new); // ExceptionCode.VOTE_NOT_FOUND
+                .orElseThrow(() ->new BusinessLogicException(ExceptionCode.VOTE_NOT_FOUND)); // ExceptionCode.VOTE_NOT_FOUND
 
         if(findAnswer.getVotes().contains(answerVote)) {
             answerRepository.downVote(answerId, user.getUserId());

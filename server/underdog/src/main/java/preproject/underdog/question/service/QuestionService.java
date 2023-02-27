@@ -98,7 +98,7 @@ public class QuestionService {
         QuestionComment findComment = findQuestion.getQuestionCommentList().stream()
                 .filter(d -> d.getQuestionCommentId() == commentId)
                 .findFirst()
-                .orElseThrow(RuntimeException::new); // questionId or commentId가 일치하지 않습니다. bad request
+                .orElseThrow(()-> new BusinessLogicException(ExceptionCode.ID_IS_NOT_THE_SAME)); // questionId or commentId가 일치하지 않습니다. bad request
 
         findComment.setContent(comment.getContent());
         questionCommentRepo.save(findComment);
@@ -122,7 +122,7 @@ public class QuestionService {
         findQuestion.getQuestionCommentList().stream()
                 .filter(d -> d.getQuestionCommentId() == commentId)
                 .findFirst()
-                .orElseThrow(RuntimeException::new);  // questionId or commentId가 일치하지 않습니다. bad request
+                .orElseThrow(()-> new BusinessLogicException(ExceptionCode.ID_IS_NOT_THE_SAME));  // questionId or commentId가 일치하지 않습니다. bad request
 
         questionCommentRepo.deleteById(commentId);
         return questionCommentRepo.findByQuestionId(findQuestion.getQuestionId());
@@ -136,6 +136,8 @@ public class QuestionService {
         User user = optionalUser.orElseThrow(() -> new BusinessLogicException(ExceptionCode.NO_PERMISSION_DO_VOTE));
 
         // 로직 추가
+
+        if(!user.getQuestionVoteList().contains(user)) throw new BusinessLogicException(ExceptionCode.CANNOT_VOTE_TWICE);
 
         questionRepository.upVote(questionId, user.getUserId());
         findQuestion.setVoteCount(findQuestion.getVoteCount() + 1);
