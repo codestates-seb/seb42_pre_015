@@ -1,0 +1,64 @@
+  {
+    "questionData": {
+      "data": [
+        {
+          "questionId": 1,
+          "userId": 1,
+          "userName": "홍길동",
+          "title": "제목임제목임제목임제목임제목제목임제목임제목임제목임제목제목임제목임제목임제목임제목제목임제목임제목임제목임제목제목임제목임제목임제목임제목제목임제목임제목임제목임제목제목임제목임제목임제목임제목제목임제목임제목임제목임제목",
+          "content": "본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임본문임임본문임본문임본문임본문임본문임본문임본문임",
+          "viewCount": 2,
+          "voteCount": 0,
+          "tags": [
+            "ab",
+            "ba"
+          ],
+          "createdAt": "2023-02-24T11:08:50",
+          "modifiedAt": "2023-02-24T11:44:37"
+        },
+        {
+          "questionId": 2,
+          "userId": 1,
+          "userName": "홍길동",
+          "title": "제목",
+          "content": "본문",
+          "viewCount": 0,
+          "voteCount": 0,
+          "tags": [
+            "aa",
+            "bb"
+          ],
+          "createdAt": "2023-02-24T11:38:03",
+          "modifiedAt": "2023-02-24T11:38:03"
+        }
+      ],
+      "pageInfo": {
+        "pageNumber": 1,
+        "size": 20,
+        "totalPages": 2132,
+        "totalElements": 2
+      }
+    },
+    "answerData": [
+      {
+        "answerId": 1,
+        "content": "This is answer 1",
+        "userId": 1,
+        "userName": "Tom",
+        "questionId": 1,
+        "voteCount": 123,
+        "createdAt": "2023-04-03T03:03:00",
+        "modifiedAt": "2023-04-03T03:03:00"
+      },
+      {
+        "answerId": 2,
+        "content": "This is answer 2",
+        "userId": 2,
+        "userName": "ABCD",
+        "questionId": 1,
+        "voteCount": 17,
+        "createdAt": "2023-04-03T03:03:00",
+        "modifiedAt": "2023-04-03T03:03:00"
+      }
+    ]
+  }
