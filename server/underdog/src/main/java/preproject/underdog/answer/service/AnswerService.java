@@ -139,7 +139,7 @@ public class AnswerService {
         return answerRepository.findByAnswerId(answer.getAnswerId());
     }
 
-    public void doVote(long questionId, long answerId) {//userId 제거
+    public Answer doVote(long questionId, long answerId) {//userId 제거
         Question question = questionService.findQuestionById(questionId);
         Answer findAnswer = findVerifiedAnswer(answerId);
         if(!question.getAnswerList().contains(findAnswer)) throw new BusinessLogicException(ExceptionCode.ANSWER_NOT_FOUND);
@@ -154,11 +154,11 @@ public class AnswerService {
             throw new BusinessLogicException(ExceptionCode.CANNOT_VOTE_TWICE);
         }
 
-        answerRepository.upVote(answerId, user.getUserId());
         findAnswer.setVoteCount(findAnswer.getVoteCount()+1);
+        return findAnswer;
     }
 
-    public void undoVote(long questionId, long answerId) {//userId 제거
+    public Answer undoVote(long questionId, long answerId) {//userId 제거
         Question question = questionService.findQuestionById(questionId);//질문 검증
         Answer findAnswer = findVerifiedAnswer(answerId);//답변 검증
         if(!question.getAnswerList().contains(findAnswer)) throw new BusinessLogicException(ExceptionCode.ANSWER_NOT_FOUND);
@@ -176,9 +176,9 @@ public class AnswerService {
         if(findAnswer.getVotes().contains(answerVote)) {
             answerRepository.downVote(answerId, user.getUserId());
             findAnswer.setVoteCount(findAnswer.getVoteCount() - 1);
-            answerRepository.save(findAnswer);
         }
         else throw new BusinessLogicException(ExceptionCode.VOTE_NOT_FOUND);
+        return findAnswer;
     }
 
     public Answer findVerifiedAnswer(long answerId) {

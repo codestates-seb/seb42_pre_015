@@ -17,8 +17,8 @@ import preproject.underdog.security.filter.CustomAuthenticationFilter;
 import preproject.underdog.security.filter.VerificationFilter;
 import preproject.underdog.security.handler.*;
 import preproject.underdog.security.jwt.JwtTokenizer;
-import preproject.underdog.security.userDetailsService.CustomUserDetailsService;
 import preproject.underdog.security.utils.CustomAuthorityUtils;
+import preproject.underdog.user.mapper.UserMapper;
 import preproject.underdog.user.repository.UserRepository;
 import preproject.underdog.user.service.UserService;
 
@@ -31,6 +31,7 @@ public class SecurityConfiguration {
     private final CustomAuthorityUtils authorityUtils;
     private final UserService userService;
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -103,7 +104,7 @@ public class SecurityConfiguration {
                     new CustomAuthenticationFilter(jwtTokenizer, authenticationManager);// (2-4)
 
 //            customAuthenticationFilter.setFilterProcessesUrl("/auth/login"); //request URL - 디폴트는 /login
-            customAuthenticationFilter.setAuthenticationSuccessHandler(new CustomAuthenticationSuccessHandler());  // (3) 추가
+            customAuthenticationFilter.setAuthenticationSuccessHandler(new CustomAuthenticationSuccessHandler(userService, userMapper));  // (3) 추가
             customAuthenticationFilter.setAuthenticationFailureHandler(new CustomAuthenticationFailureHandler());
 
             VerificationFilter verificationFilter = new VerificationFilter(jwtTokenizer, authorityUtils, userRepository);

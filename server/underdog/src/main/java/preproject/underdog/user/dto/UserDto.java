@@ -28,4 +28,12 @@ public class UserDto {
         @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$", message = "비밀번호는 최소 8자리로, 숫자 1개와 문자 1개 이상을 포함해야 합니다.")
         private String password;
     }
+
+    @Getter
+    @NoArgsConstructor
+    public static class Response{
+        private long userId;
+        private String name;
+        private String email;
+    }
 }

@@ -129,7 +129,7 @@ public class QuestionService {
         return questionCommentRepo.findByQuestionId(findQuestion.getQuestionId());
     }
 
-    public void createVote(long questionId) { // userId 없애도 됨.
+    public Question createVote(long questionId) { // userId 없애도 됨.
         Question findQuestion = findQuestionById(questionId);
 
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
@@ -142,11 +142,11 @@ public class QuestionService {
             throw new BusinessLogicException(ExceptionCode.CANNOT_VOTE_TWICE);
         }
 
-        questionRepository.upVote(questionId, user.getUserId());
         findQuestion.setVoteCount(findQuestion.getVoteCount() + 1);
+        return findQuestion;
     }
 
-    public void cancelVote(long questionId) {
+    public Question cancelVote(long questionId) {
         Question findQuestion = findQuestionById(questionId);
 
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
@@ -161,9 +161,9 @@ public class QuestionService {
         if(findQuestion.getQuestionVoteList().contains(questionVote)) {
             questionRepository.downVote(questionId, user.getUserId());
             findQuestion.setVoteCount(findQuestion.getVoteCount() - 1);
-            questionRepository.save(findQuestion);
         }
         else throw new BusinessLogicException(ExceptionCode.VOTE_NOT_FOUND);
+        return findQuestion;
     }
 
     public Question findQuestionById(long questionId) {
