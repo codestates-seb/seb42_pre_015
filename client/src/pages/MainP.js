@@ -1,13 +1,14 @@
 import styled from 'styled-components';
-import { GeneralBtn } from '../components/common/Buttons';
-// import Data from '../data/MOCK_DATA.json';
-import { MainNav } from '../components/common/SideNav';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import Pagination from 'react-js-pagination';
+import { useNavigate, Link } from 'react-router-dom';
+
+import Tag from '../components/common/Tag';
 import Nav from '../components/common/Nav';
 import Footer from '../components/common/Footer';
-import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import Pagination from 'react-js-pagination';
+import { GeneralBtn } from '../components/common/Buttons';
+import { MainNav } from '../components/common/SideNav';
 
 const MainPContainer = styled.div`
   padding: 24px 0 0 16px;
@@ -147,7 +148,7 @@ const MainFilterContainer = styled.div`
 `;
 
 const QuestionDesContainer = styled.div`
-  > p {
+  > div {
     white-space: normal;
     font-size: 13px;
     margin-bottom: 8px;
@@ -203,26 +204,21 @@ export function MainComponent() {
 
   const handlePageItemClick = buttonNumber => {
     setActivePageItemButton(buttonNumber);
-    console.log(buttonNumber);
   };
 
   const handleFilterClick = buttonNumber => {
     setActiveButton(buttonNumber);
     if (buttonNumber === 1) {
-      console.log(Filter);
       setFilter('createdAt,asc');
     } else if (buttonNumber === 2) {
-      console.log(Filter);
       setFilter('createdAt,desc');
     } else if (buttonNumber === 3) {
-      console.log(Filter);
       setFilter('voteCount,asc');
     }
   };
 
   const handlePageChange = pageNumber => {
     setActivePage(pageNumber);
-    console.log(pageNumber);
   };
 
   useEffect(() => {
@@ -301,13 +297,11 @@ export function MainComponent() {
                 <Link to={`/question/${el.questionId}`}>{el.title}</Link>
               </div>
               <QuestionDesContainer>
-                <p>{el.content}</p>
+                <div dangerouslySetInnerHTML={{ __html: `${el.content}` }} />
               </QuestionDesContainer>
               <QuestionBottom>
                 <TagContainer>
-                  <button>Java</button>
-                  <button>Python</button>
-                  <button>Java Script</button>
+                  <Tag tags={el.tags} />
                 </TagContainer>
                 <UserContainer>
                   <a href='/#'>{el.userName}</a>
