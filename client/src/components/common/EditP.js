@@ -212,8 +212,8 @@ export function QuestionEditMain() {
 
 export function AnswerEditMain() {
   const [AllAnswerData, AllsetAnswerData] = useState([]);
-  const [AnswerInputData, setAnswerInputData] = useState('');
   const [answer, setAnswer] = useState(null);
+  const [contentErrorMsg, setContentErrorMsg] = useState('');
   const { questionId, answerId } = useParams();
   const navigate = useNavigate();
 
@@ -235,16 +235,21 @@ export function AnswerEditMain() {
     setAnswer(filteredAnswer);
   }, [AllAnswerData, answerId]);
 
-  useEffect(() => {
-    if (answer) {
-      setAnswerInputData(answer.content);
-    }
-  }, [answer]);
-  console.log(AnswerInputData);
   if (!answer) {
     return <div>Loading...</div>;
   }
 
+  const handleValidation = e => {
+    if (e.target.className.includes('ql-editor')) {
+      if (answer.content.length > 0 && answer.content.length < 20) {
+        setContentErrorMsg('Body must be at least 20 characters.');
+      } else if (answer.content.length === 0) {
+        setContentErrorMsg('Body is missing.');
+      } else {
+        setContentErrorMsg('');
+      }
+    }
+  };
   return (
     <QEditContainer>
       <QEHelpBox margin='20px'>
@@ -263,12 +268,16 @@ export function AnswerEditMain() {
         Answer
       </QELable>
       <Editor
-        QuestionInputData={AnswerInputData}
-        setQuestionInputData={setAnswerInputData}
+        editorInput={answer.content}
+        setEditorInput={setAnswer}
+        formValues={answer}
+        handleValidation={handleValidation}
+        contentErrorMsg={contentErrorMsg}
       />
+      {contentErrorMsg && <p style={{ color: '#DE4F54' }}>{contentErrorMsg}</p>}
       <ShowConentData
         dangerouslySetInnerHTML={{
-          __html: AnswerInputData
+          __html: answer.content
         }}
       />
       <div style={{ marginBottom: '12px' }}>
@@ -277,7 +286,9 @@ export function AnswerEditMain() {
           BtnText='Save edits'
           padding='0px'
           onClick={() => {
-            const data = { content: AnswerInputData };
+            console.log(questionId, answerId);
+            const data = { content: answer.content };
+            console.log(data);
             axios
               .patch(`/question/${questionId}/answer/${answerId}`, data)
               .then(response => {
