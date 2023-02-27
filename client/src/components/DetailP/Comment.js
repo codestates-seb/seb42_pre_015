@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { SmallPenSVG } from '../../assets/CommonSVG';
-import { GeneralBtn } from '../common/Buttons';
+// import { GeneralBtn } from '../common/Buttons';
 import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -48,21 +48,34 @@ const CommentWrapper = styled.div`
 const AddCommentContainer = styled.div`
   display: flex;
   justify-content: center;
-  > textarea {
-    height: 50px;
-    width: 85%;
-    border-radius: 3px;
+  border: 1px solid black;
+  border-radius: 10px;
+  border: 1px solid #b1b7bc;
+  > input {
+    height: 30px;
+    width: 91%;
+    border-radius: 10px;
     margin-right: 8px;
     padding: 6px;
     font-size: 13px;
     line-height: 19.5px;
     white-space: normal;
-    border: 1px solid #b1b7bc;
     &:focus {
-      border: 1px solid #409ad6;
-      box-shadow: 0 0 0 4px #d9e9f6;
       outline: none;
     }
+  }
+  > button {
+    width: 50px;
+    height: 30px;
+    border-radius: 10px;
+    font-size: 12px;
+    color: #0069c1;
+    background-color: #fff;
+  }
+  &:focus-within {
+    border: 1px solid #409ad6;
+    box-shadow: 0 0 0 4px #d9e9f6;
+    outline: none;
   }
 `;
 
@@ -86,23 +99,30 @@ function Comment({
 
     if (init === questionCommentData) {
       axios
-        .post(`/question/${questionId}/comment`, newCommentInput)
+        .post(`/question/${questionId}/comment`, newCommentInput, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            Refresh: `${refreshToken}`
+          }
+        })
         .then(res => {
-          console.log('commentdata:', res.data);
           setQuestionCommentData(res.data);
           setNewComment('');
         });
     } else if (init === answerCommentData) {
-      console.log('newcommentinput:', newCommentInput);
-      console.log('questionId:', questionId);
-      console.log('answerId:', answerId);
       axios
         .post(
           `/question/${questionId}/answer/${answerId}/comment`,
-          newCommentInput
+          newCommentInput,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              Refresh: `${refreshToken}`
+            }
+          }
         )
         .then(res => {
-          console.log('commentdata:', res.data);
+          console.log('commentdata:', res);
           setAnswerCommentData(res.data);
           setNewComment('');
         });
@@ -127,7 +147,6 @@ function Comment({
               <span className='comment content'>{comment.content}</span>
               <span className='comment name'>{comment.userName}</span>
               <span className='comment date'>{comment.createdAt}</span>
-              {/* Show this only when the user has the authorization. */}
               <SmallPenSVG className='comment edit-btn' />
               <span className='comment delete-btn'>X</span>
             </CommentWrapper>
@@ -148,16 +167,11 @@ function Comment({
           </div>
           {isAddClicked ? (
             <AddCommentContainer>
-              <textarea
+              <input
                 value={newComment}
                 onChange={e => setNewComment(e.target.value)}
-              />
-              <GeneralBtn
-                BtnText='Add Comment'
-                width='110px'
-                height='40px'
-                onClick={handleAddComment}
-              />
+              ></input>
+              <button onClick={handleAddComment}>Post</button>
             </AddCommentContainer>
           ) : null}
         </CommentContainer>
