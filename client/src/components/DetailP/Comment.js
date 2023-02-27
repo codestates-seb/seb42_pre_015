@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import { SmallPenSVG } from '../../assets/CommonSVG';
 import { GeneralBtn } from '../common/Buttons';
+import { useState } from 'react';
+import axios from 'axios';
 
 const CommentContainer = styled.div`
   display: flex;
@@ -63,9 +65,25 @@ const AddCommentContainer = styled.div`
   }
 `;
 
-function Comment({ questionCommentData, answerCommentData1 }) {
-  // const { questoinId } = useParams();
-  // const [answerCommentData, answerCommentIsPending, answerCommentError] = useFetch(`http://localhost:3001/question/${questoinId}/answer/${answerId}`/comment)
+function Comment({
+  questionId,
+  questionCommentData,
+  setQuestionCommentData,
+  answerCommentData
+}) {
+  const [isAddClicked, setIsAddClicked] = useState(false);
+  const [newQuestionComment, setNewQuestionComment] = useState('');
+
+  const handleAddQuestionComment = () => {
+    const newComment = { userId: 1, content: newQuestionComment };
+
+    axios.post(`/question/${questionId}/comment`, newComment).then(res => {
+      console.log('commentdata:', res.data);
+      setQuestionCommentData(res.data);
+      setNewQuestionComment('');
+    });
+  };
+
   return (
     <>
       {questionCommentData && (
@@ -81,17 +99,34 @@ function Comment({ questionCommentData, answerCommentData1 }) {
             </CommentWrapper>
           ))}
           <div>
-            <button className='add-comment-btn'>Add a comment</button>
+            {!isAddClicked ? (
+              <button
+                className='add-comment-btn'
+                onClick={() => setIsAddClicked(true)}
+              >
+                Add a comment
+              </button>
+            ) : null}
           </div>
-          <AddCommentContainer>
-            <textarea />
-            <GeneralBtn BtnText='Add Comment' width='110px' height='40px' />
-          </AddCommentContainer>
+          {isAddClicked ? (
+            <AddCommentContainer>
+              <textarea
+                value={newQuestionComment}
+                onChange={e => setNewQuestionComment(e.target.value)}
+              />
+              <GeneralBtn
+                BtnText='Add Comment'
+                width='110px'
+                height='40px'
+                onClick={handleAddQuestionComment}
+              />
+            </AddCommentContainer>
+          ) : null}
         </CommentContainer>
       )}
-      {answerCommentData1 && (
+      {answerCommentData && (
         <CommentContainer>
-          {answerCommentData1.map(comment => (
+          {answerCommentData.map(comment => (
             <CommentWrapper key={comment.answerCommentId}>
               <span className='comment content'>{comment.content}</span>
               <span className='comment name'>{comment.userName}</span>

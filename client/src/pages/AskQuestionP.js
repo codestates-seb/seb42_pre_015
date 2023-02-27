@@ -3,11 +3,11 @@ import WritingTipBox from '../components/AskQuestionP/WritingTipBox';
 import WritingGoodQBox from '../components/AskQuestionP/WritingGoodQBox';
 import { ReactComponent as AskQuestionBackground } from '../assets/askquestion-background.svg';
 import { useState } from 'react';
-// import Footer from '../components/Common/Footer';
-import Header from '../components/common/Header/Header';
 import TagInput from '../components/common/TagInput';
 import Footer from '../components/common/Footer';
 import { GeneralBtn } from '../components/common/Buttons';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Main = styled.main`
   display: flex;
@@ -110,6 +110,7 @@ const Buttons = styled.div`
 `;
 
 function AskQuestionPage() {
+  const navigate = useNavigate();
   // Writing Tip Box 팝업을 위한 상태
   const [isClicked, setIsClicked] = useState(null);
 
@@ -153,11 +154,23 @@ function AskQuestionPage() {
 
   const handleSubmit = e => {
     e.preventDefault();
+
+    const newQuestion = { userId: 1, ...formValues, tags: ['test1', 'test2'] };
+    console.log('newQuestion:', newQuestion);
+
+    axios.post('/question', newQuestion).then(res => {
+      console.log('res.data: ', res.data);
+      navigate(`/question/${res.data.questionId}`);
+    });
+  };
+
+  const handleDiscard = () => {
+    setFormValues({ title: '', content: '', tags: '' });
+    navigate('/');
   };
 
   return (
     <>
-      <Header />
       <Main>
         <MainHeading>
           <div className='main-heading-title'>
@@ -235,7 +248,10 @@ function AskQuestionPage() {
                 Add up to 5 tags to describe what your question is about. Start
                 typing to see suggestions.
               </p>
-              <TagInput />
+              <TagInput
+                tags={formValues.tags}
+                handleEditForm={handleEditForm}
+              />
             </InputBox>
             {isClicked === 'tagsClicked' ? (
               <WritingTipBox
@@ -260,6 +276,7 @@ function AskQuestionPage() {
               className='discard-btn'
               BtnText='Discard draft'
               width='100px'
+              onClick={handleDiscard}
             />
           </Buttons>
         </MainBody>
