@@ -73,7 +73,6 @@ export function QuestionEditMain() {
   useEffect(() => {
     axios
       .get(`/question/${questionId}`)
-      // 찐은 `/question/${questionId}` 임.
       .then(res => {
         setQuestionData(res.data);
         setTilte(res.data.title);
@@ -176,7 +175,6 @@ export function AnswerEditMain() {
       .get(`/question/${questionId}/answer`)
       .then(res => {
         AllsetAnswerData(res.data);
-        console.log('엑시오스받음');
       })
       .catch(error => {
         console.error(error);
