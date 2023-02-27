@@ -29,7 +29,6 @@ public class ExceptionAdvice {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)//객체의 유효성 검사(validation)를 실패한 경우 발생
     public ErrorResponse handleConstraintViolationException(ConstraintViolationException e) {
-
         final ErrorResponse response = ErrorResponse.of(e.getConstraintViolations());
         return response;
     }
