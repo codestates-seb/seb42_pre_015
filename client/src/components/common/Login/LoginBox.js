@@ -23,66 +23,57 @@ const LoginBox = () => {
   }, [password]);
 
   const validateEmail = email => {
-    const Constraint = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const constraint = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email) {
       return 'Email cannot be empty';
-    } else if (!Constraint.test(email)) {
+    } else if (!constraint.test(email)) {
       return 'Email must be a well-formed email address';
     }
     return '';
   };
 
   const validatePassword = password => {
-    const Constraint = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    const constraint = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
     if (!password) {
       return 'Password cannot be empty';
-    } else if (!Constraint.test(password)) {
-      return 'Password must match the regular expression ';
+    } else if (!constraint.test(password)) {
+      return 'Password must match the regular expression';
     }
     return '';
   };
 
   // 제출 버튼 event
-
-  const handleSubmit = async e => {
+  const handleSubmit = e => {
     e.preventDefault();
-
     const emailError = validateEmail(email);
     const passwordError = validatePassword(password);
-
     if (emailError || passwordError) {
       setEmailError(emailError);
       setPasswordError(passwordError);
-      window.alert('please fill in the whole forms');
       return;
     }
 
-    // HTTP Request
-    try {
-      const response = await axios.post(
-        'http://localhost:8080/user',
-        {
-          email: email,
-          password: password
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        }
-      );
-      console.log(response.data);
-      setEmail('');
-      setPassword('');
-      setEmailError('');
-      setPasswordError('');
+    axios
+      .post('/login', {
+        username: email,
+        password: password
+      })
+      .then(response => {
+        console.log('dd');
+        const { authorization: accessToken, refresh: refreshToken } =
+          response.headers;
 
-      // Response header 저장
-      const userURI = response.headers['location'];
-      console.log(userURI);
-    } catch (error) {
-      alert(error);
-    }
+        // JWT를 로컬 스토리지에 저장
+        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem('refreshToken', refreshToken);
+
+        // 로그인 성공시 리다이렉션
+        window.location.href = '/';
+      })
+      .catch(error => {
+        console.log('ss');
+        console.log(error);
+      });
   };
 
   return (
@@ -93,7 +84,9 @@ const LoginBox = () => {
           <div className='all-oauth-box'>
             <div className='oauth-box'>
               <div className='logo'>
-                <SOiconSVG />
+                <Link to='/'>
+                  <SOiconSVG />
+                </Link>
               </div>
               <OAuthBox />
             </div>
@@ -141,7 +134,7 @@ const LoginBox = () => {
                   <div style={{ color: 'red' }}>{passwordError}</div>
                 )}
               </div>
-              <GeneralBtn onClick={handleSubmit} BtnText='Log in' />
+              <GeneralBtn BtnText='Log in' />
             </form>
           </div>
           {/* Support Message */}

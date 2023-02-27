@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import { SmallPenSVG } from '../../assets/CommonSVG';
 import { GeneralBtn } from '../common/Buttons';
+import { useState } from 'react';
+import axios from 'axios';
 
 const CommentContainer = styled.div`
   display: flex;
@@ -63,15 +65,59 @@ const AddCommentContainer = styled.div`
   }
 `;
 
-function Comment({ questionCommentData, answerCommentData1 }) {
-  // const { questoinId } = useParams();
-  // const [answerCommentData, answerCommentIsPending, answerCommentError] = useFetch(`http://localhost:3001/question/${questoinId}/answer/${answerId}`/comment)
+function Comment({
+  questionId,
+  questionCommentData,
+  setQuestionCommentData,
+  answerId,
+  answerCommentData,
+  setAnswerCommentData
+}) {
+  let init = questionCommentData || answerCommentData;
+
+  const [isAddClicked, setIsAddClicked] = useState(false);
+  const [newComment, setNewComment] = useState('');
+
+  const handleAddComment = () => {
+    const newCommentInput = { userId: 1, content: newComment };
+
+    if (init === questionCommentData) {
+      axios
+        .post(`/question/${questionId}/comment`, newCommentInput)
+        .then(res => {
+          console.log('commentdata:', res.data);
+          setQuestionCommentData(res.data);
+          setNewComment('');
+        });
+    } else if (init === answerCommentData) {
+      console.log('newcommentinput:', newCommentInput);
+      console.log('questionId:', questionId);
+      console.log('answerId:', answerId);
+      axios
+        .post(
+          `/question/${questionId}/answer/${answerId}/comment`,
+          newCommentInput
+        )
+        .then(res => {
+          console.log('commentdata:', res.data);
+          setAnswerCommentData(res.data);
+          setNewComment('');
+        });
+    }
+  };
+
   return (
     <>
-      {questionCommentData && (
+      {init && (
         <CommentContainer>
-          {questionCommentData.map(comment => (
-            <CommentWrapper key={comment.questionCommentId}>
+          {init.map(comment => (
+            <CommentWrapper
+              key={
+                init === questionCommentData
+                  ? comment.questionCommentId
+                  : comment.answerCommentId
+              }
+            >
               <span className='comment content'>{comment.content}</span>
               <span className='comment name'>{comment.userName}</span>
               <span className='comment date'>{comment.createdAt}</span>
@@ -81,33 +127,29 @@ function Comment({ questionCommentData, answerCommentData1 }) {
             </CommentWrapper>
           ))}
           <div>
-            <button className='add-comment-btn'>Add a comment</button>
+            {!isAddClicked ? (
+              <button
+                className='add-comment-btn'
+                onClick={() => setIsAddClicked(true)}
+              >
+                Add a comment
+              </button>
+            ) : null}
           </div>
-          <AddCommentContainer>
-            <textarea />
-            <GeneralBtn BtnText='Add Comment' width='110px' height='40px' />
-          </AddCommentContainer>
-        </CommentContainer>
-      )}
-      {answerCommentData1 && (
-        <CommentContainer>
-          {answerCommentData1.map(comment => (
-            <CommentWrapper key={comment.answerCommentId}>
-              <span className='comment content'>{comment.content}</span>
-              <span className='comment name'>{comment.userName}</span>
-              <span className='comment date'>{comment.createdAt}</span>
-              {/* Show this only when the user has the authorization. */}
-              <SmallPenSVG className='comment edit-btn' />
-              <span className='comment delete-btn'>X</span>
-            </CommentWrapper>
-          ))}
-          <div>
-            <button className='add-comment-btn'>Add a comment</button>
-          </div>
-          <AddCommentContainer>
-            <textarea />
-            <GeneralBtn BtnText='Add Comment' width='110px' height='40px' />
-          </AddCommentContainer>
+          {isAddClicked ? (
+            <AddCommentContainer>
+              <textarea
+                value={newComment}
+                onChange={e => setNewComment(e.target.value)}
+              />
+              <GeneralBtn
+                BtnText='Add Comment'
+                width='110px'
+                height='40px'
+                onClick={handleAddComment}
+              />
+            </AddCommentContainer>
+          ) : null}
         </CommentContainer>
       )}
     </>

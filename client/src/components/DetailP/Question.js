@@ -3,7 +3,6 @@ import Vote from './Vote';
 import Tag from '../common/Tag';
 import ProfileCard from './ProfileCard';
 import Comment from './Comment';
-// import { questionCommentData } from '../../data/dummyData';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -39,15 +38,14 @@ const ControlOptions = styled.div`
   }
 `;
 
-function Question({ questionData }) {
-  const BASE_URL = 'http://localhost:3001';
-  const [questionCommentData, setquestionCommentData] = useState(null);
+function Question({ questionId, questionData }) {
+  const [questionCommentData, setQuestionCommentData] = useState(null);
 
   useEffect(() => {
-    axios.get(`${BASE_URL}/questionCommentData`).then(res => {
-      setquestionCommentData(res.data);
+    axios.get(`/question/${questionId}/comments`).then(res => {
+      setQuestionCommentData(res.data);
     });
-  }, []);
+  }, [questionId]);
 
   return (
     <>
@@ -55,8 +53,10 @@ function Question({ questionData }) {
         <QuestionContainer>
           <Vote questionData={questionData} />
           <QuestionWrapper>
-            <p>{questionData.content}</p>
-            <Tag questionData={questionData} />
+            <p dangerouslySetInnerHTML={{ __html: questionData.content }}>
+              {/* {questionData.content} */}
+            </p>
+            <Tag tags={questionData.tags} />
             <QuestionInfo>
               <ControlOptions>
                 <div>
@@ -71,7 +71,11 @@ function Question({ questionData }) {
               </ControlOptions>
               <ProfileCard questionData={questionData} />
             </QuestionInfo>
-            <Comment questionCommentData={questionCommentData} />
+            <Comment
+              questionId={questionId}
+              questionCommentData={questionCommentData}
+              setQuestionCommentData={setQuestionCommentData}
+            />
           </QuestionWrapper>
         </QuestionContainer>
       )}

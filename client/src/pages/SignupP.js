@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import SignupBox from '../components/Signup/SignupBox';
 import SignupText from '../components/Signup/SignupText';
-import Header from '../components/common/Header/Header';
 
 const AllBoxStyle = styled.div`
   background-color: #f1f2f3;
@@ -76,9 +75,6 @@ const SignupP = () => {
     <>
       <AllBoxStyle>
         <body>
-          <div className='header'>
-            <Header />
-          </div>
           <ContainerStyle>
             <div className='container-text'>
               Create your Stack Overflow account.

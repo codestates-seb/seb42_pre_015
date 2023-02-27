@@ -1,14 +1,26 @@
-import { useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-// import './Editor.css';
+import '../../EditorStyles.css';
+import styled from 'styled-components';
 
-function Editor() {
-  const [text, setText] = useState('');
+const StyledEditor = styled.div`
+  border-radius: 3px;
+  &:focus-within {
+    border: 1px solid ${props => (props.border ? '#DE4F54' : '#409ad6')};
+    box-shadow: ${props =>
+      props.border ? '0 0 0 4px #F6E0E0' : '0 0 0 4px #d9e9f6'};
+  }
+`;
 
+function Editor({
+  editorInput,
+  setEditorInput,
+  formValues,
+  handleValidation,
+  contentErrorMsg
+}) {
   const modules = {
     toolbar: [
-      //   [{ font: [] }],
       [{ header: [1, 2, 3, false] }],
       ['bold', 'italic', 'underline', 'strike', 'blockquote', 'code-block'],
       [
@@ -17,14 +29,12 @@ function Editor() {
         { indent: '-1' },
         { indent: '+1' }
       ],
-      //   ['link', 'image'],
       [{ align: [] }, { color: [] }, { background: [] }], // dropdown with defaults from theme
       ['clean']
     ]
   };
 
   const formats = [
-    //'font',
     'header',
     'bold',
     'italic',
@@ -34,25 +44,28 @@ function Editor() {
     'list',
     'bullet',
     'indent',
-    'link',
-    'image',
     'align',
     'color',
     'background'
   ];
 
-  const handleText = value => {
-    setText(value);
+  const handleText = content => {
+    setEditorInput({ ...formValues, content: content });
   };
-  console.log(text);
 
   return (
-    <ReactQuill
-      modules={modules}
-      formats={formats}
-      value={text}
-      onChange={handleText}
-    />
+    <StyledEditor
+      name='content'
+      onBlur={handleValidation}
+      border={contentErrorMsg}
+    >
+      <ReactQuill
+        modules={modules}
+        formats={formats}
+        value={editorInput}
+        onChange={handleText}
+      />
+    </StyledEditor>
   );
 }
 
