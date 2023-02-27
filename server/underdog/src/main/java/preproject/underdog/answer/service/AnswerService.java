@@ -99,7 +99,7 @@ public class AnswerService {
         AnswerComment verifyComment = findVerifiedComment(answerCommentId);
 
         if(!(question.getAnswerList().contains(answer) && answer.getComments().contains(verifyComment))) {
-            throw new RuntimeException("질문-답변-댓글 id가 일치하지 않습니다.");
+            throw new RuntimeException("질문-답변-댓글 id가 일치하지 않습니다."); // bad request
         }
 
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
@@ -126,7 +126,7 @@ public class AnswerService {
         AnswerComment comment = findVerifiedComment(answerCommentId);
 
         if(!(question.getAnswerList().contains(answer) && answer.getComments().contains(comment))) {
-            throw new RuntimeException("질문-답변-댓글 id가 일치하지 않습니다.");
+            throw new RuntimeException("질문-답변-댓글 id가 일치하지 않습니다."); //bad request
         }
 
         // 댓글 작성자가 본인인지 검증 -> 시큐리티
@@ -163,7 +163,7 @@ public class AnswerService {
         AnswerVote answerVote = findAnswer.getVotes().stream()
                 .filter(v -> v.getUser() == user)
                 .findFirst()
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(RuntimeException::new); // ExceptionCode.VOTE_NOT_FOUND
 
         if(findAnswer.getVotes().contains(answerVote)) {
             answerRepository.downVote(answerId, user.getUserId());

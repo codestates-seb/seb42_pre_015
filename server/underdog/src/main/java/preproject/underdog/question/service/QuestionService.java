@@ -98,7 +98,7 @@ public class QuestionService {
         QuestionComment findComment = findQuestion.getQuestionCommentList().stream()
                 .filter(d -> d.getQuestionCommentId() == commentId)
                 .findFirst()
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(RuntimeException::new); // questionId or commentId가 일치하지 않습니다. bad request
 
         findComment.setContent(comment.getContent());
         questionCommentRepo.save(findComment);
@@ -122,7 +122,7 @@ public class QuestionService {
         findQuestion.getQuestionCommentList().stream()
                 .filter(d -> d.getQuestionCommentId() == commentId)
                 .findFirst()
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(RuntimeException::new);  // questionId or commentId가 일치하지 않습니다. bad request
 
         questionCommentRepo.deleteById(commentId);
         return questionCommentRepo.findByQuestionId(findQuestion.getQuestionId());
@@ -149,7 +149,7 @@ public class QuestionService {
         QuestionVote questionVote = findQuestion.getQuestionVoteList().stream()
                 .filter(v -> v.getUser() == user)
                 .findFirst()
-                .orElseThrow(RuntimeException::new); // 좋아요 했던 사람만 취소 가능
+                .orElseThrow(RuntimeException::new); // 좋아요 했던 사람만 취소 가능. bad request
 
         if(findQuestion.getQuestionVoteList().contains(questionVote)) {
             questionRepository.downVote(questionId, user.getUserId());
