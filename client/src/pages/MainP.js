@@ -211,7 +211,7 @@ export function MainComponent() {
   const [activePage, setActivePage] = useState(1);
   const [activeButton, setActiveButton] = useState(1);
   const [activePageItemButton, setActivePageItemButton] = useState(15);
-  const [Filter, setFilter] = useState('createdAt,asc');
+  const [Filter, setFilter] = useState('createdAt,desc');
 
   const handlePageItemClick = buttonNumber => {
     setActivePageItemButton(buttonNumber);
@@ -220,11 +220,11 @@ export function MainComponent() {
   const handleFilterClick = buttonNumber => {
     setActiveButton(buttonNumber);
     if (buttonNumber === 1) {
-      setFilter('createdAt,asc');
-    } else if (buttonNumber === 2) {
       setFilter('createdAt,desc');
+    } else if (buttonNumber === 2) {
+      setFilter('createdAt,asc');
     } else if (buttonNumber === 3) {
-      setFilter('voteCount,asc');
+      setFilter('voteCount,desc');
     }
   };
 
