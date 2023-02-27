@@ -148,6 +148,17 @@ const MainFilterContainer = styled.div`
 `;
 
 const QuestionDesContainer = styled.div`
+  > div > p {
+    white-space: normal;
+    font-size: 13px;
+    margin-bottom: 8px;
+    line-height: 1.5;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
   > div {
     white-space: normal;
     font-size: 13px;
