@@ -19,7 +19,6 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)//객체의 유효성 검사(validation)를 실패한 경우 발생
     public ErrorResponse handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         final ErrorResponse response = ErrorResponse.of(e.getBindingResult());
-
         return response;
     }
     /*
@@ -29,7 +28,6 @@ public class ExceptionAdvice {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)//객체의 유효성 검사(validation)를 실패한 경우 발생
     public ErrorResponse handleConstraintViolationException(ConstraintViolationException e) {
-
         final ErrorResponse response = ErrorResponse.of(e.getConstraintViolations());
         return response;
     }
@@ -38,15 +36,12 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)//클라이언트로부터 전송된 HTTP 요청의 메서드(Method)가 서버에서 지원하지 않는 경우, 예를들어 Get을 받아야하는데 Post로 준 경우
     public ErrorResponse handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
         final ErrorResponse response = ErrorResponse.of(HttpStatus.METHOD_NOT_ALLOWED);
-
         return response;
     }
 
     @ExceptionHandler//로직 처리 중 발생한 예외 -> ExceptionCode에 따로 저장 -> 서비스 로직에 적용 예정
     public ResponseEntity<ErrorResponse> handleBusinessLogicException(BusinessLogicException e) {
-
         final ErrorResponse response = ErrorResponse.of(e.getExceptionCode());
-
         return new ResponseEntity<>(response, HttpStatus.valueOf(e.getExceptionCode().getStatus()));
     }
 

@@ -27,8 +27,6 @@ public class Question extends Auditable {
     private int viewCount=0;
     @Column
     private int voteCount=0;
-    @Column
-    private int answerCount = getAnswerList().size();
     @ElementCollection(fetch = FetchType.LAZY)
     private List<String> tags = new ArrayList<>();
     @OneToMany(mappedBy = "question", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
