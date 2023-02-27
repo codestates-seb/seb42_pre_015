@@ -16,14 +16,13 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface QuestionMapper {
-    @Mapping(source = "userId", target = "user.userId")
     Question questionPostDtoToQuestion(QuestionPostDto questionPostDto);
     Question questionPatchDtoToQuestion(QuestionPatchDto questionPatchDto);
     @Mapping(source = "user.userId", target = "userId")
     @Mapping(source = "user.name", target = "userName")
+    @Mapping(target = "answerCount", expression = "java(question.getAnswerList()!= null ? question.getAnswerList().size():0)")
     QuestionResponseDto questionToQuestionResponseDto(Question question);
 
-    @Mapping(source = "userId", target = "user.userId")
     QuestionComment commentPostDtoToQuestionComment(QuestionCommentPostDto commentPostDto);
     QuestionComment commentPatchDtoToQuestionComment(QuestionCommentPatchDto commentPatchDto);
     @Mapping(source = "user.userId", target = "userId")

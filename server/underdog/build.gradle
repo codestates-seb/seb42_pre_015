@@ -2,22 +2,22 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '2.7.8'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
-	id "org.asciidoctor.jvm.convert" version "3.3.2"
+//	id "org.asciidoctor.jvm.convert" version "3.3.2"
 }
 
 group = 'pre-project'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
-configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
-}
-
-ext {
-	snippetsDir = file('build/generated-snippets')
-}
+//configurations {
+//	compileOnly {
+//		extendsFrom annotationProcessor
+//	}
+//}
+//
+//ext {
+//	snippetsDir = file('build/generated-snippets')
+//}
 
 repositories {
 	mavenCentral()
@@ -37,36 +37,44 @@ dependencies {
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
 
 	implementation 'com.google.code.gson:gson:2.9.0'
-	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.6'//value 보기 테스트
+
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	testImplementation 'org.springframework.security:spring-security-test'
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+	runtimeOnly	'io.jsonwebtoken:jjwt-jackson:0.11.5'
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
+
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
 }
 
-bootJar {
-	dependsOn asciidoctor
-	copy {
-		from "${asciidoctor.outputDir}"
-		into 'BOOT-INF/classes/static/docs'
-	}
-}
-
-asciidoctor {
-	dependsOn test
-	inputs.dir snippetsDir
-}
-
-asciidoctor.doFirst {
-	delete file('src/main/resources/static/docs')
-}
-
-task copyDocument(type: Copy) {
-	dependsOn asciidoctor
-	from file("build/docs/asciidoc")
-	into file("src/main/resources/static/docs")
-}
-
-build {
-	dependsOn copyDocument
-}
+//bootJar {
+//	dependsOn asciidoctor
+//	copy {
+//		from "${asciidoctor.outputDir}"
+//		into 'BOOT-INF/classes/static/docs'
+//	}
+//}
+//
+//asciidoctor {
+//	dependsOn test
+//	inputs.dir snippetsDir
+//}
+//
+//asciidoctor.doFirst {
+//	delete file('src/main/resources/static/docs')
+//}
+//
+//task copyDocument(type: Copy) {
+//	dependsOn asciidoctor
+//	from file("build/docs/asciidoc")
+//	into file("src/main/resources/static/docs")
+//}
+//
+//build {
+//	dependsOn copyDocument
+//}

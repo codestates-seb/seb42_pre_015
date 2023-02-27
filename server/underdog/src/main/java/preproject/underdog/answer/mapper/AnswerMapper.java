@@ -16,17 +16,14 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface AnswerMapper {
     Answer answerPatchDtoToAnswer(AnswerPatchDto answerPatchDto);//DTO -> ENTITY
-    @Mapping(source = "userId", target = "user.userId")
     Answer answerPostDtoToAnswer(AnswerPostDto answerPostDto);//DTO -> ENTITY
     @Mapping(source = "user.userId", target = "userId")
     @Mapping(source = "question.questionId", target = "questionId")
     @Mapping(source = "user.name", target = "name")
-
     AnswerRespDto answerToAnswerRespDto(Answer answer);//ENTITY -> DTO
     @Mapping(source = "answer.votes", target = "voteCount")
     List<AnswerRespDto> answerListToAnswerRespDto(List<Answer> answer);
 
-    @Mapping(source = "userId", target = "user.userId")
     AnswerComment commentPostDtoToAnswerComment(CommentPostDto commentPostDto);//DTO -> ENTITY
     AnswerComment commentPatchDtoToAnswerComment(CommentPatchDto commentPatchDto);//DTO -> ENTITY
     @Mapping(source = "user.userId",target = "userId" )
