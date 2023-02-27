@@ -63,8 +63,6 @@ const ShowConentData = styled.div`
 `;
 export function QuestionEditMain() {
   const [QuestionData, setQuestionData] = useState({ content: '', tags: [] });
-  const [QuestionInputData, setQuestionInputData] = useState('');
-  const [title, setTilte] = useState('');
   const { questionId } = useParams();
   const navigate = useNavigate();
 
@@ -73,18 +71,14 @@ export function QuestionEditMain() {
       .get(`/question/${questionId}`)
       .then(res => {
         setQuestionData(res.data);
-        setTilte(res.data.title);
-        setQuestionInputData(res.data.content);
       })
       .catch(error => {
         console.error(error);
       });
   }, []);
-  console.log(QuestionData);
 
   const handleInputChange = event => {
     setQuestionData({ ...QuestionData, title: event.target.value || '' });
-    setTilte(event.target.value || '');
   };
 
   const [titleErrorMsg, setTitleErrorMsg] = useState('');
@@ -92,12 +86,10 @@ export function QuestionEditMain() {
   const [tagErrorMsg, setTagErrorMsg] = useState(false);
 
   const handleValidation = e => {
-    console.log('formValues:', QuestionData.tags.length);
     if (e.target.name === 'title') {
       if (QuestionData.title.length > 0 && QuestionData.title.length < 15) {
-        console.log(titleErrorMsg);
         setTitleErrorMsg('Title must be at least 15 characters.');
-      } else if (title.length === 0) {
+      } else if (QuestionData.title.length === 0) {
         setTitleErrorMsg('Title is missing.');
       } else {
         setTitleErrorMsg(false);
@@ -105,7 +97,6 @@ export function QuestionEditMain() {
     }
 
     if (e.target.className.includes('ql-editor')) {
-      console.log(contentErrorMsg);
       if (QuestionData.content.length > 0 && QuestionData.content.length < 20) {
         setContentErrorMsg('Body must be at least 20 characters.');
       } else if (QuestionData.content.length === 0) {
@@ -144,7 +135,7 @@ export function QuestionEditMain() {
       <QEInput
         placeholder='How to avoid sending a brunch of requests to update data in DB'
         id='title'
-        value={title}
+        value={QuestionData.title}
         onChange={handleInputChange}
         onBlur={handleValidation}
         name='title'
@@ -182,20 +173,26 @@ export function QuestionEditMain() {
           width={'80px'}
           BtnText='Save edits'
           onClick={() => {
+            const accessToken = localStorage.getItem('accessToken');
+            const refreshToken = localStorage.getItem('refreshToken');
             const data = {
-              title: title,
-              content: QuestionInputData,
-              tags: ['ab', 'ba']
+              title: QuestionData.title,
+              content: QuestionData.content,
+              tags: QuestionData.tags
             };
             axios
-              .patch(`/question/${questionId}`, data)
-              .then(response => {
-                console.log(response.data);
+              .patch(`/question/${questionId}`, data, {
+                headers: {
+                  Authorization: `Bearer ${accessToken}`,
+                  'X-Refresh-Token': refreshToken
+                }
+              })
+              .then(() => {
+                navigate(`/question/${questionId}`);
               })
               .catch(error => {
                 console.error(error.response);
               });
-            navigate(`/question/${questionId}`);
           }}
         ></GeneralBtn>
         <QECancelBtn
@@ -286,18 +283,22 @@ export function AnswerEditMain() {
           BtnText='Save edits'
           padding='0px'
           onClick={() => {
-            console.log(questionId, answerId);
+            const accessToken = localStorage.getItem('accessToken');
+            const refreshToken = localStorage.getItem('refreshToken');
             const data = { content: answer.content };
-            console.log(data);
             axios
-              .patch(`/question/${questionId}/answer/${answerId}`, data)
-              .then(response => {
-                console.log(response.data);
+              .patch(`/question/${questionId}/answer/${answerId}`, data, {
+                headers: {
+                  Authorization: `Bearer ${accessToken}`,
+                  'X-Refresh-Token': refreshToken
+                }
+              })
+              .then(() => {
+                navigate(`/question/${questionId}`);
               })
               .catch(error => {
                 console.error(error.response);
               });
-            navigate(`/question/${questionId}`);
           }}
         ></GeneralBtn>
         <QECancelBtn
