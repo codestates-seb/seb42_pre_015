@@ -6,6 +6,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
+import preproject.underdog.exception.BusinessLogicException;
+import preproject.underdog.exception.ExceptionCode;
 import preproject.underdog.security.utils.CustomAuthorityUtils;
 import preproject.underdog.user.entity.User;
 import preproject.underdog.user.repository.UserRepository;
@@ -26,7 +28,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         //로그인 입력 정보를 바탕으로, DB에서 멤버 찾기
         Optional<User> optionalUser = userRepository.findByEmail(username);
-        User foundUser = optionalUser.orElseThrow(()->new RuntimeException("유저 없음"));
+        User foundUser = optionalUser.orElseThrow(()->new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
 
         //userDetails 리턴
         return new CustomUserDetails(foundUser);

@@ -32,7 +32,7 @@ public class QuestionService {
     public Question createQuestion(Question question) {
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         Optional<User> optionalUser = userRepository.findByEmail(principal);
-        User user = optionalUser.orElseThrow(() -> new RuntimeException("회원만 질문 작성 가능합니다."));
+        User user = optionalUser.orElseThrow(() -> new BusinessLogicException(ExceptionCode.NO_PERMISSION_CREATING_POST));
         question.setUser(user);
         return questionRepository.save(question);
     }
@@ -41,7 +41,7 @@ public class QuestionService {
         Question findQuestion = findQuestionById(question.getQuestionId());
 
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        if(!findQuestion.getUser().getEmail().equals(principal)) throw new RuntimeException("질문 작성자만 수정 가능합니다.");
+        if(!findQuestion.getUser().getEmail().equals(principal)) throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_EDITING_POST);
 
         Optional.ofNullable(question.getTitle())
                 .ifPresent(title -> findQuestion.setTitle(title));
@@ -67,7 +67,7 @@ public class QuestionService {
     public void deleteQuestion(long questionId) { //질문글 삭제
         Question findQuestion = findQuestionById(questionId);
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        if(!findQuestion.getUser().getEmail().equals(principal)) throw new RuntimeException("질문 작성자만 수정 가능합니다.");
+        if(!findQuestion.getUser().getEmail().equals(principal)) throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_DELETING_POST);
         questionRepository.deleteById(questionId);
     }
 
@@ -75,7 +75,7 @@ public class QuestionService {
         Question foundQuestion = findQuestionById(questionId); // 질문이 있는지 검증
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         Optional<User> optionalUser = userRepository.findByEmail(principal);
-        User user = optionalUser.orElseThrow(() -> new RuntimeException("회원만 댓글 작성 가능합니다."));
+        User user = optionalUser.orElseThrow(() ->new BusinessLogicException(ExceptionCode.NO_PERMISSION_CREATING_POST));
 
         comment.setQuestion(foundQuestion);
         comment.setUser(user);
@@ -91,7 +91,7 @@ public class QuestionService {
 
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         if(!verifiedComment.getUser().getEmail().equals(principal)) {
-            throw new RuntimeException("댓글 작성자만 수정 가능합니다.");
+            throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_EDITING_POST);
         }
 
         //질문에 해당 코멘트가 종속된 관계가 맞는지 확인
@@ -116,7 +116,7 @@ public class QuestionService {
         QuestionComment verifiedComment = findVerifiedComment(commentId);
 
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        if(!verifiedComment.getUser().getEmail().equals(principal)) throw new RuntimeException("댓글 작성자만 수정 가능합니다.");
+        if(!verifiedComment.getUser().getEmail().equals(principal)) throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_DELETING_POST);
 
         //질문에 해당 코멘트가 종속된 관계가 맞는지 확인
         findQuestion.getQuestionCommentList().stream()
@@ -133,7 +133,7 @@ public class QuestionService {
 
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         Optional<User> optionalUser = userRepository.findByEmail(principal);
-        User user = optionalUser.orElseThrow(() -> new RuntimeException("회원만 좋아요 가능합니다."));
+        User user = optionalUser.orElseThrow(() -> new BusinessLogicException(ExceptionCode.NO_PERMISSION_DO_VOTE));
 
         questionRepository.upVote(questionId, user.getUserId());
         findQuestion.setVoteCount(findQuestion.getVoteCount() + 1);
@@ -156,7 +156,7 @@ public class QuestionService {
             findQuestion.setVoteCount(findQuestion.getVoteCount() - 1);
             questionRepository.save(findQuestion);
         }
-        else throw new RuntimeException("취소할 좋아요가 없습니다.");
+        else throw new BusinessLogicException(ExceptionCode.VOTE_NOT_FOUND);
     }
 
     public Question findQuestionById(long questionId) {

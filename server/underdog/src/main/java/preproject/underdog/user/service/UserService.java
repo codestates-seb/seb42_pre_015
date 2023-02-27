@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import preproject.underdog.exception.BusinessLogicException;
+import preproject.underdog.exception.ExceptionCode;
 import preproject.underdog.security.utils.CustomAuthorityUtils;
 import preproject.underdog.user.entity.User;
 import preproject.underdog.user.repository.UserRepository;
@@ -23,7 +25,7 @@ public class UserService {
     public User createUser(User user){
         Optional<User> optionalUser = userRepository.findByEmail(user.getEmail());
 
-        optionalUser.ifPresent(u -> new RuntimeException("이미 등록된 회원입니다."));
+        optionalUser.ifPresent(u -> new BusinessLogicException(ExceptionCode.USER_ALREADY_EXISTS));
 //                publisher.publishEvent(new UserRegistrationApplicationEvent(this))); // 이벤트 로직 추가
         // 이미 가입한 회원의 경우, 2가지 경우로 나뉜다.
         // OAuth로 가입한 경우, 비밀번호가 없어서 비밀번호를 생성할 수 있는 링크를 메일로 보냄
@@ -40,7 +42,7 @@ public class UserService {
 
     public User verifyUser(long userId){
         Optional<User> optionalUser = userRepository.findById(userId);
-        User foundUser = optionalUser.orElseThrow(() -> new RuntimeException("유저 없음"));
+        User foundUser = optionalUser.orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
         return foundUser;
     }
 }

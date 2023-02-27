@@ -29,13 +29,12 @@ public class AnswerService {
     private final QuestionService questionService;
     private final UserRepository userRepository;
 
-
     public List<Answer> createAnswer(Answer answer, Long questionId) {
         Question question = questionService.findQuestionById(questionId);
 
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         Optional<User> optionalUser = userRepository.findByEmail(principal);
-        User user = optionalUser.orElseThrow(() -> new RuntimeException("회원만 답변 작성 가능합니다."));
+        User user = optionalUser.orElseThrow(() -> new BusinessLogicException(ExceptionCode.NO_PERMISSION_CREATING_POST));
 
         answer.setUser(user);
         answer.setQuestion(question);
@@ -49,9 +48,9 @@ public class AnswerService {
         Answer findAnswer = findVerifiedAnswer(answer.getAnswerId());
 
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        if(!findAnswer.getUser().getEmail().equals(principal)) throw new RuntimeException("답변 작성자만 수정 가능합니다.");
+        if(!findAnswer.getUser().getEmail().equals(principal)) throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_EDITING_POST);
 
-        if(!question.getAnswerList().contains(findAnswer)) throw new RuntimeException("질문에 해당 답변이 없습니다.");
+        if(!question.getAnswerList().contains(findAnswer)) throw new BusinessLogicException(ExceptionCode.ANSWER_NOT_FOUND);
 
         findAnswer.setContent(answer.getContent());
         answerRepository.save(findAnswer);
@@ -69,9 +68,9 @@ public class AnswerService {
 
         // 답변 작성자가 맞는지 검증 -> 시큐리티
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        if(!answer.getUser().getEmail().equals(principal)) throw new RuntimeException("답변 작성자만 삭제 가능합니다.");
+        if(!answer.getUser().getEmail().equals(principal)) throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_DELETING_POST);
 
-        if(!question.getAnswerList().contains(answer)) throw new RuntimeException("질문에 해당 답변이 없습니다.");
+        if(!question.getAnswerList().contains(answer)) throw new BusinessLogicException(ExceptionCode.ANSWER_NOT_FOUND);
 
         answerRepository.deleteById(answerId);
         return answerRepository.findByQuestionId(question.getQuestionId());
@@ -80,12 +79,12 @@ public class AnswerService {
     public List<AnswerComment> postComment(AnswerComment comment, long questionId, long answerId) {
         Question question = questionService.findQuestionById(questionId);//질문 검증
         Answer verifyAnswer = findVerifiedAnswer(answerId);//답변 검증
-        if(!question.getAnswerList().contains(verifyAnswer)) throw new RuntimeException("질문에 해당 답변이 없습니다.");
+        if(!question.getAnswerList().contains(verifyAnswer)) throw new BusinessLogicException(ExceptionCode.ANSWER_NOT_FOUND);
 
         //유저 검증
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         Optional<User> optionalUser = userRepository.findByEmail(principal);
-        User user = optionalUser.orElseThrow(() -> new RuntimeException("회원만 댓글 작성 가능합니다."));
+        User user = optionalUser.orElseThrow(() -> new BusinessLogicException(ExceptionCode.NO_PERMISSION_CREATING_POST));
 
         comment.setAnswer(verifyAnswer);
         comment.setUser(user);
@@ -104,7 +103,7 @@ public class AnswerService {
         }
 
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        if(!verifyComment.getUser().getEmail().equals(principal)) new RuntimeException("댓글 작성자만 수정 가능합니다.");
+        if(!verifyComment.getUser().getEmail().equals(principal)) throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_EDITING_POST);
 
         verifyComment.setContent(comment.getContent());
         answerCommentRepository.save(verifyComment);
@@ -114,7 +113,8 @@ public class AnswerService {
     public List<AnswerComment> getComment(long answerId, long questionId) {
         Question question = questionService.findQuestionById(questionId);
         Answer answer = findVerifiedAnswer(answerId);
-        if(!question.getAnswerList().contains(answer)) throw new RuntimeException("질문에 해당 답변이 없습니다.");
+        if(!question.getAnswerList().contains(answer))
+            throw new BusinessLogicException(ExceptionCode.ANSWER_COMMENT_NOT_FOUND);
 
         List<AnswerComment> comment = answerRepository.findByAnswerId(answerId);
         return comment;
@@ -131,7 +131,7 @@ public class AnswerService {
 
         // 댓글 작성자가 본인인지 검증 -> 시큐리티
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        if(!comment.getUser().getEmail().equals(principal)) throw new RuntimeException("댓글 작성자만 삭제 가능합니다.");
+        if(!comment.getUser().getEmail().equals(principal)) throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_DELETING_POST);
 
         answerCommentRepository.delete(comment);
         return answerRepository.findByAnswerId(answer.getAnswerId());
@@ -140,11 +140,11 @@ public class AnswerService {
     public void doVote(long questionId, long answerId) {//userId 제거
         Question question = questionService.findQuestionById(questionId);
         Answer findAnswer = findVerifiedAnswer(answerId);
-        if(!question.getAnswerList().contains(findAnswer)) throw new RuntimeException("질문에 해당 답변이 없습니다.");
+        if(!question.getAnswerList().contains(findAnswer)) throw new BusinessLogicException(ExceptionCode.ANSWER_NOT_FOUND);
 
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         Optional<User> optionalUser = userRepository.findByEmail(principal);
-        User user = optionalUser.orElseThrow(() -> new RuntimeException("회원만 좋아요 가능합니다."));
+        User user = optionalUser.orElseThrow(() -> new BusinessLogicException(ExceptionCode.NO_PERMISSION_DO_VOTE));
 
         answerRepository.upVote(answerId, user.getUserId());
         findAnswer.setVoteCount(findAnswer.getVoteCount()+1);
@@ -153,12 +153,12 @@ public class AnswerService {
     public void undoVote(long questionId, long answerId) {//userId 제거
         Question question = questionService.findQuestionById(questionId);//질문 검증
         Answer findAnswer = findVerifiedAnswer(answerId);//답변 검증
-        if(!question.getAnswerList().contains(findAnswer)) throw new RuntimeException("질문에 해당 답변이 없습니다.");
+        if(!question.getAnswerList().contains(findAnswer)) throw new BusinessLogicException(ExceptionCode.ANSWER_NOT_FOUND);
 
         //유저 검증
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         Optional<User> optionalUser = userRepository.findByEmail(principal);
-        User user = optionalUser.orElseThrow(() -> new RuntimeException("회원만 좋아요 취소 가능합니다."));
+        User user = optionalUser.orElseThrow(() -> new BusinessLogicException(ExceptionCode.NO_PERMISSION_CANCEL_VOTE));
 
         AnswerVote answerVote = findAnswer.getVotes().stream()
                 .filter(v -> v.getUser() == user)
@@ -170,7 +170,7 @@ public class AnswerService {
             findAnswer.setVoteCount(findAnswer.getVoteCount() - 1);
             answerRepository.save(findAnswer);
         }
-        else throw new RuntimeException("취소할 좋아요가 없습니다.");
+        else throw new BusinessLogicException(ExceptionCode.VOTE_NOT_FOUND);
     }
 
     public Answer findVerifiedAnswer(long answerId) {
@@ -187,7 +187,7 @@ public class AnswerService {
         Optional<AnswerComment> optionalAnswer = answerCommentRepository.findById(answerCommentId);
         AnswerComment findComment =
                 optionalAnswer.orElseThrow(() ->
-                        new BusinessLogicException(ExceptionCode.COMMENT_NOT_FOUND));
+                        new BusinessLogicException(ExceptionCode.ANSWER_COMMENT_NOT_FOUND));
 
         return findComment;
     }
