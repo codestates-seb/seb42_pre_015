@@ -244,6 +244,8 @@ export function MainComponent() {
       });
   }, [activePage, activePageItemButton, Filter]);
 
+  const accessToken = localStorage.getItem('accessToken');
+  const refreshToken = localStorage.getItem('refreshToken');
   const navigate = useNavigate();
   return (
     <div>
@@ -255,7 +257,9 @@ export function MainComponent() {
             width='98px'
             height='40px'
             onClick={() => {
-              navigate('/ask');
+              accessToken && refreshToken
+                ? navigate('/ask')
+                : navigate('/login');
             }}
           />
         </MainTopTitle>
