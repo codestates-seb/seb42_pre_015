@@ -1,17 +1,22 @@
 package preproject.underdog.security.handler;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
+import preproject.underdog.dto.LoginDto;
 import preproject.underdog.exception.BusinessLogicException;
 import preproject.underdog.exception.ErrorResponse;
 import preproject.underdog.exception.ExceptionCode;
+import preproject.underdog.security.userDetailsService.CustomUserDetailsService;
 import preproject.underdog.user.dto.UserDto;
 import preproject.underdog.user.entity.User;
 import preproject.underdog.user.mapper.UserMapper;
@@ -22,6 +27,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -39,14 +45,26 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         log.info("# Authenticated successfully!");
 
         Gson gson = new Gson();     // (2-1)
-        // TODO 널포인트 익셉션 남. 이메일이 제대로 반환되지 않음.
-        String email = authentication.getPrincipal().toString();
-        User user = userService.verifyUser(email);
-        UserDto.Response userToResponseDto = mapper.userToResponseDto(user);
+        System.out.println("name : " + authentication.getName());
+        User verifyUser = userService.verifyUser(authentication.getName());
 
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);    // (2-3)
-        response.setStatus(HttpStatus.OK.value());          // (2-4)
-        response.getWriter().write(gson.toJson(userToResponseDto, UserDto.Response.class));
+//        UserDto.Response userToResponseDto = mapper.userToResponseDto(verifyUser);
+
+//        response.setContentType(MediaType.APPLICATION_JSON_VALUE);    // (2-3)
+//        response.setStatus(HttpStatus.OK.value());          // (2-4)
+//        response.getWriter().write(gson.toJson(userToResponseDto, UserDto.Response.class));
+
+        response.resetBuffer();
+        response.setStatus(HttpStatus.OK.value());
+        response.setContentType("text/html; charset=UTF-8");
+        response.setHeader(HttpHeaders.CONTENT_TYPE, "application/json");
+        response.setCharacterEncoding("UTF-8");
+
+        String str = new String(verifyUser.getName().getBytes("UTF-8"), "ISO-8859-1");
+
+        response.getOutputStream().print(new ObjectMapper().writeValueAsString(
+                List.of(verifyUser.getUserId(), verifyUser.getEmail(), str)));
+        response.flushBuffer();
 
 //        response.sendRedirect(null); // 원래 default는 루트("/")로 이동 --> 주석 처리 안 하면 302 에러 남
     }
