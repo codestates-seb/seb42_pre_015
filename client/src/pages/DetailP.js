@@ -69,7 +69,6 @@ const Article = styled.article`
   // ! side를 채워넣으면 height를 max-content로 바꿉니다.
   height: 100%;
   padding-right: 16px;
-
   display: flex;
   flex-direction: column;
   @media screen and (max-width: 980px) {
@@ -143,8 +142,20 @@ function DetailPage() {
             </Title>
             <Info className='info'>
               <ul>
-                <li>Asked {questionData.createdAt}</li>
-                <li>Modified {questionData.modifiedAt}</li>
+                <li>
+                  Asked{' '}
+                  {questionData.createdAt.replace(
+                    /^(\d{4}-\d{2}-\d{2}).*/,
+                    '$1'
+                  )}
+                </li>
+                <li>
+                  Modified{' '}
+                  {questionData.modifiedAt.replace(
+                    /^(\d{4}-\d{2}-\d{2}).*/,
+                    '$1'
+                  )}
+                </li>
                 <li>Viewed {questionData.viewCount} times</li>
               </ul>
             </Info>
