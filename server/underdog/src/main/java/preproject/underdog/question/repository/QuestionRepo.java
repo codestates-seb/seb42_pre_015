@@ -7,12 +7,12 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import preproject.underdog.question.entity.Question;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface QuestionRepo extends JpaRepository<Question, Long>{
     @Override
     Optional<Question> findById(Long questionId);
-    Page<Question> findAll(Pageable pageable);
 
     @Modifying
     @Query(value = "INSERT INTO question_vote(question_id, user_id) VALUES(:questionId, :userId)", nativeQuery = true)

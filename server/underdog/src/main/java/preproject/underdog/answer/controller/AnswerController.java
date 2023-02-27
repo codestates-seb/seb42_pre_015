@@ -57,7 +57,7 @@ public class AnswerController {
     public ResponseEntity deleteAnswer(@PathVariable("answer-id") @Positive long answerId,
                                        @PathVariable("question-id") @Positive long questionId) {
         List<Answer> answerList = answerService.deleteAnswer(questionId, answerId);
-        return new ResponseEntity<>(answerMapper.answerListToAnswerRespDto(answerList), HttpStatus.OK);
+        return new ResponseEntity<>(answerMapper.answerListToAnswerRespDto(answerList), HttpStatus.OK); //TODO 로직 확인.
     }
 
     @PostMapping("/{answer-id}/comment")//완성
@@ -93,7 +93,7 @@ public class AnswerController {
                                         @PathVariable("question-id") @Positive long questionId,
                                         @PathVariable("answer-comment-id") @Positive long answerCommentId) {
         List<AnswerComment> answerCommentList = answerService.deleteComment(answerCommentId, questionId, answerId);
-        return new ResponseEntity<>(answerMapper.commentListToAnswerRespDto(answerCommentList), HttpStatus.OK);
+        return new ResponseEntity<>(answerMapper.commentListToAnswerRespDto(answerCommentList), HttpStatus.OK); //TODO 로직 확인.
     }
 
     @PostMapping("{answer-id}/vote")//엔드포인트 수정, userId 제거

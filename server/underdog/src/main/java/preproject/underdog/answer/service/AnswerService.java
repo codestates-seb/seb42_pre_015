@@ -18,6 +18,7 @@ import preproject.underdog.user.entity.User;
 import preproject.underdog.user.repository.UserRepository;
 
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -74,7 +75,7 @@ public class AnswerService {
 
         if(!question.getAnswerList().contains(answer)) throw new BusinessLogicException(ExceptionCode.ANSWER_NOT_FOUND);
 
-        answerRepository.deleteById(answerId);
+        answerRepository.deleteAllByIdInBatch(Collections.singleton(answer.getAnswerId()));
         return answerRepository.findByQuestionId(question.getQuestionId());
     }
 
@@ -135,7 +136,7 @@ public class AnswerService {
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         if(!comment.getUser().getEmail().equals(principal)) throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_DELETING_POST);
 
-        answerCommentRepository.delete(comment);
+        answerCommentRepository.deleteAllByIdInBatch(Collections.singleton(comment.getAnswerCommentId()));
         return answerRepository.findByAnswerId(answer.getAnswerId());
     }
 

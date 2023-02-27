@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import preproject.underdog.exception.BusinessLogicException;
 import preproject.underdog.exception.ErrorResponse;
@@ -25,7 +26,7 @@ import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
-public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
     private final UserService userService;
     private final UserMapper mapper;
 

@@ -3,6 +3,7 @@ package preproject.underdog.question.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -60,6 +61,7 @@ public class QuestionController {
         return new ResponseEntity<>(new PageDto<>(mapper.questionsToResponseDto(questionList), questionPage), HttpStatus.OK);
     }
 
+
     @DeleteMapping("/{question-id}")
     public ResponseEntity deleteQuestion(@PathVariable("question-id") @Positive long questionId) {
         questionService.deleteQuestion(questionId);
@@ -94,19 +96,30 @@ public class QuestionController {
     public ResponseEntity deleteComment(@PathVariable("question-id") long questionId,
                                          @PathVariable("comment-id") long commentId){
         List<QuestionComment> questionCommentList = questionService.deleteQuestionComment(questionId, commentId);
-        return new ResponseEntity(mapper.commentsToResponseDto(questionCommentList), HttpStatus.OK);
+        return new ResponseEntity(mapper.commentsToResponseDto(questionCommentList), HttpStatus.OK); //TODO 로직 확인.
     }
 
     //vote 기능 메서드
     @PostMapping("/{question-id}/vote") // 엔드포인트 수정됨
     public ResponseEntity postVote(@PathVariable("question-id") long questionId){
         Question question = questionService.createVote(questionId);
-        return new ResponseEntity(mapper.questionToQuestionResponseDto(question), HttpStatus.OK);
+        return new ResponseEntity(mapper.questionToQuestionResponseDto(question), HttpStatus.OK); //TODO 로직 확인.
     }
 
     @DeleteMapping("/{question-id}/vote") // 엔드포인트 수정됨
     public ResponseEntity deleteVote(@PathVariable("question-id") long questionId){
         Question question = questionService.cancelVote(questionId);
         return new ResponseEntity(mapper.questionToQuestionResponseDto(question), HttpStatus.OK);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity searchQuestions(@RequestParam(required = false) String title,
+                                          @RequestParam(required = false) String user,
+                                          @RequestParam(required = false) Integer answerCount,
+                                          @RequestParam(required = false) List<String> tags,
+                                          Pageable pageable) {
+        Page<Question> questionPage = questionService.searchQuestions(title, user, answerCount, tags, pageable);
+        List<Question> questionList = questionPage.getContent();
+        return new ResponseEntity<>(new PageDto<>(mapper.questionsToResponseDto(questionList), questionPage), HttpStatus.OK);
     }
 }

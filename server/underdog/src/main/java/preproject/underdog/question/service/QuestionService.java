@@ -4,6 +4,7 @@ package preproject.underdog.question.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,12 +16,16 @@ import preproject.underdog.question.entity.QuestionComment;
 import preproject.underdog.question.entity.QuestionVote;
 import preproject.underdog.question.repository.QuestionCommentRepo;
 import preproject.underdog.question.repository.QuestionRepo;
+import preproject.underdog.question.repository.QuestionVoteRepository;
 import preproject.underdog.user.entity.User;
 import preproject.underdog.user.repository.UserRepository;
 
 import javax.transaction.Transactional;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +34,7 @@ public class QuestionService {
     private final QuestionRepo questionRepository;
     private final QuestionCommentRepo questionCommentRepo;
     private final UserRepository userRepository;
+    private final QuestionVoteRepository questionVoteRepository;
 
     public Question createQuestion(Question question) {
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
@@ -42,7 +48,8 @@ public class QuestionService {
         Question findQuestion = findQuestionById(question.getQuestionId());
 
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        if(!findQuestion.getUser().getEmail().equals(principal)) throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_EDITING_POST);
+        if (!findQuestion.getUser().getEmail().equals(principal))
+            throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_EDITING_POST);
 
         Optional.ofNullable(question.getTitle())
                 .ifPresent(title -> findQuestion.setTitle(title));
@@ -65,10 +72,30 @@ public class QuestionService {
         return questionRepository.findAll(pageRequest);
     }
 
+    public Page<Question> searchQuestions(String title, String user, Integer answerCount, List<String> tags, Pageable pageable) { //검색
+        Pageable pageRequest = PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize(), pageable.getSort());
+        Page<Question> questionPage = questionRepository.findAll(pageRequest);
+        List<Question> questionList = questionPage.getContent();
+
+        List<Question> filteredQuestions = questionList.stream()
+                .filter(q -> q.getTitle().contains(title))
+//                        && q.getUser().getName().contains(user)
+//                        && q.getAnswerList().size() >= answerCount
+//                        && q.getTags().contains(tags))
+                        .collect(Collectors.toList());
+
+//        int start = (int) pageRequest.getOffset();
+//        int end = Math.min((start + pageRequest.getPageSize()), filteredQuestions.size());
+        Page<Question> filterdQuestionPage = new PageImpl<>(filteredQuestions, pageRequest, filteredQuestions.size());
+
+        return filterdQuestionPage;
+    }
+
     public void deleteQuestion(long questionId) { //질문글 삭제
         Question findQuestion = findQuestionById(questionId);
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        if(!findQuestion.getUser().getEmail().equals(principal)) throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_DELETING_POST);
+        if (!findQuestion.getUser().getEmail().equals(principal))
+            throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_DELETING_POST);
         questionRepository.deleteById(questionId);
     }
 
@@ -76,7 +103,7 @@ public class QuestionService {
         Question foundQuestion = findQuestionById(questionId); // 질문이 있는지 검증
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         Optional<User> optionalUser = userRepository.findByEmail(principal);
-        User user = optionalUser.orElseThrow(() ->new BusinessLogicException(ExceptionCode.NO_PERMISSION_CREATING_POST));
+        User user = optionalUser.orElseThrow(() -> new BusinessLogicException(ExceptionCode.NO_PERMISSION_CREATING_POST));
 
         comment.setQuestion(foundQuestion);
         comment.setUser(user);
@@ -91,7 +118,7 @@ public class QuestionService {
         QuestionComment verifiedComment = findVerifiedComment(commentId);
 
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        if(!verifiedComment.getUser().getEmail().equals(principal)) {
+        if (!verifiedComment.getUser().getEmail().equals(principal)) {
             throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_EDITING_POST);
         }
 
@@ -99,7 +126,7 @@ public class QuestionService {
         QuestionComment findComment = findQuestion.getQuestionCommentList().stream()
                 .filter(d -> d.getQuestionCommentId() == commentId)
                 .findFirst()
-                .orElseThrow(()-> new BusinessLogicException(ExceptionCode.ID_IS_NOT_THE_SAME)); // questionId or commentId가 일치하지 않습니다. bad request
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.ID_IS_NOT_THE_SAME)); // questionId or commentId가 일치하지 않습니다. bad request
 
         findComment.setContent(comment.getContent());
         questionCommentRepo.save(findComment);
@@ -117,15 +144,16 @@ public class QuestionService {
         QuestionComment verifiedComment = findVerifiedComment(commentId);
 
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        if(!verifiedComment.getUser().getEmail().equals(principal)) throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_DELETING_POST);
+        if (!verifiedComment.getUser().getEmail().equals(principal))
+            throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_DELETING_POST);
 
         //질문에 해당 코멘트가 종속된 관계가 맞는지 확인
         findQuestion.getQuestionCommentList().stream()
                 .filter(d -> d.getQuestionCommentId() == commentId)
                 .findFirst()
-                .orElseThrow(()-> new BusinessLogicException(ExceptionCode.ID_IS_NOT_THE_SAME));  // questionId or commentId가 일치하지 않습니다. bad request
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.ID_IS_NOT_THE_SAME));  // questionId or commentId가 일치하지 않습니다. bad request
 
-        questionCommentRepo.deleteById(commentId);
+        questionCommentRepo.deleteAllByIdInBatch(Collections.singleton(verifiedComment.getQuestionCommentId()));
         return questionCommentRepo.findByQuestionId(findQuestion.getQuestionId());
     }
 
@@ -136,11 +164,10 @@ public class QuestionService {
         Optional<User> optionalUser = userRepository.findByEmail(principal);
         User user = optionalUser.orElseThrow(() -> new BusinessLogicException(ExceptionCode.NO_PERMISSION_DO_VOTE));
 
-        try {
-            questionRepository.upVote(questionId, user.getUserId());
-        } catch (DataIntegrityViolationException e) {
-            throw new BusinessLogicException(ExceptionCode.CANNOT_VOTE_TWICE);
-        }
+        questionVoteRepository.findByUserAndQuestion(findQuestion.getQuestionId(), user.getUserId())
+                .ifPresent(s->new BusinessLogicException(ExceptionCode.CANNOT_VOTE_TWICE));
+
+        questionRepository.upVote(questionId, user.getUserId());
 
         findQuestion.setVoteCount(findQuestion.getVoteCount() + 1);
         return findQuestion;
@@ -156,13 +183,12 @@ public class QuestionService {
         QuestionVote questionVote = findQuestion.getQuestionVoteList().stream()
                 .filter(v -> v.getUser() == user)
                 .findFirst()
-                .orElseThrow(()-> new BusinessLogicException(ExceptionCode.VOTE_NOT_FOUND)); // 좋아요 했던 사람만 취소 가능. bad request
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.VOTE_NOT_FOUND)); // 좋아요 했던 사람만 취소 가능. bad request
 
-        if(findQuestion.getQuestionVoteList().contains(questionVote)) {
+        if (findQuestion.getQuestionVoteList().contains(questionVote)) {
             questionRepository.downVote(questionId, user.getUserId());
             findQuestion.setVoteCount(findQuestion.getVoteCount() - 1);
-        }
-        else throw new BusinessLogicException(ExceptionCode.VOTE_NOT_FOUND);
+        } else throw new BusinessLogicException(ExceptionCode.VOTE_NOT_FOUND);
         return findQuestion;
     }
 
