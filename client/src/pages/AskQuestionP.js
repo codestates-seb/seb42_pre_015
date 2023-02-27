@@ -10,8 +10,6 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Editor from '../components/common/Editor';
 
-// 테스트 주석 추가
-
 const Main = styled.main`
   display: flex;
   flex-direction: column;
