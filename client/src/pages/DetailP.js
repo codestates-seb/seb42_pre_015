@@ -4,7 +4,6 @@ import Nav from '../components/common/Nav';
 import { GeneralBtn } from '../components/common/Buttons';
 import Question from '../components/DetailP/Question';
 import Answer from '../components/DetailP/Answer';
-// import { questionData, answerData } from '../data/dummyData';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { MainNav } from '../components/common/SideNav';
@@ -23,7 +22,10 @@ const Main = styled.main`
   width: 80%;
   @media screen and (max-width: 980px) {
     flex-direction: column;
-    width: 95%;
+    width: calc(100% - 164px);
+  }
+  @media screen and (max-width: 640px) {
+    width: 100%;
   }
 `;
 
@@ -105,17 +107,6 @@ function DetailPage() {
       setQuestionData(res.data);
     });
   }, [questionId]);
-
-  // useEffect(() => {
-  //   axios
-  //     .get(`/question/${questionId}/answer`)
-  //     .then(res => {
-  //       setAnswerData(res.data);
-  //     })
-  //     .catch(error => {
-  //       console.error('error:', error);
-  //     });
-  // }, [questionId]);
 
   const accessToken = localStorage.getItem('accessToken');
   const refreshToken = localStorage.getItem('refreshToken');
