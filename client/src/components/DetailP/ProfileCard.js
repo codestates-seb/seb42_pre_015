@@ -6,7 +6,7 @@ const ProfileCardContainer = styled.div`
   padding: 5px 6px 7px 7px;
   border-radius: 3px;
   background-color: #d2e7f6;
-  width: 200px;
+  width: 160px;
   height: 65px;
   > .created-time {
     color: #5f6871;
