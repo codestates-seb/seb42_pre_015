@@ -17,7 +17,8 @@ function Editor({
   setEditorInput,
   formValues,
   handleValidation,
-  contentErrorMsg
+  contentErrorMsg,
+  setNewAnswer
 }) {
   const modules = {
     toolbar: [
@@ -50,7 +51,11 @@ function Editor({
   ];
 
   const handleText = content => {
-    setEditorInput({ ...formValues, content: content });
+    if (!formValues) {
+      setNewAnswer(content);
+    } else {
+      setEditorInput({ ...formValues, content: content });
+    }
   };
 
   return (

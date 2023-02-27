@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import AnswerHeading from './AnswerHeading';
 import AnswerBody from './AnswerBody';
 import PostAnswer from './PostAnswer';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const AnswerSection = styled.div`
   width: 100%;
@@ -10,7 +12,21 @@ const AnswerSection = styled.div`
   margin-top: 20px;
 `;
 
-function Answer({ answerData, setAnswerData, questionId }) {
+function Answer({ questionId }) {
+  const [answerData, setAnswerData] = useState(null);
+
+  useEffect(() => {
+    axios
+      .get(`/question/${questionId}/answer`)
+      .then(res => {
+        setAnswerData(res.data);
+        console.log('answerData:', answerData);
+      })
+      .catch(error => {
+        console.error('error:', error);
+      });
+  }, [questionId]);
+
   return (
     <>
       {answerData && (

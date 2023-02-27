@@ -99,26 +99,24 @@ function DetailPage() {
   const { questionId } = useParams();
 
   const [questionData, setQuestionData] = useState(null);
-  const [answerData, setAnswerData] = useState(null);
+  // const [answerData, setAnswerData] = useState(null);
 
   useEffect(() => {
     axios.get(`/question/${questionId}`).then(res => {
-      console.log('questionData:', res.data);
       setQuestionData(res.data);
     });
   }, [questionId]);
 
-  useEffect(() => {
-    axios
-      .get(`/question/${questionId}/answer`)
-      .then(res => {
-        console.log('answerData: ', res.data);
-        setAnswerData(res.data);
-      })
-      .catch(error => {
-        console.error('error:', error);
-      });
-  }, [questionId]);
+  // useEffect(() => {
+  //   axios
+  //     .get(`/question/${questionId}/answer`)
+  //     .then(res => {
+  //       setAnswerData(res.data);
+  //     })
+  //     .catch(error => {
+  //       console.error('error:', error);
+  //     });
+  // }, [questionId]);
 
   const accessToken = localStorage.getItem('accessToken');
   const refreshToken = localStorage.getItem('refreshToken');
@@ -129,7 +127,7 @@ function DetailPage() {
         <NavContainer>
           <Nav />
         </NavContainer>
-        {questionData && answerData && (
+        {questionData && (
           <Main>
             <Title className='title'>
               <h1>{questionData.title}</h1>
@@ -154,9 +152,9 @@ function DetailPage() {
               <Article>
                 <Question questionId={questionId} questionData={questionData} />
                 <Answer
-                  answerData={answerData}
+                  // answerData={answerData}
                   questionId={questionId}
-                  setAnswerData={setAnswerData}
+                  // setAnswerData={setAnswerData}
                 />
               </Article>
               <Side>

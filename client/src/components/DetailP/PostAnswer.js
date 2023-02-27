@@ -19,21 +19,24 @@ function PostAnswer({ setAnswerData, questionId, answerData }) {
 
   const handlePostAnswer = () => {
     // ! html 그대로 서버와 주고받고 화면에 렌더링 시킬 수 있는 법 찾아보기
-    const newAnswerInput = {
-      userId: 1,
-      content: newAnswer
-    };
 
-    console.log('newAnswerInput:', newAnswerInput);
+    const accessToken = localStorage.getItem('accessToken');
+    const refreshToken = localStorage.getItem('refreshToken');
+
+    const newAnswerInput = { content: newAnswer };
+    console.log('newAnswer:', newAnswerInput);
+
     axios
-      .post(`question/${questionId}/answer`, {
-        userId: 1,
-        content: '테스트 해봅시다!'
+      .post(`/question/${questionId}/answer`, newAnswerInput, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          Refresh: `${refreshToken}`
+        }
       })
       .then(res => {
         setAnswerData(res.data);
         setNewAnswer('');
-        console.log('answer data received:', res.data);
+        console.log('answer data received:', res);
       })
       .catch(error => console.log('error:', error));
   };
@@ -41,7 +44,7 @@ function PostAnswer({ setAnswerData, questionId, answerData }) {
   return (
     <PostAnswerContainer>
       <h2>Your Answer</h2>
-      <Editor editorInput={newAnswer} setEditorInput={setNewAnswer} />
+      <Editor editorInput={newAnswer} setNewAnswer={setNewAnswer} />
       <GeneralBtn
         BtnText='Post Your Answer'
         width='128px'

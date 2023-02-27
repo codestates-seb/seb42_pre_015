@@ -24,10 +24,12 @@ const AnswerWrapper = styled.div`
 `;
 
 const Answercontent = styled.p`
-  white-space: normal;
-  font-size: 15px;
-  line-height: 22.5px;
-  margin-bottom: 24px;
+  > p {
+    white-space: normal;
+    font-size: 15px;
+    line-height: 22.5px;
+    margin-bottom: 24px;
+  }
 `;
 
 const AnswerInfo = styled.div`
@@ -52,22 +54,11 @@ function AnswerBody({ answerData, questionId }) {
   // const [answerCommentData, answerCommentIsPending, answerCommentError] = useFetch(`http://localhost:3001/question/${questoinId}/answer/${answerId}`/comment)
 
   const navigate = useNavigate();
+
   const handleAnswerDelete = () => {
     //! delete 마저 구현하기
     axios.delete('/');
   };
-
-  // const [answerCommentData, setAnswerCommentData] = useState(null);
-
-  // useEffect(() => {
-  //   axios
-  //     .get(`/question/${questionId}/answer/${answerId}/comments`)
-  //     .then(res => {
-  //       setAnswerCommentData(res.data);
-  //       console.log('res.data:', res.data);
-  //     });
-  // }, []);
-  // console.log('answerCommentData:', answerCommentData);
 
   return (
     <>
