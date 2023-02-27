@@ -1,6 +1,7 @@
 package preproject.underdog.answer.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import preproject.underdog.answer.entity.Answer;
@@ -11,10 +12,9 @@ import preproject.underdog.answer.repository.AnswerRepository;
 import preproject.underdog.exception.BusinessLogicException;
 import preproject.underdog.exception.ExceptionCode;
 import preproject.underdog.question.entity.Question;
-import preproject.underdog.question.repository.QuestionRepo;
 import preproject.underdog.question.service.QuestionService;
 import preproject.underdog.user.entity.User;
-import preproject.underdog.user.service.UserService;
+import preproject.underdog.user.repository.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,14 +26,17 @@ public class AnswerService {
 
     private final AnswerRepository answerRepository;
     private final AnswerCommentRepository answerCommentRepository;
-    private final QuestionRepo questionRepository;
     private final QuestionService questionService;
-    private final UserService userService;
-
+    private final UserRepository userRepository;
 
     public List<Answer> createAnswer(Answer answer, Long questionId) {
         Question question = questionService.findQuestionById(questionId);
-        userService.verifyUser(answer.getUser().getUserId());
+
+        String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        Optional<User> optionalUser = userRepository.findByEmail(principal);
+        User user = optionalUser.orElseThrow(() -> new BusinessLogicException(ExceptionCode.NO_PERMISSION_CREATING_POST));
+
+        answer.setUser(user);
         answer.setQuestion(question);
         answerRepository.save(answer);
 
@@ -43,7 +46,11 @@ public class AnswerService {
     public List<Answer> updateAnswer(Answer answer, long questionId) {
         Question question = questionService.findQuestionById(questionId);
         Answer findAnswer = findVerifiedAnswer(answer.getAnswerId());
-        userService.verifyUser(findAnswer.getUser().getUserId()); // -> 작성자인지 검증 시큐리티로
+
+        String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        if(!findAnswer.getUser().getEmail().equals(principal)) throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_EDITING_POST);
+
+        if(!question.getAnswerList().contains(findAnswer)) throw new BusinessLogicException(ExceptionCode.ANSWER_NOT_FOUND);
 
         findAnswer.setContent(answer.getContent());
         answerRepository.save(findAnswer);
@@ -60,23 +67,43 @@ public class AnswerService {
         Answer answer = findVerifiedAnswer(answerId);
 
         // 답변 작성자가 맞는지 검증 -> 시큐리티
+        String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        if(!answer.getUser().getEmail().equals(principal)) throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_DELETING_POST);
+
+        if(!question.getAnswerList().contains(answer)) throw new BusinessLogicException(ExceptionCode.ANSWER_NOT_FOUND);
+
         answerRepository.deleteById(answerId);
         return answerRepository.findByQuestionId(question.getQuestionId());
     }
 
     public List<AnswerComment> postComment(AnswerComment comment, long questionId, long answerId) {
-        questionService.findQuestionById(questionId);
-        Answer verifyAnswer = findVerifiedAnswer(answerId);
+        Question question = questionService.findQuestionById(questionId);//질문 검증
+        Answer verifyAnswer = findVerifiedAnswer(answerId);//답변 검증
+        if(!question.getAnswerList().contains(verifyAnswer)) throw new BusinessLogicException(ExceptionCode.ANSWER_NOT_FOUND);
+
+        //유저 검증
+        String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        Optional<User> optionalUser = userRepository.findByEmail(principal);
+        User user = optionalUser.orElseThrow(() -> new BusinessLogicException(ExceptionCode.NO_PERMISSION_CREATING_POST));
+
         comment.setAnswer(verifyAnswer);
+        comment.setUser(user);
+
         answerCommentRepository.save(comment);
         return answerRepository.findByAnswerId(answerId);
     }
 
-    public List<AnswerComment> patchComment(AnswerComment comment, long questionId, long answerId){
-        questionService.findQuestionById(questionId);
+    public List<AnswerComment> patchComment(AnswerComment comment, long questionId, long answerId, long answerCommentId){
+        Question question = questionService.findQuestionById(questionId);
         Answer answer = findVerifiedAnswer(answerId);
-        AnswerComment verifyComment = findVerifiedComment(comment.getAnswerCommentId());
-        // 댓글 작성자가 본인인지 검증 -> 시큐리티
+        AnswerComment verifyComment = findVerifiedComment(answerCommentId);
+
+        if(!(question.getAnswerList().contains(answer) && answer.getComments().contains(verifyComment))) {
+            throw new RuntimeException("질문-답변-댓글 id가 일치하지 않습니다.");
+        }
+
+        String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        if(!verifyComment.getUser().getEmail().equals(principal)) throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_EDITING_POST);
 
         verifyComment.setContent(comment.getContent());
         answerCommentRepository.save(verifyComment);
@@ -84,33 +111,54 @@ public class AnswerService {
     }
 
     public List<AnswerComment> getComment(long answerId, long questionId) {
-        questionService.findQuestionById(questionId);
-        Answer findAnswer = findVerifiedAnswer(answerId);
+        Question question = questionService.findQuestionById(questionId);
+        Answer answer = findVerifiedAnswer(answerId);
+        if(!question.getAnswerList().contains(answer))
+            throw new BusinessLogicException(ExceptionCode.ANSWER_COMMENT_NOT_FOUND);
+
         List<AnswerComment> comment = answerRepository.findByAnswerId(answerId);
         return comment;
     }
 
     public List<AnswerComment> deleteComment(long answerCommentId, long questionId, long answerId) {
-        questionService.findQuestionById(questionId);
+        Question question = questionService.findQuestionById(questionId);
         Answer answer = findVerifiedAnswer(answerId);
         AnswerComment comment = findVerifiedComment(answerCommentId);
+
+        if(!(question.getAnswerList().contains(answer) && answer.getComments().contains(comment))) {
+            throw new RuntimeException("질문-답변-댓글 id가 일치하지 않습니다.");
+        }
+
         // 댓글 작성자가 본인인지 검증 -> 시큐리티
+        String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        if(!comment.getUser().getEmail().equals(principal)) throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_DELETING_POST);
+
         answerCommentRepository.delete(comment);
         return answerRepository.findByAnswerId(answer.getAnswerId());
     }
 
-    public void doVote(long questionId, long answerId, long userId) {
-        questionService.findQuestionById(questionId);
-        userService.verifyUser(userId);
+    public void doVote(long questionId, long answerId) {//userId 제거
+        Question question = questionService.findQuestionById(questionId);
         Answer findAnswer = findVerifiedAnswer(answerId);
-        answerRepository.upVote(answerId, userId);
+        if(!question.getAnswerList().contains(findAnswer)) throw new BusinessLogicException(ExceptionCode.ANSWER_NOT_FOUND);
+
+        String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        Optional<User> optionalUser = userRepository.findByEmail(principal);
+        User user = optionalUser.orElseThrow(() -> new BusinessLogicException(ExceptionCode.NO_PERMISSION_DO_VOTE));
+
+        answerRepository.upVote(answerId, user.getUserId());
         findAnswer.setVoteCount(findAnswer.getVoteCount()+1);
     }
 
-    public void undoVote(long questionId, long answerId, long userId) {
-        questionService.findQuestionById(questionId);
-        User user = userService.verifyUser(userId);
-        Answer findAnswer = findVerifiedAnswer(answerId);
+    public void undoVote(long questionId, long answerId) {//userId 제거
+        Question question = questionService.findQuestionById(questionId);//질문 검증
+        Answer findAnswer = findVerifiedAnswer(answerId);//답변 검증
+        if(!question.getAnswerList().contains(findAnswer)) throw new BusinessLogicException(ExceptionCode.ANSWER_NOT_FOUND);
+
+        //유저 검증
+        String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        Optional<User> optionalUser = userRepository.findByEmail(principal);
+        User user = optionalUser.orElseThrow(() -> new BusinessLogicException(ExceptionCode.NO_PERMISSION_CANCEL_VOTE));
 
         AnswerVote answerVote = findAnswer.getVotes().stream()
                 .filter(v -> v.getUser() == user)
@@ -118,11 +166,11 @@ public class AnswerService {
                 .orElseThrow(RuntimeException::new);
 
         if(findAnswer.getVotes().contains(answerVote)) {
-            answerRepository.downVote(answerId, userId);
+            answerRepository.downVote(answerId, user.getUserId());
             findAnswer.setVoteCount(findAnswer.getVoteCount() - 1);
             answerRepository.save(findAnswer);
         }
-        else throw new RuntimeException("취소할 좋아요가 없습니다.");
+        else throw new BusinessLogicException(ExceptionCode.VOTE_NOT_FOUND);
     }
 
     public Answer findVerifiedAnswer(long answerId) {
@@ -139,7 +187,7 @@ public class AnswerService {
         Optional<AnswerComment> optionalAnswer = answerCommentRepository.findById(answerCommentId);
         AnswerComment findComment =
                 optionalAnswer.orElseThrow(() ->
-                        new BusinessLogicException(ExceptionCode.COMMENT_NOT_FOUND));
+                        new BusinessLogicException(ExceptionCode.ANSWER_COMMENT_NOT_FOUND));
 
         return findComment;
     }

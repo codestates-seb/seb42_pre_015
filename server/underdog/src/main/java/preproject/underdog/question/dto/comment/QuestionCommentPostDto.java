@@ -14,8 +14,6 @@ import javax.validation.constraints.NotNull;
 @Setter
 @Getter
 public class QuestionCommentPostDto {
-    @NotNull
-    private long userId;
     @NotEmpty(message = "댓글 내용을 작성해야 합니다.")
     private String content;
 }

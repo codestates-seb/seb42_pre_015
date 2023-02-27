@@ -33,6 +33,9 @@ public class User extends TimeManager {
     @Column
     private String password; // OAuth 가입자의 경우, 비밀번호가 null 값임.
 
+//    @Column
+//    private String refreshToken; // 리프레시 토큰 저장
+
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
 
