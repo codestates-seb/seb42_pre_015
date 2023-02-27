@@ -11,6 +11,9 @@ const PostAnswerContainer = styled.div`
     font-size: 19px;
     margin: 20px 0px;
   }
+  > .post-btn-container {
+    margin-top: 10px;
+  }
 `;
 
 function PostAnswer({ setAnswerData, questionId, answerData }) {
@@ -45,11 +48,13 @@ function PostAnswer({ setAnswerData, questionId, answerData }) {
     <PostAnswerContainer>
       <h2>Your Answer</h2>
       <Editor editorInput={newAnswer} setNewAnswer={setNewAnswer} />
-      <GeneralBtn
-        BtnText='Post Your Answer'
-        width='128px'
-        onClick={handlePostAnswer}
-      />
+      <div className='post-btn-container'>
+        <GeneralBtn
+          BtnText='Post Your Answer'
+          width='128px'
+          onClick={handlePostAnswer}
+        />
+      </div>
     </PostAnswerContainer>
   );
 }
