@@ -53,6 +53,8 @@ function PostAnswer({ setAnswerData, questionId, answerData }) {
   const handleValidation = () => {
     if (!newAnswer) {
       setAnswerErrorMsg('Body is missing.');
+    } else {
+      setAnswerErrorMsg(null);
     }
   };
 
