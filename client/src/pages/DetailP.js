@@ -120,6 +120,9 @@ function DetailPage() {
       });
   }, [questionId]);
 
+  const accessToken = localStorage.getItem('accessToken');
+  const refreshToken = localStorage.getItem('refreshToken');
+
   return (
     <>
       <Body>
@@ -133,7 +136,11 @@ function DetailPage() {
               <GeneralBtn
                 BtnText='Ask Question'
                 width='100px'
-                onClick={() => navigate('/ask')}
+                onClick={() => {
+                  accessToken && refreshToken
+                    ? navigate('/ask')
+                    : navigate('/login');
+                }}
               />
             </Title>
             <Info className='info'>
