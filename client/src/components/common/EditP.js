@@ -1,11 +1,11 @@
+import { useParams, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
+import ReactQuill from 'react-quill';
 import { GeneralBtn } from './Buttons';
 import TagInput from './TagInput';
-import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import { useParams, useNavigate } from 'react-router-dom';
 
 const QEditContainer = styled.div`
   width: 100%;
@@ -78,7 +78,6 @@ export function QuestionEditMain() {
         setQuestionData(res.data);
         setTilte(res.data.title);
         setQuestionInputData(res.data.content);
-        console.log('질문겟해옴ㅋㅋ');
       })
       .catch(error => {
         console.error(error);
