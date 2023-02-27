@@ -1,6 +1,7 @@
 package preproject.underdog.answer.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -147,7 +148,11 @@ public class AnswerService {
         Optional<User> optionalUser = userRepository.findByEmail(principal);
         User user = optionalUser.orElseThrow(() -> new BusinessLogicException(ExceptionCode.NO_PERMISSION_DO_VOTE));
 
-        if(!user.getAnswerVoteList().contains(user)) throw new BusinessLogicException(ExceptionCode.CANNOT_VOTE_TWICE);
+        try {
+            answerRepository.upVote(answerId, user.getUserId());
+        } catch (DataIntegrityViolationException e) {
+            throw new BusinessLogicException(ExceptionCode.CANNOT_VOTE_TWICE);
+        }
 
         answerRepository.upVote(answerId, user.getUserId());
         findAnswer.setVoteCount(findAnswer.getVoteCount()+1);

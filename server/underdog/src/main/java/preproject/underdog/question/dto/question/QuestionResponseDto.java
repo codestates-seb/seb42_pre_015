@@ -15,7 +15,7 @@ import java.util.List;
 public class QuestionResponseDto {
     private long questionId;
     private long userId;
-    private String userName;
+    private String name;
     private String title;
     private String content;
     private int viewCount;

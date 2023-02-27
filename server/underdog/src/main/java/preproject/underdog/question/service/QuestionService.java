@@ -2,6 +2,7 @@ package preproject.underdog.question.service;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -135,9 +136,11 @@ public class QuestionService {
         Optional<User> optionalUser = userRepository.findByEmail(principal);
         User user = optionalUser.orElseThrow(() -> new BusinessLogicException(ExceptionCode.NO_PERMISSION_DO_VOTE));
 
-        // 로직 추가
-
-        if(!user.getQuestionVoteList().contains(user)) throw new BusinessLogicException(ExceptionCode.CANNOT_VOTE_TWICE);
+        try {
+            questionRepository.upVote(questionId, user.getUserId());
+        } catch (DataIntegrityViolationException e) {
+            throw new BusinessLogicException(ExceptionCode.CANNOT_VOTE_TWICE);
+        }
 
         questionRepository.upVote(questionId, user.getUserId());
         findQuestion.setVoteCount(findQuestion.getVoteCount() + 1);

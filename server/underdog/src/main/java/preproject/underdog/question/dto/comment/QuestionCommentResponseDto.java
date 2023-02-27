@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class QuestionCommentResponseDto {
     private long questionCommentId;
     private long userId;
-    private String userName;
+    private String name;
     private long questionId;
     private String content;
     private LocalDateTime createdAt;
