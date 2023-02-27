@@ -11,20 +11,6 @@ const PostAnswerContainer = styled.div`
     font-size: 19px;
     margin: 20px 0px;
   }
-  > .quill {
-    padding-bottom: 50px;
-    > .ql-container {
-      font-size: 15px;
-      min-height: 200px;
-      > .ql-editor {
-        &:focus {
-          border: 1px solid #409ad6;
-          box-shadow: 0 0 0 4px #d9e9f6;
-          outline: none;
-        }
-      }
-    }
-  }
 `;
 
 function PostAnswer({ setAnswerData, questionId, answerData }) {
@@ -40,7 +26,10 @@ function PostAnswer({ setAnswerData, questionId, answerData }) {
 
     console.log('newAnswerInput:', newAnswerInput);
     axios
-      .post(`question/${questionId}/answer`, newAnswerInput)
+      .post(`question/${questionId}/answer`, {
+        userId: 1,
+        content: '테스트 해봅시다!'
+      })
       .then(res => {
         setAnswerData(res.data);
         setNewAnswer('');
@@ -52,7 +41,7 @@ function PostAnswer({ setAnswerData, questionId, answerData }) {
   return (
     <PostAnswerContainer>
       <h2>Your Answer</h2>
-      <Editor newAnswer={newAnswer} setNewAnswer={setNewAnswer} />
+      <Editor editorInput={newAnswer} setEditorInput={setNewAnswer} />
       <GeneralBtn
         BtnText='Post Your Answer'
         width='128px'

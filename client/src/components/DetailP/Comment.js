@@ -69,27 +69,55 @@ function Comment({
   questionId,
   questionCommentData,
   setQuestionCommentData,
-  answerCommentData
+  answerId,
+  answerCommentData,
+  setAnswerCommentData
 }) {
+  let init = questionCommentData || answerCommentData;
+
   const [isAddClicked, setIsAddClicked] = useState(false);
-  const [newQuestionComment, setNewQuestionComment] = useState('');
+  const [newComment, setNewComment] = useState('');
 
-  const handleAddQuestionComment = () => {
-    const newComment = { userId: 1, content: newQuestionComment };
+  const handleAddComment = () => {
+    const newCommentInput = { userId: 1, content: newComment };
 
-    axios.post(`/question/${questionId}/comment`, newComment).then(res => {
-      console.log('commentdata:', res.data);
-      setQuestionCommentData(res.data);
-      setNewQuestionComment('');
-    });
+    if (init === questionCommentData) {
+      axios
+        .post(`/question/${questionId}/comment`, newCommentInput)
+        .then(res => {
+          console.log('commentdata:', res.data);
+          setQuestionCommentData(res.data);
+          setNewComment('');
+        });
+    } else if (init === answerCommentData) {
+      console.log('newcommentinput:', newCommentInput);
+      console.log('questionId:', questionId);
+      console.log('answerId:', answerId);
+      axios
+        .post(
+          `/question/${questionId}/answer/${answerId}/comment`,
+          newCommentInput
+        )
+        .then(res => {
+          console.log('commentdata:', res.data);
+          setAnswerCommentData(res.data);
+          setNewComment('');
+        });
+    }
   };
 
   return (
     <>
-      {questionCommentData && (
+      {init && (
         <CommentContainer>
-          {questionCommentData.map(comment => (
-            <CommentWrapper key={comment.questionCommentId}>
+          {init.map(comment => (
+            <CommentWrapper
+              key={
+                init === questionCommentData
+                  ? comment.questionCommentId
+                  : comment.answerCommentId
+              }
+            >
               <span className='comment content'>{comment.content}</span>
               <span className='comment name'>{comment.userName}</span>
               <span className='comment date'>{comment.createdAt}</span>
@@ -111,38 +139,17 @@ function Comment({
           {isAddClicked ? (
             <AddCommentContainer>
               <textarea
-                value={newQuestionComment}
-                onChange={e => setNewQuestionComment(e.target.value)}
+                value={newComment}
+                onChange={e => setNewComment(e.target.value)}
               />
               <GeneralBtn
                 BtnText='Add Comment'
                 width='110px'
                 height='40px'
-                onClick={handleAddQuestionComment}
+                onClick={handleAddComment}
               />
             </AddCommentContainer>
           ) : null}
-        </CommentContainer>
-      )}
-      {answerCommentData && (
-        <CommentContainer>
-          {answerCommentData.map(comment => (
-            <CommentWrapper key={comment.answerCommentId}>
-              <span className='comment content'>{comment.content}</span>
-              <span className='comment name'>{comment.userName}</span>
-              <span className='comment date'>{comment.createdAt}</span>
-              {/* Show this only when the user has the authorization. */}
-              <SmallPenSVG className='comment edit-btn' />
-              <span className='comment delete-btn'>X</span>
-            </CommentWrapper>
-          ))}
-          <div>
-            <button className='add-comment-btn'>Add a comment</button>
-          </div>
-          <AddCommentContainer>
-            <textarea />
-            <GeneralBtn BtnText='Add Comment' width='110px' height='40px' />
-          </AddCommentContainer>
         </CommentContainer>
       )}
     </>

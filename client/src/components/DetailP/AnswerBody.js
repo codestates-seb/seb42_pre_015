@@ -1,10 +1,11 @@
 import styled from 'styled-components';
 import Vote from './Vote';
 import ProfileCard from './ProfileCard';
-import Comment from './Comment';
-import { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+// import Comment from './Comment';
+// import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import AnswerCommentList from './AnswerCommentList';
 
 const AnswerContainer = styled.div`
   display: flex;
@@ -47,7 +48,7 @@ const ControlOptions = styled.div`
 `;
 function AnswerBody({ answerData, questionId }) {
   // ! API test할때 동적으로 answerCommentData가 바뀌는지 확인해야함
-  const { answerId } = useParams();
+  // const { answerId } = useParams();
   // const [answerCommentData, answerCommentIsPending, answerCommentError] = useFetch(`http://localhost:3001/question/${questoinId}/answer/${answerId}`/comment)
 
   const navigate = useNavigate();
@@ -56,15 +57,17 @@ function AnswerBody({ answerData, questionId }) {
     axios.delete('/');
   };
 
-  const [answerCommentData, setAnswerCommentData] = useState(null);
+  // const [answerCommentData, setAnswerCommentData] = useState(null);
 
-  useEffect(() => {
-    axios
-      .get(`/question/${questionId}/answer/${answerId}/comments`)
-      .then(res => {
-        setAnswerCommentData(res.data);
-      });
-  }, [answerId]);
+  // useEffect(() => {
+  //   axios
+  //     .get(`/question/${questionId}/answer/${answerId}/comments`)
+  //     .then(res => {
+  //       setAnswerCommentData(res.data);
+  //       console.log('res.data:', res.data);
+  //     });
+  // }, []);
+  // console.log('answerCommentData:', answerCommentData);
 
   return (
     <>
@@ -93,7 +96,10 @@ function AnswerBody({ answerData, questionId }) {
                 </ControlOptions>
                 <ProfileCard answer={answer} />
               </AnswerInfo>
-              <Comment answerCommentData={answerCommentData} />
+              <AnswerCommentList
+                questionId={questionId}
+                answerId={answer.answerId}
+              />
             </AnswerWrapper>
           </AnswerContainer>
         ))}

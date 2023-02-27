@@ -23,18 +23,14 @@ const TagContainer = styled.ul`
     }
   }
 `;
+
+// {title: '질문있습니다', tags: ['java', 'javascript']}
+// ! tags
 const Tag = ({ tags }) => {
-  console.log(tags);
   return (
     <TagContainer id='tags'>
       {tags &&
         tags.map((tag, index) => (
-          <li key={index} className='tag'>
-            <span className='tag-title'>{tag}</span>
-          </li>
-        ))}
-      {questionData &&
-        questionData.tags.map((tag, index) => (
           <li key={index} className='tag'>
             <span className='tag-title'>{tag}</span>
           </li>
