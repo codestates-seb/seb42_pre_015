@@ -15,12 +15,12 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import preproject.underdog.security.filter.CustomAuthenticationFilter;
 import preproject.underdog.security.filter.VerificationFilter;
+import preproject.underdog.security.handler.CustomAccessDeniedHandler;
+import preproject.underdog.security.handler.CustomAuthenticationEntryPoint;
 import preproject.underdog.security.handler.CustomAuthenticationSuccessHandler;
-import preproject.underdog.security.handler.OAuth2SuccessHandler;
 import preproject.underdog.security.jwt.JwtTokenizer;
 import preproject.underdog.security.utils.CustomAuthorityUtils;
 import preproject.underdog.user.repository.UserRepository;
-import preproject.underdog.user.service.UserService;
 
 import java.util.Arrays;
 
@@ -29,7 +29,6 @@ import java.util.Arrays;
 public class SecurityConfiguration {
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
-    private final UserService userService;
     private final UserRepository userRepository;
 
     @Bean
@@ -50,6 +49,11 @@ public class SecurityConfiguration {
                 .logoutSuccessUrl("/") // 로그아웃 성공 시 이동 페이지
                 .and()
 
+                .exceptionHandling()
+                .authenticationEntryPoint(new CustomAuthenticationEntryPoint())  // (1) 추가
+                .accessDeniedHandler(new CustomAccessDeniedHandler())
+                .and()
+
 //                .rememberMe()
 //                .key("uniqueAndSecret")
 //                .rememberMeCookieName("my-remember-me-cookie")
@@ -66,9 +70,9 @@ public class SecurityConfiguration {
                         .antMatchers("/login").permitAll()
                         .antMatchers("/user").permitAll()
                         .antMatchers(HttpMethod.GET, "/question/**").permitAll()
-                        .anyRequest().authenticated()) // 요청별 권한 작성하기
-                .oauth2Login(oauth2 -> oauth2
-                        .successHandler(new OAuth2SuccessHandler(jwtTokenizer, userService)));
+                        .anyRequest().authenticated()); // 요청별 권한 작성하기
+//                .oauth2Login(oauth2 -> oauth2
+//                        .successHandler(new OAuth2SuccessHandler(jwtTokenizer, userService)));
 
         return http.build();
     }

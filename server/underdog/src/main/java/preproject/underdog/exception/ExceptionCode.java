@@ -21,7 +21,8 @@ public enum ExceptionCode {
     QUESTION_COMMENT_NOT_FOUND(404, "코멘트를 찾을 수 없습니다."),
     VOTE_NOT_FOUND(404, "취소할 투표가 없습니다."),
 
-    USER_ALREADY_EXISTS(409,"이미 등록된 이메일 입니다.");
+    USER_ALREADY_EXISTS(409,"이미 등록된 이메일 입니다."),
+    USER_ONLY(403,"회원만 이용 가능한 서비스 입니다.");
 
     @Getter
     private int status;
