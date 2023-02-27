@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import { GeneralBtn } from '../common/Buttons';
 import Editor from '../common/Editor';
+import axios from 'axios';
+import { useState } from 'react';
 
 const PostAnswerContainer = styled.div`
   display: flex;
@@ -14,17 +16,48 @@ const PostAnswerContainer = styled.div`
     > .ql-container {
       font-size: 15px;
       min-height: 200px;
+      > .ql-editor {
+        &:focus {
+          border: 1px solid #409ad6;
+          box-shadow: 0 0 0 4px #d9e9f6;
+          outline: none;
+        }
+      }
     }
   }
 `;
 
-function PostAnswer() {
+function PostAnswer({ setAnswerData, questionId, answerData }) {
+  //   const BASE_URL = 'http://localhost:3001';
+  const [newAnswer, setNewAnswer] = useState('');
+
+  const handlePostAnswer = () => {
+    // ! html 그대로 서버와 주고받고 화면에 렌더링 시킬 수 있는 법 찾아보기
+    const newAnswerInput = {
+      userId: 1,
+      content: newAnswer
+    };
+
+    console.log('newAnswerInput:', newAnswerInput);
+    axios
+      .post(`question/${questionId}/answer`, newAnswerInput)
+      .then(res => {
+        setAnswerData(res.data);
+        setNewAnswer('');
+        console.log('answer data received:', res.data);
+      })
+      .catch(error => console.log('error:', error));
+  };
+
   return (
     <PostAnswerContainer>
       <h2>Your Answer</h2>
-      {/* <textarea></textarea> */}
-      <Editor />
-      <GeneralBtn BtnText='Post Your Answer' width='128px' />
+      <Editor newAnswer={newAnswer} setNewAnswer={setNewAnswer} />
+      <GeneralBtn
+        BtnText='Post Your Answer'
+        width='128px'
+        onClick={handlePostAnswer}
+      />
     </PostAnswerContainer>
   );
 }

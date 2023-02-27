@@ -2,6 +2,9 @@ import styled from 'styled-components';
 import Vote from './Vote';
 import ProfileCard from './ProfileCard';
 import Comment from './Comment';
+import { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
 
 const AnswerContainer = styled.div`
   display: flex;
@@ -19,6 +22,13 @@ const AnswerWrapper = styled.div`
   }
 `;
 
+const Answercontent = styled.p`
+  white-space: normal;
+  font-size: 15px;
+  line-height: 22.5px;
+  margin-bottom: 24px;
+`;
+
 const AnswerInfo = styled.div`
   display: flex;
   justify-content: space-between;
@@ -29,17 +39,33 @@ const ControlOptions = styled.div`
   display: flex;
   width: 100px;
   justify-content: space-between;
-  > div {
-    > a,
-    span {
-      color: grey;
-    }
+  > button,
+  span {
+    background-color: #fff;
+    color: grey;
   }
 `;
-function AnswerBody({ answerData }) {
+function AnswerBody({ answerData, questionId }) {
   // ! API test할때 동적으로 answerCommentData가 바뀌는지 확인해야함
-  // const { questoinId } = useParams();
+  const { answerId } = useParams();
   // const [answerCommentData, answerCommentIsPending, answerCommentError] = useFetch(`http://localhost:3001/question/${questoinId}/answer/${answerId}`/comment)
+
+  const navigate = useNavigate();
+  const handleAnswerDelete = () => {
+    //! delete 마저 구현하기
+    axios.delete('/');
+  };
+
+  const [answerCommentData, setAnswerCommentData] = useState(null);
+
+  useEffect(() => {
+    axios
+      .get(`/question/${questionId}/answer/${answerId}/comments`)
+      .then(res => {
+        setAnswerCommentData(res.data);
+      });
+  }, [answerId]);
+
   return (
     <>
       {answerData &&
@@ -47,22 +73,27 @@ function AnswerBody({ answerData }) {
           <AnswerContainer key={answer.answerId}>
             <Vote answer={answer} />
             <AnswerWrapper>
-              <p>{answer.content}</p>
+              <Answercontent
+                dangerouslySetInnerHTML={{ __html: answer.content }}
+              ></Answercontent>
               <AnswerInfo>
                 <ControlOptions>
-                  <div>
-                    <a href='/'>Share</a>
-                  </div>
-                  <div>
-                    <a href='/'>Edit</a>
-                  </div>
-                  <div>
-                    <span>Delete</span>
-                  </div>
+                  <button>Share</button>
+                  <button
+                    onClick={() =>
+                      navigate(
+                        `/question/${questionId}/answeredit/${answer.answerId}`
+                      )
+                    }
+                  >
+                    Edit
+                  </button>
+
+                  <button onClick={handleAnswerDelete}>Delete</button>
                 </ControlOptions>
                 <ProfileCard answer={answer} />
               </AnswerInfo>
-              <Comment />
+              <Comment answerCommentData={answerCommentData} />
             </AnswerWrapper>
           </AnswerContainer>
         ))}

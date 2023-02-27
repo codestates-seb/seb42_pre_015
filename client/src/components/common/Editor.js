@@ -1,10 +1,10 @@
-import { useState } from 'react';
+// import { useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 // import './Editor.css';
 
-function Editor() {
-  const [text, setText] = useState('');
+function Editor({ newAnswer, setNewAnswer }) {
+  //   const [text, setText] = useState('');
 
   const modules = {
     toolbar: [
@@ -41,16 +41,17 @@ function Editor() {
     'background'
   ];
 
-  const handleText = value => {
-    setText(value);
+  const handleText = content => {
+    // console.log('value:', editor.getText(content));
+    // setText(editor.getText(content));
+    setNewAnswer(content);
   };
-  console.log(text);
 
   return (
     <ReactQuill
       modules={modules}
       formats={formats}
-      value={text}
+      value={newAnswer}
       onChange={handleText}
     />
   );
