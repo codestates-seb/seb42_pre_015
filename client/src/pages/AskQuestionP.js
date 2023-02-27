@@ -135,9 +135,19 @@ function AskQuestionPage() {
 
     const newQuestion = { userId: 1, ...formValues };
 
-    axios.post('/question', newQuestion).then(res => {
-      navigate(`/question/${res.data.questionId}`);
-    });
+    const accessToken = localStorage.getItem('accessToken');
+    const refreshToken = localStorage.getItem('refreshToken');
+
+    axios
+      .post('/question', newQuestion, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          Refresh: `${refreshToken}`
+        }
+      })
+      .then(res => {
+        navigate(`/question/${res.data.questionId}`);
+      });
   };
 
   const handleDiscard = () => {
