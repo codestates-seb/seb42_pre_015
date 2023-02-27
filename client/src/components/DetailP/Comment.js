@@ -73,8 +73,8 @@ const AddCommentContainer = styled.div`
     background-color: #fff;
   }
   &:focus-within {
-    border: 1px solid #409ad6;
-    box-shadow: 0 0 0 4px #d9e9f6;
+    border: 0.5px solid #409ad6;
+    box-shadow: 0 0 0 2px #d9e9f6;
     outline: none;
   }
 `;
