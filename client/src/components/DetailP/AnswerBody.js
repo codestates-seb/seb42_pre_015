@@ -56,9 +56,15 @@ function AnswerBody({ answerData, questionId }) {
 
   const navigate = useNavigate();
 
-  const handleAnswerDelete = () => {
-    //! delete 마저 구현하기
-    axios.delete('/');
+  const handleAnswerDelete = answerId => {
+    axios
+      .delete(`/question/${questionId}/answer/${answerId}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          Refresh: `${refreshToken}`
+        }
+      })
+      .then(res => console.log('res.data:', res.data));
   };
 
   const accessToken = localStorage.getItem('accessToken');
@@ -89,7 +95,9 @@ function AnswerBody({ answerData, questionId }) {
                     Edit
                   </button>
 
-                  <button onClick={handleAnswerDelete}>Delete</button>
+                  <button onClick={() => handleAnswerDelete(answer.answerId)}>
+                    Delete
+                  </button>
                 </ControlOptions>
                 <ProfileCard answer={answer} />
               </AnswerInfo>

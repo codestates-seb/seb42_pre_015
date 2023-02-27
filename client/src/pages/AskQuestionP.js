@@ -252,7 +252,7 @@ function AskQuestionPage() {
                 formValues={formValues}
                 setEditorInput={setFormValues}
                 handleValidation={handleValidation}
-                contentErrorMsg={contentErrorMsg}
+                errorMsg={contentErrorMsg}
               />
               {contentErrorMsg && (
                 <p style={{ color: '#DE4F54' }}>{contentErrorMsg}</p>

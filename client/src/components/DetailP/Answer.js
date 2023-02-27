@@ -32,11 +32,7 @@ function Answer({ questionId }) {
         <AnswerSection>
           <AnswerHeading answerData={answerData} />
           <AnswerBody questionId={questionId} answerData={answerData} />
-          <PostAnswer
-            questionId={questionId}
-            setAnswerData={setAnswerData}
-            answerData={answerData}
-          />
+          <PostAnswer questionId={questionId} setAnswerData={setAnswerData} />
         </AnswerSection>
       )}
     </>

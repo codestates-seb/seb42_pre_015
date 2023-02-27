@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { SmallPenSVG } from '../../assets/CommonSVG';
+// import { SmallPenSVG } from '../../assets/CommonSVG';
 // import { GeneralBtn } from '../common/Buttons';
 import { useState } from 'react';
 import axios from 'axios';
@@ -8,40 +8,51 @@ import { useNavigate } from 'react-router-dom';
 const CommentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  /* border-top: 1px solid #dee2e5; */
-  padding: 6px;
-  margin-bottom: 15px;
+  justify-content: space-between;
+  padding-bottom: 15px;
   > div {
     > .add-comment-btn {
+      margin-top: 8px;
       background-color: #fff;
       color: #abb1b7;
       font-size: 13px;
       &:hover {
-        color: #5cb8fc;
+        color: #0069c1;
       }
     }
   }
 `;
 
 const CommentWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
   width: 100%;
-  font-size: 13px;
-  margin-bottom: 8px;
+  margin: 4px 0px;
   border-top: 1px solid #dee2e5;
-  > .comment {
-    margin-right: 3px;
-    font-size: 13px;
+  > .content {
+    color: #474f55;
+    font-size: 12px;
     white-space: normal;
+    overflow-wrap: break-word;
+    width: 80%;
   }
-  > .name {
-    color: #0069c1;
-  }
-  > .date {
-    color: #858e97;
-  }
-  > .delete-btn {
-    margin-left: 3px;
-    color: #858e97;
+  > div {
+    width: 19%;
+    > .name {
+      color: #0069c1;
+    }
+    > .date {
+      color: #858e97;
+      margin-left: 3px;
+    }
+    > .edit-btn,
+    .delete-btn {
+      margin-left: 3px;
+      color: #858e97;
+      background-color: #fff;
+      cursor: pointer;
+    }
   }
 `;
 
@@ -51,6 +62,8 @@ const AddCommentContainer = styled.div`
   border: 1px solid black;
   border-radius: 10px;
   border: 1px solid #b1b7bc;
+  white-space: normal;
+  overflow-wrap: break-word;
   > input {
     height: 30px;
     width: 91%;
@@ -64,13 +77,14 @@ const AddCommentContainer = styled.div`
       outline: none;
     }
   }
-  > button {
+  > .post-btn {
     width: 50px;
     height: 30px;
     border-radius: 10px;
     font-size: 12px;
     color: #0069c1;
     background-color: #fff;
+    cursor: pointer;
   }
   &:focus-within {
     border: 0.5px solid #409ad6;
@@ -93,6 +107,7 @@ function Comment({
 
   const [isAddClicked, setIsAddClicked] = useState(false);
   const [newComment, setNewComment] = useState('');
+  const [onEdit, setOnEdit] = useState('');
 
   const handleAddComment = () => {
     const newCommentInput = { userId: 1, content: newComment };
@@ -129,6 +144,11 @@ function Comment({
     }
   };
 
+  const handleEditComment = e => {
+    setOnEdit(!onEdit);
+    console.log('e:', e.target);
+  };
+
   const accessToken = localStorage.getItem('accessToken');
   const refreshToken = localStorage.getItem('refreshToken');
 
@@ -136,7 +156,7 @@ function Comment({
     <>
       {init && (
         <CommentContainer>
-          {init.map(comment => (
+          {init.map((comment, idx) => (
             <CommentWrapper
               key={
                 init === questionCommentData
@@ -144,11 +164,21 @@ function Comment({
                   : comment.answerCommentId
               }
             >
-              <span className='comment content'>{comment.content}</span>
-              <span className='comment name'>{comment.userName}</span>
-              <span className='comment date'>{comment.createdAt}</span>
-              <SmallPenSVG className='comment edit-btn' />
-              <span className='comment delete-btn'>X</span>
+              <p className='content'>{comment.content}</p>
+              <div>
+                <span className='name'>{comment.name}</span>
+                <span className='date'>
+                  {comment.createdAt.replace(/^(\d{4}-\d{2}-\d{2}).*/, '$1')}
+                </span>
+                <button
+                  id={idx}
+                  className='edit-btn'
+                  onClick={handleEditComment}
+                >
+                  Edit
+                </button>
+                <button className='delete-btn'>X</button>
+              </div>
             </CommentWrapper>
           ))}
           <div>
@@ -171,7 +201,9 @@ function Comment({
                 value={newComment}
                 onChange={e => setNewComment(e.target.value)}
               ></input>
-              <button onClick={handleAddComment}>Post</button>
+              <button className='post-btn' onClick={handleAddComment}>
+                Post
+              </button>
             </AddCommentContainer>
           ) : null}
         </CommentContainer>

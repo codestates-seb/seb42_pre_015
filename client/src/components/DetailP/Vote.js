@@ -38,7 +38,7 @@ function Vote({ questionData, answer, questionId, answerId }) {
     if (accessToken && refreshToken) {
       if (data === questionData) {
         if (!isLiked) {
-          axios.post(`/question/${questionId}/vote`, {
+          axios.post(`/question/${questionId}/vote`, null, {
             headers: {
               Authorization: `Bearer ${accessToken}`,
               Refresh: `${refreshToken}`
@@ -56,7 +56,7 @@ function Vote({ questionData, answer, questionId, answerId }) {
 
       if (data === answer) {
         if (!isLiked) {
-          axios.post(`/question/${questionId}/answer/${answerId}/vote`, {
+          axios.post(`/question/${questionId}/answer/${answerId}/vote`, null, {
             headers: {
               Authorization: `Bearer ${accessToken}`,
               Refresh: `${refreshToken}`

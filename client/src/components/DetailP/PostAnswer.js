@@ -16,7 +16,7 @@ const PostAnswerContainer = styled.div`
   }
 `;
 
-function PostAnswer({ setAnswerData, questionId, answerData }) {
+function PostAnswer({ setAnswerData, questionId }) {
   //   const BASE_URL = 'http://localhost:3001';
   const [newAnswer, setNewAnswer] = useState('');
   const [answerErrorMsg, setAnswerErrorMsg] = useState(null);
@@ -28,7 +28,6 @@ function PostAnswer({ setAnswerData, questionId, answerData }) {
     const refreshToken = localStorage.getItem('refreshToken');
 
     const newAnswerInput = { content: newAnswer };
-    console.log('newAnswer:', newAnswerInput);
 
     if (!newAnswer) {
       setAnswerErrorMsg('Body is missing.');
@@ -44,7 +43,6 @@ function PostAnswer({ setAnswerData, questionId, answerData }) {
         .then(res => {
           setAnswerData(res.data);
           setNewAnswer('');
-          console.log('answer data received:', res);
         })
         .catch(error => console.log('error:', error));
     }
