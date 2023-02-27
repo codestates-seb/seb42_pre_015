@@ -68,7 +68,7 @@ function AnswerBody({ answerData, questionId }) {
       {answerData &&
         answerData.map(answer => (
           <AnswerContainer key={answer.answerId}>
-            <Vote answer={answer} />
+            <Vote answer={answer} answerId={answer.answerId} />
             <AnswerWrapper>
               <Answercontent
                 dangerouslySetInnerHTML={{ __html: answer.content }}

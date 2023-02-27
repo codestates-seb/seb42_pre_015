@@ -57,7 +57,7 @@ function Question({ questionId, questionData }) {
     <>
       {questionData && (
         <QuestionContainer>
-          <Vote questionData={questionData} />
+          <Vote questionData={questionData} questionId={questionId} />
           <QuestionWrapper>
             <p dangerouslySetInnerHTML={{ __html: questionData.content }}>
               {/* {questionData.content} */}
