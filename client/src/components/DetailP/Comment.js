@@ -3,7 +3,7 @@ import { SmallPenSVG } from '../../assets/CommonSVG';
 import { GeneralBtn } from '../common/Buttons';
 import { useState } from 'react';
 import axios from 'axios';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const CommentContainer = styled.div`
   display: flex;
@@ -74,7 +74,7 @@ function Comment({
   answerCommentData,
   setAnswerCommentData
 }) {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   let init = questionCommentData || answerCommentData;
 
@@ -109,8 +109,8 @@ function Comment({
     }
   };
 
-  // const accessToken = localStorage.getItem('accessToken');
-  // const refreshToken = localStorage.getItem('refreshToken');
+  const accessToken = localStorage.getItem('accessToken');
+  const refreshToken = localStorage.getItem('refreshToken');
 
   return (
     <>
@@ -136,12 +136,11 @@ function Comment({
             {!isAddClicked ? (
               <button
                 className='add-comment-btn'
-                // onClick={
-                //   accessToken && refreshToken
-                //     ? () => setIsAddClicked(true)
-                //     : navigate('/login')
-                // }
-                onClick={() => setIsAddClicked(true)}
+                onClick={
+                  accessToken && refreshToken
+                    ? () => setIsAddClicked(true)
+                    : () => navigate('/login')
+                }
               >
                 Add a comment
               </button>
