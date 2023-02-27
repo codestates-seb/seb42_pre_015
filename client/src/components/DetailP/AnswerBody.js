@@ -15,20 +15,21 @@ const AnswerContainer = styled.div`
 
 const AnswerWrapper = styled.div`
   width: calc(100% - 45px);
+  overflow-wrap: break-word;
   > p {
-    white-space: normal;
     font-size: 15px;
     line-height: 22.5px;
     margin-bottom: 24px;
+    white-space: normal;
   }
 `;
 
 const Answercontent = styled.p`
   > p {
-    white-space: normal;
     font-size: 15px;
     line-height: 22.5px;
     margin-bottom: 24px;
+    white-space: normal;
   }
 `;
 
