@@ -10,6 +10,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Editor from '../components/common/Editor';
 
+// 테스트 주석 추가
+
 const Main = styled.main`
   display: flex;
   flex-direction: column;
@@ -134,10 +136,8 @@ function AskQuestionPage() {
     e.preventDefault();
 
     const newQuestion = { userId: 1, ...formValues };
-    console.log('newQuestion:', newQuestion);
 
     axios.post('/question', newQuestion).then(res => {
-      console.log('res.data: ', res.data);
       navigate(`/question/${res.data.questionId}`);
     });
   };
@@ -177,7 +177,6 @@ function AskQuestionPage() {
 
     if (e.target.name === 'tags') {
       if (!tags.length) {
-        console.log('haha');
         setTagErrorMsg('Please enter at least one tag.');
       } else {
         setTagErrorMsg('');

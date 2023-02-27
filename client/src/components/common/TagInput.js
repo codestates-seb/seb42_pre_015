@@ -68,7 +68,6 @@ const TagInput = ({
   handleValidation,
   tagErrorMsg
 }) => {
-  console.log('errormsg:', tagErrorMsg);
   const handleKeyDown = event => {
     // Disable form submit on enter
     if (event.key === 'Enter') {
