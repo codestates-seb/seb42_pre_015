@@ -86,7 +86,6 @@ const GeneralBtn = ({
   type,
   width,
   onClick,
-
   height,
   padding
 }) => {

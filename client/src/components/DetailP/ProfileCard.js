@@ -30,23 +30,19 @@ const UserInfoContainer = styled.div`
   }
 `;
 function ProfileCard({ questionData, answer }) {
+  const init = questionData || answer;
   return (
     <>
-      {questionData && (
+      {init && (
         <ProfileCardContainer>
-          <div className='created-time'>asked {questionData.createdAt}</div>
+          <div className='created-time'>
+            {init === questionData
+              ? `asked ${init.createdAt}`
+              : `answered ${init.createdAt}`}
+          </div>
           <UserInfoContainer>
             <div className='user-image'></div>
-            <div className='username'>{questionData.userName}</div>
-          </UserInfoContainer>
-        </ProfileCardContainer>
-      )}
-      {answer && (
-        <ProfileCardContainer>
-          <div className='created-time'>Answered {answer.createdAt}</div>
-          <UserInfoContainer>
-            <div className='user-image'></div>
-            <div className='username'>{answer.userName}</div>
+            <div className='username'>{init.userName}</div>
           </UserInfoContainer>
         </ProfileCardContainer>
       )}

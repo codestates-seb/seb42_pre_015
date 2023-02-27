@@ -3,7 +3,6 @@ import Vote from './Vote';
 import Tag from '../common/Tag';
 import ProfileCard from './ProfileCard';
 import Comment from './Comment';
-// import { questionCommentData } from '../../data/dummyData';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -40,7 +39,6 @@ const ControlOptions = styled.div`
 `;
 
 function Question({ questionId, questionData }) {
-  // const BASE_URL = 'http://localhost:3001';
   const [questionCommentData, setQuestionCommentData] = useState(null);
 
   useEffect(() => {
@@ -58,7 +56,7 @@ function Question({ questionId, questionData }) {
             <p dangerouslySetInnerHTML={{ __html: questionData.content }}>
               {/* {questionData.content} */}
             </p>
-            <Tag questionData={questionData} />
+            <Tag tags={questionData.tags} />
             <QuestionInfo>
               <ControlOptions>
                 <div>
