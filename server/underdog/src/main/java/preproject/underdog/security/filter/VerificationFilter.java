@@ -10,6 +10,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
+import preproject.underdog.exception.BusinessLogicException;
+import preproject.underdog.exception.ExceptionCode;
 import preproject.underdog.security.jwt.JwtTokenizer;
 import preproject.underdog.security.utils.CustomAuthorityUtils;
 import preproject.underdog.user.entity.User;
@@ -72,7 +74,7 @@ public class VerificationFilter extends OncePerRequestFilter {  // (1)
             //리프레시 토큰 유효 -> 액세스 토큰 재발급.
             String email = claims.getBody().getSubject();
             Optional<User> optionalUser = userRepository.findByEmail(email);
-            User user = optionalUser.orElseThrow(()->new RuntimeException("유저 정보 없음"));
+            User user = optionalUser.orElseThrow(()->new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
 
             String accessToken = jwtTokenizer.delegateAccessToken(user);   // (4-2)
             String refreshToken = jwtTokenizer.delegateRefreshToken(user);

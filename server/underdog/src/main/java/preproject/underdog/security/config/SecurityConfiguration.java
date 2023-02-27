@@ -17,6 +17,7 @@ import preproject.underdog.security.filter.CustomAuthenticationFilter;
 import preproject.underdog.security.filter.VerificationFilter;
 import preproject.underdog.security.handler.*;
 import preproject.underdog.security.jwt.JwtTokenizer;
+import preproject.underdog.security.userDetailsService.CustomUserDetailsService;
 import preproject.underdog.security.utils.CustomAuthorityUtils;
 import preproject.underdog.user.repository.UserRepository;
 import preproject.underdog.user.service.UserService;
@@ -67,6 +68,12 @@ public class SecurityConfiguration {
                         .antMatchers(HttpMethod.GET, "/question/**").permitAll()
                         .anyRequest().authenticated()) // 요청별 권한 작성하기
                 .oauth2Login(oauth2 -> oauth2
+//                        .authorizationEndpoint(authorization -> authorization
+//                                .baseUri("/oauth2/authorization")
+//                        )
+//                        .redirectionEndpoint(redirection -> redirection
+//                                .baseUri("/*/oauth2/code/*")
+//                        )
                         .successHandler(new OAuth2SuccessHandler(jwtTokenizer, userService )));
 
         return http.build();
@@ -92,7 +99,9 @@ public class SecurityConfiguration {
         public void configure(HttpSecurity builder) throws Exception {  // (2-2)
             AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);  // (2-3)
 
-            CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(jwtTokenizer, authenticationManager);// (2-4)
+            CustomAuthenticationFilter customAuthenticationFilter =
+                    new CustomAuthenticationFilter(jwtTokenizer, authenticationManager);// (2-4)
+
 //            customAuthenticationFilter.setFilterProcessesUrl("/auth/login"); //request URL - 디폴트는 /login
             customAuthenticationFilter.setAuthenticationSuccessHandler(new CustomAuthenticationSuccessHandler());  // (3) 추가
             customAuthenticationFilter.setAuthenticationFailureHandler(new CustomAuthenticationFailureHandler());
