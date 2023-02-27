@@ -20,7 +20,6 @@ function Answer({ questionId }) {
       .get(`/question/${questionId}/answer`)
       .then(res => {
         setAnswerData(res.data);
-        console.log('answerData:', answerData);
       })
       .catch(error => {
         console.error('error:', error);

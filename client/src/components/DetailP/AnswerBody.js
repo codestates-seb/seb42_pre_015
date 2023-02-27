@@ -60,6 +60,9 @@ function AnswerBody({ answerData, questionId }) {
     axios.delete('/');
   };
 
+  const accessToken = localStorage.getItem('accessToken');
+  const refreshToken = localStorage.getItem('refreshToken');
+
   return (
     <>
       {answerData &&
@@ -75,9 +78,11 @@ function AnswerBody({ answerData, questionId }) {
                   <button>Share</button>
                   <button
                     onClick={() =>
-                      navigate(
-                        `/question/${questionId}/answeredit/${answer.answerId}`
-                      )
+                      accessToken && refreshToken
+                        ? navigate(
+                            `/question/${questionId}/answeredit/${answer.answerId}`
+                          )
+                        : navigate('/login')
                     }
                   >
                     Edit
