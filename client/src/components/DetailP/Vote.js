@@ -18,20 +18,13 @@ const VoteContainer = styled.div`
 `;
 
 function Vote({ questionData, answer }) {
+  const data = questionData || answer;
   return (
     <>
-      {questionData && (
+      {data && (
         <VoteContainer>
           <ArrowUpSvg />
-          <div>{questionData.voteCount}</div>
-          <ArrowDownSvg />
-          <SaveUnSelectedSvg />
-        </VoteContainer>
-      )}
-      {answer && (
-        <VoteContainer>
-          <ArrowUpSvg />
-          <div>{answer.voteCount}</div>
+          <div>{data.voteCount}</div>
           <ArrowDownSvg />
           <SaveUnSelectedSvg />
         </VoteContainer>
