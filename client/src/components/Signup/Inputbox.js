@@ -109,20 +109,11 @@ const Inputbox = () => {
 
     // HTTP Request
     try {
-      const response = await axios.post(
-        'http://localhost:8080/user',
-        {
-          name: displayName,
-          email: email,
-          password: password
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        }
-      );
-      console.log(response.data);
+      const response = await axios.post('/user', {
+        name: displayName,
+        email: email,
+        password: password
+      });
       setDisplayName('');
       setEmail('');
       setPassword('');
@@ -130,9 +121,7 @@ const Inputbox = () => {
       setEmailError('');
       setPasswordError('');
 
-      // Response header 저장
-      const userURI = response.headers['location'];
-      console.log(userURI);
+      console.log(response.data);
     } catch (error) {
       alert(error);
     }
@@ -141,7 +130,7 @@ const Inputbox = () => {
   return (
     <>
       <InputboxStyle>
-        <form className='signup-form' onSubmit={handleSubmit}>
+        <div className='signup-form' onSubmit={handleSubmit}>
           <div className='signup-form__displayname'>
             <h1>Display name</h1>
             <div style={{ position: 'relative' }}>
@@ -211,7 +200,7 @@ const Inputbox = () => {
           </div>
           <Captcha />
           <GeneralBtn BtnText='Sign up' onClick={handleSubmit} />
-        </form>
+        </div>
       </InputboxStyle>
     </>
   );
