@@ -65,6 +65,8 @@ function AnswerBody({ questionId, answerData, setAnswerData }) {
 
   const accessToken = localStorage.getItem('accessToken');
   const refreshToken = localStorage.getItem('refreshToken');
+  const LogginUserId = localStorage.getItem('userId');
+  const userId = Number(LogginUserId.split(':')[1].trim());
 
   return (
     <>
@@ -79,21 +81,27 @@ function AnswerBody({ questionId, answerData, setAnswerData }) {
               <AnswerInfo>
                 <ControlOptions>
                   <button>Share</button>
-                  <button
-                    onClick={() =>
-                      accessToken && refreshToken
-                        ? navigate(
-                            `/question/${questionId}/answeredit/${answer.answerId}`
-                          )
-                        : navigate('/login')
-                    }
-                  >
-                    Edit
-                  </button>
+                  {userId === answer.userId ? (
+                    <>
+                      <button
+                        onClick={() =>
+                          accessToken && refreshToken
+                            ? navigate(
+                                `/question/${questionId}/answeredit/${answer.answerId}`
+                              )
+                            : navigate('/login')
+                        }
+                      >
+                        Edit
+                      </button>
 
-                  <button onClick={() => handleAnswerDelete(answer.answerId)}>
-                    Delete
-                  </button>
+                      <button
+                        onClick={() => handleAnswerDelete(answer.answerId)}
+                      >
+                        Delete
+                      </button>
+                    </>
+                  ) : null}
                 </ControlOptions>
                 <ProfileCard answer={answer} />
               </AnswerInfo>
