@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${DB_ENDPOINT}/underdog_test?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: jdbc:mysql://${DB_ENDPOINT}/underdog?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: ${DB_ID}
     password: ${DB_PSW}
   jpa:
@@ -38,18 +38,18 @@ spring:
             scope:
               - email
               - profile
-          github:
-            clientId: ${GITHUB_CLIENT_ID}
-            clientSecret: ${GITHUB_CLIENT_PASSWORD}
-            scope:
-              - email
-              - profile
-          facebook:
-            clientId: ${F_CLIENT_ID}
-            clientSecret: ${F_CLIENT_PASSWORD}
-            scope:
-              - email
-              - profile
+#          github:
+#            clientId: ${GITHUB_CLIENT_ID}
+#            clientSecret: ${GITHUB_CLIENT_PASSWORD}
+#            scope:
+#              - email
+#              - profile
+#          facebook:
+#            clientId: ${F_CLIENT_ID}
+#            clientSecret: ${F_CLIENT_PASSWORD}
+#            scope:
+#              - email
+#              - profile
 jwt:
   key: ${JWT_SECRET_KEY}
   access-token-expiration-minutes: 120

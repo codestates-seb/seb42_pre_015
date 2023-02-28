@@ -2,6 +2,7 @@ package preproject.underdog.question.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
@@ -17,11 +18,14 @@ import preproject.underdog.question.dto.question.QuestionResponseDto;
 import preproject.underdog.question.entity.Question;
 import preproject.underdog.question.entity.QuestionComment;
 import preproject.underdog.question.mapper.QuestionMapper;
+import preproject.underdog.question.repository.QuestionRepo;
 import preproject.underdog.question.service.QuestionService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/question")
@@ -30,6 +34,7 @@ import java.util.List;
 public class QuestionController {
     private final QuestionService questionService;
     private final QuestionMapper mapper;
+    private final QuestionRepo repo;
 
     @PostMapping
     public ResponseEntity postQuestion(@Valid @RequestBody QuestionPostDto questionPostDto) {
@@ -110,5 +115,39 @@ public class QuestionController {
     public ResponseEntity deleteVote(@PathVariable("question-id") long questionId){
         Question question = questionService.cancelVote(questionId);
         return new ResponseEntity(mapper.questionToQuestionResponseDto(question), HttpStatus.OK);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity searchQuestions(@RequestParam(required = false) String title,
+                                          @RequestParam(required = false) String user,
+                                          @RequestParam(required = false) Integer answerCount,
+                                          @RequestParam(required = false) ArrayList<String> tags,
+                                          Pageable pageable) {
+        Pageable pageRequest = PageRequest.of(pageable.getPageNumber() -1 , pageable.getPageSize(), pageable.getSort());
+        Page<Question> questionPage = repo.findAll(pageRequest);
+        List<Question> questions = questionPage.getContent();
+        if (tags != null) {
+            for(String tag : tags) {
+                questions = questions.stream()
+                        .filter(q -> q.getTags().contains(tag))
+                        .collect(Collectors.toList());
+            }
+        }
+        if (answerCount != null) {
+            questions = questions.stream()
+                    .filter(q -> q.getAnswerList().size() >=answerCount)
+                    .collect(Collectors.toList());
+        }
+        if (title != null) {
+            questions = questions.stream()
+                    .filter(q -> q.getTitle().contains(title))
+                    .collect(Collectors.toList());
+        }
+        if (user != null) {
+            questions = questions.stream()
+                    .filter(q -> q.getUser().getName().equals(user))
+                    .collect(Collectors.toList());
+        }
+        return new ResponseEntity<>(new PageDto<>(mapper.questionsToResponseDto(questions), questionPage), HttpStatus.OK);
     }
 }
