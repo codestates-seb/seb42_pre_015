@@ -4,10 +4,6 @@ import SignupText from '../components/Signup/SignupText';
 
 const AllBoxStyle = styled.div`
   background-color: #f1f2f3;
-  body {
-    height: 100%;
-    width: 100%;
-  }
 `;
 
 const ContainerStyle = styled.div`
@@ -74,24 +70,22 @@ const SignupP = () => {
   return (
     <>
       <AllBoxStyle>
-        <body>
-          <ContainerStyle>
-            <div className='container-text'>
-              Create your Stack Overflow account.
-              <br /> It’s free and only takes a minute.
+        <ContainerStyle>
+          <div className='container-text'>
+            Create your Stack Overflow account.
+            <br /> It’s free and only takes a minute.
+          </div>
+          <div className='container-left'>
+            <div>
+              <SignupText />
             </div>
-            <div className='container-left'>
-              <div>
-                <SignupText />
-              </div>
+          </div>
+          <div className='container-right'>
+            <div>
+              <SignupBox />
             </div>
-            <div className='container-right'>
-              <div>
-                <SignupBox />
-              </div>
-            </div>
-          </ContainerStyle>
-        </body>
+          </div>
+        </ContainerStyle>
       </AllBoxStyle>
     </>
   );
