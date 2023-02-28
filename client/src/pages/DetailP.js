@@ -19,7 +19,7 @@ const Main = styled.main`
   display: flex;
   flex-direction: column;
   padding: 24px 16px;
-  width: 80%;
+  width: calc(50vw + 300px);
   @media screen and (max-width: 980px) {
     flex-direction: column;
     width: calc(100% - 164px);
@@ -135,17 +135,15 @@ function DetailPage() {
               <ul>
                 <li>
                   Asked{' '}
-                  {questionData.createdAt.replace(
-                    /^(\d{4}-\d{2}-\d{2}).*/,
-                    '$1'
-                  )}
+                  {questionData.createdAt
+                    .replace(/T/, ' ')
+                    .replace(/:\d\d(\.\d{1,6})?$/, '')}
                 </li>
                 <li>
                   Modified{' '}
-                  {questionData.modifiedAt.replace(
-                    /^(\d{4}-\d{2}-\d{2}).*/,
-                    '$1'
-                  )}
+                  {questionData.modifiedAt
+                    .replace(/T/, ' ')
+                    .replace(/:\d\d(\.\d{1,6})?$/, '')}
                 </li>
                 <li>Viewed {questionData.viewCount} times</li>
               </ul>
