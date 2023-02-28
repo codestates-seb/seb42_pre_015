@@ -70,28 +70,28 @@ public class QuestionService {
     }
 
     public Page<Question> getQuestions(Pageable pageable) { //질문글 전체 조회
-        Pageable pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), pageable.getSort());
+        Pageable pageRequest = PageRequest.of(pageable.getPageNumber()-1, pageable.getPageSize(), pageable.getSort());
         return questionRepository.findAll(pageRequest);
     }
 
-    public Page<Question> searchQuestions(String title, String user, Integer answerCount, List<String> tags, Pageable pageable) { //검색
-        Pageable pageRequest = PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize(), pageable.getSort());
-        Page<Question> questionPage = questionRepository.findAll(pageRequest);
-        List<Question> questionList = questionPage.getContent();
+//    public Page<Question> searchQuestions(String title, String user, Integer answerCount, List<String> tags, Pageable pageable) { //검색
+//        Pageable pageRequest = PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize(), pageable.getSort());
+//        Page<Question> questionPage = questionRepository.findAll(pageRequest);
+//        List<Question> questionList = questionPage.getContent();
+//
+//        List<Question> filteredQuestions = questionList.stream()
+//                .filter(q -> q.getTitle().contains(title))
+////                        && q.getUser().getName().contains(user)
+////                        && q.getAnswerList().size() >= answerCount
+////                        && q.getTags().contains(tags))
+//                .collect(Collectors.toList());
 
-        List<Question> filteredQuestions = questionList.stream()
-                .filter(q -> q.getTitle().contains(title))
-//                        && q.getUser().getName().contains(user)
-//                        && q.getAnswerList().size() >= answerCount
-//                        && q.getTags().contains(tags))
-                .collect(Collectors.toList());
-
-//        int start = (int) pageRequest.getOffset();
-//        int end = Math.min((start + pageRequest.getPageSize()), filteredQuestions.size());
-        Page<Question> filterdQuestionPage = new PageImpl<>(filteredQuestions, pageRequest, filteredQuestions.size());
-
-        return filterdQuestionPage;
-    }
+////        int start = (int) pageRequest.getOffset();
+////        int end = Math.min((start + pageRequest.getPageSize()), filteredQuestions.size());
+//        Page<Question> filterdQuestionPage = new PageImpl<>(filteredQuestions, pageRequest, filteredQuestions.size());
+//
+//        return filterdQuestionPage;
+//    }
 
     public void deleteQuestion(long questionId) { //질문글 삭제
         Question findQuestion = findQuestionById(questionId);
@@ -203,20 +203,49 @@ public class QuestionService {
         return findQuestion;
     }
 
-        public Question findQuestionById (long questionId){
-            Optional<Question> optionalQuestion = questionRepository.findById(questionId);
-            Question question = optionalQuestion.orElseThrow(() -> new BusinessLogicException(ExceptionCode.QUESTION_NOT_FOUND));
-            return question;
-        }
-
-        public QuestionComment findVerifiedComment ( long questionCommentId){
-
-            Optional<QuestionComment> optionalQuestionComment = questionCommentRepo.findById(questionCommentId);
-            QuestionComment findComment =
-                    optionalQuestionComment.orElseThrow(() ->
-                            new BusinessLogicException(ExceptionCode.QUESTION_COMMENT_NOT_FOUND));
-
-            return findComment;
-        }
+//    public Page<Question> searchQuestions(String tag, Integer answerCount, String title, String username, Pageable pageable) {
+//        Pageable pageRequest = PageRequest.of(pageable.getPageNumber() -1 , pageable.getPageSize(), pageable.getSort());
+//        Page<Question> questionPage = questionRepository.findAll(pageRequest);
+//        List<Question> questions = questionPage.getContent();
+//        if (tag != null) {
+//            questions = questions.stream()
+//                    .filter(q -> q.getTags().contains(tag))
+//                    .collect(Collectors.toList());
+//        }
+//        if (answerCount != null) {
+//            questions = questions.stream()
+//                    .filter(q -> q.getAnswerList().size() >=answerCount)
+//                    .collect(Collectors.toList());
+//        }
+//        if (title != null) {
+//            questions = questions.stream()
+//                    .filter(q -> q.getTitle().contains(title))
+//                    .collect(Collectors.toList());
+//        }
+//        if (username != null) {
+//            questions = questions.stream()
+//                    .filter(q -> q.getUser().getName().equals(username))
+//                    .collect(Collectors.toList());
+//        }
+//        Page<Question> filterdQuestionPage = new PageImpl<>(questions, pageRequest, questions.size());
+//        return filterdQuestionPage;
+//    }
+//
+//
+    public Question findQuestionById(long questionId) {
+        Optional<Question> optionalQuestion = questionRepository.findById(questionId);
+        Question question = optionalQuestion.orElseThrow(() -> new BusinessLogicException(ExceptionCode.QUESTION_NOT_FOUND));
+        return question;
     }
+
+    public QuestionComment findVerifiedComment(long questionCommentId) {
+
+        Optional<QuestionComment> optionalQuestionComment = questionCommentRepo.findById(questionCommentId);
+        QuestionComment findComment =
+                optionalQuestionComment.orElseThrow(() ->
+                        new BusinessLogicException(ExceptionCode.QUESTION_COMMENT_NOT_FOUND));
+
+        return findComment;
+    }
+}
 
