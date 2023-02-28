@@ -111,15 +111,4 @@ public class QuestionController {
         Question question = questionService.cancelVote(questionId);
         return new ResponseEntity(mapper.questionToQuestionResponseDto(question), HttpStatus.OK);
     }
-
-    @GetMapping("/search")
-    public ResponseEntity searchQuestions(@RequestParam(required = false) String title,
-                                          @RequestParam(required = false) String user,
-                                          @RequestParam(required = false) Integer answerCount,
-                                          @RequestParam(required = false) List<String> tags,
-                                          Pageable pageable) {
-        Page<Question> questionPage = questionService.searchQuestions(title, user, answerCount, tags, pageable);
-        List<Question> questionList = questionPage.getContent();
-        return new ResponseEntity<>(new PageDto<>(mapper.questionsToResponseDto(questionList), questionPage), HttpStatus.OK);
-    }
 }

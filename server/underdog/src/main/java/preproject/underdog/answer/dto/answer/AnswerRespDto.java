@@ -17,7 +17,7 @@ public class AnswerRespDto {
     private Long userId;
     private String name;
     private Long questionId;
-    private Long voteCount;
+    private int voteCount;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 }

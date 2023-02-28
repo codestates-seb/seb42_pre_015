@@ -33,9 +33,6 @@ public class Answer extends BaseTimeEntity {
     @JoinColumn(name = "question_id")
     private Question question;
 
-    @Column
-    private long voteCount=0;
-
     @OneToMany(mappedBy = "answer")
     private List<AnswerVote> votes = new ArrayList<>();
 

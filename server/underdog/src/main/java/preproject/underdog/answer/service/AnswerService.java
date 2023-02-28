@@ -17,7 +17,6 @@ import preproject.underdog.question.service.QuestionService;
 import preproject.underdog.user.entity.User;
 import preproject.underdog.user.repository.UserRepository;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -154,8 +153,6 @@ public class AnswerService {
         } catch (DataIntegrityViolationException e) {
             throw new BusinessLogicException(ExceptionCode.CANNOT_VOTE_TWICE);
         }
-
-        findAnswer.setVoteCount(findAnswer.getVoteCount()+1);
         return findAnswer;
     }
 
@@ -174,12 +171,9 @@ public class AnswerService {
                 .findFirst()
                 .orElseThrow(() ->new BusinessLogicException(ExceptionCode.VOTE_NOT_FOUND)); // ExceptionCode.VOTE_NOT_FOUND
 
-        if(findAnswer.getVotes().contains(answerVote)) {
             answerRepository.downVote(answerId, user.getUserId());
-            findAnswer.setVoteCount(findAnswer.getVoteCount() - 1);
-        }
-        else throw new BusinessLogicException(ExceptionCode.VOTE_NOT_FOUND);
-        return findAnswer;
+        Answer verifiedAnswer = findVerifiedAnswer(findAnswer.getAnswerId());
+        return verifiedAnswer; //voteCount 업데이트가 안 됨..
     }
 
     public Answer findVerifiedAnswer(long answerId) {

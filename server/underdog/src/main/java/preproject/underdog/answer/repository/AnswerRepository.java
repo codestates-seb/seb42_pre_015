@@ -15,10 +15,10 @@ import java.util.List;
 @Repository
 public interface AnswerRepository extends JpaRepository<Answer, Long> {
     @Modifying
-    @Query(value = "INSERT INTO answer_vote(answer_id, user_id) VALUES(:answerId, :userId)", nativeQuery = true)
+    @Query(value = "INSERT INTO answer_vote (answer_id, user_id) SELECT :answerId, :userId from dual WHERE NOT EXISTS (SELECT answer_id, user_id FROM answer_vote WHERE answer_id = :answerId and user_id = :userId)", nativeQuery = true)
     int upVote(long answerId, long userId);
 
-    @Modifying
+    @Modifying(flushAutomatically = true)
     @Query(value = "DELETE FROM answer_vote WHERE answer_id = :answerId AND user_id = :userId", nativeQuery = true)
     int downVote(long answerId, long userId);
 

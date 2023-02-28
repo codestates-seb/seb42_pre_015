@@ -72,25 +72,6 @@ public class QuestionService {
         return questionRepository.findAll(pageRequest);
     }
 
-    public Page<Question> searchQuestions(String title, String user, Integer answerCount, List<String> tags, Pageable pageable) { //검색
-        Pageable pageRequest = PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize(), pageable.getSort());
-        Page<Question> questionPage = questionRepository.findAll(pageRequest);
-        List<Question> questionList = questionPage.getContent();
-
-        List<Question> filteredQuestions = questionList.stream()
-                .filter(q -> q.getTitle().contains(title))
-//                        && q.getUser().getName().contains(user)
-//                        && q.getAnswerList().size() >= answerCount
-//                        && q.getTags().contains(tags))
-                        .collect(Collectors.toList());
-
-//        int start = (int) pageRequest.getOffset();
-//        int end = Math.min((start + pageRequest.getPageSize()), filteredQuestions.size());
-        Page<Question> filterdQuestionPage = new PageImpl<>(filteredQuestions, pageRequest, filteredQuestions.size());
-
-        return filterdQuestionPage;
-    }
-
     public void deleteQuestion(long questionId) { //질문글 삭제
         Question findQuestion = findQuestionById(questionId);
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
@@ -169,7 +150,6 @@ public class QuestionService {
 
         questionRepository.upVote(questionId, user.getUserId());
 
-        findQuestion.setVoteCount(findQuestion.getVoteCount() + 1);
         return findQuestion;
     }
 
@@ -187,7 +167,6 @@ public class QuestionService {
 
         if (findQuestion.getQuestionVoteList().contains(questionVote)) {
             questionRepository.downVote(questionId, user.getUserId());
-            findQuestion.setVoteCount(findQuestion.getVoteCount() - 1);
         } else throw new BusinessLogicException(ExceptionCode.VOTE_NOT_FOUND);
         return findQuestion;
     }

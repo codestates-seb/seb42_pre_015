@@ -21,6 +21,7 @@ public interface QuestionMapper {
     @Mapping(source = "user.userId", target = "userId")
     @Mapping(source = "user.name", target = "name")
     @Mapping(target = "answerCount", expression = "java(question.getAnswerList()!= null ? question.getAnswerList().size():0)")
+    @Mapping(target = "voteCount", expression = "java(question.getQuestionVoteList()!= null ? question.getQuestionVoteList().size():0)")
     QuestionResponseDto questionToQuestionResponseDto(Question question);
 
     QuestionComment commentPostDtoToQuestionComment(QuestionCommentPostDto commentPostDto);
