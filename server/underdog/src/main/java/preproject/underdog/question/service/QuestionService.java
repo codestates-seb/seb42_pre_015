@@ -200,15 +200,16 @@ public class QuestionService {
 
             questionRepository.save(findQuestion);
         } else throw new BusinessLogicException(ExceptionCode.VOTE_NOT_FOUND);
+        return findQuestion;
+    }
 
-
-        public Question findQuestionById ( long questionId){
+        public Question findQuestionById (long questionId){
             Optional<Question> optionalQuestion = questionRepository.findById(questionId);
             Question question = optionalQuestion.orElseThrow(() -> new BusinessLogicException(ExceptionCode.QUESTION_NOT_FOUND));
             return question;
         }
 
-        public QuestionComment findVerifiedComment (long questionCommentId){
+        public QuestionComment findVerifiedComment ( long questionCommentId){
 
             Optional<QuestionComment> optionalQuestionComment = questionCommentRepo.findById(questionCommentId);
             QuestionComment findComment =
@@ -217,6 +218,5 @@ public class QuestionService {
 
             return findComment;
         }
-
-
     }
+
