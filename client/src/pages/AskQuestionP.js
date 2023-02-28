@@ -192,6 +192,13 @@ function AskQuestionPage() {
     }
   };
 
+  const handleKeyDown = e => {
+    // Disable form submit on enter
+    if (e.key === 'Enter') {
+      e.preventDefault();
+    }
+  };
+
   return (
     <>
       <Main>
@@ -222,6 +229,7 @@ function AskQuestionPage() {
                   setFormValues({ ...formValues, title: e.target.value })
                 }
                 onBlur={handleValidation}
+                onKeyDown={handleKeyDown}
               ></input>
               {titleErrorMsg && (
                 <p style={{ color: '#DE4F54' }}>{titleErrorMsg}</p>
@@ -277,6 +285,7 @@ function AskQuestionPage() {
                 setFormValues={setFormValues}
                 handleValidation={handleValidation}
                 tagErrorMsg={tagErrorMsg}
+                handleKeyDown={handleKeyDown}
               />
               {tagErrorMsg && <p style={{ color: '#DE4F54' }}>{tagErrorMsg}</p>}
             </InputBox>
