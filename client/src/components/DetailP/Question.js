@@ -63,7 +63,7 @@ function Question({ questionId, questionData }) {
   const accessToken = localStorage.getItem('accessToken');
   const refreshToken = localStorage.getItem('refreshToken');
   const LogginUserId = localStorage.getItem('userId');
-  const userId = LogginUserId.split(':')[1].trim();
+  const userId = Number(LogginUserId.split(':')[1].trim());
 
   return (
     <>
@@ -80,7 +80,7 @@ function Question({ questionId, questionData }) {
                     Share
                   </button>
                 </div>
-                {userId === String(questionData.userId) ? (
+                {userId === questionData.userId ? (
                   <>
                     <div>
                       <button
