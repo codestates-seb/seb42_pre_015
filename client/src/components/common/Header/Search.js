@@ -129,6 +129,7 @@ export default function Search({ isLogin }) {
   const searchIconRef = useRef(null);
   const searchNavRef = useRef(null);
   const [isSearchClick, setIsSearchClick] = useState(false);
+  const [searchText, setSearchText] = useState('');
 
   useEffect(() => {
     const handleSearchClick = e => {
@@ -150,6 +151,20 @@ export default function Search({ isLogin }) {
     };
   }, []);
 
+  const SumbitHandler = e => {
+    if (e.key === 'Enter') {
+      console.log('눌렀음');
+      const filter =
+        searchText.charAt(0) + searchText.charAt(searchText.length - 1);
+      console.log(filter);
+      if (filter === '[]') {
+        const tagText = searchText.slice(1, searchText.length - 1);
+        console.log('이건태그다', tagText);
+      }
+      setSearchText('');
+    }
+  };
+
   return (
     <SearchForm>
       <SearchIcon
@@ -167,6 +182,14 @@ export default function Search({ isLogin }) {
           setIsSearchClick(true);
         }}
         ref={searchRef}
+        onChange={e => {
+          setSearchText(e.target.value);
+          console.log(searchText);
+        }}
+        value={searchText}
+        onKeyDown={e => {
+          SumbitHandler(e);
+        }}
       />
       {isSearchClick ? (
         <MobilNav ref={searchNavRef}>
