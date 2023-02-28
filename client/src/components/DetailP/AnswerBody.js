@@ -49,11 +49,7 @@ const ControlOptions = styled.div`
     color: grey;
   }
 `;
-function AnswerBody({ answerData, questionId }) {
-  // ! API test할때 동적으로 answerCommentData가 바뀌는지 확인해야함
-  // const { answerId } = useParams();
-  // const [answerCommentData, answerCommentIsPending, answerCommentError] = useFetch(`http://localhost:3001/question/${questoinId}/answer/${answerId}`/comment)
-
+function AnswerBody({ questionId, answerData, setAnswerData }) {
   const navigate = useNavigate();
 
   const handleAnswerDelete = answerId => {
@@ -64,7 +60,7 @@ function AnswerBody({ answerData, questionId }) {
           Refresh: `${refreshToken}`
         }
       })
-      .then(res => console.log('res.data:', res.data));
+      .then(res => setAnswerData(res.data));
   };
 
   const accessToken = localStorage.getItem('accessToken');

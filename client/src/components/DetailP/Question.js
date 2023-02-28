@@ -59,7 +59,7 @@ function Question({ questionId, questionData }) {
         }
       })
       .then(res => console.log(res));
-    navigate('/');
+    window.location.href = '/';
   };
 
   const accessToken = localStorage.getItem('accessToken');
