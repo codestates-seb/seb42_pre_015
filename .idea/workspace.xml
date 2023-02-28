@@ -4,7 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4fa2fb37-ad9a-43db-80fc-e2739e87231a" name="Changes" comment="">
+    <list default="true" id="a2e24aa1-7acd-4f58-bc78-c176263c5006" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/server/underdog/src/main/java/preproject/underdog/question/spec/QuestionSpec.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/underdog/.gradle/7.6/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/.gradle/7.6/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/underdog/.gradle/7.6/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/.gradle/7.6/executionHistory/executionHistory.lock" afterDir="false" />
@@ -12,11 +13,11 @@
       <change beforePath="$PROJECT_DIR$/server/underdog/.gradle/7.6/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/.gradle/7.6/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/underdog/.gradle/7.6/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/.gradle/7.6/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/underdog/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/underdog/build/classes/java/main/preproject/underdog/exception/ExceptionCode.class" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/build/classes/java/main/preproject/underdog/exception/ExceptionCode.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/.gradle/file-system.probe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/underdog/build/resources/main/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/build/resources/main/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/underdog/src/main/java/preproject/underdog/answer/repository/AnswerRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/src/main/java/preproject/underdog/answer/repository/AnswerRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/underdog/src/main/java/preproject/underdog/answer/service/AnswerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/src/main/java/preproject/underdog/answer/service/AnswerService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/underdog/src/main/java/preproject/underdog/exception/ExceptionCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/src/main/java/preproject/underdog/exception/ExceptionCode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/src/main/java/preproject/underdog/question/controller/QuestionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/src/main/java/preproject/underdog/question/controller/QuestionController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/underdog/src/main/java/preproject/underdog/question/repository/QuestionRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/src/main/java/preproject/underdog/question/repository/QuestionRepo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/underdog/src/main/java/preproject/underdog/question/service/QuestionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/src/main/java/preproject/underdog/question/service/QuestionService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/underdog/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/server/underdog/src/main/resources/application.yml" afterDir="false" />
     </list>
@@ -75,6 +76,9 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="2M3DwCqljT1gdgzFeOS7DChn6IX" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
@@ -87,6 +91,15 @@
 }</component>
   <component name="RunManager" selected="Application.UnderdogApplication">
     <configuration name="UnderdogApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <envs>
+        <env name="DB_ENDPOINT" value="localhost:3306" />
+        <env name="DB_ID" value="root" />
+        <env name="DB_PSW" value="root" />
+        <env name="MAIL_ADDRESS_ADMIN" value="admin@gamil.com" />
+        <env name="JWT_SECRET_KEY" value="kevin1234123412341234123412341234123412341234" />
+        <env name="GOOGLE_CLIENT_ID" value="986019358427-kd6sl4h3qilo2cufnagnrc1n6i7o2a01.apps.googleusercontent.com" />
+        <env name="GOOGLE_CLIENT_PASSWORD" value="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" />
+      </envs>
       <option name="MAIN_CLASS_NAME" value="preproject.UnderdogApplication" />
       <module name="underdog.main" />
       <extension name="coverage">
@@ -120,19 +133,10 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
-    <configuration default="true" type="JetRunConfigurationType">
-      <module name="seb42_pre_015" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
-      <module name="seb42_pre_015" />
-      <option name="filePath" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+    <list>
+      <item itemvalue="Application.UnderdogApplication" />
+      <item itemvalue="Gradle.underdog [build]" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Gradle.underdog [build]" />

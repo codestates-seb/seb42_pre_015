@@ -7,6 +7,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import preproject.underdog.exception.BusinessLogicException;
 import preproject.underdog.exception.ExceptionCode;
 import preproject.underdog.question.entity.Question;
@@ -41,7 +43,8 @@ public class QuestionService {
         Question findQuestion = findQuestionById(question.getQuestionId());
 
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        if(!findQuestion.getUser().getEmail().equals(principal)) throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_EDITING_POST);
+        if (!findQuestion.getUser().getEmail().equals(principal))
+            throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_EDITING_POST);
 
         Optional.ofNullable(question.getTitle())
                 .ifPresent(title -> findQuestion.setTitle(title));
@@ -67,7 +70,8 @@ public class QuestionService {
     public void deleteQuestion(long questionId) { //질문글 삭제
         Question findQuestion = findQuestionById(questionId);
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        if(!findQuestion.getUser().getEmail().equals(principal)) throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_DELETING_POST);
+        if (!findQuestion.getUser().getEmail().equals(principal))
+            throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_DELETING_POST);
         questionRepository.deleteById(questionId);
     }
 
@@ -75,7 +79,7 @@ public class QuestionService {
         Question foundQuestion = findQuestionById(questionId); // 질문이 있는지 검증
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         Optional<User> optionalUser = userRepository.findByEmail(principal);
-        User user = optionalUser.orElseThrow(() ->new BusinessLogicException(ExceptionCode.NO_PERMISSION_CREATING_POST));
+        User user = optionalUser.orElseThrow(() -> new BusinessLogicException(ExceptionCode.NO_PERMISSION_CREATING_POST));
 
         comment.setQuestion(foundQuestion);
         comment.setUser(user);
@@ -90,7 +94,7 @@ public class QuestionService {
         QuestionComment verifiedComment = findVerifiedComment(commentId);
 
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        if(!verifiedComment.getUser().getEmail().equals(principal)) {
+        if (!verifiedComment.getUser().getEmail().equals(principal)) {
             throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_EDITING_POST);
         }
 
@@ -98,7 +102,7 @@ public class QuestionService {
         QuestionComment findComment = findQuestion.getQuestionCommentList().stream()
                 .filter(d -> d.getQuestionCommentId() == commentId)
                 .findFirst()
-                .orElseThrow(()-> new BusinessLogicException(ExceptionCode.ID_IS_NOT_THE_SAME)); // questionId or commentId가 일치하지 않습니다. bad request
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.ID_IS_NOT_THE_SAME)); // questionId or commentId가 일치하지 않습니다. bad request
 
         findComment.setContent(comment.getContent());
         questionCommentRepo.save(findComment);
@@ -116,13 +120,14 @@ public class QuestionService {
         QuestionComment verifiedComment = findVerifiedComment(commentId);
 
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        if(!verifiedComment.getUser().getEmail().equals(principal)) throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_DELETING_POST);
+        if (!verifiedComment.getUser().getEmail().equals(principal))
+            throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_DELETING_POST);
 
         //질문에 해당 코멘트가 종속된 관계가 맞는지 확인
         findQuestion.getQuestionCommentList().stream()
                 .filter(d -> d.getQuestionCommentId() == commentId)
                 .findFirst()
-                .orElseThrow(()-> new BusinessLogicException(ExceptionCode.ID_IS_NOT_THE_SAME));  // questionId or commentId가 일치하지 않습니다. bad request
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.ID_IS_NOT_THE_SAME));  // questionId or commentId가 일치하지 않습니다. bad request
 
         questionCommentRepo.deleteById(commentId);
         return questionCommentRepo.findByQuestionId(findQuestion.getQuestionId());
@@ -137,7 +142,8 @@ public class QuestionService {
 
         // 로직 추가
 
-        if(!user.getQuestionVoteList().contains(user)) throw new BusinessLogicException(ExceptionCode.CANNOT_VOTE_TWICE);
+        if (!user.getQuestionVoteList().contains(user))
+            throw new BusinessLogicException(ExceptionCode.CANNOT_VOTE_TWICE);
 
         questionRepository.upVote(questionId, user.getUserId());
         findQuestion.setVoteCount(findQuestion.getVoteCount() + 1);
@@ -153,14 +159,13 @@ public class QuestionService {
         QuestionVote questionVote = findQuestion.getQuestionVoteList().stream()
                 .filter(v -> v.getUser() == user)
                 .findFirst()
-                .orElseThrow(()-> new BusinessLogicException(ExceptionCode.VOTE_NOT_FOUND)); // 좋아요 했던 사람만 취소 가능. bad request
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.VOTE_NOT_FOUND)); // 좋아요 했던 사람만 취소 가능. bad request
 
-        if(findQuestion.getQuestionVoteList().contains(questionVote)) {
+        if (findQuestion.getQuestionVoteList().contains(questionVote)) {
             questionRepository.downVote(questionId, user.getUserId());
             findQuestion.setVoteCount(findQuestion.getVoteCount() - 1);
             questionRepository.save(findQuestion);
-        }
-        else throw new BusinessLogicException(ExceptionCode.VOTE_NOT_FOUND);
+        } else throw new BusinessLogicException(ExceptionCode.VOTE_NOT_FOUND);
     }
 
     public Question findQuestionById(long questionId) {
@@ -178,4 +183,6 @@ public class QuestionService {
 
         return findComment;
     }
+
+
 }

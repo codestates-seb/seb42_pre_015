@@ -3,6 +3,7 @@ package preproject.underdog.question.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -16,7 +17,9 @@ import preproject.underdog.question.dto.question.QuestionResponseDto;
 import preproject.underdog.question.entity.Question;
 import preproject.underdog.question.entity.QuestionComment;
 import preproject.underdog.question.mapper.QuestionMapper;
+import preproject.underdog.question.repository.QuestionRepo;
 import preproject.underdog.question.service.QuestionService;
+import preproject.underdog.question.spec.QuestionSpec;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
@@ -29,6 +32,7 @@ import java.util.List;
 public class QuestionController {
     private final QuestionService questionService;
     private final QuestionMapper mapper;
+    private final QuestionRepo questionRepo;
 
     @PostMapping
     public ResponseEntity postQuestion(@Valid @RequestBody QuestionPostDto questionPostDto) {
@@ -108,5 +112,21 @@ public class QuestionController {
     public ResponseEntity deleteVote(@PathVariable("question-id") long questionId){
        questionService.cancelVote(questionId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+    @GetMapping("/search")
+    public ResponseEntity searchQuestion(@RequestParam(required = false) String title,
+                                         @RequestParam(required = false) String name,
+                                         Pageable pageable){
+        Specification<Question> spec = (root, query, criteriaBuilder) -> null;
+        if (title != null){
+            spec = spec.and(QuestionSpec.equalTitle(title));
+        }
+        if(name !=null){
+            spec = spec.and(QuestionSpec.equalName(name));
+        }
+        Page<Question> questionPage = questionRepo.findAll(spec, pageable);
+        List<Question> questionList = questionPage.getContent();
+        return new ResponseEntity<>(new PageDto<>(mapper.questionsToResponseDto(questionList), questionPage), HttpStatus.OK);
+
     }
 }
