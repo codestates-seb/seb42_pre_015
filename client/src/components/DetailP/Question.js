@@ -62,9 +62,6 @@ function Question({ questionId, questionData }) {
     window.location.href = '/';
   };
 
-  const accessToken = localStorage.getItem('accessToken');
-  const refreshToken = localStorage.getItem('refreshToken');
-
   return (
     <>
       {questionData && (
