@@ -70,7 +70,7 @@ const AddCommentContainer = styled.div`
     border-radius: 10px;
     margin-right: 8px;
     padding: 6px;
-    font-size: 13px;
+    font-size: 11px;
     line-height: 19.5px;
     white-space: normal;
     &:focus {
@@ -110,7 +110,7 @@ function Comment({
   const [onEdit, setOnEdit] = useState('');
 
   const handleAddComment = () => {
-    const newCommentInput = { userId: 1, content: newComment };
+    const newCommentInput = { content: newComment };
 
     if (init === questionCommentData) {
       axios
@@ -146,7 +146,38 @@ function Comment({
 
   const handleEditComment = e => {
     setOnEdit(!onEdit);
-    console.log('e:', e.target);
+    // console.log('e:', e.target);
+  };
+
+  const handleDeleteComment = commentId => {
+    if (init === questionCommentData) {
+      axios
+        .delete(`/question/${questionId}/comment/${commentId}`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            Refresh: `${refreshToken}`
+          }
+        })
+        .then(res => {
+          setQuestionCommentData(res.data);
+          setNewComment('');
+        });
+    } else if (init === answerCommentData) {
+      axios
+        .delete(
+          `/question/${questionId}/answer/${answerId}/comment/${commentId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              Refresh: `${refreshToken}`
+            }
+          }
+        )
+        .then(res => {
+          setAnswerCommentData(res.data);
+          setNewComment('');
+        });
+    }
   };
 
   const accessToken = localStorage.getItem('accessToken');
@@ -158,14 +189,8 @@ function Comment({
     <>
       {init && (
         <CommentContainer>
-          {init.map((comment, idx) => (
-            <CommentWrapper
-              key={
-                init === questionCommentData
-                  ? comment.questionCommentId
-                  : comment.answerCommentId
-              }
-            >
+          {init.map(comment => (
+            <CommentWrapper key={comment.commentId}>
               <p className='content'>{comment.content}</p>
               <div>
                 <span className='name'>{comment.name}</span>
@@ -174,14 +199,15 @@ function Comment({
                 </span>
                 {userId === comment.userId ? (
                   <>
-                    <button
-                      id={idx}
-                      className='edit-btn'
-                      onClick={handleEditComment}
-                    >
+                    <button className='edit-btn' onClick={handleEditComment}>
                       Edit
                     </button>
-                    <button className='delete-btn'>X</button>
+                    <button
+                      className='delete-btn'
+                      onClick={() => handleDeleteComment(comment.commentId)}
+                    >
+                      X
+                    </button>
                   </>
                 ) : null}
               </div>
