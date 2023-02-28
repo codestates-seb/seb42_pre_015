@@ -151,6 +151,8 @@ function Comment({
 
   const accessToken = localStorage.getItem('accessToken');
   const refreshToken = localStorage.getItem('refreshToken');
+  const LogginUserId = localStorage.getItem('userId');
+  const userId = Number(LogginUserId.split(':')[1].trim());
 
   return (
     <>
@@ -170,14 +172,18 @@ function Comment({
                 <span className='date'>
                   {comment.createdAt.replace(/^(\d{4}-\d{2}-\d{2}).*/, '$1')}
                 </span>
-                <button
-                  id={idx}
-                  className='edit-btn'
-                  onClick={handleEditComment}
-                >
-                  Edit
-                </button>
-                <button className='delete-btn'>X</button>
+                {userId === comment.userId ? (
+                  <>
+                    <button
+                      id={idx}
+                      className='edit-btn'
+                      onClick={handleEditComment}
+                    >
+                      Edit
+                    </button>
+                    <button className='delete-btn'>X</button>
+                  </>
+                ) : null}
               </div>
             </CommentWrapper>
           ))}
