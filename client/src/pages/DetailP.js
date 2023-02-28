@@ -106,6 +106,7 @@ function DetailPage() {
   useEffect(() => {
     axios.get(`/question/${questionId}`).then(res => {
       setQuestionData(res.data);
+      window.scrollTo(0, 0);
     });
   }, [questionId]);
 
