@@ -334,7 +334,15 @@ export default function LoginNav({ setIsLogin }) {
               <div>
                 <a href='#/'>help</a>
                 <a href='#/'>chat</a>
-                <a href='#/' onClick={setIsLogin}>
+                <a
+                  href='#/'
+                  onClick={() => {
+                    window.localStorage.removeItem('accessToken');
+                    window.localStorage.removeItem('refreshToken');
+                    setIsLogin(false);
+                    window.location.href = '/';
+                  }}
+                >
                   log out
                 </a>
               </div>
