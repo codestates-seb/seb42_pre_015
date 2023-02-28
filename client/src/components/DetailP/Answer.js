@@ -4,7 +4,7 @@ import AnswerBody from './AnswerBody';
 import PostAnswer from './PostAnswer';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-
+// 주석 추가
 const AnswerSection = styled.div`
   width: 100%;
   display: flex;
