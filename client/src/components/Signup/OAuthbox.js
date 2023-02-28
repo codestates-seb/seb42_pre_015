@@ -1,6 +1,12 @@
-import axios from 'axios';
 import { GoogleBtn, GithubBtn, FacebookBtn } from '../common/Buttons';
 import styled from 'styled-components';
+// import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
+//import { storge } from './Utils/store';
+// import axios from 'axios';
+
+const GITHUB_CLIEND_ID = '60f111dea1f6731bf693';
+const GOOGLE_CLIEND_ID =
+  '444069027831-csa77324h47k7lkeh7afopv97n35081t.apps.googleusercontent.com';
 
 const OAuthBoxStyle = styled.div`
   .oauth-box {
@@ -11,106 +17,25 @@ const OAuthBoxStyle = styled.div`
 `;
 
 const OAuthBox = () => {
-  const handleGoogleLogin = () => {
-    axios
-      .get('http://localhost:8080/google', { withCredentials: true })
-      .then(response => {
-        console.log('Google OAuth Request');
-        console.log(response);
-        // 액세스 토큰 저장하기
-        const accessToken = response.data.accessToken;
-        document.cookie = `access_token=${accessToken}; expires=${new Date(
-          Date.now() + 12 * 60 * 60 * 1000
-        )}; path=/`;
-        // 유저 정보 가져오기
-        axios
-          .get('http://localhost:8080/user', {
-            headers: { Authorization: `Bearer ${accessToken}` }
-          })
-          .then(userResponse => {
-            // const user = userResponse.data;
-            // 로그인 처리하기
-            // ...
-
-            // 리다이렉트하기
-            window.location.href = '/';
-          })
-          .catch(error => alert(error));
-      })
-      .catch(error => alert(error));
+  const GitHubhandleOnClick = () => {
+    window.location.href = `https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIEND_ID}`;
+    //storge.setData('API_TYPE', url);
   };
-
-  const handleGithubLogin = () => {
-    axios
-      .get('http://localhost:8080/github', { withCredentials: true })
-      .then(response => {
-        console.log('Github OAuth Request');
-        console.log(response);
-        // 액세스 토큰 저장하기
-        const accessToken = response.data.accessToken;
-        document.cookie = `access_token=${accessToken}; expires=${new Date(
-          Date.now() + 12 * 60 * 60 * 1000
-        )}; path=/`;
-        // 유저 정보 가져오기
-        axios
-          .get('http://localhost:8080/user', {
-            headers: { Authorization: `Bearer ${accessToken}` }
-          })
-          .then(userResponse => {
-            //const user = userResponse.data;
-            // 로그인 처리하기
-            // ...
-
-            // 리다이렉트하기
-            window.location.href = '/';
-          })
-          .catch(error => alert(error));
-      })
-      .catch(error => alert(error));
+  const GooglehandleOnClick = () => {
+    window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIEND_ID}&response_type=code&scope=https://www.googleapis.com/auth/userinfo.profile&redirect_uri=http://localhost:3000`;
+    //storge.setData('API_TYPE', url);
   };
-
-  const handleFacebookLogin = () => {
-    axios
-      .get('http://localhost:8080/facebook', { withCredentials: true })
-      .then(response => {
-        console.log('Facebook OAuth Request');
-        console.log(response);
-        // 액세스 토큰 저장하기
-        const accessToken = response.data.accessToken;
-        document.cookie = `access_token=${accessToken}; expires=${new Date(
-          Date.now() + 12 * 60 * 60 * 1000
-        )}; path=/`;
-        // 유저 정보 가져오기
-        axios
-          .get('http://localhost:8080/user', {
-            headers: { Authorization: `Bearer ${accessToken}` }
-          })
-          .then(userResponse => {
-            //const user = userResponse.data;
-            // 로그인 처리하기
-            // ...
-
-            // 리다이렉트하기
-            window.location.href = '/';
-          })
-          .catch(error => alert(error));
-      })
-      .catch(error => alert(error));
+  const FacebookhandleOnClick = () => {
+    alert('준비중인 로그인 서비스입니다.');
   };
 
   return (
     <>
       <OAuthBoxStyle>
         <div className='oauth-box'>
-          <a href='http://localhost:8080/oauth2/autorization/google'>
-            <GoogleBtn onClick={handleGoogleLogin} />
-          </a>
-          <a href='http://localhost:8080/oauth2/autorization/github'>
-            <GithubBtn onClick={handleGithubLogin} />
-          </a>
-          <a href='http://localhost:8080/oauth2/autorization/facebook'>
-            <FacebookBtn onClick={handleFacebookLogin} />
-          </a>
+          <GoogleBtn onClick={GooglehandleOnClick} />
+          <GithubBtn onClick={GitHubhandleOnClick} />
+          <FacebookBtn onClick={FacebookhandleOnClick} />
         </div>
       </OAuthBoxStyle>
     </>
