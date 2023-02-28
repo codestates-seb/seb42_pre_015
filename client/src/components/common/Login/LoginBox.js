@@ -6,7 +6,6 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { SOiconSVG } from '../../../assets/CommonSVG';
 import { ErrorSVG, SignUpSVG } from '../../../assets/LoginSVG';
-
 const LoginBox = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -15,11 +14,11 @@ const LoginBox = () => {
 
   // 유효성 검사
   useEffect(() => {
-    setEmailError(validateEmail(email));
+    if (email) setEmailError(validateEmail(email));
   }, [email]);
 
   useEffect(() => {
-    setPasswordError(validatePassword(password));
+    if (password) setPasswordError(validatePassword(password));
   }, [password]);
 
   const validateEmail = email => {
@@ -36,8 +35,10 @@ const LoginBox = () => {
     const constraint = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
     if (!password) {
       return 'Password cannot be empty';
+    } else if (password.length < 8) {
+      return 'Passwords must contain at least 8 characters';
     } else if (!constraint.test(password)) {
-      return 'Password must match the regular expression';
+      return 'including at least 1 letter and 1 number.';
     }
     return '';
   };
@@ -75,6 +76,7 @@ const LoginBox = () => {
       })
       .catch(error => {
         console.log(error);
+        alert('아이디와 비밀번호가 일치하지 않습니다.');
       });
   };
 
@@ -106,6 +108,11 @@ const LoginBox = () => {
                     onChange={e => setEmail(e.target.value)}
                     onBlur={() => setEmailError(validateEmail(email))}
                     className='login-form__text '
+                    style={{
+                      border: emailError
+                        ? '2px solid red'
+                        : '2px solid rgb(10, 149, 255)'
+                    }}
                   />
                   {emailError && (
                     <div className='error-svg'>
@@ -125,6 +132,11 @@ const LoginBox = () => {
                     onChange={e => setPassword(e.target.value)}
                     onBlur={() => setPasswordError(validatePassword(password))}
                     className='login-form__text '
+                    style={{
+                      border: emailError
+                        ? '2px solid red'
+                        : '2px solid rgb(10, 149, 255)'
+                    }}
                   />
                   {passwordError && (
                     <div className='error-svg'>

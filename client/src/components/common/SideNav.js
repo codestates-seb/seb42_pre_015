@@ -6,6 +6,9 @@ const QENavContainer = styled.div`
   z-index: 10;
   border-radius: 3px;
   border: 1px solid rgb(241, 229, 188);
+  @media screen and (max-width: 980px) {
+    width: 95%;
+  }
 `;
 const QENavTop = styled.div`
   text-align: left;
@@ -156,6 +159,11 @@ const AnswerNavContainer = styled.div`
   position: ${props => props.position || 'static'};
   width: ${props => props.width || '100%'};
   min-width: ${props => props.minwidth || '100%'};
+
+  @media screen and (max-width: 980px) {
+    display: flex;
+    justify-content: center;
+  }
 `;
 
 export function AnswerEditNav() {

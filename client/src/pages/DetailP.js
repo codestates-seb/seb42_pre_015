@@ -84,6 +84,7 @@ const Side = styled.aside`
   min-height: max-content;
   @media screen and (max-width: 980px) {
     min-width: 100%;
+    z-index: 0;
   }
 `;
 
