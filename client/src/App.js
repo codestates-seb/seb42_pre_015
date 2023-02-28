@@ -4,6 +4,7 @@ import MainP from '../src/pages/MainP';
 import AskQuestionP from '../src/pages/AskQuestionP';
 import AnswerEditP from '../src/pages/AnswerEditP';
 import QuestionEditP from '../src/pages/QuestionEditP';
+// import DetailP from '../src/pages/DetailP';
 import DetailP from '../src/pages/DetailP';
 import LoginP from '../src/pages/LoginP';
 import SignupP from '../src/pages/SignupP';
