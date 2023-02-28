@@ -2,6 +2,7 @@
   "name": "client",
   "proxy": "http://ec2-3-34-45-167.ap-northeast-2.compute.amazonaws.com:8080/",
   "version": "0.1.0",
+  "proxy": "http://ec2-3-34-45-167.ap-northeast-2.compute.amazonaws.com:8080/",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.3.0",
