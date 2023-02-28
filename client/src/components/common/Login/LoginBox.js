@@ -59,7 +59,6 @@ const LoginBox = () => {
         password: password
       })
       .then(response => {
-        console.log('dd');
         const { authorization: accessToken, refresh: refreshToken } =
           response.headers;
 
@@ -67,11 +66,14 @@ const LoginBox = () => {
         localStorage.setItem('accessToken', accessToken);
         localStorage.setItem('refreshToken', refreshToken);
 
+        // 로그인 한 유저의 아이디를 로컬 스토리지에 저장
+        const LogginUserId = response.data.userId;
+        localStorage.setItem('userId', LogginUserId);
+
         // 로그인 성공시 리다이렉션
         window.location.href = '/';
       })
       .catch(error => {
-        console.log('ss');
         console.log(error);
       });
   };
