@@ -9,6 +9,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import preproject.underdog.exception.BusinessLogicException;
 import preproject.underdog.exception.ExceptionCode;
 import preproject.underdog.question.entity.Question;
@@ -68,28 +70,28 @@ public class QuestionService {
     }
 
     public Page<Question> getQuestions(Pageable pageable) { //질문글 전체 조회
-        Pageable pageRequest = PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize(), pageable.getSort());
+        Pageable pageRequest = PageRequest.of(pageable.getPageNumber()-1, pageable.getPageSize(), pageable.getSort());
         return questionRepository.findAll(pageRequest);
     }
 
-    public Page<Question> searchQuestions(String title, String user, Integer answerCount, List<String> tags, Pageable pageable) { //검색
-        Pageable pageRequest = PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize(), pageable.getSort());
-        Page<Question> questionPage = questionRepository.findAll(pageRequest);
-        List<Question> questionList = questionPage.getContent();
+//    public Page<Question> searchQuestions(String title, String user, Integer answerCount, List<String> tags, Pageable pageable) { //검색
+//        Pageable pageRequest = PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize(), pageable.getSort());
+//        Page<Question> questionPage = questionRepository.findAll(pageRequest);
+//        List<Question> questionList = questionPage.getContent();
+//
+//        List<Question> filteredQuestions = questionList.stream()
+//                .filter(q -> q.getTitle().contains(title))
+////                        && q.getUser().getName().contains(user)
+////                        && q.getAnswerList().size() >= answerCount
+////                        && q.getTags().contains(tags))
+//                .collect(Collectors.toList());
 
-        List<Question> filteredQuestions = questionList.stream()
-                .filter(q -> q.getTitle().contains(title))
-//                        && q.getUser().getName().contains(user)
-//                        && q.getAnswerList().size() >= answerCount
-//                        && q.getTags().contains(tags))
-                        .collect(Collectors.toList());
-
-//        int start = (int) pageRequest.getOffset();
-//        int end = Math.min((start + pageRequest.getPageSize()), filteredQuestions.size());
-        Page<Question> filterdQuestionPage = new PageImpl<>(filteredQuestions, pageRequest, filteredQuestions.size());
-
-        return filterdQuestionPage;
-    }
+////        int start = (int) pageRequest.getOffset();
+////        int end = Math.min((start + pageRequest.getPageSize()), filteredQuestions.size());
+//        Page<Question> filterdQuestionPage = new PageImpl<>(filteredQuestions, pageRequest, filteredQuestions.size());
+//
+//        return filterdQuestionPage;
+//    }
 
     public void deleteQuestion(long questionId) { //질문글 삭제
         Question findQuestion = findQuestionById(questionId);
@@ -164,8 +166,15 @@ public class QuestionService {
         Optional<User> optionalUser = userRepository.findByEmail(principal);
         User user = optionalUser.orElseThrow(() -> new BusinessLogicException(ExceptionCode.NO_PERMISSION_DO_VOTE));
 
+
+        // 로직 추가
+
+        if (!user.getQuestionVoteList().contains(user))
+            throw new BusinessLogicException(ExceptionCode.CANNOT_VOTE_TWICE);
+
         questionVoteRepository.findByUserAndQuestion(findQuestion.getQuestionId(), user.getUserId())
-                .ifPresent(s->new BusinessLogicException(ExceptionCode.CANNOT_VOTE_TWICE));
+                .ifPresent(s -> new BusinessLogicException(ExceptionCode.CANNOT_VOTE_TWICE));
+
 
         questionRepository.upVote(questionId, user.getUserId());
 
@@ -188,10 +197,41 @@ public class QuestionService {
         if (findQuestion.getQuestionVoteList().contains(questionVote)) {
             questionRepository.downVote(questionId, user.getUserId());
             findQuestion.setVoteCount(findQuestion.getVoteCount() - 1);
+
+            questionRepository.save(findQuestion);
         } else throw new BusinessLogicException(ExceptionCode.VOTE_NOT_FOUND);
         return findQuestion;
     }
 
+//    public Page<Question> searchQuestions(String tag, Integer answerCount, String title, String username, Pageable pageable) {
+//        Pageable pageRequest = PageRequest.of(pageable.getPageNumber() -1 , pageable.getPageSize(), pageable.getSort());
+//        Page<Question> questionPage = questionRepository.findAll(pageRequest);
+//        List<Question> questions = questionPage.getContent();
+//        if (tag != null) {
+//            questions = questions.stream()
+//                    .filter(q -> q.getTags().contains(tag))
+//                    .collect(Collectors.toList());
+//        }
+//        if (answerCount != null) {
+//            questions = questions.stream()
+//                    .filter(q -> q.getAnswerList().size() >=answerCount)
+//                    .collect(Collectors.toList());
+//        }
+//        if (title != null) {
+//            questions = questions.stream()
+//                    .filter(q -> q.getTitle().contains(title))
+//                    .collect(Collectors.toList());
+//        }
+//        if (username != null) {
+//            questions = questions.stream()
+//                    .filter(q -> q.getUser().getName().equals(username))
+//                    .collect(Collectors.toList());
+//        }
+//        Page<Question> filterdQuestionPage = new PageImpl<>(questions, pageRequest, questions.size());
+//        return filterdQuestionPage;
+//    }
+//
+//
     public Question findQuestionById(long questionId) {
         Optional<Question> optionalQuestion = questionRepository.findById(questionId);
         Question question = optionalQuestion.orElseThrow(() -> new BusinessLogicException(ExceptionCode.QUESTION_NOT_FOUND));
@@ -208,3 +248,4 @@ public class QuestionService {
         return findComment;
     }
 }
+
