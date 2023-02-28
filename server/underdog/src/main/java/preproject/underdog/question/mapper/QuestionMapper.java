@@ -19,14 +19,14 @@ public interface QuestionMapper {
     Question questionPostDtoToQuestion(QuestionPostDto questionPostDto);
     Question questionPatchDtoToQuestion(QuestionPatchDto questionPatchDto);
     @Mapping(source = "user.userId", target = "userId")
-    @Mapping(source = "user.name", target = "userName")
+    @Mapping(source = "user.name", target = "name")
     @Mapping(target = "answerCount", expression = "java(question.getAnswerList()!= null ? question.getAnswerList().size():0)")
     QuestionResponseDto questionToQuestionResponseDto(Question question);
 
     QuestionComment commentPostDtoToQuestionComment(QuestionCommentPostDto commentPostDto);
     QuestionComment commentPatchDtoToQuestionComment(QuestionCommentPatchDto commentPatchDto);
     @Mapping(source = "user.userId", target = "userId")
-    @Mapping(source = "user.name", target = "userName")
+    @Mapping(source = "user.name", target = "name")
     @Mapping(source = "question.questionId", target = "questionId")
     QuestionCommentResponseDto commentToCommentResponseDto(QuestionComment questionComment);
 

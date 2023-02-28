@@ -2,7 +2,9 @@ package preproject.underdog.question.service;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,12 +18,16 @@ import preproject.underdog.question.entity.QuestionComment;
 import preproject.underdog.question.entity.QuestionVote;
 import preproject.underdog.question.repository.QuestionCommentRepo;
 import preproject.underdog.question.repository.QuestionRepo;
+import preproject.underdog.question.repository.QuestionVoteRepository;
 import preproject.underdog.user.entity.User;
 import preproject.underdog.user.repository.UserRepository;
 
 import javax.transaction.Transactional;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +36,7 @@ public class QuestionService {
     private final QuestionRepo questionRepository;
     private final QuestionCommentRepo questionCommentRepo;
     private final UserRepository userRepository;
+    private final QuestionVoteRepository questionVoteRepository;
 
     public Question createQuestion(Question question) {
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
@@ -65,6 +72,25 @@ public class QuestionService {
     public Page<Question> getQuestions(Pageable pageable) { //질문글 전체 조회
         Pageable pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), pageable.getSort());
         return questionRepository.findAll(pageRequest);
+    }
+
+    public Page<Question> searchQuestions(String title, String user, Integer answerCount, List<String> tags, Pageable pageable) { //검색
+        Pageable pageRequest = PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize(), pageable.getSort());
+        Page<Question> questionPage = questionRepository.findAll(pageRequest);
+        List<Question> questionList = questionPage.getContent();
+
+        List<Question> filteredQuestions = questionList.stream()
+                .filter(q -> q.getTitle().contains(title))
+//                        && q.getUser().getName().contains(user)
+//                        && q.getAnswerList().size() >= answerCount
+//                        && q.getTags().contains(tags))
+                .collect(Collectors.toList());
+
+//        int start = (int) pageRequest.getOffset();
+//        int end = Math.min((start + pageRequest.getPageSize()), filteredQuestions.size());
+        Page<Question> filterdQuestionPage = new PageImpl<>(filteredQuestions, pageRequest, filteredQuestions.size());
+
+        return filterdQuestionPage;
     }
 
     public void deleteQuestion(long questionId) { //질문글 삭제
@@ -129,27 +155,34 @@ public class QuestionService {
                 .findFirst()
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.ID_IS_NOT_THE_SAME));  // questionId or commentId가 일치하지 않습니다. bad request
 
-        questionCommentRepo.deleteById(commentId);
+        questionCommentRepo.deleteAllByIdInBatch(Collections.singleton(verifiedComment.getQuestionCommentId()));
         return questionCommentRepo.findByQuestionId(findQuestion.getQuestionId());
     }
 
-    public void createVote(long questionId) { // userId 없애도 됨.
+    public Question createVote(long questionId) { // userId 없애도 됨.
         Question findQuestion = findQuestionById(questionId);
 
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         Optional<User> optionalUser = userRepository.findByEmail(principal);
         User user = optionalUser.orElseThrow(() -> new BusinessLogicException(ExceptionCode.NO_PERMISSION_DO_VOTE));
 
+
         // 로직 추가
 
         if (!user.getQuestionVoteList().contains(user))
             throw new BusinessLogicException(ExceptionCode.CANNOT_VOTE_TWICE);
 
+        questionVoteRepository.findByUserAndQuestion(findQuestion.getQuestionId(), user.getUserId())
+                .ifPresent(s -> new BusinessLogicException(ExceptionCode.CANNOT_VOTE_TWICE));
+
+
         questionRepository.upVote(questionId, user.getUserId());
+
         findQuestion.setVoteCount(findQuestion.getVoteCount() + 1);
+        return findQuestion;
     }
 
-    public void cancelVote(long questionId) {
+    public Question cancelVote(long questionId) {
         Question findQuestion = findQuestionById(questionId);
 
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
@@ -164,25 +197,26 @@ public class QuestionService {
         if (findQuestion.getQuestionVoteList().contains(questionVote)) {
             questionRepository.downVote(questionId, user.getUserId());
             findQuestion.setVoteCount(findQuestion.getVoteCount() - 1);
+
             questionRepository.save(findQuestion);
         } else throw new BusinessLogicException(ExceptionCode.VOTE_NOT_FOUND);
+
+
+        public Question findQuestionById ( long questionId){
+            Optional<Question> optionalQuestion = questionRepository.findById(questionId);
+            Question question = optionalQuestion.orElseThrow(() -> new BusinessLogicException(ExceptionCode.QUESTION_NOT_FOUND));
+            return question;
+        }
+
+        public QuestionComment findVerifiedComment (long questionCommentId){
+
+            Optional<QuestionComment> optionalQuestionComment = questionCommentRepo.findById(questionCommentId);
+            QuestionComment findComment =
+                    optionalQuestionComment.orElseThrow(() ->
+                            new BusinessLogicException(ExceptionCode.QUESTION_COMMENT_NOT_FOUND));
+
+            return findComment;
+        }
+
+
     }
-
-    public Question findQuestionById(long questionId) {
-        Optional<Question> optionalQuestion = questionRepository.findById(questionId);
-        Question question = optionalQuestion.orElseThrow(() -> new BusinessLogicException(ExceptionCode.QUESTION_NOT_FOUND));
-        return question;
-    }
-
-    public QuestionComment findVerifiedComment(long questionCommentId) {
-
-        Optional<QuestionComment> optionalQuestionComment = questionCommentRepo.findById(questionCommentId);
-        QuestionComment findComment =
-                optionalQuestionComment.orElseThrow(() ->
-                        new BusinessLogicException(ExceptionCode.QUESTION_COMMENT_NOT_FOUND));
-
-        return findComment;
-    }
-
-
-}

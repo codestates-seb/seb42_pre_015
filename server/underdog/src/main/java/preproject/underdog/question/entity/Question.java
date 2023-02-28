@@ -21,7 +21,7 @@ public class Question extends Auditable {
     private Long questionId;
     @Column(name = "title", nullable = false)
     private String title;
-    @Column(name = "content", nullable = false)
+    @Column(name = "content", nullable = false, columnDefinition="TEXT")
     private String content;
     @Column
     private int viewCount=0;

@@ -12,7 +12,6 @@ import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
 
 @Getter
-@Setter
 @EntityListeners(AuditingEntityListener.class)
 @MappedSuperclass
 public abstract class Auditable {

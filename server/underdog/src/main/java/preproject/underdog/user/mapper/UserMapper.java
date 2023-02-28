@@ -7,4 +7,6 @@ import preproject.underdog.user.entity.User;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
     User postDtoToUser(UserDto.Post post);
+
+    UserDto.Response userToResponseDto(User user);
 }

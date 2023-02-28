@@ -1,6 +1,7 @@
 package preproject.underdog.answer.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,7 @@ import preproject.underdog.user.entity.User;
 import preproject.underdog.user.repository.UserRepository;
 
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -73,7 +75,7 @@ public class AnswerService {
 
         if(!question.getAnswerList().contains(answer)) throw new BusinessLogicException(ExceptionCode.ANSWER_NOT_FOUND);
 
-        answerRepository.deleteById(answerId);
+        answerRepository.deleteAllByIdInBatch(Collections.singleton(answer.getAnswerId()));
         return answerRepository.findByQuestionId(question.getQuestionId());
     }
 
@@ -134,11 +136,11 @@ public class AnswerService {
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         if(!comment.getUser().getEmail().equals(principal)) throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_DELETING_POST);
 
-        answerCommentRepository.delete(comment);
+        answerCommentRepository.deleteAllByIdInBatch(Collections.singleton(comment.getAnswerCommentId()));
         return answerRepository.findByAnswerId(answer.getAnswerId());
     }
 
-    public void doVote(long questionId, long answerId) {//userId 제거
+    public Answer doVote(long questionId, long answerId) {//userId 제거
         Question question = questionService.findQuestionById(questionId);
         Answer findAnswer = findVerifiedAnswer(answerId);
         if(!question.getAnswerList().contains(findAnswer)) throw new BusinessLogicException(ExceptionCode.ANSWER_NOT_FOUND);
@@ -147,13 +149,17 @@ public class AnswerService {
         Optional<User> optionalUser = userRepository.findByEmail(principal);
         User user = optionalUser.orElseThrow(() -> new BusinessLogicException(ExceptionCode.NO_PERMISSION_DO_VOTE));
 
-        if(!user.getAnswerVoteList().contains(user)) throw new BusinessLogicException(ExceptionCode.CANNOT_VOTE_TWICE);
+        try {
+            answerRepository.upVote(answerId, user.getUserId());
+        } catch (DataIntegrityViolationException e) {
+            throw new BusinessLogicException(ExceptionCode.CANNOT_VOTE_TWICE);
+        }
 
-        answerRepository.upVote(answerId, user.getUserId());
         findAnswer.setVoteCount(findAnswer.getVoteCount()+1);
+        return findAnswer;
     }
 
-    public void undoVote(long questionId, long answerId) {//userId 제거
+    public Answer undoVote(long questionId, long answerId) {//userId 제거
         Question question = questionService.findQuestionById(questionId);//질문 검증
         Answer findAnswer = findVerifiedAnswer(answerId);//답변 검증
         if(!question.getAnswerList().contains(findAnswer)) throw new BusinessLogicException(ExceptionCode.ANSWER_NOT_FOUND);
@@ -171,9 +177,9 @@ public class AnswerService {
         if(findAnswer.getVotes().contains(answerVote)) {
             answerRepository.downVote(answerId, user.getUserId());
             findAnswer.setVoteCount(findAnswer.getVoteCount() - 1);
-            answerRepository.save(findAnswer);
         }
         else throw new BusinessLogicException(ExceptionCode.VOTE_NOT_FOUND);
+        return findAnswer;
     }
 
     public Answer findVerifiedAnswer(long answerId) {

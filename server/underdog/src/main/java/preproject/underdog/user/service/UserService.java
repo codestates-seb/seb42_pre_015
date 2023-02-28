@@ -45,4 +45,10 @@ public class UserService {
         User foundUser = optionalUser.orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
         return foundUser;
     }
+
+    public User verifyUser(String email){
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+        User foundUser = optionalUser.orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
+        return foundUser;
+    }
 }

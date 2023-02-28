@@ -16,9 +16,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 @RequiredArgsConstructor
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
@@ -48,11 +45,8 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         String accessToken = jwtTokenizer.delegateAccessToken(user);   // (4-2)
         String refreshToken = jwtTokenizer.delegateRefreshToken(user); // (4-3)
 
-        // 리프레시 토큰 DB에 저장하는 로직 만들기
-//        user.setRefreshToken(refreshToken);
-
         response.setHeader("Authorization", "Bearer " + accessToken);  // (4-4)
-        response.setHeader("Refresh", refreshToken);                   // (4-5)
+        response.setHeader("Refresh", refreshToken);// (4-5)
 
         this.getSuccessHandler().onAuthenticationSuccess(request, response, authResult);
     }

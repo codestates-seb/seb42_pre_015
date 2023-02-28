@@ -20,6 +20,6 @@ public class QuestionPostDto {
     private String title;
     @NotEmpty(message = "질문 내용을 작성해야 합니다.")
     private String content;
-    @Size(max=5, message = "태그는 최대 5개까지 가능합니다.")
+    @Size(min=1, max=5, message = "태그는 최대 5개까지 가능합니다.")
     private List<String> tags;
 }
