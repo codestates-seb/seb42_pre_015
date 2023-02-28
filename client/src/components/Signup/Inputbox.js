@@ -50,15 +50,15 @@ const Inputbox = () => {
   // 유효성 검사
 
   useEffect(() => {
-    setDisplayNameError(validateDisplayName(displayName));
+    if (displayName) setDisplayNameError(validateDisplayName(displayName));
   }, [displayName]);
 
   useEffect(() => {
-    setEmailError(validateEmail(email));
+    if (email) setEmailError(validateEmail(email));
   }, [email]);
 
   useEffect(() => {
-    setPasswordError(validatePassword(password));
+    if (password) setPasswordError(validatePassword(password));
   }, [password]);
 
   const validateDisplayName = name => {
@@ -122,6 +122,7 @@ const Inputbox = () => {
       setPasswordError('');
 
       console.log(response.data);
+      window.location.href = '/login';
     } catch (error) {
       alert(error);
     }
@@ -143,6 +144,11 @@ const Inputbox = () => {
                   setDisplayNameError(validateDisplayName(displayName))
                 }
                 className='signup-form__text'
+                style={{
+                  border: emailError
+                    ? '2px solid red'
+                    : '2px solid rgb(10, 149, 255)'
+                }}
               />
               <ErrorPosition>
                 {displayNameError && <ErrorSVG className='error-svg' />}
@@ -164,6 +170,11 @@ const Inputbox = () => {
                 onChange={e => setEmail(e.target.value)}
                 onBlur={() => setEmailError(validateEmail(email))}
                 className='signup-form__text'
+                style={{
+                  border: emailError
+                    ? '2px solid red'
+                    : '2px solid rgb(10, 149, 255)'
+                }}
               />
               <ErrorPosition>
                 {emailError && <ErrorSVG className='error-svg' />}
@@ -183,6 +194,11 @@ const Inputbox = () => {
                 onChange={e => setPassword(e.target.value)}
                 onBlur={() => setPasswordError(validatePassword(password))}
                 className='signup-form__text'
+                style={{
+                  border: emailError
+                    ? '2px solid red'
+                    : '2px solid rgb(10, 149, 255)'
+                }}
               />
               <ErrorPosition>
                 {passwordError && <ErrorSVG className='error-svg' />}

@@ -72,7 +72,6 @@ const LoginBox = () => {
         window.location.href = '/';
       })
       .catch(error => {
-        console.log('ss');
         console.log(error);
         alert('아이디와 비밀번호가 일치하지 않습니다.');
       });
@@ -107,7 +106,9 @@ const LoginBox = () => {
                     onBlur={() => setEmailError(validateEmail(email))}
                     className='login-form__text '
                     style={{
-                      border: emailError ? '1px solid red' : '1px solid black'
+                      border: emailError
+                        ? '2px solid red'
+                        : '2px solid rgb(10, 149, 255)'
                     }}
                   />
                   {emailError && (
@@ -128,6 +129,11 @@ const LoginBox = () => {
                     onChange={e => setPassword(e.target.value)}
                     onBlur={() => setPasswordError(validatePassword(password))}
                     className='login-form__text '
+                    style={{
+                      border: emailError
+                        ? '2px solid red'
+                        : '2px solid rgb(10, 149, 255)'
+                    }}
                   />
                   {passwordError && (
                     <div className='error-svg'>
