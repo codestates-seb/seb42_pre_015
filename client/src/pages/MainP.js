@@ -310,12 +310,16 @@ export function MainComponent() {
                   <Tag tags={el.tags} />
                 </TagContainer>
                 <UserContainer>
-                  <a href='/#'>{el.userName}</a>
+                  <a href='/#'>{el.name}</a>
                   <span>{el.asked}</span>
                   <a href='/#'>
                     createdAt
-                    <span style={{ color: 'rgb(82,89,96)' }}>
-                      {el.createdAt}
+                    <span
+                      style={{ color: 'rgb(82,89,96)', marginLeft: '10px' }}
+                    >
+                      {el.createdAt
+                        .replace(/T/, ' ')
+                        .replace(/:\d\d(.\d{1,6})?$/, '')}
                     </span>
                   </a>
                 </UserContainer>
@@ -357,7 +361,7 @@ export function MainComponent() {
           >
             50
           </StylePageBtn>
-          <p>per page</p>
+          <p style={{ margin: '0 10px' }}>per page</p>
         </StylePageContainer>
       </PageNationContainer>
     </div>
@@ -379,6 +383,7 @@ const MainNavv = styled.div`
   display: flex;
   @media screen and (max-width: 980px) {
     flex-direction: column;
+    width: 100%;
   }
 `;
 const MainContainer = styled.div`
