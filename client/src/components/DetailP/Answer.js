@@ -12,14 +12,22 @@ const AnswerSection = styled.div`
   margin-top: 20px;
 `;
 
+const Loading = styled.div`
+  width: calc(50vw + 300px);
+  height: 100vh;
+  background-color: #fff;
+`;
+
 function Answer({ questionId }) {
   const [answerData, setAnswerData] = useState(null);
+  const [isAnswerLoading, setIsAnswerLoading] = useState(true);
 
   useEffect(() => {
     axios
       .get(`/question/${questionId}/answer`)
       .then(res => {
         setAnswerData(res.data);
+        setIsAnswerLoading(false);
       })
       .catch(error => {
         console.error('error:', error);
@@ -28,6 +36,7 @@ function Answer({ questionId }) {
 
   return (
     <>
+      {isAnswerLoading && <Loading>Loading...</Loading>}
       {answerData && (
         <AnswerSection>
           <AnswerHeading answerData={answerData} />

@@ -95,17 +95,27 @@ const NavContainer = styled.div`
   }
 `;
 
+const Loading = styled.div`
+  width: calc(50vw + 300px);
+  height: 100vh;
+  background-color: #fff;
+  /* background-color: red; */
+`;
+
 function DetailPage() {
   const navigate = useNavigate();
   // ! QuestionList랑 연결하고 나서는 url 동적으로 만들기
   const { questionId } = useParams();
 
   const [questionData, setQuestionData] = useState(null);
-  // const [answerData, setAnswerData] = useState(null);
+  const [isQuestionLoading, setIsQuestionLoading] = useState(true);
 
   useEffect(() => {
     axios.get(`/question/${questionId}`).then(res => {
       setQuestionData(res.data);
+      setIsQuestionLoading(false);
+
+      // 페이지 변경 시 항상 상단으로 위치.
       window.scrollTo(0, 0);
     });
   }, [questionId]);
@@ -119,6 +129,7 @@ function DetailPage() {
         <NavContainer>
           <Nav />
         </NavContainer>
+        {isQuestionLoading && <Loading>Loading...</Loading>}
         {questionData && (
           <Main>
             <Title className='title'>

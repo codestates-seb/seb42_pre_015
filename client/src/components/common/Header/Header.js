@@ -139,13 +139,19 @@ function Header() {
             />
             <FontAwesomeIcon icon={faBars} size='xl' />
           </HamburgerBtn>
-          <HeaderLogoImgMini>
+          <HeaderLogoImgMini
+            onClick={() => {
+              window.scrollTo(0, 0);
+              navigate('/');
+            }}
+          >
             <SOLogoSvg />
           </HeaderLogoImgMini>
           <HeaderLogoImg
             src={HeaderLogo}
             alt='HeaderLogo'
             onClick={() => {
+              window.scrollTo(0, 0);
               navigate('/');
             }}
           />
