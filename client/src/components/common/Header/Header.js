@@ -93,7 +93,7 @@ const HamburgerBtn = styled.button`
   }
 `;
 
-function Header() {
+function Header({ SearchDataHandler }) {
   const [isLogin, setIsLogin] = useState(false);
   const [isProductsClick, setIsProductsClick] = useState(false);
   const [isNavBtnClick, setIsNavBtnClick] = useState(false);
@@ -176,7 +176,7 @@ function Header() {
               <NavigationBtn display='none'>For Teams</NavigationBtn>
             </>
           )}
-          <Search isLogin={isLogin} />
+          <Search isLogin={isLogin} SearchDataHandler={SearchDataHandler} />
           {isLogin ? (
             <UserNav />
           ) : (

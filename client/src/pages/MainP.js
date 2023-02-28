@@ -200,7 +200,7 @@ const PageNationContainer = styled.div`
   }
 `;
 
-export function MainComponent() {
+export function MainComponent({ SearchData }) {
   const [AllQestion, setAllQuestion] = useState([]);
   const [PageNationData, setPageNationData] = useState([]);
   const [activePage, setActivePage] = useState(1);
@@ -253,7 +253,7 @@ export function MainComponent() {
     <div>
       <MainPContainer>
         <MainTopTitle>
-          <h1>All Questions</h1>
+          {SearchData.data ? <h1>Search Results</h1> : <h1>All Questions</h1>}
           <GeneralBtn
             BtnText='Ask Question'
             width='98px'
@@ -266,7 +266,12 @@ export function MainComponent() {
           />
         </MainTopTitle>
         <MainFilterContainer>
-          <p>{PageNationData.totalElements} questions</p>
+          {SearchData.data ? (
+            <p>{SearchData.data.length} questions</p>
+          ) : (
+            <p>{PageNationData.totalElements} questions</p>
+          )}
+
           <MainTopBtnGather>
             <MainTopBtn
               borderRadius='4px 0 0 4px'
@@ -291,44 +296,98 @@ export function MainComponent() {
           </MainTopBtnGather>
         </MainFilterContainer>
       </MainPContainer>
-      {AllQestion.map((el, index) => {
-        return (
-          <QuestionContainer key={index}>
-            <QuestionVote>
-              <p>{el.voteCount} votes</p>
-              <p style={{ color: 'rgb(82,89,96)' }}>{el.answerCount} answers</p>
-              <p style={{ color: 'rgb(82,89,96)' }}>{el.viewCount} views</p>
-            </QuestionVote>
-            <Question>
-              <div>
-                <Link to={`/question/${el.questionId}`}>{el.title}</Link>
-              </div>
-              <QuestionDesContainer>
-                <div dangerouslySetInnerHTML={{ __html: `${el.content}` }} />
-              </QuestionDesContainer>
-              <QuestionBottom>
-                <TagContainer>
-                  <Tag tags={el.tags} />
-                </TagContainer>
-                <UserContainer>
-                  <a href='/#'>{el.name}</a>
-                  <span>{el.asked}</span>
-                  <a href='/#'>
-                    createdAt
-                    <span
-                      style={{ color: 'rgb(82,89,96)', marginLeft: '10px' }}
-                    >
-                      {el.createdAt
-                        .replace(/T/, ' ')
-                        .replace(/:\d\d(.\d{1,6})?$/, '')}
-                    </span>
-                  </a>
-                </UserContainer>
-              </QuestionBottom>
-            </Question>
-          </QuestionContainer>
-        );
-      })}
+      {SearchData.data ? (
+        <>
+          {SearchData.data.map((el, index) => {
+            return (
+              <QuestionContainer key={index}>
+                <QuestionVote>
+                  <p>{el.voteCount} votes</p>
+                  <p style={{ color: 'rgb(82,89,96)' }}>
+                    {el.answerCount} answers
+                  </p>
+                  <p style={{ color: 'rgb(82,89,96)' }}>{el.viewCount} views</p>
+                </QuestionVote>
+                <Question>
+                  <div>
+                    <Link to={`/question/${el.questionId}`}>{el.title}</Link>
+                  </div>
+                  <QuestionDesContainer>
+                    <div
+                      dangerouslySetInnerHTML={{ __html: `${el.content}` }}
+                    />
+                  </QuestionDesContainer>
+                  <QuestionBottom>
+                    <TagContainer>
+                      <Tag tags={el.tags} />
+                    </TagContainer>
+                    <UserContainer>
+                      <a href='/#'>{el.name}</a>
+                      <span>{el.asked}</span>
+                      <a href='/#'>
+                        createdAt
+                        <span
+                          style={{ color: 'rgb(82,89,96)', marginLeft: '10px' }}
+                        >
+                          {el.createdAt
+                            .replace(/T/, ' ')
+                            .replace(/:\d\d(.\d{1,6})?$/, '')}
+                        </span>
+                      </a>
+                    </UserContainer>
+                  </QuestionBottom>
+                </Question>
+              </QuestionContainer>
+            );
+          })}
+        </>
+      ) : (
+        <>
+          {AllQestion.map((el, index) => {
+            return (
+              <QuestionContainer key={index}>
+                <QuestionVote>
+                  <p>{el.voteCount} votes</p>
+                  <p style={{ color: 'rgb(82,89,96)' }}>
+                    {el.answerCount} answers
+                  </p>
+                  <p style={{ color: 'rgb(82,89,96)' }}>{el.viewCount} views</p>
+                </QuestionVote>
+                <Question>
+                  <div>
+                    <Link to={`/question/${el.questionId}`}>{el.title}</Link>
+                  </div>
+                  <QuestionDesContainer>
+                    <div
+                      dangerouslySetInnerHTML={{ __html: `${el.content}` }}
+                    />
+                  </QuestionDesContainer>
+                  <QuestionBottom>
+                    <TagContainer>
+                      <Tag tags={el.tags} />
+                    </TagContainer>
+                    <UserContainer>
+                      <a href='/#'>{el.name}</a>
+                      <span>{el.asked}</span>
+                      <a href='/#'>
+                        createdAt
+                        <span
+                          style={{ color: 'rgb(82,89,96)', marginLeft: '10px' }}
+                        >
+                          {el.createdAt
+                            .replace(/T/, ' ')
+                            .replace(/:\d\d(.\d{1,6})?$/, '')}
+                        </span>
+                      </a>
+                    </UserContainer>
+                  </QuestionBottom>
+                </Question>
+              </QuestionContainer>
+            );
+          })}
+        </>
+      )}
+
       <PageNationContainer>
         {PageNationData.totalElements ? (
           <Pagination
@@ -412,7 +471,7 @@ const RightNav = styled.div`
   }
 `;
 
-export default function MainP() {
+export default function MainP({ SearchData }) {
   return (
     <>
       <Container>
@@ -421,7 +480,7 @@ export default function MainP() {
         </NavContainer1>
         <MainNavv>
           <MainContainer>
-            <MainComponent />
+            <MainComponent SearchData={SearchData} />
           </MainContainer>
           <RightNav>
             <MainNav />
