@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import { useEffect, useRef, useState } from 'react';
 import { GlassesSvg } from '../../../assets/Header/HeaderSVG';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const SearchForm = styled.form`
   width: 100%;
@@ -124,12 +126,13 @@ const MobilIcon = styled.div`
     opacity: 0.5;
   }
 `;
-export default function Search({ isLogin }) {
+export default function Search({ SearchDataHandler }) {
   const searchRef = useRef(null);
   const searchIconRef = useRef(null);
   const searchNavRef = useRef(null);
   const [isSearchClick, setIsSearchClick] = useState(false);
   const [searchText, setSearchText] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleSearchClick = e => {
@@ -151,16 +154,54 @@ export default function Search({ isLogin }) {
     };
   }, []);
 
+  function extractTargets(input) {
+    // 이름 추출
+    const nameRegex = /name:(\S+)/;
+    const nameMatch = input.match(nameRegex);
+    const name = nameMatch ? nameMatch[1] : null;
+
+    // 태그 추출
+    const tagRegex = /\[(\S+?)\]/g;
+    const tagMatches = [];
+    let tagMatch;
+    while ((tagMatch = tagRegex.exec(input))) {
+      tagMatches.push(tagMatch[1]);
+    }
+
+    // 답변 수 추출
+    const answersRegex = /answers:(\d+)/;
+    const answersMatch = input.match(answersRegex);
+    const answers = answersMatch ? answersMatch[1] : null;
+
+    // 나머지 추출
+    const restRegex = /name:\S+|\[(\S+?)\]|answers:\d+\s+/g;
+    const rest = input.replace(restRegex, '').trim();
+
+    // 로그 출력
+    const params = { page: 1, size: 20, sort: 'questionId,asc' };
+    if (name !== null) params.name = name;
+    if (answers !== null) params.answerCount = Number(answers);
+    if (tagMatches.length !== 0) params.tags = tagMatches;
+    if (rest !== '') params.title = rest;
+
+    return params;
+  }
+
   const SumbitHandler = e => {
     if (e.key === 'Enter') {
-      console.log('눌렀음');
-      const filter =
-        searchText.charAt(0) + searchText.charAt(searchText.length - 1);
-      console.log(filter);
-      if (filter === '[]') {
-        const tagText = searchText.slice(1, searchText.length - 1);
-        console.log('이건태그다', tagText);
-      }
+      const params = extractTargets(searchText);
+      console.log(params);
+      axios
+        .get('/question/search', { params })
+        .then(response => {
+          console.log(response.data);
+          SearchDataHandler(response.data);
+          setIsSearchClick(false);
+          navigate('/');
+        })
+        .catch(error => {
+          console.error(error);
+        });
       setSearchText('');
     }
   };
@@ -184,7 +225,6 @@ export default function Search({ isLogin }) {
         ref={searchRef}
         onChange={e => {
           setSearchText(e.target.value);
-          console.log(searchText);
         }}
         value={searchText}
         onKeyDown={e => {
