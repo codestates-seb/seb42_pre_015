@@ -85,11 +85,9 @@ function AnswerBody({ questionId, answerData, setAnswerData }) {
                     <>
                       <button
                         onClick={() =>
-                          accessToken && refreshToken
-                            ? navigate(
-                                `/question/${questionId}/answeredit/${answer.answerId}`
-                              )
-                            : navigate('/login')
+                          navigate(
+                            `/question/${questionId}/answeredit/${answer.answerId}`
+                          )
                         }
                       >
                         Edit
