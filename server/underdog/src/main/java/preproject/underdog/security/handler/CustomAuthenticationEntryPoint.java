@@ -1,10 +1,12 @@
 package preproject.underdog.security.handler;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 import preproject.underdog.exception.BusinessLogicException;
+import preproject.underdog.exception.ErrorResponse;
 import preproject.underdog.exception.ExceptionCode;
 
 import javax.servlet.ServletException;
@@ -18,7 +20,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         Exception exception = (Exception) request.getAttribute("exception");
-        new BusinessLogicException(ExceptionCode.USER_ONLY);
+        ErrorResponse.of(HttpStatus.UNAUTHORIZED);
 
         logExceptionMessage(authException, exception);
     }
