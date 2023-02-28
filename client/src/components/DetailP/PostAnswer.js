@@ -11,42 +11,68 @@ const PostAnswerContainer = styled.div`
     font-size: 19px;
     margin: 20px 0px;
   }
+  > .post-btn-container {
+    margin-top: 10px;
+  }
 `;
 
-function PostAnswer({ setAnswerData, questionId, answerData }) {
+function PostAnswer({ setAnswerData, questionId }) {
   //   const BASE_URL = 'http://localhost:3001';
   const [newAnswer, setNewAnswer] = useState('');
+  const [answerErrorMsg, setAnswerErrorMsg] = useState(null);
 
   const handlePostAnswer = () => {
     // ! html 그대로 서버와 주고받고 화면에 렌더링 시킬 수 있는 법 찾아보기
-    const newAnswerInput = {
-      userId: 1,
-      content: newAnswer
-    };
 
-    console.log('newAnswerInput:', newAnswerInput);
-    axios
-      .post(`question/${questionId}/answer`, {
-        userId: 1,
-        content: '테스트 해봅시다!'
-      })
-      .then(res => {
-        setAnswerData(res.data);
-        setNewAnswer('');
-        console.log('answer data received:', res.data);
-      })
-      .catch(error => console.log('error:', error));
+    const accessToken = localStorage.getItem('accessToken');
+    const refreshToken = localStorage.getItem('refreshToken');
+
+    const newAnswerInput = { content: newAnswer };
+
+    if (!newAnswer) {
+      setAnswerErrorMsg('Body is missing.');
+    } else if (newAnswer && !answerErrorMsg) {
+      setAnswerErrorMsg(null);
+      axios
+        .post(`/question/${questionId}/answer`, newAnswerInput, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            Refresh: `${refreshToken}`
+          }
+        })
+        .then(res => {
+          setAnswerData(res.data);
+          setNewAnswer('');
+        })
+        .catch(error => console.log('error:', error));
+    }
+  };
+
+  const handleValidation = () => {
+    if (!newAnswer) {
+      setAnswerErrorMsg('Body is missing.');
+    } else {
+      setAnswerErrorMsg(null);
+    }
   };
 
   return (
     <PostAnswerContainer>
       <h2>Your Answer</h2>
-      <Editor editorInput={newAnswer} setEditorInput={setNewAnswer} />
-      <GeneralBtn
-        BtnText='Post Your Answer'
-        width='128px'
-        onClick={handlePostAnswer}
+      <Editor
+        editorInput={newAnswer}
+        setNewAnswer={setNewAnswer}
+        handleValidation={handleValidation}
+        errorMsg={answerErrorMsg}
       />
+      <p style={{ color: '#DE4F54' }}>{answerErrorMsg}</p>
+      <div className='post-btn-container'>
+        <GeneralBtn
+          BtnText='Post Your Answer'
+          width='128px'
+          onClick={handlePostAnswer}
+        />
+      </div>
     </PostAnswerContainer>
   );
 }

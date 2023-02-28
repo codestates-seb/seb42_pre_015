@@ -50,14 +50,23 @@ function Question({ questionId, questionData }) {
     });
   }, [questionId]);
 
-  const accessToken = localStorage.getItem('accessToken');
-  const refreshToken = localStorage.getItem('refreshToken');
+  const handleQuestionDelete = () => {
+    axios
+      .delete(`/question/${questionId}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          Refresh: `${refreshToken}`
+        }
+      })
+      .then(res => console.log(res));
+    window.location.href = '/';
+  };
 
   return (
     <>
       {questionData && (
         <QuestionContainer>
-          <Vote questionData={questionData} />
+          <Vote questionData={questionData} questionId={questionId} />
           <QuestionWrapper>
             <p dangerouslySetInnerHTML={{ __html: questionData.content }}>
               {/* {questionData.content} */}
@@ -83,7 +92,12 @@ function Question({ questionId, questionData }) {
                   </button>
                 </div>
                 <div>
-                  <button className='controller-btn'>Delete</button>
+                  <button
+                    className='controller-btn'
+                    onClick={handleQuestionDelete}
+                  >
+                    Delete
+                  </button>
                 </div>
               </ControlOptions>
               <ProfileCard questionData={questionData} />

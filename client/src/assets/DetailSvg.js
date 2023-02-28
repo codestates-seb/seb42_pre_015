@@ -13,6 +13,21 @@ export const ArrowUpSvg = () => {
   );
 };
 
+export const ArrowUpLikedSvg = () => {
+  return (
+    <svg
+      aria-hidden='true'
+      className='svg-icon iconArrowUpLg'
+      width='36'
+      height='36'
+      viewBox='0 0 36 36'
+      fill='#F48225'
+    >
+      <path d='M2 25h32L18 9 2 25Z' />
+    </svg>
+  );
+};
+
 export const ArrowDownSvg = () => {
   return (
     <svg

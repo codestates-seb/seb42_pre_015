@@ -79,7 +79,7 @@ const TagInput = ({
     if (event.key === 'Enter') {
       if (event.target.value === '') {
         //do nothing
-      } else if (tags.includes(event.target.value)) {
+      } else if (tags.includes(event.target.value) || tags.length > 4) {
         event.target.value = '';
       } else {
         setFormValues({ ...formValues, tags: [...tags, event.target.value] });

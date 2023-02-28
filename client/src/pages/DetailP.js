@@ -4,7 +4,6 @@ import Nav from '../components/common/Nav';
 import { GeneralBtn } from '../components/common/Buttons';
 import Question from '../components/DetailP/Question';
 import Answer from '../components/DetailP/Answer';
-// import { questionData, answerData } from '../data/dummyData';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { MainNav } from '../components/common/SideNav';
@@ -23,7 +22,10 @@ const Main = styled.main`
   width: 80%;
   @media screen and (max-width: 980px) {
     flex-direction: column;
-    width: 95%;
+    width: calc(100% - 164px);
+  }
+  @media screen and (max-width: 640px) {
+    width: 100%;
   }
 `;
 
@@ -69,7 +71,6 @@ const Article = styled.article`
   // ! side를 채워넣으면 height를 max-content로 바꿉니다.
   height: 100%;
   padding-right: 16px;
-
   display: flex;
   flex-direction: column;
   @media screen and (max-width: 980px) {
@@ -99,26 +100,16 @@ function DetailPage() {
   const { questionId } = useParams();
 
   const [questionData, setQuestionData] = useState(null);
-  const [answerData, setAnswerData] = useState(null);
+  // const [answerData, setAnswerData] = useState(null);
 
   useEffect(() => {
     axios.get(`/question/${questionId}`).then(res => {
-      console.log('questionData:', res.data);
       setQuestionData(res.data);
     });
   }, [questionId]);
 
-  useEffect(() => {
-    axios
-      .get(`/question/${questionId}/answer`)
-      .then(res => {
-        console.log('answerData: ', res.data);
-        setAnswerData(res.data);
-      })
-      .catch(error => {
-        console.error('error:', error);
-      });
-  }, [questionId]);
+  const accessToken = localStorage.getItem('accessToken');
+  const refreshToken = localStorage.getItem('refreshToken');
 
   const accessToken = localStorage.getItem('accessToken');
   const refreshToken = localStorage.getItem('refreshToken');
@@ -129,7 +120,7 @@ function DetailPage() {
         <NavContainer>
           <Nav />
         </NavContainer>
-        {questionData && answerData && (
+        {questionData && (
           <Main>
             <Title className='title'>
               <h1>{questionData.title}</h1>
@@ -145,8 +136,20 @@ function DetailPage() {
             </Title>
             <Info className='info'>
               <ul>
-                <li>Asked {questionData.createdAt}</li>
-                <li>Modified {questionData.modifiedAt}</li>
+                <li>
+                  Asked{' '}
+                  {questionData.createdAt.replace(
+                    /^(\d{4}-\d{2}-\d{2}).*/,
+                    '$1'
+                  )}
+                </li>
+                <li>
+                  Modified{' '}
+                  {questionData.modifiedAt.replace(
+                    /^(\d{4}-\d{2}-\d{2}).*/,
+                    '$1'
+                  )}
+                </li>
                 <li>Viewed {questionData.viewCount} times</li>
               </ul>
             </Info>
@@ -154,9 +157,9 @@ function DetailPage() {
               <Article>
                 <Question questionId={questionId} questionData={questionData} />
                 <Answer
-                  answerData={answerData}
+                  // answerData={answerData}
                   questionId={questionId}
-                  setAnswerData={setAnswerData}
+                  // setAnswerData={setAnswerData}
                 />
               </Article>
               <Side>
