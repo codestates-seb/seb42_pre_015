@@ -22,7 +22,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
     private final UserService userService;
-    private final UserMapper mapper;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,

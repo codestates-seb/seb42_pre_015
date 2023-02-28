@@ -22,7 +22,7 @@ public class AnswerComment extends BaseTimeEntity {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY , cascade = CascadeType.ALL)
     @JoinColumn(name = "answer_id")
     private Answer answer;
     @Nullable

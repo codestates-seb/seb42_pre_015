@@ -33,10 +33,10 @@ public class Answer extends BaseTimeEntity {
     @JoinColumn(name = "question_id")
     private Question question;
 
-    @OneToMany(mappedBy = "answer")
+    @OneToMany(mappedBy = "answer", cascade = CascadeType.ALL)
     private List<AnswerVote> votes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "answer")
+    @OneToMany(mappedBy = "answer", cascade = CascadeType.ALL)
     private List<AnswerComment> comments = new ArrayList<>();
 
     public void setQuestion(Question question) {//Question 양방향 매핑 메소드
@@ -50,6 +50,13 @@ public class Answer extends BaseTimeEntity {
         this.user = user;
         if (!user.getAnswerList().contains(this)) {
             user.getAnswerList().add(this);
+        }
+    }
+
+    public void setVote(AnswerVote vote) {
+        this.getVotes().add(vote);
+        if(vote.getAnswer()!=this){
+            vote.setAnswer(this);
         }
     }
 

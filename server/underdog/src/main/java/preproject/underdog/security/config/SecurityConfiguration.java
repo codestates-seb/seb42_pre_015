@@ -31,7 +31,6 @@ public class SecurityConfiguration {
     private final CustomAuthorityUtils authorityUtils;
     private final UserService userService;
     private final UserRepository userRepository;
-    private final UserMapper userMapper;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -96,7 +95,7 @@ public class SecurityConfiguration {
                     new CustomAuthenticationFilter(jwtTokenizer, authenticationManager);// (2-4)
 
 //            customAuthenticationFilter.setFilterProcessesUrl("/auth/login"); //request URL - 디폴트는 /login
-            customAuthenticationFilter.setAuthenticationSuccessHandler(new CustomAuthenticationSuccessHandler(userService, userMapper));  // (3) 추가
+            customAuthenticationFilter.setAuthenticationSuccessHandler(new CustomAuthenticationSuccessHandler(userService));  // (3) 추가
             customAuthenticationFilter.setAuthenticationFailureHandler(new CustomAuthenticationFailureHandler());
 
             VerificationFilter verificationFilter = new VerificationFilter(jwtTokenizer, authorityUtils, userRepository);

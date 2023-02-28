@@ -15,7 +15,7 @@ public interface QuestionRepo extends JpaRepository<Question, Long>{
     Optional<Question> findById(Long questionId);
 
     @Modifying
-    @Query(value = "INSERT INTO question_vote (question_id, user_id) SELECT :questionId, :userId " +
+    @Query(value = "INSERT IGNORE INTO question_vote (question_id, user_id) SELECT :questionId, :userId " +
             "from dual WHERE NOT EXISTS (SELECT question_id, user_id FROM question_vote WHERE question_id = :questionId and user_id = :userId)", nativeQuery = true)
     int upVote(long questionId, long userId);
 

@@ -15,7 +15,7 @@ import java.util.List;
 @Repository
 public interface AnswerRepository extends JpaRepository<Answer, Long> {
     @Modifying
-    @Query(value = "INSERT INTO answer_vote (answer_id, user_id) SELECT :answerId, :userId " +
+    @Query(value = "INSERT IGNORE INTO answer_vote (answer_id, user_id) SELECT :answerId, :userId " +
             "from dual WHERE NOT EXISTS (SELECT answer_id, user_id FROM answer_vote WHERE answer_id = :answerId and user_id = :userId)", nativeQuery = true)
     int upVote(long answerId, long userId);
 
@@ -28,4 +28,8 @@ public interface AnswerRepository extends JpaRepository<Answer, Long> {
 
     @Query(value = "SELECT c FROM AnswerComment c WHERE c.answer.answerId = :answerId")
     List<AnswerComment> findByAnswerId(long answerId);
+
+    @Modifying
+    @Query(value = "DELETE FROM answer_comment WHERE answer_id = :answerId", nativeQuery = true)
+    void deleteComment(long answerId);
 }

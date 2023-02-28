@@ -79,6 +79,7 @@ public class AnswerService {
         if (!question.getAnswerList().contains(answer))
             throw new BusinessLogicException(ExceptionCode.ANSWER_NOT_FOUND);
 
+        answerRepository.deleteComment(answer.getAnswerId());
         answerRepository.deleteAllByIdInBatch(Collections.singleton(answer.getAnswerId()));
         return answerRepository.findByQuestionId(question.getQuestionId());
     }
