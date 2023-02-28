@@ -31,7 +31,7 @@ public interface AnswerMapper {
     @Mapping(source = "answer.answerId",target = "answerId" )
     @Mapping(source = "user.name", target = "name")
     @Mapping(source = "answer.question.questionId", target = "questionId")
-//    @Mapping(source = "answerCommentId", target = "commentId")
+    @Mapping(source = "answerCommentId", target = "commentId")
     CommentRespDto commentToAnswerCommentRespDto(AnswerComment answerComment);//ENTITY -> DTO
     List<CommentRespDto> commentListToAnswerRespDto(List<AnswerComment> answerComment);
 }
