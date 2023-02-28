@@ -135,9 +135,19 @@ function AskQuestionPage() {
 
     const newQuestion = { userId: 1, ...formValues };
 
-    axios.post('/question', newQuestion).then(res => {
-      navigate(`/question/${res.data.questionId}`);
-    });
+    const accessToken = localStorage.getItem('accessToken');
+    const refreshToken = localStorage.getItem('refreshToken');
+
+    axios
+      .post('/question', newQuestion, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          Refresh: `${refreshToken}`
+        }
+      })
+      .then(res => {
+        navigate(`/question/${res.data.questionId}`);
+      });
   };
 
   const handleDiscard = () => {
@@ -182,6 +192,13 @@ function AskQuestionPage() {
     }
   };
 
+  const handleKeyDown = e => {
+    // Disable form submit on enter
+    if (e.key === 'Enter') {
+      e.preventDefault();
+    }
+  };
+
   return (
     <>
       <Main>
@@ -212,6 +229,7 @@ function AskQuestionPage() {
                   setFormValues({ ...formValues, title: e.target.value })
                 }
                 onBlur={handleValidation}
+                onKeyDown={handleKeyDown}
               ></input>
               {titleErrorMsg && (
                 <p style={{ color: '#DE4F54' }}>{titleErrorMsg}</p>
@@ -242,7 +260,7 @@ function AskQuestionPage() {
                 formValues={formValues}
                 setEditorInput={setFormValues}
                 handleValidation={handleValidation}
-                contentErrorMsg={contentErrorMsg}
+                errorMsg={contentErrorMsg}
               />
               {contentErrorMsg && (
                 <p style={{ color: '#DE4F54' }}>{contentErrorMsg}</p>
@@ -267,6 +285,7 @@ function AskQuestionPage() {
                 setFormValues={setFormValues}
                 handleValidation={handleValidation}
                 tagErrorMsg={tagErrorMsg}
+                handleKeyDown={handleKeyDown}
               />
               {tagErrorMsg && <p style={{ color: '#DE4F54' }}>{tagErrorMsg}</p>}
             </InputBox>

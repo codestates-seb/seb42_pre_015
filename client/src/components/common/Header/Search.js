@@ -160,26 +160,14 @@ export default function Search({ isLogin }) {
       >
         <GlassesSvg />
       </SearchIcon>
-      {isLogin ? (
-        <SearchInput
-          width='776.734px'
-          placeholder='Search...'
-          onFocus={() => {
-            setIsSearchClick(true);
-          }}
-          ref={searchRef}
-        />
-      ) : (
-        <SearchInput
-          width='776.734px'
-          placeholder='Search...'
-          onFocus={() => {
-            setIsSearchClick(true);
-          }}
-          ref={searchRef}
-        />
-      )}
-
+      <SearchInput
+        width='776.734px'
+        placeholder='Search...'
+        onFocus={() => {
+          setIsSearchClick(true);
+        }}
+        ref={searchRef}
+      />
       {isSearchClick ? (
         <MobilNav ref={searchNavRef}>
           <MobilInput></MobilInput>

@@ -5,6 +5,7 @@ import ProfileCard from './ProfileCard';
 import Comment from './Comment';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const QuestionContainer = styled.div`
   display: flex;
@@ -12,7 +13,7 @@ const QuestionContainer = styled.div`
 
 const QuestionWrapper = styled.div`
   width: calc(100% - 45px);
-  > p {
+  > p > p {
     white-space: normal;
     font-size: 15px;
     line-height: 22.5px;
@@ -31,14 +32,16 @@ const ControlOptions = styled.div`
   width: 100px;
   justify-content: space-between;
   > div {
-    > a,
-    span {
+    > .controller-btn {
       color: grey;
+      background-color: #fff;
     }
   }
 `;
 
 function Question({ questionId, questionData }) {
+  const navigate = useNavigate();
+
   const [questionCommentData, setQuestionCommentData] = useState(null);
 
   useEffect(() => {
@@ -47,11 +50,26 @@ function Question({ questionId, questionData }) {
     });
   }, [questionId]);
 
+  const handleQuestionDelete = () => {
+    axios
+      .delete(`/question/${questionId}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          Refresh: `${refreshToken}`
+        }
+      })
+      .then(res => console.log(res));
+    window.location.href = '/';
+  };
+
+  const accessToken = localStorage.getItem('accessToken');
+  const refreshToken = localStorage.getItem('refreshToken');
+
   return (
     <>
       {questionData && (
         <QuestionContainer>
-          <Vote questionData={questionData} />
+          <Vote questionData={questionData} questionId={questionId} />
           <QuestionWrapper>
             <p dangerouslySetInnerHTML={{ __html: questionData.content }}>
               {/* {questionData.content} */}
@@ -60,13 +78,29 @@ function Question({ questionId, questionData }) {
             <QuestionInfo>
               <ControlOptions>
                 <div>
-                  <a href='/'>Share</a>
+                  <button className='controller-btn' href='/'>
+                    Share
+                  </button>
                 </div>
                 <div>
-                  <a href='/'>Edit</a>
+                  <button
+                    className='controller-btn'
+                    onClick={() =>
+                      accessToken && refreshToken
+                        ? navigate(`/question/${questionId}/questionedit`)
+                        : navigate('/login')
+                    }
+                  >
+                    Edit
+                  </button>
                 </div>
                 <div>
-                  <span>Delete</span>
+                  <button
+                    className='controller-btn'
+                    onClick={handleQuestionDelete}
+                  >
+                    Delete
+                  </button>
                 </div>
               </ControlOptions>
               <ProfileCard questionData={questionData} />

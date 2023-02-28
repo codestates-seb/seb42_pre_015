@@ -11,7 +11,7 @@ import { GeneralBtn } from '../components/common/Buttons';
 import { MainNav } from '../components/common/SideNav';
 
 const MainPContainer = styled.div`
-  padding: 24px 0 0 16px;
+  padding: 5px 0 0 16px;
   @media screen and (max-width: 980px) {
     padding: 24px;
   }
@@ -83,6 +83,7 @@ const QuestionVote = styled.div`
   }
 `;
 const Question = styled.div`
+  width: 100%;
   > div {
     margin: -2px 0 5px 0;
     > a {
@@ -128,12 +129,6 @@ const UserContainer = styled.div`
   }
   span {
     margin: 0 2px;
-  }
-`;
-const NavContainer = styled.div`
-  border-right: 1px solid #d0d4d7;
-  @media screen and (max-width: 640px) {
-    display: none;
   }
 `;
 const MainFilterContainer = styled.div`
@@ -233,6 +228,7 @@ export function MainComponent() {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     axios
       .get(`/question`, {
         params: {
@@ -315,12 +311,16 @@ export function MainComponent() {
                   <Tag tags={el.tags} />
                 </TagContainer>
                 <UserContainer>
-                  <a href='/#'>{el.userName}</a>
+                  <a href='/#'>{el.name}</a>
                   <span>{el.asked}</span>
                   <a href='/#'>
                     createdAt
-                    <span style={{ color: 'rgb(82,89,96)' }}>
-                      {el.createdAt}
+                    <span
+                      style={{ color: 'rgb(82,89,96)', marginLeft: '10px' }}
+                    >
+                      {el.createdAt
+                        .replace(/T/, ' ')
+                        .replace(/:\d\d(.\d{1,6})?$/, '')}
                     </span>
                   </a>
                 </UserContainer>
@@ -362,7 +362,7 @@ export function MainComponent() {
           >
             50
           </StylePageBtn>
-          <p>per page</p>
+          <p style={{ margin: '0 10px' }}>per page</p>
         </StylePageContainer>
       </PageNationContainer>
     </div>
@@ -370,51 +370,65 @@ export function MainComponent() {
 }
 
 const Container = styled.div`
-  width: 100%;
-`;
-const APHeader = styled.div`
-  width: 100%;
-  height: 54px;
-`;
-const MainContainer = styled.div`
+  margin-top: 53px;
   display: flex;
-  width: 100%;
-  max-width: 1264px;
-  margin: 0 auto;
+  justify-content: center;
 `;
-const Main = styled.div`
-  max-width: 800px;
-`;
-const RightNav = styled.div`
-  width: 300px;
-  min-width: 300px;
-  margin-left: 16px;
-  @media screen and (max-width: 980px) {
+const NavContainer1 = styled.div`
+  border-right: 1px solid #d0d4d7;
+  @media screen and (max-width: 640px) {
     display: none;
   }
 `;
-const AFooter = styled.div`
-  width: 100%;
+const MainNavv = styled.div`
+  display: flex;
+  @media screen and (max-width: 980px) {
+    flex-direction: column;
+    width: 100%;
+  }
+`;
+const MainContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 24px 16px;
+  width: 50vw;
+  max-width: 726px;
+  @media screen and (max-width: 980px) {
+    flex-direction: column;
+    width: 100%;
+  }
+  @media screen and (max-width: 640px) {
+    width: 100%;
+  }
+`;
+const RightNav = styled.div`
+  min-width: 300px;
+  // !side를 채워넣으면 height를 max-content로 바꿉니다.
+  min-height: max-content;
+  @media screen and (max-width: 980px) {
+    width: 95%;
+    margin-bottom: 40px;
+    z-index: 0;
+  }
 `;
 
 export default function MainP() {
   return (
-    <Container>
-      <APHeader></APHeader>
-      <MainContainer>
-        <NavContainer>
+    <>
+      <Container>
+        <NavContainer1>
           <Nav />
-        </NavContainer>
-        <Main>
-          <MainComponent />
-        </Main>
-        <RightNav>
-          <MainNav />
-        </RightNav>
-      </MainContainer>
-      <AFooter>
-        <Footer />
-      </AFooter>
-    </Container>
+        </NavContainer1>
+        <MainNavv>
+          <MainContainer>
+            <MainComponent />
+          </MainContainer>
+          <RightNav>
+            <MainNav />
+          </RightNav>
+        </MainNavv>
+      </Container>
+      <Footer />
+    </>
   );
 }
