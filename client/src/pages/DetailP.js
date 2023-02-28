@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import Header from '../components/common/Header/Header';
 import Footer from '../components/common/Footer';
 import Nav from '../components/common/Nav';
 import { GeneralBtn } from '../components/common/Buttons';
@@ -8,6 +7,8 @@ import Answer from '../components/DetailP/Answer';
 // import { questionData, answerData } from '../data/dummyData';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
+import { MainNav } from '../components/common/SideNav';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const Body = styled.div`
   margin-top: 53px;
@@ -93,30 +94,37 @@ const NavContainer = styled.div`
 `;
 
 function DetailPage() {
+  const navigate = useNavigate();
   // ! QuestionList랑 연결하고 나서는 url 동적으로 만들기
-  // const { questionId } = useParams();
-  // const [questionData, questionIsPending, questionError] = useFetch(`http://localhost:3001/question/${questionId}`)
-  // const [answerData, answerIsPending, answerError] = useFetch(`http://localhost:3001/question/${questionId}/answer`)
+  const { questionId } = useParams();
 
-  const BASE_URL = 'http://localhost:3001';
   const [questionData, setQuestionData] = useState(null);
   const [answerData, setAnswerData] = useState(null);
 
   useEffect(() => {
-    axios.get(`${BASE_URL}/questionData`).then(res => {
+    axios.get(`/question/${questionId}`).then(res => {
+      console.log('questionData:', res.data);
       setQuestionData(res.data);
     });
-  }, []);
+  }, [questionId]);
 
   useEffect(() => {
-    axios.get(`${BASE_URL}/answerData`).then(res => {
-      setAnswerData(res.data);
-    });
-  }, []);
+    axios
+      .get(`/question/${questionId}/answer`)
+      .then(res => {
+        console.log('answerData: ', res.data);
+        setAnswerData(res.data);
+      })
+      .catch(error => {
+        console.error('error:', error);
+      });
+  }, [questionId]);
+
+  const accessToken = localStorage.getItem('accessToken');
+  const refreshToken = localStorage.getItem('refreshToken');
 
   return (
     <>
-      <Header />
       <Body>
         <NavContainer>
           <Nav />
@@ -125,7 +133,15 @@ function DetailPage() {
           <Main>
             <Title className='title'>
               <h1>{questionData.title}</h1>
-              <GeneralBtn BtnText='Ask Question' width='100px' />
+              <GeneralBtn
+                BtnText='Ask Question'
+                width='100px'
+                onClick={() => {
+                  accessToken && refreshToken
+                    ? navigate('/ask')
+                    : navigate('/login');
+                }}
+              />
             </Title>
             <Info className='info'>
               <ul>
@@ -136,11 +152,15 @@ function DetailPage() {
             </Info>
             <Content className='main'>
               <Article>
-                <Question questionData={questionData} />
-                <Answer answerData={answerData} />
+                <Question questionId={questionId} questionData={questionData} />
+                <Answer
+                  answerData={answerData}
+                  questionId={questionId}
+                  setAnswerData={setAnswerData}
+                />
               </Article>
               <Side>
-                <div>Something...</div>
+                <MainNav />
               </Side>
             </Content>
           </Main>

@@ -60,6 +60,7 @@ const LoginBox = () => {
         password: password
       })
       .then(response => {
+        console.log('dd');
         const { authorization: accessToken, refresh: refreshToken } =
           response.headers;
 
@@ -71,6 +72,7 @@ const LoginBox = () => {
         window.location.href = '/';
       })
       .catch(error => {
+        console.log('ss');
         console.log(error);
         alert('아이디와 비밀번호가 일치하지 않습니다.');
       });

@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import { QuestionEditMain } from '../components/common/EditP';
 import { QuestionEditNav } from '../components/common/SideNav';
 import Nav from '../components/common/Nav';
-import Header from '../components/common/Header/Header';
 import Footer from '../components/common/Footer';
 
 const Container = styled.div`
@@ -40,9 +39,7 @@ const NavContainer = styled.div`
 export default function QuestionEditP() {
   return (
     <Container>
-      <APHeader>
-        <Header />
-      </APHeader>
+      <APHeader></APHeader>
       <MainContainer>
         <NavContainer>
           <Nav />

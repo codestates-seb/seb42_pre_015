@@ -3,9 +3,9 @@ import Vote from './Vote';
 import Tag from '../common/Tag';
 import ProfileCard from './ProfileCard';
 import Comment from './Comment';
-// import { questionCommentData } from '../../data/dummyData';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const QuestionContainer = styled.div`
   display: flex;
@@ -13,7 +13,7 @@ const QuestionContainer = styled.div`
 
 const QuestionWrapper = styled.div`
   width: calc(100% - 45px);
-  > p {
+  > p > p {
     white-space: normal;
     font-size: 15px;
     line-height: 22.5px;
@@ -32,22 +32,26 @@ const ControlOptions = styled.div`
   width: 100px;
   justify-content: space-between;
   > div {
-    > a,
-    span {
+    > .controller-btn {
       color: grey;
+      background-color: #fff;
     }
   }
 `;
 
-function Question({ questionData }) {
-  const BASE_URL = 'http://localhost:3001';
-  const [questionCommentData, setquestionCommentData] = useState(null);
+function Question({ questionId, questionData }) {
+  const navigate = useNavigate();
+
+  const [questionCommentData, setQuestionCommentData] = useState(null);
 
   useEffect(() => {
-    axios.get(`${BASE_URL}/questionCommentData`).then(res => {
-      setquestionCommentData(res.data);
+    axios.get(`/question/${questionId}/comments`).then(res => {
+      setQuestionCommentData(res.data);
     });
-  }, []);
+  }, [questionId]);
+
+  const accessToken = localStorage.getItem('accessToken');
+  const refreshToken = localStorage.getItem('refreshToken');
 
   return (
     <>
@@ -55,23 +59,40 @@ function Question({ questionData }) {
         <QuestionContainer>
           <Vote questionData={questionData} />
           <QuestionWrapper>
-            <p>{questionData.content}</p>
-            <Tag questionData={questionData} />
+            <p dangerouslySetInnerHTML={{ __html: questionData.content }}>
+              {/* {questionData.content} */}
+            </p>
+            <Tag tags={questionData.tags} />
             <QuestionInfo>
               <ControlOptions>
                 <div>
-                  <a href='/'>Share</a>
+                  <button className='controller-btn' href='/'>
+                    Share
+                  </button>
                 </div>
                 <div>
-                  <a href='/'>Edit</a>
+                  <button
+                    className='controller-btn'
+                    onClick={() =>
+                      accessToken && refreshToken
+                        ? navigate(`/question/${questionId}/questionedit`)
+                        : navigate('/login')
+                    }
+                  >
+                    Edit
+                  </button>
                 </div>
                 <div>
-                  <span>Delete</span>
+                  <button className='controller-btn'>Delete</button>
                 </div>
               </ControlOptions>
               <ProfileCard questionData={questionData} />
             </QuestionInfo>
-            <Comment questionCommentData={questionCommentData} />
+            <Comment
+              questionId={questionId}
+              questionCommentData={questionCommentData}
+              setQuestionCommentData={setQuestionCommentData}
+            />
           </QuestionWrapper>
         </QuestionContainer>
       )}
