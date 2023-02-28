@@ -66,20 +66,14 @@ const TagInput = ({
   formValues,
   setFormValues,
   handleValidation,
-  tagErrorMsg
+  tagErrorMsg,
+  handleKeyDown
 }) => {
-  const handleKeyDown = event => {
-    // Disable form submit on enter
-    if (event.key === 'Enter') {
-      event.preventDefault();
-    }
-  };
-
   const addTags = event => {
     if (event.key === 'Enter') {
       if (event.target.value === '') {
         //do nothing
-      } else if (tags.includes(event.target.value)) {
+      } else if (tags.includes(event.target.value) || tags.length > 4) {
         event.target.value = '';
       } else {
         setFormValues({ ...formValues, tags: [...tags, event.target.value] });

@@ -2,7 +2,9 @@ import styled from 'styled-components';
 import AnswerHeading from './AnswerHeading';
 import AnswerBody from './AnswerBody';
 import PostAnswer from './PostAnswer';
-
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+// 주석 추가
 const AnswerSection = styled.div`
   width: 100%;
   display: flex;
@@ -10,18 +12,31 @@ const AnswerSection = styled.div`
   margin-top: 20px;
 `;
 
-function Answer({ answerData, setAnswerData, questionId }) {
+function Answer({ questionId }) {
+  const [answerData, setAnswerData] = useState(null);
+
+  useEffect(() => {
+    axios
+      .get(`/question/${questionId}/answer`)
+      .then(res => {
+        setAnswerData(res.data);
+      })
+      .catch(error => {
+        console.error('error:', error);
+      });
+  }, [questionId]);
+
   return (
     <>
       {answerData && (
         <AnswerSection>
           <AnswerHeading answerData={answerData} />
-          <AnswerBody questionId={questionId} answerData={answerData} />
-          <PostAnswer
+          <AnswerBody
             questionId={questionId}
-            setAnswerData={setAnswerData}
             answerData={answerData}
+            setAnswerData={setAnswerData}
           />
+          <PostAnswer questionId={questionId} setAnswerData={setAnswerData} />
         </AnswerSection>
       )}
     </>

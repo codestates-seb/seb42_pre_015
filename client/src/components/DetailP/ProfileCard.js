@@ -6,7 +6,7 @@ const ProfileCardContainer = styled.div`
   padding: 5px 6px 7px 7px;
   border-radius: 3px;
   background-color: #d2e7f6;
-  width: 200px;
+  width: 160px;
   height: 65px;
   > .created-time {
     color: #5f6871;
@@ -37,8 +37,14 @@ function ProfileCard({ questionData, answer }) {
         <ProfileCardContainer>
           <div className='created-time'>
             {init === questionData
-              ? `asked ${init.createdAt}`
-              : `answered ${init.createdAt}`}
+              ? `asked ${init.createdAt.replace(
+                  /^(\d{4}-\d{2}-\d{2}).*/,
+                  '$1'
+                )}`
+              : `answered ${init.createdAt.replace(
+                  /^(\d{4}-\d{2}-\d{2}).*/,
+                  '$1'
+                )}`}
           </div>
           <UserInfoContainer>
             <div className='user-image'></div>

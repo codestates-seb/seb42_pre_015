@@ -15,19 +15,22 @@ const AnswerContainer = styled.div`
 
 const AnswerWrapper = styled.div`
   width: calc(100% - 45px);
+  overflow-wrap: break-word;
   > p {
-    white-space: normal;
     font-size: 15px;
     line-height: 22.5px;
     margin-bottom: 24px;
+    white-space: normal;
   }
 `;
 
 const Answercontent = styled.p`
-  white-space: normal;
-  font-size: 15px;
-  line-height: 22.5px;
-  margin-bottom: 24px;
+  > p {
+    font-size: 15px;
+    line-height: 22.5px;
+    margin-bottom: 24px;
+    white-space: normal;
+  }
 `;
 
 const AnswerInfo = styled.div`
@@ -46,35 +49,29 @@ const ControlOptions = styled.div`
     color: grey;
   }
 `;
-function AnswerBody({ answerData, questionId }) {
-  // ! API test할때 동적으로 answerCommentData가 바뀌는지 확인해야함
-  // const { answerId } = useParams();
-  // const [answerCommentData, answerCommentIsPending, answerCommentError] = useFetch(`http://localhost:3001/question/${questoinId}/answer/${answerId}`/comment)
-
+function AnswerBody({ questionId, answerData, setAnswerData }) {
   const navigate = useNavigate();
-  const handleAnswerDelete = () => {
-    //! delete 마저 구현하기
-    axios.delete('/');
+
+  const handleAnswerDelete = answerId => {
+    axios
+      .delete(`/question/${questionId}/answer/${answerId}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          Refresh: `${refreshToken}`
+        }
+      })
+      .then(res => setAnswerData(res.data));
   };
 
-  // const [answerCommentData, setAnswerCommentData] = useState(null);
-
-  // useEffect(() => {
-  //   axios
-  //     .get(`/question/${questionId}/answer/${answerId}/comments`)
-  //     .then(res => {
-  //       setAnswerCommentData(res.data);
-  //       console.log('res.data:', res.data);
-  //     });
-  // }, []);
-  // console.log('answerCommentData:', answerCommentData);
+  const accessToken = localStorage.getItem('accessToken');
+  const refreshToken = localStorage.getItem('refreshToken');
 
   return (
     <>
       {answerData &&
         answerData.map(answer => (
           <AnswerContainer key={answer.answerId}>
-            <Vote answer={answer} />
+            <Vote answer={answer} answerId={answer.answerId} />
             <AnswerWrapper>
               <Answercontent
                 dangerouslySetInnerHTML={{ __html: answer.content }}
@@ -84,15 +81,19 @@ function AnswerBody({ answerData, questionId }) {
                   <button>Share</button>
                   <button
                     onClick={() =>
-                      navigate(
-                        `/question/${questionId}/answeredit/${answer.answerId}`
-                      )
+                      accessToken && refreshToken
+                        ? navigate(
+                            `/question/${questionId}/answeredit/${answer.answerId}`
+                          )
+                        : navigate('/login')
                     }
                   >
                     Edit
                   </button>
 
-                  <button onClick={handleAnswerDelete}>Delete</button>
+                  <button onClick={() => handleAnswerDelete(answer.answerId)}>
+                    Delete
+                  </button>
                 </ControlOptions>
                 <ProfileCard answer={answer} />
               </AnswerInfo>
