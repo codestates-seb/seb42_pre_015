@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import preproject.underdog.dto.VoteDto;
 import preproject.underdog.exception.BusinessLogicException;
 import preproject.underdog.exception.ExceptionCode;
 import preproject.underdog.question.entity.Question;
@@ -138,7 +139,7 @@ public class QuestionService {
         return questionCommentRepo.findByQuestionId(findQuestion.getQuestionId());
     }
 
-    public Question createVote(long questionId) { // userId 없애도 됨.
+    public VoteDto.Question createVote(long questionId) { // userId 없애도 됨.
         Question findQuestion = findQuestionById(questionId);
 
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
@@ -146,14 +147,18 @@ public class QuestionService {
         User user = optionalUser.orElseThrow(() -> new BusinessLogicException(ExceptionCode.NO_PERMISSION_DO_VOTE));
 
         questionVoteRepository.findByUserAndQuestion(findQuestion.getQuestionId(), user.getUserId())
-                .ifPresent(s->new BusinessLogicException(ExceptionCode.CANNOT_VOTE_TWICE));
+                .ifPresent(s -> new BusinessLogicException(ExceptionCode.CANNOT_VOTE_TWICE));
 
         questionRepository.upVote(questionId, user.getUserId());
+        Question question = findQuestionById(questionId);
 
-        return findQuestion;
+        VoteDto.Question voteDto =
+                new VoteDto.Question(findQuestion.getQuestionId(), question.getQuestionVoteList().size(), user.getUserId(), true);
+
+        return voteDto;
     }
 
-    public Question cancelVote(long questionId) {
+    public VoteDto.Question cancelVote(long questionId) {
         Question findQuestion = findQuestionById(questionId);
 
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
@@ -165,10 +170,13 @@ public class QuestionService {
                 .findFirst()
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.VOTE_NOT_FOUND)); // 좋아요 했던 사람만 취소 가능. bad request
 
-        if (findQuestion.getQuestionVoteList().contains(questionVote)) {
-            questionRepository.downVote(questionId, user.getUserId());
-        } else throw new BusinessLogicException(ExceptionCode.VOTE_NOT_FOUND);
-        return findQuestion;
+        questionRepository.downVote(questionId, user.getUserId());
+
+        Question question = findQuestionById(questionId);
+
+        VoteDto.Question voteDto
+                = new VoteDto.Question(findQuestion.getQuestionId(), question.getQuestionVoteList().size(), user.getUserId(), false);
+        return voteDto;
     }
 
     public Question findQuestionById(long questionId) {

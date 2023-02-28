@@ -15,10 +15,11 @@ public interface QuestionRepo extends JpaRepository<Question, Long>{
     Optional<Question> findById(Long questionId);
 
     @Modifying
-    @Query(value = "INSERT INTO question_vote(question_id, user_id) VALUES(:questionId, :userId)", nativeQuery = true)
+    @Query(value = "INSERT INTO question_vote (question_id, user_id) SELECT :questionId, :userId " +
+            "from dual WHERE NOT EXISTS (SELECT question_id, user_id FROM question_vote WHERE question_id = :questionId and user_id = :userId)", nativeQuery = true)
     int upVote(long questionId, long userId);
 
-    @Modifying
+    @Modifying(flushAutomatically = true, clearAutomatically = true)
     @Query(value = "DELETE FROM question_vote WHERE question_id = :questionId AND user_id = :userId", nativeQuery = true)
     int downVote(long questionId, long userId);
 }

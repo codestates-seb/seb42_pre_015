@@ -7,9 +7,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import preproject.underdog.dto.PageDto;
+import preproject.underdog.dto.VoteDto;
 import preproject.underdog.question.dto.comment.QuestionCommentPatchDto;
 import preproject.underdog.question.dto.comment.QuestionCommentPostDto;
 import preproject.underdog.question.dto.question.QuestionPatchDto;
@@ -101,20 +103,20 @@ public class QuestionController {
     public ResponseEntity deleteComment(@PathVariable("question-id") long questionId,
                                          @PathVariable("comment-id") long commentId){
         List<QuestionComment> questionCommentList = questionService.deleteQuestionComment(questionId, commentId);
-        return new ResponseEntity(mapper.commentsToResponseDto(questionCommentList), HttpStatus.OK); //TODO 로직 확인.
+        return new ResponseEntity(mapper.commentsToResponseDto(questionCommentList), HttpStatus.OK);
     }
 
     //vote 기능 메서드
     @PostMapping("/{question-id}/vote") // 엔드포인트 수정됨
     public ResponseEntity postVote(@PathVariable("question-id") long questionId){
-        Question question = questionService.createVote(questionId);
-        return new ResponseEntity(mapper.questionToQuestionResponseDto(question), HttpStatus.OK); //TODO 로직 확인.
+        VoteDto.Question voteDto = questionService.createVote(questionId);
+        return new ResponseEntity(voteDto, HttpStatus.OK);
     }
 
     @DeleteMapping("/{question-id}/vote") // 엔드포인트 수정됨
     public ResponseEntity deleteVote(@PathVariable("question-id") long questionId){
-        Question question = questionService.cancelVote(questionId);
-        return new ResponseEntity(mapper.questionToQuestionResponseDto(question), HttpStatus.OK);
+        VoteDto.Question voteDto = questionService.cancelVote(questionId);
+        return new ResponseEntity(voteDto, HttpStatus.OK);
     }
 
     @GetMapping("/search")
