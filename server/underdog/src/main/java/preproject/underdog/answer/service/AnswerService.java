@@ -149,14 +149,19 @@ public class AnswerService {
 
     public VoteDto.Answer doVote(long questionId, long answerId) {//userId 제거
         Question question = questionService.findQuestionById(questionId);
-        Answer findAnswer = findVerifiedAnswer(answerId);
+        Answer findAnswer = findVerifiedAnswer(answerId);//동작 확인
         if (!question.getAnswerList().contains(findAnswer))
-            throw new BusinessLogicException(ExceptionCode.ANSWER_NOT_FOUND);
+            throw new BusinessLogicException(ExceptionCode.ANSWER_NOT_FOUND);//동작 확인
 
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         Optional<User> optionalUser = userRepository.findByEmail(principal);
         User user = optionalUser.orElseThrow(() -> new BusinessLogicException(ExceptionCode.NO_PERMISSION_DO_VOTE));
 
+        for (AnswerVote answerVote : user.getAnswerVoteList()) {
+            if (answerVote.getAnswer().getAnswerId() == findAnswer.getAnswerId()) {
+                throw new BusinessLogicException(ExceptionCode.CANNOT_VOTE_TWICE);
+            }
+        }
         answerRepository.upVote(answerId, user.getUserId());
         Answer verifiedAnswer = findVerifiedAnswer(answerId);
 

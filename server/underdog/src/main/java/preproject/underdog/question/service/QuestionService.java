@@ -35,7 +35,6 @@ public class QuestionService {
     private final QuestionRepo questionRepository;
     private final QuestionCommentRepo questionCommentRepo;
     private final UserRepository userRepository;
-    private final QuestionVoteRepository questionVoteRepository;
 
     public Question createQuestion(Question question) {
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
@@ -146,8 +145,11 @@ public class QuestionService {
         Optional<User> optionalUser = userRepository.findByEmail(principal);
         User user = optionalUser.orElseThrow(() -> new BusinessLogicException(ExceptionCode.NO_PERMISSION_DO_VOTE));
 
-        questionVoteRepository.findByUserAndQuestion(findQuestion.getQuestionId(), user.getUserId())
-                .ifPresent(s -> new BusinessLogicException(ExceptionCode.CANNOT_VOTE_TWICE));
+        for (QuestionVote questionVote : user.getQuestionVoteList()) {
+            if (questionVote.getQuestion().getQuestionId() == findQuestion.getQuestionId()) {
+                throw new BusinessLogicException(ExceptionCode.CANNOT_VOTE_TWICE);
+            }
+        }
 
         questionRepository.upVote(questionId, user.getUserId());
         Question question = findQuestionById(questionId);

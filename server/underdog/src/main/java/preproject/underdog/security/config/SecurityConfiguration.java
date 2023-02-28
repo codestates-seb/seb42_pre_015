@@ -36,46 +36,38 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-//                .headers().frameOptions().disable()
-//                .and()
-                .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .cors()
+                .configurationSource(corsConfigurationSource())
 
                 .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+
+                .and()
+                .csrf().disable()
                 .httpBasic().disable()
                 .formLogin().disable()
-
-//                .defaultSuccessUrl("/") // 로그인 성공시 리턴 페이지
-//                .loginProcessingUrl("/login") // 로그인 요청시 처리는 시큐리티가. 디폴트 uri
-//                .and()
-
-                .logout().logoutUrl("/logout").permitAll()
-                .logoutSuccessUrl("/") // 로그아웃 성공 시 이동 페이지
-                .and()
 
                 .exceptionHandling()
                 .authenticationEntryPoint(new CustomAuthenticationEntryPoint())  // (1) 추가
                 .accessDeniedHandler(new CustomAccessDeniedHandler())
-                .and()
 
-                .cors().configurationSource(corsConfigurationSource())
+                .and()
+                .logout().logoutUrl("/logout").permitAll()
+                .logoutSuccessUrl("/") // 로그아웃 성공 시 이동 페이지
+
                 .and()
                 .apply(new CustomFilterConfigurer())
-                .and()
 
+                .and()
                 .authorizeHttpRequests(authorize -> authorize
                         .antMatchers("/login").permitAll()
                         .antMatchers("/user").permitAll()
                         .antMatchers(HttpMethod.GET, "/question/**").permitAll()
                         .anyRequest().authenticated()) // 요청별 권한 작성하기
+
                 .oauth2Login(oauth2 -> oauth2
-//                        .authorizationEndpoint(authorization -> authorization
-//                                .baseUri("/oauth2/authorization")
-//                        )
-//                        .redirectionEndpoint(redirection -> redirection
-//                                .baseUri("/*/oauth2/code/*")
-//                        )
-                        .successHandler(new OAuth2SuccessHandler(jwtTokenizer, userService )));
+                        .successHandler(new OAuth2SuccessHandler(jwtTokenizer, userService)));
 
         return http.build();
     }

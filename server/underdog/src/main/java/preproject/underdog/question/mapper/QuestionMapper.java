@@ -29,6 +29,7 @@ public interface QuestionMapper {
     @Mapping(source = "user.userId", target = "userId")
     @Mapping(source = "user.name", target = "name")
     @Mapping(source = "question.questionId", target = "questionId")
+//    @Mapping(source = "questionCommentId", target = "commentId")
     QuestionCommentResponseDto commentToCommentResponseDto(QuestionComment questionComment);
 
     List<QuestionResponseDto> questionsToResponseDto(List<Question>questions);
