@@ -48,7 +48,7 @@ function ProfileCard({ questionData, answer }) {
           </div>
           <UserInfoContainer>
             <div className='user-image'></div>
-            <div className='username'>{init.userName}</div>
+            <div className='username'>{init.name}</div>
           </UserInfoContainer>
         </ProfileCardContainer>
       )}

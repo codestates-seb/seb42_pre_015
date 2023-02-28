@@ -51,19 +51,19 @@ function Question({ questionId, questionData }) {
   }, [questionId]);
 
   const handleQuestionDelete = () => {
-    axios
-      .delete(`/question/${questionId}`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          Refresh: `${refreshToken}`
-        }
-      })
-      .then(res => console.log(res));
+    axios.delete(`/question/${questionId}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        Refresh: `${refreshToken}`
+      }
+    });
     window.location.href = '/';
   };
 
   const accessToken = localStorage.getItem('accessToken');
   const refreshToken = localStorage.getItem('refreshToken');
+  const LogginUserId = localStorage.getItem('userId');
+  const userId = LogginUserId.split(':')[1].trim();
 
   return (
     <>
@@ -71,9 +71,7 @@ function Question({ questionId, questionData }) {
         <QuestionContainer>
           <Vote questionData={questionData} questionId={questionId} />
           <QuestionWrapper>
-            <p dangerouslySetInnerHTML={{ __html: questionData.content }}>
-              {/* {questionData.content} */}
-            </p>
+            <p dangerouslySetInnerHTML={{ __html: questionData.content }}></p>
             <Tag tags={questionData.tags} />
             <QuestionInfo>
               <ControlOptions>
@@ -82,26 +80,28 @@ function Question({ questionId, questionData }) {
                     Share
                   </button>
                 </div>
-                <div>
-                  <button
-                    className='controller-btn'
-                    onClick={() =>
-                      accessToken && refreshToken
-                        ? navigate(`/question/${questionId}/questionedit`)
-                        : navigate('/login')
-                    }
-                  >
-                    Edit
-                  </button>
-                </div>
-                <div>
-                  <button
-                    className='controller-btn'
-                    onClick={handleQuestionDelete}
-                  >
-                    Delete
-                  </button>
-                </div>
+                {userId === String(questionData.userId) ? (
+                  <>
+                    <div>
+                      <button
+                        className='controller-btn'
+                        onClick={() =>
+                          navigate(`/question/${questionId}/questionedit`)
+                        }
+                      >
+                        Edit
+                      </button>
+                    </div>
+                    <div>
+                      <button
+                        className='controller-btn'
+                        onClick={handleQuestionDelete}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </>
+                ) : null}
               </ControlOptions>
               <ProfileCard questionData={questionData} />
             </QuestionInfo>
