@@ -228,6 +228,7 @@ export function MainComponent() {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     axios
       .get(`/question`, {
         params: {
