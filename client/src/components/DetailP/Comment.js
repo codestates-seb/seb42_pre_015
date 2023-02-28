@@ -101,8 +101,7 @@ function Comment({
   answerCommentData,
   setAnswerCommentData
 }) {
-
- const navigate = useNavigate();
+  const navigate = useNavigate();
 
   let init = questionCommentData || answerCommentData;
 
@@ -152,7 +151,6 @@ function Comment({
 
   const accessToken = localStorage.getItem('accessToken');
   const refreshToken = localStorage.getItem('refreshToken');
-
 
   return (
     <>
