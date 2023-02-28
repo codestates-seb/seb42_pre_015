@@ -339,7 +339,6 @@ export default function LoginNav({ setIsLogin }) {
                   onClick={() => {
                     window.localStorage.removeItem('accessToken');
                     window.localStorage.removeItem('refreshToken');
-                    setIsLogin(false);
                     window.location.href = '/';
                   }}
                 >
