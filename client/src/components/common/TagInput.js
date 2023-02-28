@@ -66,15 +66,9 @@ const TagInput = ({
   formValues,
   setFormValues,
   handleValidation,
-  tagErrorMsg
+  tagErrorMsg,
+  handleKeyDown
 }) => {
-  const handleKeyDown = event => {
-    // Disable form submit on enter
-    if (event.key === 'Enter') {
-      event.preventDefault();
-    }
-  };
-
   const addTags = event => {
     if (event.key === 'Enter') {
       if (event.target.value === '') {
