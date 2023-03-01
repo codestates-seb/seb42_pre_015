@@ -125,11 +125,6 @@ function AskQuestionPage() {
     tags: []
   });
 
-  // const handleEditForm = e => {
-  //   const { name, value } = e.target;
-  //   setFormValues({ ...formValues, [name]: value });
-  // };
-
   const handleSubmit = e => {
     e.preventDefault();
 

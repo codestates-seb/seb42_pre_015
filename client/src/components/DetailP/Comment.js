@@ -231,8 +231,7 @@ function Comment({
 
   const accessToken = localStorage.getItem('accessToken');
   const refreshToken = localStorage.getItem('refreshToken');
-  const LogginUserId = localStorage.getItem('userId');
-  const userId = Number(LogginUserId.split(':')[1].trim());
+  const LogginUserId = Number(localStorage.getItem('userId'));
 
   return (
     <>
@@ -246,7 +245,7 @@ function Comment({
                 <span className='date'>
                   {comment.createdAt.replace(/^(\d{4}-\d{2}-\d{2}).*/, '$1')}
                 </span>
-                {userId === comment.userId ? (
+                {LogginUserId === comment.userId ? (
                   <>
                     <button className='edit-btn' onClick={handleEditComment}>
                       Edit

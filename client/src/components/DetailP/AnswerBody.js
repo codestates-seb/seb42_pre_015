@@ -80,8 +80,7 @@ function AnswerBody({ questionId, answerData, setAnswerData }) {
 
   const accessToken = localStorage.getItem('accessToken');
   const refreshToken = localStorage.getItem('refreshToken');
-  const LogginUserId = localStorage.getItem('userId');
-  const userId = Number(LogginUserId.split(':')[1].trim());
+  const LogginUserId = Number(localStorage.getItem('userId'));
 
   return (
     <>
@@ -96,7 +95,7 @@ function AnswerBody({ questionId, answerData, setAnswerData }) {
               <AnswerInfo>
                 <ControlOptions>
                   <button>Share</button>
-                  {userId === answer.userId ? (
+                  {LogginUserId === answer.userId ? (
                     <>
                       <button
                         onClick={() =>
