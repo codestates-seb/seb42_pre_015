@@ -39,7 +39,7 @@ const ControlOptions = styled.div`
   }
 `;
 
-function Question({ questionId, questionData }) {
+function Question({ questionId, questionData, setQuestionData }) {
   const navigate = useNavigate();
 
   const [questionCommentData, setQuestionCommentData] = useState(null);
@@ -87,7 +87,7 @@ function Question({ questionId, questionData }) {
           localStorage.setItem('refreshToken', refreshToken);
         }
       });
-    // window.location.href = '/';
+    window.location.href = '/';
   };
 
   const accessToken = localStorage.getItem('accessToken');
@@ -98,7 +98,11 @@ function Question({ questionId, questionData }) {
     <>
       {questionData && (
         <QuestionContainer>
-          <Vote questionData={questionData} questionId={questionId} />
+          <Vote
+            questionId={questionId}
+            questionData={questionData}
+            setQuestionData={setQuestionData}
+          />
           <QuestionWrapper>
             <p dangerouslySetInnerHTML={{ __html: questionData.content }}></p>
             <Tag tags={questionData.tags} />
