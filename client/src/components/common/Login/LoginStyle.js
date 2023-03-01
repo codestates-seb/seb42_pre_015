@@ -51,9 +51,9 @@ const BoxStyle = styled.div`
       width: 100%;
     }
   }
-  /* .login-form__text:focus {
-    border: 3px solid blue;
-  } */
+  .login-form__text:focus {
+    outline: none;
+  }
   .error-svg {
     position: absolute;
     top: 12px;
