@@ -18,6 +18,7 @@ function Editor({
   setEditorInput,
   formValues,
   handleValidation,
+
   errorMsg,
   setNewAnswer
 }) {
@@ -57,7 +58,6 @@ function Editor({
       setEditorInput({ ...formValues, content: content });
     }
   };
-
   return (
     <StyledEditor name='content' onBlur={handleValidation} border={errorMsg}>
       <ReactQuill
