@@ -38,7 +38,6 @@ const CommentWrapper = styled.div`
     width: 80%;
   }
   > div {
-    width: 19%;
     > .name {
       color: #0069c1;
     }
@@ -107,6 +106,7 @@ function Comment({
 
   const [isAddClicked, setIsAddClicked] = useState(false);
   const [newComment, setNewComment] = useState('');
+  const [updatedComment, setUpdatedComment] = useState('');
   const [onEdit, setOnEdit] = useState('');
 
   const handleAddComment = () => {
@@ -170,8 +170,31 @@ function Comment({
   };
 
   const handleEditComment = e => {
-    setOnEdit(!onEdit);
-    // console.log('e:', e.target);
+    setUpdatedComment(e.target.value);
+  };
+
+  const handleSaveComment = (e, commentId) => {
+    if (e.key === 'Enter') {
+      if (init === questionCommentData) {
+        axios
+          .patch(
+            `/question/${questionId}/comment/${commentId}`,
+            { content: updatedComment },
+            {
+              headers: {
+                Authorization: `Bearer ${accessToken}`,
+                Refresh: `${refreshToken}`
+              }
+            }
+          )
+          .then(res => {
+            setOnEdit(false);
+            setQuestionCommentData(res.data);
+          });
+      } else if (init === answerCommentData) {
+        // another patch
+      }
+    }
   };
 
   const handleDeleteComment = commentId => {
@@ -239,7 +262,22 @@ function Comment({
         <CommentContainer>
           {init.map(comment => (
             <CommentWrapper key={comment.commentId}>
-              <p className='content'>{comment.content}</p>
+              {onEdit ? (
+                <>
+                  <textarea
+                    defaultValue={comment.content}
+                    onChange={handleEditComment}
+                    onKeyUp={event =>
+                      event.key === 'Enter'
+                        ? handleSaveComment(event, comment.commentId)
+                        : null
+                    }
+                  ></textarea>
+                  <p>Press enter to save</p>
+                </>
+              ) : (
+                <p className='content'>{comment.content}</p>
+              )}
               <div>
                 <span className='name'>{comment.name}</span>
                 <span className='date'>
@@ -247,7 +285,10 @@ function Comment({
                 </span>
                 {LogginUserId === comment.userId ? (
                   <>
-                    <button className='edit-btn' onClick={handleEditComment}>
+                    <button
+                      className='edit-btn'
+                      onClick={() => setOnEdit(true)}
+                    >
                       Edit
                     </button>
                     <button

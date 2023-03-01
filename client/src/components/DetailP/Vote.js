@@ -5,7 +5,7 @@ import {
   ArrowDownSvg,
   SaveUnSelectedSvg
 } from '../../assets/DetailSvg';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -25,18 +25,51 @@ const VoteContainer = styled.div`
   }
 `;
 
-function Vote({ questionData, answer, questionId, answerId }) {
+function Vote({
+  questionId,
+  answerId,
+  questionData,
+  answer,
+  setQuestionData,
+  setAnswerData
+}) {
   const navigate = useNavigate();
 
   const data = questionData || answer;
 
   const [isLiked, setIsLiked] = useState(false);
 
-  const handleVoteCount = () => {
-    setIsLiked(!isLiked);
-    // !로그인 유저만 할 수 있음????
+  useEffect(() => {
+    if (data === questionData) {
+      // 유저가 질문에 좋아요를 했는지 확인
+      axios
+        .get(`/question/${questionId}/vote`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            Refresh: `${refreshToken}`
+          }
+        })
+        .then(res => {
+          setIsLiked(res.data.userVote);
+        });
+    } else if (data === answer) {
+      // 유저가 답변에 좋아요를 했는지 확인
+      axios
+        .get(`/question/${questionId}/answer/${answerId}/vote`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            Refresh: `${refreshToken}`
+          }
+        })
+        .then(res => {
+          setIsLiked(res.data.userVote);
+        });
+    }
+  }, [questionId]);
 
+  const handleVoteCount = () => {
     if (accessToken && refreshToken) {
+      // question 좋아요 기능
       if (data === questionData) {
         if (!isLiked) {
           axios
@@ -47,19 +80,8 @@ function Vote({ questionData, answer, questionId, answerId }) {
               }
             })
             .then(res => {
-              if (res.headers.authorization && res.headers.refresh) {
-                const accessToken = res.headers.authorization;
-                const refreshToken = res.headers.refresh;
-
-                // 기존 토큰 삭제
-                localStorage.removeItem('accessToken');
-                localStorage.removeItem('refreshToken');
-
-                // 새로운 토큰 로컬 스토리지에 저장
-                localStorage.setItem('accessToken', accessToken);
-                localStorage.setItem('refreshToken', refreshToken);
-              }
-              console.log('question-POST-response:', res.data);
+              setQuestionData(res.data);
+              setIsLiked(true);
             });
         } else {
           axios
@@ -70,27 +92,15 @@ function Vote({ questionData, answer, questionId, answerId }) {
               }
             })
             .then(res => {
-              if (res.headers.authorization && res.headers.refresh) {
-                const accessToken = res.headers.authorization;
-                const refreshToken = res.headers.refresh;
-
-                // 기존 토큰 삭제
-                localStorage.removeItem('accessToken');
-                localStorage.removeItem('refreshToken');
-
-                // 새로운 토큰 로컬 스토리지에 저장
-                localStorage.setItem('accessToken', accessToken);
-                localStorage.setItem('refreshToken', refreshToken);
-              }
-              console.log('question-DELETED-response:', res.data);
+              setQuestionData(res.data);
+              setIsLiked(false);
             });
         }
       }
 
+      // answer 좋아요 기능
       if (data === answer) {
         if (!isLiked) {
-          console.log('questionId in answer:', questionId);
-          console.log('answerId in answer:', answerId);
           axios
             .post(`/question/${questionId}/answer/${answerId}/vote`, null, {
               headers: {
@@ -99,23 +109,10 @@ function Vote({ questionData, answer, questionId, answerId }) {
               }
             })
             .then(res => {
-              if (res.headers.authorization && res.headers.refresh) {
-                const accessToken = res.headers.authorization;
-                const refreshToken = res.headers.refresh;
-
-                // 기존 토큰 삭제
-                localStorage.removeItem('accessToken');
-                localStorage.removeItem('refreshToken');
-
-                // 새로운 토큰 로컬 스토리지에 저장
-                localStorage.setItem('accessToken', accessToken);
-                localStorage.setItem('refreshToken', refreshToken);
-              }
-              console.log('answer-POST-response:', res.data);
+              setAnswerData(res.data);
+              setIsLiked(true);
             });
         } else {
-          console.log('questionId:', questionId);
-          console.log('answerId:', answerId);
           axios
             .delete(`/question/${questionId}/answer/${answerId}/vote`, {
               headers: {
@@ -124,19 +121,8 @@ function Vote({ questionData, answer, questionId, answerId }) {
               }
             })
             .then(res => {
-              if (res.headers.authorization && res.headers.refresh) {
-                const accessToken = res.headers.authorization;
-                const refreshToken = res.headers.refresh;
-
-                // 기존 토큰 삭제
-                localStorage.removeItem('accessToken');
-                localStorage.removeItem('refreshToken');
-
-                // 새로운 토큰 로컬 스토리지에 저장
-                localStorage.setItem('accessToken', accessToken);
-                localStorage.setItem('refreshToken', refreshToken);
-              }
-              console.log('answer-DELETED-response:', res.data);
+              setAnswerData(res.data);
+              setIsLiked(false);
             });
         }
       }
