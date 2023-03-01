@@ -75,6 +75,7 @@ const LoginBox = () => {
           acc[key] = value;
           return acc;
         }, {});
+        localStorage.setItem('userId', userInfo['userId']);
         localStorage.setItem('name', userInfo['name']);
 
         // 로그인 성공시 리다이렉션
