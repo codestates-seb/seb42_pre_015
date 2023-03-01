@@ -142,7 +142,7 @@ function Header({ SearchDataHandler }) {
           <HeaderLogoImgMini
             onClick={() => {
               window.scrollTo(0, 0);
-              navigate('/');
+              window.location.href = '/';
             }}
           >
             <SOLogoSvg />
@@ -152,7 +152,7 @@ function Header({ SearchDataHandler }) {
             alt='HeaderLogo'
             onClick={() => {
               window.scrollTo(0, 0);
-              navigate('/');
+              window.location.href = '/';
             }}
           />
           {isLogin ? (

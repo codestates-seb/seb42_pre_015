@@ -37,18 +37,16 @@ function ProfileCard({ questionData, answer }) {
         <ProfileCardContainer>
           <div className='created-time'>
             {init === questionData
-              ? `asked ${init.createdAt.replace(
-                  /^(\d{4}-\d{2}-\d{2}).*/,
-                  '$1'
-                )}`
-              : `answered ${init.createdAt.replace(
-                  /^(\d{4}-\d{2}-\d{2}).*/,
-                  '$1'
-                )}`}
+              ? `asked ${init.createdAt
+                  .replace(/T/, ' ')
+                  .replace(/:\d\d(\.\d{1,6})?$/, '')}`
+              : `answered ${init.createdAt
+                  .replace(/T/, ' ')
+                  .replace(/:\d\d(\.\d{1,6})?$/, '')}`}
           </div>
           <UserInfoContainer>
             <div className='user-image'></div>
-            <div className='username'>{init.userName}</div>
+            <div className='username'>{init.name}</div>
           </UserInfoContainer>
         </ProfileCardContainer>
       )}

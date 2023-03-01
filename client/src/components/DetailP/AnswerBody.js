@@ -60,11 +60,28 @@ function AnswerBody({ questionId, answerData, setAnswerData }) {
           Refresh: `${refreshToken}`
         }
       })
-      .then(res => setAnswerData(res.data));
+      .then(res => {
+        console.log('res.headers', res.headers);
+        if (res.headers.authorization && res.headers.refresh) {
+          const accessToken = res.headers.authorization;
+          const refreshToken = res.headers.refresh;
+
+          // 기존 토큰 삭제
+          localStorage.removeItem('accessToken');
+          localStorage.removeItem('refreshToken');
+
+          // 새로운 토큰 로컬 스토리지에 저장
+          localStorage.setItem('accessToken', accessToken);
+          localStorage.setItem('refreshToken', refreshToken);
+        }
+        setAnswerData(res.data);
+      });
   };
 
   const accessToken = localStorage.getItem('accessToken');
   const refreshToken = localStorage.getItem('refreshToken');
+  const LogginUserId = localStorage.getItem('userId');
+  const userId = Number(LogginUserId.split(':')[1].trim());
 
   return (
     <>
@@ -79,21 +96,25 @@ function AnswerBody({ questionId, answerData, setAnswerData }) {
               <AnswerInfo>
                 <ControlOptions>
                   <button>Share</button>
-                  <button
-                    onClick={() =>
-                      accessToken && refreshToken
-                        ? navigate(
+                  {userId === answer.userId ? (
+                    <>
+                      <button
+                        onClick={() =>
+                          navigate(
                             `/question/${questionId}/answeredit/${answer.answerId}`
                           )
-                        : navigate('/login')
-                    }
-                  >
-                    Edit
-                  </button>
+                        }
+                      >
+                        Edit
+                      </button>
 
-                  <button onClick={() => handleAnswerDelete(answer.answerId)}>
-                    Delete
-                  </button>
+                      <button
+                        onClick={() => handleAnswerDelete(answer.answerId)}
+                      >
+                        Delete
+                      </button>
+                    </>
+                  ) : null}
                 </ControlOptions>
                 <ProfileCard answer={answer} />
               </AnswerInfo>

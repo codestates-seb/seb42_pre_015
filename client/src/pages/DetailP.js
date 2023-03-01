@@ -19,7 +19,7 @@ const Main = styled.main`
   display: flex;
   flex-direction: column;
   padding: 24px 16px;
-  width: 80%;
+  width: calc(50vw + 300px);
   @media screen and (max-width: 980px) {
     flex-direction: column;
     width: calc(100% - 164px);
@@ -95,17 +95,41 @@ const NavContainer = styled.div`
   }
 `;
 
+const Loading = styled.div`
+  width: calc(50vw + 300px);
+  height: 100vh;
+  background-color: #fff;
+  /* background-color: red; */
+`;
+
 function DetailPage() {
   const navigate = useNavigate();
   // ! QuestionList랑 연결하고 나서는 url 동적으로 만들기
   const { questionId } = useParams();
 
   const [questionData, setQuestionData] = useState(null);
-  // const [answerData, setAnswerData] = useState(null);
+  const [isQuestionLoading, setIsQuestionLoading] = useState(true);
 
   useEffect(() => {
     axios.get(`/question/${questionId}`).then(res => {
+      if (res.headers.authorization && res.headers.refresh) {
+        const accessToken = res.headers.authorization;
+        const refreshToken = res.headers.refresh;
+
+        // 기존 토큰 삭제
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+
+        // 새로운 토큰 로컬 스토리지에 저장
+        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem('refreshToken', refreshToken);
+      }
+
       setQuestionData(res.data);
+      setIsQuestionLoading(false);
+
+      // 페이지 변경 시 항상 상단으로 위치.
+      window.scrollTo(0, 0);
     });
   }, [questionId]);
 
@@ -118,6 +142,7 @@ function DetailPage() {
         <NavContainer>
           <Nav />
         </NavContainer>
+        {isQuestionLoading && <Loading>Loading...</Loading>}
         {questionData && (
           <Main>
             <Title className='title'>
@@ -136,17 +161,15 @@ function DetailPage() {
               <ul>
                 <li>
                   Asked{' '}
-                  {questionData.createdAt.replace(
-                    /^(\d{4}-\d{2}-\d{2}).*/,
-                    '$1'
-                  )}
+                  {questionData.createdAt
+                    .replace(/T/, ' ')
+                    .replace(/:\d\d(\.\d{1,6})?$/, '')}
                 </li>
                 <li>
                   Modified{' '}
-                  {questionData.modifiedAt.replace(
-                    /^(\d{4}-\d{2}-\d{2}).*/,
-                    '$1'
-                  )}
+                  {questionData.modifiedAt
+                    .replace(/T/, ' ')
+                    .replace(/:\d\d(\.\d{1,6})?$/, '')}
                 </li>
                 <li>Viewed {questionData.viewCount} times</li>
               </ul>
