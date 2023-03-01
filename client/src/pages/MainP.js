@@ -155,6 +155,7 @@ const QuestionDesContainer = styled.div`
     -webkit-box-orient: vertical;
   }
   > div {
+    max-height: 73px;
     white-space: normal;
     font-size: 13px;
     margin-bottom: 8px;

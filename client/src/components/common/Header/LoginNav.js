@@ -339,6 +339,7 @@ export default function LoginNav({ setIsLogin }) {
                   onClick={() => {
                     window.localStorage.removeItem('accessToken');
                     window.localStorage.removeItem('refreshToken');
+                    window.localStorage.removeItem('userId');
                     window.localStorage.removeItem('name');
                     window.location.href = '/';
                   }}
