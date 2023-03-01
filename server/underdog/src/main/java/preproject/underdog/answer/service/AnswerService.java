@@ -148,7 +148,7 @@ public class AnswerService {
         return answerRepository.findByAnswerId(answer.getAnswerId());
     }
 
-    public VoteDto.Answer doVote(long questionId, long answerId) {//userId 제거
+    public Answer doVote(long questionId, long answerId) {//userId 제거
         Question question = questionService.findQuestionById(questionId);
         Answer findAnswer = findVerifiedAnswer(answerId);//동작 확인
         if (!question.getAnswerList().contains(findAnswer))
@@ -166,13 +166,35 @@ public class AnswerService {
         answerRepository.upVote(answerId, user.getUserId());
         Answer verifiedAnswer = findVerifiedAnswer(answerId);
 
-        VoteDto.Answer voteDto
-                = new VoteDto.Answer(verifiedAnswer.getAnswerId(), verifiedAnswer.getVotes().size(), user.getUserId(), true);
+        return verifiedAnswer;
+    }
+
+    public VoteDto.Answer getVote(long questionId, long answerId){
+        Question question = questionService.findQuestionById(questionId);
+        Answer findAnswer = findVerifiedAnswer(answerId);
+        if (!question.getAnswerList().contains(findAnswer))
+            throw new BusinessLogicException(ExceptionCode.ANSWER_NOT_FOUND);
+
+        VoteDto.Answer voteDto = new VoteDto.Answer();
+
+        voteDto.setAnswerId(findAnswer.getAnswerId());
+
+        String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        Optional<User> optionalUser = userRepository.findByEmail(principal);
+
+        if(optionalUser.isPresent()) {
+            voteDto.setUserId(optionalUser.get().getUserId());
+            if(findAnswer.getVotes().stream()
+                    .filter(v->v.getUser().getUserId()==optionalUser.get().getUserId())
+                    .findFirst().isPresent()) {voteDto.setUserVote(true);}
+        }
+
+        voteDto.setVoteCount(findAnswer.getVotes().size());
 
         return voteDto;
     }
 
-    public VoteDto.Answer undoVote(long questionId, long answerId) {//userId 제거
+    public Answer undoVote(long questionId, long answerId) {//userId 제거
         Question question = questionService.findQuestionById(questionId);//질문 검증
         Answer findAnswer = findVerifiedAnswer(answerId);//답변 검증
         if (!question.getAnswerList().contains(findAnswer))
@@ -191,9 +213,7 @@ public class AnswerService {
         answerRepository.downVote(answerId, user.getUserId());
         Answer verifiedAnswer = findVerifiedAnswer(findAnswer.getAnswerId());
 
-        VoteDto.Answer voteDto
-                = new VoteDto.Answer(verifiedAnswer.getAnswerId(), verifiedAnswer.getVotes().size(), user.getUserId(), false);
-        return voteDto;
+        return verifiedAnswer;
     }
 
     public Answer findVerifiedAnswer(long answerId) {

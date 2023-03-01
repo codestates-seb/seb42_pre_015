@@ -4,14 +4,15 @@ spring:
     url: jdbc:mysql://${DB_ENDPOINT}/underdog_test?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: ${DB_ID}
     password: ${DB_PSW}
+#    data-locations: classpath:dummy/data.sql #더미용 추가
   sql:
     init:
-      data-locations: classpath*:dummy/data.sql
+      mode: always
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     show-sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         highlight_sql: true

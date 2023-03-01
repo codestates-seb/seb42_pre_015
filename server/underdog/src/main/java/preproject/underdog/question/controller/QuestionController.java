@@ -109,19 +109,25 @@ public class QuestionController {
     //vote 기능 메서드
     @PostMapping("/{question-id}/vote") // 엔드포인트 수정됨
     public ResponseEntity postVote(@PathVariable("question-id") long questionId){
-        VoteDto.Question voteDto = questionService.createVote(questionId);
+        Question question = questionService.createVote(questionId);
+        return new ResponseEntity(mapper.questionToQuestionResponseDto(question), HttpStatus.OK);
+    }
+
+    @GetMapping("/{question-id}/vote")
+    public ResponseEntity getVote(@PathVariable("question-id") long questionId){
+        VoteDto.Question voteDto = questionService.getVote(questionId);
         return new ResponseEntity(voteDto, HttpStatus.OK);
     }
 
     @DeleteMapping("/{question-id}/vote") // 엔드포인트 수정됨
     public ResponseEntity deleteVote(@PathVariable("question-id") long questionId){
-        VoteDto.Question voteDto = questionService.cancelVote(questionId);
-        return new ResponseEntity(voteDto, HttpStatus.OK);
+        Question question = questionService.cancelVote(questionId);
+        return new ResponseEntity(mapper.questionToQuestionResponseDto(question), HttpStatus.OK);
     }
 
     @GetMapping("/search")
     public ResponseEntity searchQuestions(@RequestParam(required = false) String title,
-                                          @RequestParam(required = false) String user,
+                                          @RequestParam(required = false) String name,
                                           @RequestParam(required = false) Integer answerCount,
                                           @RequestParam(required = false) ArrayList<String> tags,
                                           Pageable pageable) {
@@ -145,9 +151,9 @@ public class QuestionController {
                     .filter(q -> q.getTitle().contains(title))
                     .collect(Collectors.toList());
         }
-        if (user != null) {
+        if (name != null) {
             questions = questions.stream()
-                    .filter(q -> q.getUser().getName().equals(user))
+                    .filter(q -> q.getUser().getName().contains(name))
                     .collect(Collectors.toList());
         }
         return new ResponseEntity<>(new PageDto<>(mapper.questionsToResponseDto(questions), questionPage), HttpStatus.OK);

@@ -2,24 +2,28 @@ package preproject.underdog.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-
+@Getter
 public class VoteDto {
     @Getter
-    @AllArgsConstructor
+    @Setter
+    @NoArgsConstructor
     public static class Question{
         private long questionId;
-        private int voteCount;
-        private long userId;
+        private Integer voteCount;
+        private Long userId;
         private boolean userVote;
     }
 
     @Getter
-    @AllArgsConstructor
+    @Setter
+    @NoArgsConstructor
     public static class Answer{
         private long answerId;
         private int voteCount;
-        private long userId;
+        private Long userId;
         private boolean userVote;
     }
 }

@@ -100,14 +100,21 @@ public class AnswerController {
     @PostMapping("{answer-id}/vote")//엔드포인트 수정, userId 제거
     public ResponseEntity doVote(@PathVariable("answer-id") @Positive long answerId,
                                  @PathVariable("question-id") @Positive long questionId) {
-        VoteDto.Answer voteDto = answerService.doVote(questionId, answerId);
+        Answer answer = answerService.doVote(questionId, answerId);
+        return new ResponseEntity(answerMapper.answerToAnswerRespDto(answer), HttpStatus.OK);
+    }
+
+    @GetMapping("/{answer-id}/vote")
+    public ResponseEntity getVote(@PathVariable("answer-id") @Positive long answerId,
+                                  @PathVariable("question-id") @Positive long questionId){
+        VoteDto.Answer voteDto = answerService.getVote(questionId, answerId);
         return new ResponseEntity(voteDto, HttpStatus.OK);
     }
 
     @DeleteMapping("{answer-id}/vote")//엔드포인트 수정, userId 제거
     public ResponseEntity undoVote(@PathVariable("answer-id") @Positive long answerId,
                                    @PathVariable("question-id") @Positive long questionId) {
-        VoteDto.Answer voteDto = answerService.undoVote(questionId, answerId);
-        return new ResponseEntity(voteDto, HttpStatus.OK);
+        Answer answer = answerService.undoVote(questionId, answerId);
+        return new ResponseEntity(answerMapper.answerToAnswerRespDto(answer), HttpStatus.OK);
     }
 }

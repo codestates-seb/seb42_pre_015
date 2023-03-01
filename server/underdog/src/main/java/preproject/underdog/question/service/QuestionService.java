@@ -2,9 +2,7 @@ package preproject.underdog.question.service;
 
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,7 +15,6 @@ import preproject.underdog.question.entity.QuestionComment;
 import preproject.underdog.question.entity.QuestionVote;
 import preproject.underdog.question.repository.QuestionCommentRepo;
 import preproject.underdog.question.repository.QuestionRepo;
-import preproject.underdog.question.repository.QuestionVoteRepository;
 import preproject.underdog.user.entity.User;
 import preproject.underdog.user.repository.UserRepository;
 
@@ -25,8 +22,6 @@ import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -138,7 +133,7 @@ public class QuestionService {
         return questionCommentRepo.findByQuestionId(findQuestion.getQuestionId());
     }
 
-    public VoteDto.Question createVote(long questionId) { // userId 없애도 됨.
+    public Question createVote(long questionId) { // userId 없애도 됨.
         Question findQuestion = findQuestionById(questionId);
 
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
@@ -154,13 +149,31 @@ public class QuestionService {
         questionRepository.upVote(questionId, user.getUserId());
         Question question = findQuestionById(questionId);
 
-        VoteDto.Question voteDto =
-                new VoteDto.Question(findQuestion.getQuestionId(), question.getQuestionVoteList().size(), user.getUserId(), true);
+        return question;
+    }
+
+    public VoteDto.Question getVote(long questionId){
+        VoteDto.Question voteDto = new VoteDto.Question();
+        Question findQuestion = findQuestionById(questionId);
+
+        voteDto.setQuestionId(findQuestion.getQuestionId());
+
+        String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        Optional<User> optionalUser = userRepository.findByEmail(principal);
+
+        if(optionalUser.isPresent()) {
+            voteDto.setUserId(optionalUser.get().getUserId());
+            if(findQuestion.getQuestionVoteList().stream()
+                    .filter(v->v.getUser().getUserId()==optionalUser.get().getUserId())
+                    .findFirst().isPresent()) {voteDto.setUserVote(true);}
+        }
+
+        voteDto.setVoteCount(findQuestion.getQuestionVoteList().size());
 
         return voteDto;
     }
 
-    public VoteDto.Question cancelVote(long questionId) {
+    public Question cancelVote(long questionId) {
         Question findQuestion = findQuestionById(questionId);
 
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
@@ -173,12 +186,9 @@ public class QuestionService {
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.VOTE_NOT_FOUND)); // 좋아요 했던 사람만 취소 가능. bad request
 
         questionRepository.downVote(questionId, user.getUserId());
-
         Question question = findQuestionById(questionId);
 
-        VoteDto.Question voteDto
-                = new VoteDto.Question(findQuestion.getQuestionId(), question.getQuestionVoteList().size(), user.getUserId(), false);
-        return voteDto;
+        return question;
     }
 
     public Question findQuestionById(long questionId) {
