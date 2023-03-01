@@ -38,7 +38,6 @@ const CommentWrapper = styled.div`
     width: 80%;
   }
   > div {
-    width: 19%;
     > .name {
       color: #0069c1;
     }
