@@ -45,8 +45,7 @@ const CommentWrapper = styled.div`
       color: #858e97;
       margin-left: 3px;
     }
-    > .edit-btn,
-    .delete-btn {
+    > .delete-btn {
       margin-left: 3px;
       color: #858e97;
       background-color: #fff;
@@ -106,8 +105,6 @@ function Comment({
 
   const [isAddClicked, setIsAddClicked] = useState(false);
   const [newComment, setNewComment] = useState('');
-  const [updatedComment, setUpdatedComment] = useState('');
-  const [onEdit, setOnEdit] = useState('');
 
   const handleAddComment = () => {
     const newCommentInput = { content: newComment };
@@ -166,34 +163,6 @@ function Comment({
           setAnswerCommentData(res.data);
           setNewComment('');
         });
-    }
-  };
-
-  const handleEditComment = e => {
-    setUpdatedComment(e.target.value);
-  };
-
-  const handleSaveComment = (e, commentId) => {
-    if (e.key === 'Enter') {
-      if (init === questionCommentData) {
-        axios
-          .patch(
-            `/question/${questionId}/comment/${commentId}`,
-            { content: updatedComment },
-            {
-              headers: {
-                Authorization: `Bearer ${accessToken}`,
-                Refresh: `${refreshToken}`
-              }
-            }
-          )
-          .then(res => {
-            setOnEdit(false);
-            setQuestionCommentData(res.data);
-          });
-      } else if (init === answerCommentData) {
-        // another patch
-      }
     }
   };
 
@@ -262,22 +231,7 @@ function Comment({
         <CommentContainer>
           {init.map(comment => (
             <CommentWrapper key={comment.commentId}>
-              {onEdit ? (
-                <>
-                  <textarea
-                    defaultValue={comment.content}
-                    onChange={handleEditComment}
-                    onKeyUp={event =>
-                      event.key === 'Enter'
-                        ? handleSaveComment(event, comment.commentId)
-                        : null
-                    }
-                  ></textarea>
-                  <p>Press enter to save</p>
-                </>
-              ) : (
-                <p className='content'>{comment.content}</p>
-              )}
+              <p className='content'>{comment.content}</p>
               <div>
                 <span className='name'>{comment.name}</span>
                 <span className='date'>
@@ -285,12 +239,6 @@ function Comment({
                 </span>
                 {LogginUserId === comment.userId ? (
                   <>
-                    <button
-                      className='edit-btn'
-                      onClick={() => setOnEdit(true)}
-                    >
-                      Edit
-                    </button>
                     <button
                       className='delete-btn'
                       onClick={() => handleDeleteComment(comment.commentId)}
