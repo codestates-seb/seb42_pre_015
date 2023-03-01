@@ -77,7 +77,7 @@ function Question({ questionId, questionData }) {
         if (res.headers.authorization && res.headers.refresh) {
           const accessToken = res.headers.authorization;
           const refreshToken = res.headers.refresh;
-          // test
+
           // 기존 토큰 삭제
           localStorage.removeItem('accessToken');
           localStorage.removeItem('refreshToken');
@@ -85,6 +85,12 @@ function Question({ questionId, questionData }) {
           // 새로운 토큰 로컬 스토리지에 저장
           localStorage.setItem('accessToken', accessToken);
           localStorage.setItem('refreshToken', refreshToken);
+        }
+      })
+      .delete(`/question/${questionId}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          Refresh: `${refreshToken}`
         }
       });
     // window.location.href = '/';
