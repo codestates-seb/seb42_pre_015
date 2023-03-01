@@ -148,7 +148,7 @@ public class AnswerService {
         return answerRepository.findByAnswerId(answer.getAnswerId());
     }
 
-    public Answer doVote(long questionId, long answerId) {//userId 제거
+    public List<Answer> doVote(long questionId, long answerId) {//userId 제거
         Question question = questionService.findQuestionById(questionId);
         Answer findAnswer = findVerifiedAnswer(answerId);//동작 확인
         if (!question.getAnswerList().contains(findAnswer))
@@ -164,9 +164,8 @@ public class AnswerService {
             }
         }
         answerRepository.upVote(answerId, user.getUserId());
-        Answer verifiedAnswer = findVerifiedAnswer(answerId);
 
-        return verifiedAnswer;
+        return answerRepository.findByQuestionId(question.getQuestionId());
     }
 
     public VoteDto.Answer getVote(long questionId, long answerId){
@@ -194,7 +193,7 @@ public class AnswerService {
         return voteDto;
     }
 
-    public Answer undoVote(long questionId, long answerId) {//userId 제거
+    public List<Answer> undoVote(long questionId, long answerId) {//userId 제거
         Question question = questionService.findQuestionById(questionId);//질문 검증
         Answer findAnswer = findVerifiedAnswer(answerId);//답변 검증
         if (!question.getAnswerList().contains(findAnswer))
@@ -211,9 +210,8 @@ public class AnswerService {
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.VOTE_NOT_FOUND)); // ExceptionCode.VOTE_NOT_FOUND
 
         answerRepository.downVote(answerId, user.getUserId());
-        Answer verifiedAnswer = findVerifiedAnswer(findAnswer.getAnswerId());
 
-        return verifiedAnswer;
+        return answerRepository.findByQuestionId(question.getQuestionId());
     }
 
     public Answer findVerifiedAnswer(long answerId) {
