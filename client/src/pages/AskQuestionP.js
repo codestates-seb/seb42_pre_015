@@ -141,20 +141,35 @@ function AskQuestionPage() {
         }
       })
       .then(res => {
-        if (res.headers.authorization && res.headers.refresh) {
-          const accessToken = res.headers.authorization;
-          const refreshToken = res.headers.refresh;
+        window.location.href = `/question/${res.data.questionId}`;
+      })
+      .catch(handleSubmitError);
+  };
 
-          // 기존 토큰 삭제
-          localStorage.removeItem('accessToken');
-          localStorage.removeItem('refreshToken');
+  const handleSubmitError = err => {
+    const newQuestion = { userId: 1, ...formValues };
+    if (err.response.status === 401) {
+      const newAccessToken = err.response.headers.authorization;
+      const newRefreshToken = err.response.headers.refresh;
 
-          // 새로운 토큰 로컬 스토리지에 저장
-          localStorage.setItem('accessToken', accessToken);
-          localStorage.setItem('refreshToken', refreshToken);
-        }
-        navigate(`/question/${res.data.questionId}`);
-      });
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+
+      localStorage.setItem('accessToken', newAccessToken);
+      localStorage.setItem('refreshToken', newRefreshToken);
+
+      axios
+        .post('/question', newQuestion, {
+          headers: {
+            Authorization: `Bearer ${newAccessToken}`,
+            Refresh: `${newRefreshToken}`
+          }
+        })
+        .then(res => {
+          window.location.href = `/question/${res.data.questionId}`;
+        })
+        .catch(handleSubmitError);
+    }
   };
 
   const handleDiscard = () => {
