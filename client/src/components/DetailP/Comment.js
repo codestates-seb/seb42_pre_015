@@ -120,22 +120,12 @@ function Comment({
             Refresh: `${refreshToken}`
           }
         })
-        .then(res => {
-          if (res.headers.authorization && res.headers.refresh) {
-            const accessToken = res.headers.authorization;
-            const refreshToken = res.headers.refresh;
-
-            // 기존 토큰 삭제
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('refreshToken');
-
-            // 새로운 토큰 로컬 스토리지에 저장
-            localStorage.setItem('accessToken', accessToken);
-            localStorage.setItem('refreshToken', refreshToken);
-          }
-          setQuestionCommentData(res.data);
-          setNewComment('');
-        });
+        .then(() => {
+          window.location.href = `/question/${questionId}`;
+        })
+        .catch(err =>
+          handleAddCommentError(err, `/question/${questionId}/comment`)
+        );
     } else if (init === answerCommentData) {
       axios
         .post(
@@ -148,24 +138,40 @@ function Comment({
             }
           }
         )
-        .then(res => {
-          console.log('commentdata:', res);
+        .then(() => {
+          window.location.href = `/question/${questionId}`;
+        })
+        .catch(err =>
+          handleAddCommentError(
+            err,
+            `/question/${questionId}/answer/${answerId}/comment`
+          )
+        );
+    }
+  };
+  const handleAddCommentError = (err, endpoint) => {
+    const newCommentInput = { content: newComment };
+    if (err.response.status === 401) {
+      const newAccessToken = err.response.headers.authorization;
+      const newRefreshToken = err.response.headers.refresh;
 
-          if (res.headers.authorization && res.headers.refresh) {
-            const accessToken = res.headers.authorization;
-            const refreshToken = res.headers.refresh;
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
 
-            // 기존 토큰 삭제
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('refreshToken');
+      localStorage.setItem('accessToken', newAccessToken);
+      localStorage.setItem('refreshToken', newRefreshToken);
 
-            // 새로운 토큰 로컬 스토리지에 저장
-            localStorage.setItem('accessToken', accessToken);
-            localStorage.setItem('refreshToken', refreshToken);
+      axios
+        .post(endpoint, newCommentInput, {
+          headers: {
+            Authorization: `Bearer ${newAccessToken}`,
+            Refresh: `${newRefreshToken}`
           }
-          setAnswerCommentData(res.data);
-          setNewComment('');
-        });
+        })
+        .then(() => {
+          window.location.href = `/question/${questionId}`;
+        })
+        .catch(err => handleAddCommentError(err, endpoint));
     }
   };
 
@@ -183,22 +189,15 @@ function Comment({
             Refresh: `${refreshToken}`
           }
         })
-        .then(res => {
-          if (res.headers.authorization && res.headers.refresh) {
-            const accessToken = res.headers.authorization;
-            const refreshToken = res.headers.refresh;
-
-            // 기존 토큰 삭제
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('refreshToken');
-
-            // 새로운 토큰 로컬 스토리지에 저장
-            localStorage.setItem('accessToken', accessToken);
-            localStorage.setItem('refreshToken', refreshToken);
-          }
-          setQuestionCommentData(res.data);
-          setNewComment('');
-        });
+        .then(() => {
+          window.location.href = `/question/${questionId}`;
+        })
+        .catch(err =>
+          handleDeleteCommentError(
+            err,
+            `/question/${questionId}/comment/${commentId}`
+          )
+        );
     } else if (init === answerCommentData) {
       axios
         .delete(
@@ -210,22 +209,39 @@ function Comment({
             }
           }
         )
-        .then(res => {
-          if (res.headers.authorization && res.headers.refresh) {
-            const accessToken = res.headers.authorization;
-            const refreshToken = res.headers.refresh;
+        .then(() => {
+          window.location.href = `/question/${questionId}`;
+        })
+        .catch(err =>
+          handleDeleteCommentError(
+            err,
+            `/question/${questionId}/answer/${answerId}/comment/${commentId}`
+          )
+        );
+    }
+  };
+  const handleDeleteCommentError = (err, endpoint) => {
+    if (err.response.status === 401) {
+      const newAccessToken = err.response.headers.authorization;
+      const newRefreshToken = err.response.headers.refresh;
 
-            // 기존 토큰 삭제
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('refreshToken');
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
 
-            // 새로운 토큰 로컬 스토리지에 저장
-            localStorage.setItem('accessToken', accessToken);
-            localStorage.setItem('refreshToken', refreshToken);
+      localStorage.setItem('accessToken', newAccessToken);
+      localStorage.setItem('refreshToken', newRefreshToken);
+
+      axios
+        .delete(endpoint, {
+          headers: {
+            Authorization: `Bearer ${newAccessToken}`,
+            Refresh: `${newRefreshToken}`
           }
-          setAnswerCommentData(res.data);
-          setNewComment('');
-        });
+        })
+        .then(() => {
+          window.location.href = `/question/${questionId}`;
+        })
+        .catch(err => handleAddCommentError(err, endpoint));
     }
   };
 
