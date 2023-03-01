@@ -8,6 +8,7 @@ import preproject.underdog.exception.BusinessLogicException;
 import preproject.underdog.exception.ExceptionCode;
 import preproject.underdog.security.utils.CustomAuthorityUtils;
 import preproject.underdog.user.entity.User;
+import preproject.underdog.user.mail.UserRegistrationApplicationEvent;
 import preproject.underdog.user.repository.UserRepository;
 
 import javax.transaction.Transactional;
@@ -24,7 +25,6 @@ public class UserService {
     private final ApplicationEventPublisher publisher;
     public User createUser(User user){
         Optional<User> optionalUser = userRepository.findByEmail(user.getEmail());
-
         optionalUser.ifPresent(u -> new BusinessLogicException(ExceptionCode.USER_ALREADY_EXISTS));
 //                publisher.publishEvent(new UserRegistrationApplicationEvent(this))); // 이벤트 로직 추가
         // 이미 가입한 회원의 경우, 2가지 경우로 나뉜다.
@@ -37,7 +37,9 @@ public class UserService {
         List<String> roles = authorityUtils.createRoles(user.getEmail());
         user.setRoles(roles);
 
-        return userRepository.save(user);
+        User savedUser = userRepository.save(user);
+        publisher.publishEvent(new UserRegistrationApplicationEvent(this, savedUser));
+        return savedUser;
     }
 
     public User verifyUser(long userId){
@@ -50,5 +52,10 @@ public class UserService {
         Optional<User> optionalUser = userRepository.findByEmail(email);
         User foundUser = optionalUser.orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
         return foundUser;
+    }
+
+    public void deleteUser(long userId) {
+        verifyUser(userId);
+        userRepository.deleteById(userId);
     }
 }

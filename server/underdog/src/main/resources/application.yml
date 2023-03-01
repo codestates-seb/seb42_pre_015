@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${DB_ENDPOINT}/underdog_test?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: jdbc:mysql://${DB_ENDPOINT}/underdog?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: ${DB_ID}
     password: ${DB_PSW}
   sql:
@@ -11,7 +11,7 @@ spring:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         highlight_sql: true
@@ -60,3 +60,14 @@ jwt:
 mail:
   address:
     admin: ${MAIL_ADDRESS_ADMIN}
+  smtp:
+    host: smtp.gmail.com
+    port: 587
+    username: ${EMAIL_USERNAME} #Gmail email
+    password: ${EMAIL_PASSWORD} #Google 계정 2단계 인증 생성 후 앱 비밀번호 생성
+    auth: true
+    starttls:
+      enable: true #일부 SMTP 서버에는 TLS 연결이 필요하므로 TLS 보호 연결을 활성화한다
+  subject:
+    member:
+      registration: Thank you for joining our cafe!
