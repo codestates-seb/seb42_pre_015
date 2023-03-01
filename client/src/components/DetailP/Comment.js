@@ -38,7 +38,6 @@ const CommentWrapper = styled.div`
     width: 80%;
   }
   > div {
-    width: 19%;
     > .name {
       color: #0069c1;
     }
@@ -46,8 +45,7 @@ const CommentWrapper = styled.div`
       color: #858e97;
       margin-left: 3px;
     }
-    > .edit-btn,
-    .delete-btn {
+    > .delete-btn {
       margin-left: 3px;
       color: #858e97;
       background-color: #fff;
@@ -107,7 +105,6 @@ function Comment({
 
   const [isAddClicked, setIsAddClicked] = useState(false);
   const [newComment, setNewComment] = useState('');
-  const [onEdit, setOnEdit] = useState('');
 
   const handleAddComment = () => {
     const newCommentInput = { content: newComment };
@@ -169,11 +166,6 @@ function Comment({
     }
   };
 
-  const handleEditComment = e => {
-    setOnEdit(!onEdit);
-    // console.log('e:', e.target);
-  };
-
   const handleDeleteComment = commentId => {
     if (init === questionCommentData) {
       axios
@@ -231,8 +223,7 @@ function Comment({
 
   const accessToken = localStorage.getItem('accessToken');
   const refreshToken = localStorage.getItem('refreshToken');
-  const LogginUserId = localStorage.getItem('userId');
-  const userId = Number(LogginUserId.split(':')[1].trim());
+  const LogginUserId = Number(localStorage.getItem('userId'));
 
   return (
     <>
@@ -246,11 +237,8 @@ function Comment({
                 <span className='date'>
                   {comment.createdAt.replace(/^(\d{4}-\d{2}-\d{2}).*/, '$1')}
                 </span>
-                {userId === comment.userId ? (
+                {LogginUserId === comment.userId ? (
                   <>
-                    <button className='edit-btn' onClick={handleEditComment}>
-                      Edit
-                    </button>
                     <button
                       className='delete-btn'
                       onClick={() => handleDeleteComment(comment.commentId)}
