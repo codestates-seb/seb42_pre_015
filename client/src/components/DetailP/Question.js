@@ -93,6 +93,8 @@ function Question({ questionId, questionData }) {
   const accessToken = localStorage.getItem('accessToken');
   const refreshToken = localStorage.getItem('refreshToken');
   const LogginUserId = localStorage.getItem('userId');
+
+  //! userId가 있을때만!!!
   const userId = Number(LogginUserId.split(':')[1].trim());
 
   return (
