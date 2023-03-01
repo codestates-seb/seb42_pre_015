@@ -340,6 +340,7 @@ export default function LoginNav({ setIsLogin }) {
                     window.localStorage.removeItem('accessToken');
                     window.localStorage.removeItem('refreshToken');
                     window.localStorage.removeItem('userId');
+                    window.localStorage.removeItem('name');
                     window.location.href = '/';
                   }}
                 >

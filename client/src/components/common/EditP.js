@@ -1,7 +1,10 @@
+import { useParams, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
 import { GeneralBtn } from './Buttons';
 import TagInput from './TagInput';
-import ReactQuill from 'react-quill';
+import Editor from './Editor';
 import 'react-quill/dist/quill.snow.css';
 
 const QEditContainer = styled.div`
@@ -32,22 +35,14 @@ const QEInput = styled.input`
   color: rgb(12, 13, 14);
   border-radius: 3px;
   margin-bottom: 15px;
-`;
-const QEP = styled.p`
-  width: 100%;
-  white-space: normal;
-  margin-bottom: 15px;
-`;
-const QECode = styled.pre`
-  width: 100%;
-  background-color: rgb(246, 246, 246);
-  padding: 12px;
-  margin-bottom: 19.5px;
-  max-height: 600px;
-  code {
-    white-space: normal;
+  &:focus {
+    border: 1px solid ${props => (props.validated ? '#409ad6' : '#DE4F54')};
+    box-shadow: ${props =>
+      props.validated ? '0 0 0 4px #d9e9f6' : '0 0 0 4px #F6E0E0'};
+    outline: none;
   }
 `;
+
 const QECancelBtn = styled.button`
   margin-left: 17px;
   height: 38px;
@@ -60,17 +55,66 @@ const QECancelBtn = styled.button`
     background-color: #f0f8ff;
   }
 `;
-const QEAtag = styled.a`
-  color: rgb(131, 141, 149);
-`;
-const StyledReactQuill = styled(ReactQuill)`
-  height: 284px;
-  margin-bottom: 50px;
-  .ql-editor {
-    height: 100%;
+const ShowConentData = styled.div`
+  margin: 30px 0 30px 0;
+  p {
+    white-space: normal;
   }
 `;
 export function QuestionEditMain() {
+  const [QuestionData, setQuestionData] = useState({ content: '', tags: [] });
+  const { questionId } = useParams();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    axios
+      .get(`/question/${questionId}`)
+      .then(res => {
+        setQuestionData(res.data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
+
+  const handleInputChange = event => {
+    setQuestionData({ ...QuestionData, title: event.target.value || '' });
+  };
+
+  const [titleErrorMsg, setTitleErrorMsg] = useState('');
+  const [contentErrorMsg, setContentErrorMsg] = useState('');
+  const [tagErrorMsg, setTagErrorMsg] = useState(false);
+
+  const handleValidation = e => {
+    if (e.target.name === 'title') {
+      if (QuestionData.title.length > 0 && QuestionData.title.length < 15) {
+        setTitleErrorMsg('Title must be at least 15 characters.');
+      } else if (QuestionData.title.length === 0) {
+        setTitleErrorMsg('Title is missing.');
+      } else {
+        setTitleErrorMsg(false);
+      }
+    }
+
+    if (e.target.className.includes('ql-editor')) {
+      if (QuestionData.content.length > 0 && QuestionData.content.length < 20) {
+        setContentErrorMsg('Body must be at least 20 characters.');
+      } else if (QuestionData.content.length === 0) {
+        setContentErrorMsg('Body is missing.');
+      } else {
+        setContentErrorMsg('');
+      }
+    }
+
+    if (e.target.name === 'tags') {
+      if (!QuestionData.tags.length) {
+        setTagErrorMsg('Please enter at least one tag.');
+      } else {
+        setTagErrorMsg('');
+      }
+    }
+  };
+
   return (
     <QEditContainer>
       <QEHelpBox>
@@ -85,47 +129,124 @@ export function QuestionEditMain() {
           hyperlinks.
         </p>
       </QEHelpBox>
+
       <QELable htmlFor='Title'>Title</QELable>
+
       <QEInput
         placeholder='How to avoid sending a brunch of requests to update data in DB'
         id='title'
+        value={QuestionData.title}
+        onChange={handleInputChange}
+        onBlur={handleValidation}
+        name='title'
+        validated={!titleErrorMsg}
       ></QEInput>
+      {titleErrorMsg && <p style={{ color: '#DE4F54' }}>{titleErrorMsg}</p>}
       <QELable htmlFor='body'>Body</QELable>
-      <StyledReactQuill id='body' className='AnswerText' />
-      <QEP>
-        I have an unregistered user that works with my application, getting some
-        progress. I keep this progress in local storage. Then, when the user
-        decides to register, I send a PUT request to sync his progress with DB.
-      </QEP>
-      <QEP>
-        For that I track its status and when it&lsquo;s become authenticated and
-        the progress parameter empty, I send a PUT request, but the problem is
-        it sends dozens of PUT requests to update the progress instead of one.
-      </QEP>
-      <QECode>
-        <code>
-          For that I track its status and when it&lsquo;s become authenticated
-          and the progress parameter empty, I send a PUT request, but the
-          problem is it sends dozens of PUT requests to update the progress
-          instead of one.
-        </code>
-      </QECode>
-      <QEP>
-        P.S. If it should be done in another way, share your ideas with me
-        please.
-      </QEP>
+      <Editor
+        editorInput={QuestionData.content}
+        setEditorInput={setQuestionData}
+        formValues={QuestionData}
+        handleValidation={handleValidation}
+        contentErrorMsg={contentErrorMsg}
+      />
+      {contentErrorMsg && <p style={{ color: '#DE4F54' }}>{contentErrorMsg}</p>}
+      <ShowConentData
+        dangerouslySetInnerHTML={{
+          __html: QuestionData.content
+        }}
+      />
       <QELable htmlFor='tags'>Tags</QELable>
-      <TagInput id='tags' placeholder='e.g. (vba css json)' />
+
+      <TagInput
+        id='tags'
+        placeholder='e.g. (vba css json)'
+        tags={QuestionData.tags}
+        formValues={QuestionData}
+        setFormValues={setQuestionData}
+        handleValidation={handleValidation}
+        tagErrorMsg={tagErrorMsg}
+      />
+      {tagErrorMsg && <p style={{ color: '#DE4F54' }}>{tagErrorMsg}</p>}
       <div style={{ marginBottom: '12px', marginTop: '12px' }}>
-        <GeneralBtn width={'80px'} BtnText='Save edits'></GeneralBtn>
-        <QECancelBtn>Cancel</QECancelBtn>
+        <GeneralBtn
+          width={'80px'}
+          BtnText='Save edits'
+          onClick={() => {
+            const accessToken = localStorage.getItem('accessToken');
+            const refreshToken = localStorage.getItem('refreshToken');
+            const data = {
+              title: QuestionData.title,
+              content: QuestionData.content,
+              tags: QuestionData.tags
+            };
+            axios
+              .patch(`/question/${questionId}`, data, {
+                headers: {
+                  Authorization: `Bearer ${accessToken}`,
+                  'X-Refresh-Token': refreshToken
+                }
+              })
+              .then(() => {
+                navigate(`/question/${questionId}`);
+              })
+              .catch(error => {
+                console.error(error.response);
+              });
+          }}
+        ></GeneralBtn>
+        <QECancelBtn
+          onClick={() => {
+            navigate(`/question/${questionId}`);
+          }}
+        >
+          Cancel
+        </QECancelBtn>
       </div>
-      <QEAtag href='/#'>Add a comment</QEAtag>
     </QEditContainer>
   );
 }
 
 export function AnswerEditMain() {
+  const [AllAnswerData, AllsetAnswerData] = useState([]);
+  const [answer, setAnswer] = useState(null);
+  const [contentErrorMsg, setContentErrorMsg] = useState('');
+  const { questionId, answerId } = useParams();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    axios
+      .get(`/question/${questionId}/answer`)
+      .then(res => {
+        AllsetAnswerData(res.data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
+
+  useEffect(() => {
+    const filteredAnswer = AllAnswerData.find(el => {
+      return el.answerId === parseInt(answerId);
+    });
+    setAnswer(filteredAnswer);
+  }, [AllAnswerData, answerId]);
+
+  if (!answer) {
+    return <div>Loading...</div>;
+  }
+
+  const handleValidation = e => {
+    if (e.target.className.includes('ql-editor')) {
+      if (answer.content.length > 0 && answer.content.length < 20) {
+        setContentErrorMsg('Body must be at least 20 characters.');
+      } else if (answer.content.length === 0) {
+        setContentErrorMsg('Body is missing.');
+      } else {
+        setContentErrorMsg('');
+      }
+    }
+  };
   return (
     <QEditContainer>
       <QEHelpBox margin='20px'>
@@ -143,38 +264,51 @@ export function AnswerEditMain() {
       <QELable htmlFor='Answer' fontsize='17px' margin='14px'>
         Answer
       </QELable>
-      <StyledReactQuill id='Answer' className='AnswerText' />
-      <QEP>
-        I have an unregistered user that works with my application, getting some
-        progress. I keep this progress in local storage. Then, when the user
-        decides to register, I send a PUT request to sync his progress with DB.
-      </QEP>
-      <QEP>
-        For that I track its status and when it&lsquo;s become authenticated and
-        the progress parameter empty, I send a PUT request, but the problem is
-        it sends dozens of PUT requests to update the progress instead of one.
-      </QEP>
-      <QECode>
-        <code>
-          For that I track its status and when it&lsquo;s become authenticated
-          and the progress parameter empty, I send a PUT request, but the
-          problem is it sends dozens of PUT requests to update the progress
-          instead of one.
-        </code>
-      </QECode>
-      <QEP>
-        P.S. If it should be done in another way, share your ideas with me
-        please.
-      </QEP>
+      <Editor
+        editorInput={answer.content}
+        setEditorInput={setAnswer}
+        formValues={answer}
+        handleValidation={handleValidation}
+        contentErrorMsg={contentErrorMsg}
+      />
+      {contentErrorMsg && <p style={{ color: '#DE4F54' }}>{contentErrorMsg}</p>}
+      <ShowConentData
+        dangerouslySetInnerHTML={{
+          __html: answer.content
+        }}
+      />
       <div style={{ marginBottom: '12px' }}>
         <GeneralBtn
           width={'80px'}
           BtnText='Save edits'
           padding='0px'
+          onClick={() => {
+            const accessToken = localStorage.getItem('accessToken');
+            const refreshToken = localStorage.getItem('refreshToken');
+            const data = { content: answer.content };
+            axios
+              .patch(`/question/${questionId}/answer/${answerId}`, data, {
+                headers: {
+                  Authorization: `Bearer ${accessToken}`,
+                  'X-Refresh-Token': refreshToken
+                }
+              })
+              .then(() => {
+                navigate(`/question/${questionId}`);
+              })
+              .catch(error => {
+                console.error(error.response);
+              });
+          }}
         ></GeneralBtn>
-        <QECancelBtn>Cancel</QECancelBtn>
+        <QECancelBtn
+          onClick={() => {
+            navigate(`/question/${questionId}`);
+          }}
+        >
+          Cancel
+        </QECancelBtn>
       </div>
-      <QEAtag href='/#'>Add a comment</QEAtag>
     </QEditContainer>
   );
 }
