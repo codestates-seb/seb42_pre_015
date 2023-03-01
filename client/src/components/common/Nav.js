@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import { useState } from 'react';
 import { GlobeSVG } from '../../assets/NavSvg';
-import { useNavigate } from 'react-router-dom';
 
 const NavContainer = styled.div`
   width: 164px;
@@ -50,11 +49,10 @@ const MenuContainer = styled.li`
 
 const Nav = () => {
   const [currentLocation, setCurrentLocation] = useState('/');
-  const navigate = useNavigate();
 
   const handleTabClick = location => {
     setCurrentLocation(location);
-    navigate(location);
+    window.location.href = '/';
   };
 
   return (
