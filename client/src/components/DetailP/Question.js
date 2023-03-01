@@ -71,23 +71,35 @@ function Question({ questionId, questionData, setQuestionData }) {
           Refresh: `${refreshToken}`
         }
       })
-      .then(res => {
-        console.log('res.headers', res.headers);
-        console.log('res.data', res.data);
-        if (res.headers.authorization && res.headers.refresh) {
-          const accessToken = res.headers.authorization;
-          const refreshToken = res.headers.refresh;
+      .then(() => {
+        window.location.href = '/';
+      })
+      .catch(handleDeleteError);
+  };
 
-          // 기존 토큰 삭제
-          localStorage.removeItem('accessToken');
-          localStorage.removeItem('refreshToken');
+  const handleDeleteError = err => {
+    if (err.response.status === 401) {
+      const newAccessToken = err.response.headers.authorization;
+      const newRefreshToken = err.response.headers.refresh;
 
-          // 새로운 토큰 로컬 스토리지에 저장
-          localStorage.setItem('accessToken', accessToken);
-          localStorage.setItem('refreshToken', refreshToken);
-        }
-      });
-    window.location.href = '/';
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+
+      localStorage.setItem('accessToken', newAccessToken);
+      localStorage.setItem('refreshToken', newRefreshToken);
+
+      axios
+        .delete(`/question/${questionId}`, {
+          headers: {
+            Authorization: `Bearer ${newAccessToken}`,
+            Refresh: `${newRefreshToken}`
+          }
+        })
+        .then(() => {
+          window.location.href = '/';
+        })
+        .catch(handleDeleteError);
+    }
   };
 
   const accessToken = localStorage.getItem('accessToken');
