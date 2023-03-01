@@ -9,6 +9,18 @@ function AnswerCommentList({ questionId, answerId }) {
     axios
       .get(`/question/${questionId}/answer/${answerId}/comments`)
       .then(res => {
+        if (res.headers.authorization && res.headers.refresh) {
+          const accessToken = res.headers.authorization;
+          const refreshToken = res.headers.refresh;
+
+          // 기존 토큰 삭제
+          localStorage.removeItem('accessToken');
+          localStorage.removeItem('refreshToken');
+
+          // 새로운 토큰 로컬 스토리지에 저장
+          localStorage.setItem('accessToken', accessToken);
+          localStorage.setItem('refreshToken', refreshToken);
+        }
         setAnswerCommentData(res.data);
       });
   }, [questionId]);
