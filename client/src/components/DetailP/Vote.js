@@ -39,10 +39,8 @@ function Vote({ questionData, answer, questionId, answerId }) {
     if (accessToken && refreshToken) {
       if (data === questionData) {
         if (!isLiked) {
-          console.log('questionId:', questionId);
-          const numQuestionId = Number(questionId);
           axios
-            .post(`/question/${numQuestionId}/vote`, null, {
+            .post(`/question/${questionId}/vote`, null, {
               headers: {
                 Authorization: `Bearer ${accessToken}`,
                 Refresh: `${refreshToken}`
@@ -64,8 +62,6 @@ function Vote({ questionData, answer, questionId, answerId }) {
               console.log('question-POST-response:', res.data);
             });
         } else {
-          console.log('questionId:', questionId);
-          // const numQuestionId = questionId;
           axios
             .delete(`/question/${questionId}/vote`, {
               headers: {
@@ -93,8 +89,8 @@ function Vote({ questionData, answer, questionId, answerId }) {
 
       if (data === answer) {
         if (!isLiked) {
-          console.log('questionId:', questionId);
-          console.log('answerId:', answerId);
+          console.log('questionId in answer:', questionId);
+          console.log('answerId in answer:', answerId);
           axios
             .post(`/question/${questionId}/answer/${answerId}/vote`, null, {
               headers: {
