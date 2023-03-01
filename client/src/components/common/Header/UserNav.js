@@ -42,17 +42,47 @@ const UsersNavigation = styled.nav`
     }
   }
 `;
+const UserBox = styled.div`
+  .user-box {
+    background-color: ${() =>
+      `hsl(${Math.floor(Math.random() * 360)}, 70%, 50%)`};
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    @media (max-width: 640px) {
+      display: none;
+    }
+  }
+`;
 
 export default function UserNav() {
+  const showName = () => {
+    const userName = localStorage.getItem('name');
+    if (userName.length <= 3) {
+      return userName.slice(-2);
+    } else {
+      return userName.slice(0, 1);
+    }
+  };
+
   return (
     <UsersNavigation>
       <ol>
         <li>
           <a href='/#'>
-            <img
+            {/* <img
               src='https://lh3.googleusercontent.com/a/AEdFTp6G9ZfXKo7FPo_1fE9FtMz6i7hPnBBBdbF-WjOv=k-s48'
               alt='user'
-            ></img>
+            ></img> */}
+            <UserBox>
+              <div className='user-box'>
+                <div className='user-box__name'>{showName()}</div>
+              </div>
+            </UserBox>
           </a>
           <span>1</span>
         </li>

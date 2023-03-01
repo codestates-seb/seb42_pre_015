@@ -68,8 +68,14 @@ const LoginBox = () => {
         localStorage.setItem('refreshToken', refreshToken);
 
         // 로그인 한 유저의 아이디를 로컬 스토리지에 저장
-        const LogginUserId = response.data.userId;
-        localStorage.setItem('userId', LogginUserId);
+        // const LogginUserId = response.data.userId;
+        // localStorage.setItem('userId', LogginUserId);
+        const userInfo = response.data.reduce((acc, cur) => {
+          const [key, value] = cur.split(': ');
+          acc[key] = value;
+          return acc;
+        }, {});
+        localStorage.setItem('name', userInfo['name']);
 
         // 로그인 성공시 리다이렉션
         window.location.href = '/';
@@ -111,7 +117,7 @@ const LoginBox = () => {
                     style={{
                       border: emailError
                         ? '2px solid red'
-                        : '2px solid rgb(10, 149, 255)'
+                        : '2px solid yellowgreen'
                     }}
                   />
                   {emailError && (
@@ -133,9 +139,9 @@ const LoginBox = () => {
                     onBlur={() => setPasswordError(validatePassword(password))}
                     className='login-form__text '
                     style={{
-                      border: emailError
+                      border: passwordError
                         ? '2px solid red'
-                        : '2px solid rgb(10, 149, 255)'
+                        : '2px solid yellowgreen'
                     }}
                   />
                   {passwordError && (

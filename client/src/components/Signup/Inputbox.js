@@ -145,9 +145,9 @@ const Inputbox = () => {
                 }
                 className='signup-form__text'
                 style={{
-                  border: emailError
+                  border: displayNameError
                     ? '2px solid red'
-                    : '2px solid rgb(10, 149, 255)'
+                    : '2px solid yellowgreen'
                 }}
               />
               <ErrorPosition>
@@ -171,9 +171,7 @@ const Inputbox = () => {
                 onBlur={() => setEmailError(validateEmail(email))}
                 className='signup-form__text'
                 style={{
-                  border: emailError
-                    ? '2px solid red'
-                    : '2px solid rgb(10, 149, 255)'
+                  border: emailError ? '2px solid red' : '2px solid yellowgreen'
                 }}
               />
               <ErrorPosition>
@@ -195,9 +193,9 @@ const Inputbox = () => {
                 onBlur={() => setPasswordError(validatePassword(password))}
                 className='signup-form__text'
                 style={{
-                  border: emailError
+                  border: passwordError
                     ? '2px solid red'
-                    : '2px solid rgb(10, 149, 255)'
+                    : '2px solid yellowgreen'
                 }}
               />
               <ErrorPosition>
