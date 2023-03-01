@@ -61,6 +61,7 @@ function AnswerBody({ questionId, answerData, setAnswerData }) {
         }
       })
       .then(res => {
+        console.log('res.headers', res.headers);
         if (res.headers.authorization && res.headers.refresh) {
           const accessToken = res.headers.authorization;
           const refreshToken = res.headers.refresh;

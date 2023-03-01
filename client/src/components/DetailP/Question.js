@@ -72,6 +72,8 @@ function Question({ questionId, questionData }) {
         }
       })
       .then(res => {
+        console.log('res.headers', res.headers);
+        console.log('res.data', res.data);
         if (res.headers.authorization && res.headers.refresh) {
           const accessToken = res.headers.authorization;
           const refreshToken = res.headers.refresh;
@@ -85,7 +87,7 @@ function Question({ questionId, questionData }) {
           localStorage.setItem('refreshToken', refreshToken);
         }
       });
-    window.location.href = '/';
+    // window.location.href = '/';
   };
 
   const accessToken = localStorage.getItem('accessToken');
