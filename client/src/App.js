@@ -8,16 +8,21 @@ import DetailP from '../src/pages/DetailP';
 import LoginP from '../src/pages/LoginP';
 import SignupP from '../src/pages/SignupP';
 import Header from './components/common/Header/Header';
+import { useState } from 'react';
 
 function App() {
+  const [SearchData, setSearchData] = useState('');
+  const SearchDataHandler = e => {
+    setSearchData(e);
+  };
   return (
     <>
       <GlobalStyles />
       <BrowserRouter>
         <div className='app'>
-          <Header />
+          <Header SearchDataHandler={SearchDataHandler} />
           <Routes>
-            <Route exact path='/' element={<MainP />} />
+            <Route exact path='/' element={<MainP SearchData={SearchData} />} />
 
             <Route exact path='/ask' element={<AskQuestionP />} />
             <Route

@@ -93,7 +93,7 @@ const HamburgerBtn = styled.button`
   }
 `;
 
-function Header() {
+function Header({ SearchDataHandler }) {
   const [isLogin, setIsLogin] = useState(false);
   const [isProductsClick, setIsProductsClick] = useState(false);
   const [isNavBtnClick, setIsNavBtnClick] = useState(false);
@@ -139,13 +139,19 @@ function Header() {
             />
             <FontAwesomeIcon icon={faBars} size='xl' />
           </HamburgerBtn>
-          <HeaderLogoImgMini>
+          <HeaderLogoImgMini
+            onClick={() => {
+              window.scrollTo(0, 0);
+              navigate('/');
+            }}
+          >
             <SOLogoSvg />
           </HeaderLogoImgMini>
           <HeaderLogoImg
             src={HeaderLogo}
             alt='HeaderLogo'
             onClick={() => {
+              window.scrollTo(0, 0);
               navigate('/');
             }}
           />
@@ -170,7 +176,7 @@ function Header() {
               <NavigationBtn display='none'>For Teams</NavigationBtn>
             </>
           )}
-          <Search isLogin={isLogin} />
+          <Search isLogin={isLogin} SearchDataHandler={SearchDataHandler} />
           {isLogin ? (
             <UserNav />
           ) : (
