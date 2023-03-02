@@ -184,14 +184,38 @@ export function QuestionEditMain() {
               .patch(`/question/${questionId}`, data, {
                 headers: {
                   Authorization: `Bearer ${accessToken}`,
-                  'X-Refresh-Token': refreshToken
+                  Refresh: `${refreshToken}`
                 }
               })
               .then(() => {
-                navigate(`/question/${questionId}`);
+                window.location.href = `/question/${questionId}`;
               })
-              .catch(error => {
-                console.error(error.response);
+              .catch(err => {
+                if (err.response.status === 401) {
+                  const newAccessToken = err.response.headers.authorization;
+                  const newRefreshToken = err.response.headers.refresh;
+
+                  localStorage.removeItem('accessToken');
+                  localStorage.removeItem('refreshToken');
+
+                  localStorage.setItem('accessToken', newAccessToken);
+                  localStorage.setItem('refreshToken', newRefreshToken);
+
+                  axios
+                    .patch(`/question/${questionId}`, data, {
+                      headers: {
+                        Authorization: `Bearer ${newAccessToken}`,
+                        Refresh: `${newRefreshToken}`
+                      }
+                    })
+                    .then(() => {
+                      window.location.href = `/question/${questionId}`;
+                    })
+                    .catch(err => {
+                      console.error(err);
+                      console.log('삭제를 실패했습니다.');
+                    });
+                }
               });
           }}
         ></GeneralBtn>
@@ -290,14 +314,38 @@ export function AnswerEditMain() {
               .patch(`/question/${questionId}/answer/${answerId}`, data, {
                 headers: {
                   Authorization: `Bearer ${accessToken}`,
-                  'X-Refresh-Token': refreshToken
+                  Refresh: `${refreshToken}`
                 }
               })
               .then(() => {
-                navigate(`/question/${questionId}`);
+                window.location.href = `/question/${questionId}`;
               })
-              .catch(error => {
-                console.error(error.response);
+              .catch(err => {
+                if (err.response.status === 401) {
+                  const newAccessToken = err.response.headers.authorization;
+                  const newRefreshToken = err.response.headers.refresh;
+
+                  localStorage.removeItem('accessToken');
+                  localStorage.removeItem('refreshToken');
+
+                  localStorage.setItem('accessToken', newAccessToken);
+                  localStorage.setItem('refreshToken', newRefreshToken);
+
+                  axios
+                    .patch(`/question/${questionId}/answer/${answerId}`, data, {
+                      headers: {
+                        Authorization: `Bearer ${newAccessToken}`,
+                        Refresh: `${newRefreshToken}`
+                      }
+                    })
+                    .then(() => {
+                      window.location.href = `/question/${questionId}`;
+                    })
+                    .catch(err => {
+                      console.error(err);
+                      console.log('삭제를 실패했습니다.');
+                    });
+                }
               });
           }}
         ></GeneralBtn>
