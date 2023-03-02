@@ -193,8 +193,7 @@ export function QuestionEditMain() {
                 }
               )
               .then(() => {
-                window.location.href =
-                  process.env.REACT_APP_DB_HOST + `/question/${questionId}`;
+                window.location.href = `/question/${questionId}`;
               })
               .catch(err => {
                 if (err.response.status === 401) {
@@ -219,9 +218,7 @@ export function QuestionEditMain() {
                       }
                     )
                     .then(() => {
-                      window.location.href =
-                        process.env.REACT_APP_DB_HOST +
-                        `/question/${questionId}`;
+                      window.location.href = `/question/${questionId}`;
                     })
                     .catch(err => {
                       console.error(err);
@@ -341,8 +338,7 @@ export function AnswerEditMain() {
                     }
                   )
                   .then(() => {
-                    window.location.href =
-                      process.env.REACT_APP_DB_HOST + `/question/${questionId}`;
+                    window.location.href = `/question/${questionId}`;
                   })
                   .catch(err => {
                     if (err.response.status === 401) {
@@ -368,9 +364,7 @@ export function AnswerEditMain() {
                           }
                         )
                         .then(() => {
-                          window.location.href =
-                            process.env.REACT_APP_DB_HOST +
-                            `/question/${questionId}`;
+                          window.location.href = `/question/${questionId}`;
                         })
                         .catch(err => {
                           console.error(err);
