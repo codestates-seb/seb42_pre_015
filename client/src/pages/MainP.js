@@ -85,8 +85,26 @@ const QuestionVote = styled.div`
 `;
 const Question = styled.div`
   width: 100%;
+  white-space: normal;
+  text-decoration: none;
+  color: rgb(0, 116, 204);
+  line-height: 1.5;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
   > div {
     margin: -2px 0 5px 0;
+    white-space: normal;
+    text-decoration: none;
+    color: rgb(0, 116, 204);
+    line-height: 1.5;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
     > a {
       font-size: 17px;
       white-space: normal;
