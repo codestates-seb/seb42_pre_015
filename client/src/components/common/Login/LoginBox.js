@@ -55,7 +55,7 @@ const LoginBox = () => {
     }
 
     axios
-      .post('/login', {
+      .post(process.env.REACT_APP_DB_HOST + '/login', {
         username: email,
         password: password
       })
@@ -80,7 +80,7 @@ const LoginBox = () => {
         localStorage.setItem('name', userInfo['name']);
 
         // 로그인 성공시 리다이렉션
-        window.location.href = '/';
+        window.location.href = process.env.REACT_APP_DB_HOST + '/';
       })
       .catch(error => {
         console.log(error);
