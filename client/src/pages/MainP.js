@@ -235,7 +235,7 @@ export function MainComponent({ SearchData }) {
     } else if (buttonNumber === 2) {
       setFilter('createdAt,asc');
     } else if (buttonNumber === 3) {
-      setFilter('voteCount,desc');
+      setFilter('viewCount,desc');
     }
   };
 
@@ -308,7 +308,7 @@ export function MainComponent({ SearchData }) {
               active={activeButton === 3}
               onClick={() => handleFilterClick(3)}
             >
-              Vote
+              View
             </MainTopBtn>
           </MainTopBtnGather>
         </MainFilterContainer>
