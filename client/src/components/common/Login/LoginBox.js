@@ -80,7 +80,7 @@ const LoginBox = () => {
         localStorage.setItem('name', userInfo['name']);
 
         // 로그인 성공시 리다이렉션
-        window.location.href = process.env.REACT_APP_DB_HOST + '/';
+        window.location.href = '/';
       })
       .catch(error => {
         console.log(error);

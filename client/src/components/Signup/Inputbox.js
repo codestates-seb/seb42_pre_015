@@ -129,7 +129,7 @@ const Inputbox = () => {
       setPasswordError('');
 
       console.log(response.data);
-      window.location.href = process.env.REACT_APP_DB_HOST + '/login';
+      window.location.href = '/login';
     } catch (error) {
       alert(error);
     }
