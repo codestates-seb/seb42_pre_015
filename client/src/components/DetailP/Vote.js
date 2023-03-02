@@ -80,7 +80,7 @@ function Vote({
               }
             })
             .then(res => {
-              window.location.href = `/question/${questionId}`;
+              //window.location.href = `/question/${questionId}`;
               setQuestionData(res.data);
               setIsLiked(true);
             })
@@ -94,7 +94,7 @@ function Vote({
               }
             })
             .then(res => {
-              window.location.href = `/question/${questionId}`;
+              //window.location.href = `/question/${questionId}`;
               setQuestionData(res.data);
               setIsLiked(false);
             })
@@ -112,7 +112,7 @@ function Vote({
               }
             })
             .then(res => {
-              window.location.href = `/question/${questionId}`;
+              //window.location.href = `/question/${questionId}`;
               setAnswerData(res.data);
               setIsLiked(true);
             })
@@ -125,8 +125,10 @@ function Vote({
                 Refresh: `${refreshToken}`
               }
             })
-            .then(() => {
-              window.location.href = `/question/${questionId}`;
+            .then(res => {
+              // window.location.href = `/question/${questionId}`;
+              setAnswerData(res.data);
+              setIsLiked(false);
             })
             .catch(handleVoteACountDError);
         }
