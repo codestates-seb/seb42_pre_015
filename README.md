@@ -6,12 +6,11 @@
 
 </br>
 
-- **`팀 명` :**  🐶 언더독 
-- **`프로젝트 명` :** Stackoverflow
-- **`프로젝트 기간` :** 2023.02.16 - 2023.03.02
-- **`한줄 소개` :** Stackoverflow !  개발자간의 질의응답 커뮤니티입니다.
-- **`팀원` :** 임희연(팀장), 한승완, 김세훈, 조영롱(부팀장), 이승배, 박의진
-- **`배포 링크` :** [🌐 stackoverflowClone.Underdog](http://underdog15.s3-website.ap-northeast-2.amazonaws.com/)
+- **`Team name` :**  🐶 언더독 
+- **`Project` :** Stackoverflow : A question and answer website for programmers
+- **`Project duration` :** 2023.02.16 - 2023.03.02
+- **`Team members` :** 임희연(팀장), 한승완, 김세훈, 조영롱(부팀장), 이승배, 박의진
+- **`Link` :** [🌐 stackoverflowClone.Underdog](http://underdog15.s3-website.ap-northeast-2.amazonaws.com/)
 - **`사용자 요구사항 정의서`:** [사용자요구사항 정의서](https://www.notion.so/codestates/4d8e708d11314d9c8e6ee04674e18907?pvs=4)
 
 <br/>
@@ -21,7 +20,7 @@
 |                     임희연<br>(FE, 팀장)                     |                        한승완<br>(FE)                        |                        김세훈<br>(FE)                        |                    조영롱<br>(BE,부팀장)                     |                        이승배<br>(BE)                        |                       박의진 <br>(BE)                        |
 | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
 |  <img alt="임희연" src="https://cdn.discordapp.com/attachments/1073469469743128606/1080757691250651176/my_profile_pic.png" height="100" width="100"> | <img alt="한승완" src="https://cdn.discordapp.com/attachments/1074547492793897000/1080758041072369744/KakaoTalk_20230213_151839143.jpg" height="100" width="100"> | <img alt="김세훈" src="https://user-images.githubusercontent.com/104547038/222361813-b9748fa3-5754-43d5-8654-e16aadbfb08a.jpeg" height="100" width="100"> | <img alt="조영롱" src="https://cdn.discordapp.com/attachments/1074549201322659940/1080781411763634266/20220809_213109.jpg" height="100" width="100"> | <img alt="이승배" src="https://cdn.discordapp.com/attachments/1074548651763957801/1080759164084682892/KakaoTalk_20230213_150507142.jpg" height="100" width="100"> | <img alt="박의진" src="https://cdn.discordapp.com/attachments/1080750095684861962/1080759867268153445/KakaoTalk_20230302_165313193.jpg" height="100" width="100"> |
-| <p align="left">- **Pages**<br/>-  Question detail page<br/>- Ask question page <br/>**Components**<br/>-  Navigation <br/>- Tag <br/>- Editor <br/>**Features**<br/>-  Question CRD<br/>- Answer CRD <br/> - Comment CRD  <br/>- Vote CD <br/></p> | <p align="left">- **Pages**<br/>-  Main page<br/>- Edit Question page<br/>- Edit Answer page<br/>**Components**<br/>-  Header <br/>- Side navigation <br/>**Features**<br/>-  Question RU<br/>- Answer U <br/> - Search by <br/>keywords, tags <br/>and username  <br/></p> | <p align="left">- **Pages**<br/>-  Signup page<br/>- Login page <br/>**Components**<br/>-  Buttons <br/>- Footer <br/>**Features**<br/>-  Email signup<br/>-  Email login<br/> logout <br/> - Manage access <br/>and refresh token  <br/></p> | <p align="left"><br/>-회원가입 기능<br/>(회원가입시 이메일 발송)<br/>\- 스프링 시큐리티<br/>(인증, 인가, JWT)<br/>(검색 기능)<br/>\- 배포 환경 구축<br/>(AWS 배포)<br/> | <p align="left">-CRUD<br/>-답변,댓글<br/>예외 처리<br/> 기능 구현<br/>답변 투표 실행<br/>- 취소 기능<br/> | <p align="left">- CRUD<br/>-질문,댓글<br/>-TAG 등록 구현 <br/>-검색 기능 구현<br/>-투표 기능 구현<br/>-배포 환경 구성 <br/> |
+| <p align="left">**Pages**<br/>-  Question detail page<br/>- Ask question page <br/>**Components**<br/>-  Navigation <br/>- Tag <br/>- Editor <br/>**Features**<br/>-  Question CRD<br/>- Answer CRD <br/> - Comment CRD  <br/>- Vote CD <br/></p> | <p align="left">**Pages**<br/>-  Main page<br/>- Edit Question page<br/>- Edit Answer page<br/>**Components**<br/>-  Header <br/>- Side navigation <br/>**Features**<br/>-  Question RU<br/>- Answer U <br/> - Search by <br/>keywords, tags <br/>and username  <br/></p> | <p align="left">**Pages**<br/>-  Signup page<br/>- Login page <br/>**Components**<br/>-  Buttons <br/>- Footer <br/>**Features**<br/>-  Email signup<br/>-  Email login<br/> logout <br/> - Manage access <br/>and refresh token  <br/></p> | <p align="left"><br/>-회원가입 기능<br/>(회원가입시 이메일 발송)<br/>\- 스프링 시큐리티<br/>(인증, 인가, JWT)<br/>(검색 기능)<br/>\- 배포 환경 구축<br/>(AWS 배포)<br/> | <p align="left">-CRUD<br/>-답변,댓글<br/>예외 처리<br/> 기능 구현<br/>답변 투표 실행<br/>- 취소 기능<br/> | <p align="left">- CRUD<br/>-질문,댓글<br/>-TAG 등록 구현 <br/>-검색 기능 구현<br/>-투표 기능 구현<br/>-배포 환경 구성 <br/> |
 
 
 |  name  | Github                                           |
@@ -76,7 +75,7 @@
 
 <br/>
 
-## 👩🏻‍💻 User flow
+## 👩🏻‍💻 Wireframe
 https://www.figma.com/file/liYWF9Ovxq3mgh2w38hWHk/Stack-overflow-clone?node-id=0%3A1&t=4lP7K9au50idh3N5-1
 <img width="100%" src="https://cdn.discordapp.com/attachments/1074547027293257779/1080779592903692378/image.png"/>
 
@@ -88,7 +87,7 @@ https://www.figma.com/file/liYWF9Ovxq3mgh2w38hWHk/Stack-overflow-clone?node-id=0
 
 ![스크린샷 2023-03-02 16 27 06](https://user-images.githubusercontent.com/104547038/222359836-b00dab59-2b28-485d-8e8c-51b1669c0760.png)
 
-##### 💡레스트 독스 API 문서 
+##### 💡Rest Docs API 문서 
 
 ![스크린샷 2023-03-02 16 25 04](https://user-images.githubusercontent.com/104547038/222359375-592e4b7f-5f20-4d9c-88d5-87cce0e1b3ce.png)
 
@@ -111,7 +110,7 @@ https://www.figma.com/file/liYWF9Ovxq3mgh2w38hWHk/Stack-overflow-clone?node-id=0
 ```text
 📌 Pull Request Merge 담당 📌
 ❗️주의 : 해당 브랜치별로 담당 인원분들은 전부 모여 코드리뷰 및 동의 후에 
-Merge를 진행해주시기 바랍니다
+Merge를 진행합니다.
 
 main <- dev : 임희연 (팀장) (조영롱, 한승완, 김세훈, 이승배, 박의진)
 
