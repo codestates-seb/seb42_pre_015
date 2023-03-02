@@ -235,7 +235,9 @@ function Comment({
               <div>
                 <span className='name'>{comment.name}</span>
                 <span className='date'>
-                  {comment.createdAt.replace(/^(\d{4}-\d{2}-\d{2}).*/, '$1')}
+                  {comment.createdAt
+                    .replace(/T/, ' ')
+                    .replace(/:\d\d(\.\d{1,6})?$/, '')}
                 </span>
                 {LogginUserId === comment.userId ? (
                   <>
