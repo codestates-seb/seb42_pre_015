@@ -184,7 +184,7 @@ export default function Search({ SearchDataHandler }) {
       const params = extractTargets(searchText);
       console.log(params);
       axios
-        .get('/question/search', { params })
+        .get(process.env.REACT_APP_DB_HOST + '/question/search', { params })
         .then(response => {
           console.log(response.data);
           SearchDataHandler(response.data);
