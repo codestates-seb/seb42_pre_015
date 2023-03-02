@@ -113,11 +113,14 @@ const Inputbox = () => {
 
     // HTTP Request
     try {
-      const response = await axios.post('/user', {
-        name: displayName,
-        email: email,
-        password: password
-      });
+      const response = await axios.post(
+        process.env.REACT_APP_DB_HOST + '/user',
+        {
+          name: displayName,
+          email: email,
+          password: password
+        }
+      );
       setDisplayName('');
       setEmail('');
       setPassword('');
@@ -126,7 +129,7 @@ const Inputbox = () => {
       setPasswordError('');
 
       console.log(response.data);
-      window.location.href = '/login';
+      window.location.href = process.env.REACT_APP_DB_HOST + '/login';
     } catch (error) {
       alert(error);
     }
