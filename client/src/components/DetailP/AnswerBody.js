@@ -52,19 +52,21 @@ function AnswerBody({ questionId, answerData, setAnswerData }) {
 
   const handleAnswerDelete = answerId => {
     axios
-      .delete(`/question/${questionId}/answer/${answerId}`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          Refresh: `${refreshToken}`
+      .delete(
+        process.env.REACT_APP_DB_HOST +
+          `/question/${questionId}/answer/${answerId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            Refresh: `${refreshToken}`
+          }
         }
-      })
+      )
       .then(res => {
-        console.log('res.headers', res.headers);
         setAnswerData(res.data);
       })
       .catch(err => {
         handleAnswerDeleteError(err, answerId);
-        console.log(answerId);
       });
   };
 
@@ -81,12 +83,16 @@ function AnswerBody({ questionId, answerData, setAnswerData }) {
       console.log(answerId);
 
       axios
-        .delete(`/question/${questionId}/answer/${answerId}`, {
-          headers: {
-            Authorization: `Bearer ${newAccessToken}`,
-            Refresh: `${newRefreshToken}`
+        .delete(
+          process.env.REACT_APP_DB_HOST +
+            `/question/${questionId}/answer/${answerId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${newAccessToken}`,
+              Refresh: `${newRefreshToken}`
+            }
           }
-        })
+        )
         .then(() => {
           window.location.href = `/question/${questionId}`;
         });

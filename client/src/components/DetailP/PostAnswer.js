@@ -17,7 +17,6 @@ const PostAnswerContainer = styled.div`
 `;
 
 function PostAnswer({ questionId }) {
-  //   const BASE_URL = 'http://localhost:3001';
   const [newAnswer, setNewAnswer] = useState('');
   const [answerErrorMsg, setAnswerErrorMsg] = useState(null);
 
@@ -34,14 +33,19 @@ function PostAnswer({ questionId }) {
     } else if (newAnswer && !answerErrorMsg) {
       setAnswerErrorMsg(null);
       axios
-        .post(`/question/${questionId}/answer`, newAnswerInput, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            Refresh: `${refreshToken}`
+        .post(
+          process.env.REACT_APP_DB_HOST + `/question/${questionId}/answer`,
+          newAnswerInput,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              Refresh: `${refreshToken}`
+            }
           }
-        })
+        )
         .then(() => {
-          window.location.href = `/question/${questionId}`;
+          window.location.href =
+            process.env.REACT_APP_DB_HOST + `/question/${questionId}`;
         })
         .catch(handlePostAnswerError);
     }
@@ -60,14 +64,19 @@ function PostAnswer({ questionId }) {
       localStorage.setItem('refreshToken', newRefreshToken);
 
       axios
-        .post(`/question/${questionId}/answer`, newAnswerInput, {
-          headers: {
-            Authorization: `Bearer ${newAccessToken}`,
-            Refresh: `${newRefreshToken}`
+        .post(
+          process.env.REACT_APP_DB_HOST + `/question/${questionId}/answer`,
+          newAnswerInput,
+          {
+            headers: {
+              Authorization: `Bearer ${newAccessToken}`,
+              Refresh: `${newRefreshToken}`
+            }
           }
-        })
+        )
         .then(() => {
-          window.location.href = `/question/${questionId}`;
+          window.location.href =
+            process.env.REACT_APP_DB_HOST + `/question/${questionId}`;
         });
     }
   };

@@ -111,12 +111,16 @@ function Comment({
 
     if (init === questionCommentData) {
       axios
-        .post(`/question/${questionId}/comment`, newCommentInput, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            Refresh: `${refreshToken}`
+        .post(
+          process.env.REACT_APP_DB_HOST + `/question/${questionId}/comment`,
+          newCommentInput,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              Refresh: `${refreshToken}`
+            }
           }
-        })
+        )
         .then(res => {
           setQuestionCommentData(res.data);
           setNewComment('');
@@ -127,7 +131,8 @@ function Comment({
     } else if (init === answerCommentData) {
       axios
         .post(
-          `/question/${questionId}/answer/${answerId}/comment`,
+          process.env.REACT_APP_DB_HOST +
+            `/question/${questionId}/answer/${answerId}/comment`,
           newCommentInput,
           {
             headers: {
@@ -143,7 +148,8 @@ function Comment({
         .catch(err =>
           handleAddCommentError(
             err,
-            `/question/${questionId}/answer/${answerId}/comment`
+            process.env.REACT_APP_DB_HOST +
+              `/question/${questionId}/answer/${answerId}/comment`
           )
         );
     }
@@ -168,7 +174,8 @@ function Comment({
           }
         })
         .then(() => {
-          window.location.href = `/question/${questionId}`;
+          window.location.href =
+            process.env.REACT_APP_DB_HOST + `/question/${questionId}`;
         })
         .catch(err => handleAddCommentError(err, endpoint));
     }
@@ -177,12 +184,16 @@ function Comment({
   const handleDeleteComment = commentId => {
     if (init === questionCommentData) {
       axios
-        .delete(`/question/${questionId}/comment/${commentId}`, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            Refresh: `${refreshToken}`
+        .delete(
+          process.env.REACT_APP_DB_HOST +
+            `/question/${questionId}/comment/${commentId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              Refresh: `${refreshToken}`
+            }
           }
-        })
+        )
         .then(res => {
           setQuestionCommentData(res.data);
           setNewComment('');
@@ -190,13 +201,15 @@ function Comment({
         .catch(err =>
           handleDeleteCommentError(
             err,
-            `/question/${questionId}/comment/${commentId}`
+            process.env.REACT_APP_DB_HOST +
+              `/question/${questionId}/comment/${commentId}`
           )
         );
     } else if (init === answerCommentData) {
       axios
         .delete(
-          `/question/${questionId}/answer/${answerId}/comment/${commentId}`,
+          process.env.REACT_APP_DB_HOST +
+            `/question/${questionId}/answer/${answerId}/comment/${commentId}`,
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,
@@ -211,7 +224,8 @@ function Comment({
         .catch(err =>
           handleDeleteCommentError(
             err,
-            `/question/${questionId}/answer/${answerId}/comment/${commentId}`
+            process.env.REACT_APP_DB_HOST +
+              `/question/${questionId}/answer/${answerId}/comment/${commentId}`
           )
         );
     }
@@ -235,7 +249,8 @@ function Comment({
           }
         })
         .then(() => {
-          window.location.href = `/question/${questionId}`;
+          window.location.href =
+            process.env.REACT_APP_DB_HOST + `/question/${questionId}`;
         })
         .catch(err => handleAddCommentError(err, endpoint));
     }
