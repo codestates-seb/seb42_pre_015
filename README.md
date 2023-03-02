@@ -20,7 +20,7 @@
 |                     임희연<br>(FE, Team lead)                     |                        한승완<br>(FE)                        |                        김세훈<br>(FE)                        |                    조영롱<br>(BE, BE lead)                     |                        이승배<br>(BE)                        |                       박의진 <br>(BE)                        |
 | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
 |  <img alt="임희연" src="https://cdn.discordapp.com/attachments/1073469469743128606/1080757691250651176/my_profile_pic.png" height="100" width="100"> | <img alt="한승완" src="https://cdn.discordapp.com/attachments/1074547492793897000/1080758041072369744/KakaoTalk_20230213_151839143.jpg" height="100" width="100"> | <img alt="김세훈" src="https://user-images.githubusercontent.com/104547038/222361813-b9748fa3-5754-43d5-8654-e16aadbfb08a.jpeg" height="100" width="100"> | <img alt="조영롱" src="https://cdn.discordapp.com/attachments/1074549201322659940/1080781411763634266/20220809_213109.jpg" height="100" width="100"> | <img alt="이승배" src="https://cdn.discordapp.com/attachments/1074548651763957801/1080759164084682892/KakaoTalk_20230213_150507142.jpg" height="100" width="100"> | <img alt="박의진" src="https://cdn.discordapp.com/attachments/1080750095684861962/1080759867268153445/KakaoTalk_20230302_165313193.jpg" height="100" width="100"> |
-|<p align="left">**Pages**<br/>-  Question detail page<br/>- Ask question page <br/>**Components**<br/>-  Navigation <br/>- Tag <br/>- Editor <br/>**Features**<br/>-  Question CRD<br/>- Answer CRD <br/> - Comment CRD  <br/>- Vote CD <br/></p> | <p align="left">**Pages**<br/>-  Main page<br/>- Edit Question page<br/>- Edit Answer page<br/>**Components**<br/>-  Header <br/>- Side navigation <br/>**Features**<br/>-  Question RU<br/>- Answer U <br/> - Search by <br/>keywords, tags <br/>and username  <br/></p> |<p align="left">**Pages**<br/>-  Signup page<br/>- Login page <br/>**Components**<br/>-  Buttons <br/>- Footer <br/>**Features**<br/>-  Email signup<br/>-  Email login<br/> logout <br/> - Manage access <br/>and refresh token  <br/></p> | <p align="left"><br/>-회원가입 기능<br/>(회원가입시 이메일 발송)<br/>\- 스프링 시큐리티<br/>(인증, 인가, JWT)<br/>(검색 기능)<br/>\- 배포 환경 구축<br/>(AWS 배포)<br/> | <p align="left">-CRUD<br/>-답변,댓글<br/>예외 처리<br/> 기능 구현<br/>답변 투표 실행<br/>- 취소 기능<br/> | <p align="left">- CRUD<br/>-질문,댓글<br/>-TAG 등록 구현 <br/>-검색 기능 구현<br/>-투표 기능 구현<br/>-배포 환경 구성 <br/> |
+|<p align="left">**Pages**<br/>-  Question detail page<br/>- Ask question page <br/>**Components**<br/>-  Navigation <br/>- Tag <br/>- Editor <br/>**Features**<br/>-  Question CRD<br/>- Answer CRD <br/> - Comment CRD  <br/>- Vote CD <br/></p> | <p align="left">**Pages**<br/>-  Main page<br/>- Edit Question page<br/>- Edit Answer page<br/>**Components**<br/>-  Header <br/>- Side navigation <br/>**Features**<br/>-  Question RU<br/>- Answer U <br/> - Search by <br/>keywords, tags <br/>and username  <br/></p> |<p align="left">**Pages**<br/>-  Signup page<br/>- Login page <br/>**Components**<br/>-  Buttons <br/>- Footer <br/>**Features**<br/>-  Email signup<br/>-  Email login<br/> logout <br/> - Manage access <br/>and refresh token  <br/></p> | <p align="left"><br/>-Signup<br/>(Automated welcome email)<br/>\- Spring security<br/>(인증, 인가, JWT)<br/>(검색 기능)<br/>\- 배포 환경 구축<br/>(AWS 배포)<br/> | <p align="left">-CRUD<br/>-답변,댓글<br/>예외 처리<br/> 기능 구현<br/>답변 투표 실행<br/>- 취소 기능<br/> | <p align="left">- CRUD<br/>-질문,댓글<br/>-TAG 등록 구현 <br/>-검색 기능 구현<br/>-투표 기능 구현<br/>-배포 환경 구성 <br/> |
 
 
 |  Name  | Github ID                                        |
@@ -87,11 +87,11 @@ https://www.figma.com/file/liYWF9Ovxq3mgh2w38hWHk/Stack-overflow-clone?node-id=0
 
 ![스크린샷 2023-03-02 16 27 06](https://user-images.githubusercontent.com/104547038/222359836-b00dab59-2b28-485d-8e8c-51b1669c0760.png)
 
-##### 💡Rest Docs API 문서 
+##### 💡Rest Docs API  
 
 ![스크린샷 2023-03-02 16 25 04](https://user-images.githubusercontent.com/104547038/222359375-592e4b7f-5f20-4d9c-88d5-87cce0e1b3ce.png)
 
-##### 💡Postman API 문서 
+##### 💡Postman API  
 
 ![스크린샷 2023-03-02 16 22 37](https://user-images.githubusercontent.com/104547038/222359006-8b935fcb-5f4f-4781-b9db-b5b6e7bfe9fb.png)
 
@@ -99,11 +99,11 @@ https://www.figma.com/file/liYWF9Ovxq3mgh2w38hWHk/Stack-overflow-clone?node-id=0
 
 ## 📎 Git
 ### 🌲 Branch
-`main` : 서비스 운영 브랜치입니다.  
-`dev` : 메인 브랜치 배포전 릴리즈 브랜치입니다.  
-`front-dev` : 프론트엔드 개발 환경 브랜치입니다.  
-`back-dev` : 백엔드 개발 환경 브랜치입니다.  
-`feat/개발명` : 기능 개발 브랜치 입니다. ex) feat/Login  
+`main` : 서비스 운영 브랜치 
+`dev` : 메인 브랜치 배포전 릴리즈 브랜치  
+`front-dev` : FE 개발 환경 브랜치 
+`back-dev` : BE 개발 환경 브랜치  
+`feat/개발명` : 기능 개발 브랜치 ex) feat/Login  
 
 <br/>
 
