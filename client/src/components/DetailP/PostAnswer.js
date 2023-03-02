@@ -68,8 +68,7 @@ function PostAnswer({ questionId }) {
         })
         .then(() => {
           window.location.href = `/question/${questionId}`;
-        })
-        .catch(handlePostAnswerError);
+        });
     }
   };
   const handleValidation = () => {
