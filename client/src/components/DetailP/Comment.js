@@ -174,8 +174,7 @@ function Comment({
           }
         })
         .then(() => {
-          window.location.href =
-            process.env.REACT_APP_DB_HOST + `/question/${questionId}`;
+          window.location.href = `/question/${questionId}`;
         })
         .catch(err => handleAddCommentError(err, endpoint));
     }
@@ -249,8 +248,7 @@ function Comment({
           }
         })
         .then(() => {
-          window.location.href =
-            process.env.REACT_APP_DB_HOST + `/question/${questionId}`;
+          window.location.href = `/question/${questionId}`;
         })
         .catch(err => handleAddCommentError(err, endpoint));
     }

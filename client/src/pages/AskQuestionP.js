@@ -141,8 +141,7 @@ function AskQuestionPage() {
         }
       })
       .then(res => {
-        window.location.href =
-          process.env.REACT_APP_DB_HOST + `/question/${res.data.questionId}`;
+        window.location.href = `/question/${res.data.questionId}`;
       })
       .catch(handleSubmitError);
   };
@@ -167,8 +166,7 @@ function AskQuestionPage() {
           }
         })
         .then(res => {
-          window.location.href =
-            process.env.REACT_APP_DB_HOST + `/question/${res.data.questionId}`;
+          window.location.href = `/question/${res.data.questionId}`;
         })
         .catch(handleSubmitError);
     }

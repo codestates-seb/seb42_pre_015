@@ -44,8 +44,7 @@ function PostAnswer({ questionId }) {
           }
         )
         .then(() => {
-          window.location.href =
-            process.env.REACT_APP_DB_HOST + `/question/${questionId}`;
+          window.location.href = `/question/${questionId}`;
         })
         .catch(handlePostAnswerError);
     }
@@ -75,8 +74,7 @@ function PostAnswer({ questionId }) {
           }
         )
         .then(() => {
-          window.location.href =
-            process.env.REACT_APP_DB_HOST + `/question/${questionId}`;
+          window.location.href = `/question/${questionId}`;
         });
     }
   };
@@ -110,22 +108,3 @@ function PostAnswer({ questionId }) {
 }
 
 export default PostAnswer;
-
-/* border: 1px solid ${props =>
-      props.validated ? '#409ad6' : '#DE4F54'}; */
-/* box-shadow: ${props =>
-      props.validated ? '0 0 0 4px #d9e9f6' : '0 0 0 4px #F6E0E0'}; */
-/* width: 100%;
-    height: 200px;
-    padding: 10px;
-    border-radius: 3px;
-    font-size: 15px;
-    line-height: 19.5px;
-    white-space: normal;
-    margin-bottom: 15px;
-    border: 1px solid #b1b7bc; */
-/* &:focus {
-      border: 1px solid #409ad6;
-      box-shadow: 0 0 0 4px #d9e9f6;
-      outline: none;
-    } */

@@ -61,7 +61,7 @@ function Question({ questionId, questionData, setQuestionData }) {
         }
       })
       .then(() => {
-        window.location.href = process.env.REACT_APP_DB_HOST;
+        window.location.href = '/';
       })
       .catch(handleDeleteError);
   };
@@ -85,7 +85,7 @@ function Question({ questionId, questionData, setQuestionData }) {
           }
         })
         .then(() => {
-          window.location.href = process.env.REACT_APP_DB_HOST;
+          window.location.href = '/';
         })
         .catch(handleDeleteError);
     }

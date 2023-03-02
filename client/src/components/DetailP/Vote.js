@@ -176,8 +176,7 @@ function Vote({
           }
         )
         .then(() => {
-          window.location.href =
-            process.env.REACT_APP_DB_HOST + `/question/${questionId}`;
+          window.location.href = `/question/${questionId}`;
         });
     }
   };
@@ -203,8 +202,7 @@ function Vote({
           }
         )
         .then(() => {
-          window.location.href =
-            process.env.REACT_APP_DB_HOST + `/question/${questionId}`;
+          window.location.href = `/question/${questionId}`;
         });
     }
   };
@@ -233,8 +231,7 @@ function Vote({
           }
         )
         .then(() => {
-          window.location.href =
-            process.env.REACT_APP_DB_HOST + `/question/${questionId}`;
+          window.location.href = `/question/${questionId}`;
         });
     }
   };
@@ -261,8 +258,7 @@ function Vote({
           }
         )
         .then(() => {
-          window.location.href =
-            process.env.REACT_APP_DB_HOST + `/question/${questionId}`;
+          window.location.href = `/question/${questionId}`;
         });
     }
   };
