@@ -341,7 +341,7 @@ export default function LoginNav({ setIsLogin }) {
                     window.localStorage.removeItem('refreshToken');
                     window.localStorage.removeItem('userId');
                     window.localStorage.removeItem('name');
-                    window.location.href = '/';
+                    window.location.href = process.env.REACT_APP_DB_HOST + '/';
                   }}
                 >
                   log out
