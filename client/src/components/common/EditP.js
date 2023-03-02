@@ -69,7 +69,7 @@ export function QuestionEditMain() {
   useEffect(() => {
     window.scrollTo(0, 0);
     axios
-      .get(`/question/${questionId}`)
+      .get(process.env.REACT_APP_DB_HOST + `/question/${questionId}`)
       .then(res => {
         setQuestionData(res.data);
       })
@@ -182,14 +182,19 @@ export function QuestionEditMain() {
               tags: QuestionData.tags
             };
             axios
-              .patch(`/question/${questionId}`, data, {
-                headers: {
-                  Authorization: `Bearer ${accessToken}`,
-                  Refresh: `${refreshToken}`
+              .patch(
+                process.env.REACT_APP_DB_HOST + `/question/${questionId}`,
+                data,
+                {
+                  headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                    Refresh: `${refreshToken}`
+                  }
                 }
-              })
+              )
               .then(() => {
-                window.location.href = `/question/${questionId}`;
+                window.location.href =
+                  process.env.REACT_APP_DB_HOST + `/question/${questionId}`;
               })
               .catch(err => {
                 if (err.response.status === 401) {
@@ -203,14 +208,20 @@ export function QuestionEditMain() {
                   localStorage.setItem('refreshToken', newRefreshToken);
 
                   axios
-                    .patch(`/question/${questionId}`, data, {
-                      headers: {
-                        Authorization: `Bearer ${newAccessToken}`,
-                        Refresh: `${newRefreshToken}`
+                    .patch(
+                      process.env.REACT_APP_DB_HOST + `/question/${questionId}`,
+                      data,
+                      {
+                        headers: {
+                          Authorization: `Bearer ${newAccessToken}`,
+                          Refresh: `${newRefreshToken}`
+                        }
                       }
-                    })
+                    )
                     .then(() => {
-                      window.location.href = `/question/${questionId}`;
+                      window.location.href =
+                        process.env.REACT_APP_DB_HOST +
+                        `/question/${questionId}`;
                     })
                     .catch(err => {
                       console.error(err);
@@ -246,7 +257,7 @@ export function AnswerEditMain() {
   useEffect(() => {
     window.scrollTo(0, 0);
     axios
-      .get(`/question/${questionId}/answer`)
+      .get(process.env.REACT_APP_DB_HOST + `/question/${questionId}/answer`)
       .then(res => {
         AllsetAnswerData(res.data);
       })
@@ -318,14 +329,20 @@ export function AnswerEditMain() {
                 const refreshToken = localStorage.getItem('refreshToken');
                 const data = { content: answer.content };
                 axios
-                  .patch(`/question/${questionId}/answer/${answerId}`, data, {
-                    headers: {
-                      Authorization: `Bearer ${accessToken}`,
-                      Refresh: `${refreshToken}`
+                  .patch(
+                    process.env.REACT_APP_DB_HOST +
+                      `/question/${questionId}/answer/${answerId}`,
+                    data,
+                    {
+                      headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                        Refresh: `${refreshToken}`
+                      }
                     }
-                  })
+                  )
                   .then(() => {
-                    window.location.href = `/question/${questionId}`;
+                    window.location.href =
+                      process.env.REACT_APP_DB_HOST + `/question/${questionId}`;
                   })
                   .catch(err => {
                     if (err.response.status === 401) {
@@ -340,7 +357,8 @@ export function AnswerEditMain() {
 
                       axios
                         .patch(
-                          `/question/${questionId}/answer/${answerId}`,
+                          process.env.REACT_APP_DB_HOST +
+                            `/question/${questionId}/answer/${answerId}`,
                           data,
                           {
                             headers: {
@@ -350,7 +368,9 @@ export function AnswerEditMain() {
                           }
                         )
                         .then(() => {
-                          window.location.href = `/question/${questionId}`;
+                          window.location.href =
+                            process.env.REACT_APP_DB_HOST +
+                            `/question/${questionId}`;
                         })
                         .catch(err => {
                           console.error(err);

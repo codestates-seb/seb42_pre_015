@@ -45,34 +45,23 @@ function Question({ questionId, questionData, setQuestionData }) {
   const [questionCommentData, setQuestionCommentData] = useState(null);
 
   useEffect(() => {
-    axios.get(`/question/${questionId}/comments`).then(res => {
-      if (res.headers.authorization && res.headers.refresh) {
-        const accessToken = res.headers.authorization;
-        const refreshToken = res.headers.refresh;
-
-        // 기존 토큰 삭제
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
-
-        // 새로운 토큰 로컬 스토리지에 저장
-        localStorage.setItem('accessToken', accessToken);
-        localStorage.setItem('refreshToken', refreshToken);
-      }
-
-      setQuestionCommentData(res.data);
-    });
+    axios
+      .get(process.env.REACT_APP_DB_HOST + `/question/${questionId}/comments`)
+      .then(res => {
+        setQuestionCommentData(res.data);
+      });
   }, [questionId]);
 
   const handleQuestionDelete = () => {
     axios
-      .delete(`/question/${questionId}`, {
+      .delete(process.env.REACT_APP_DB_HOST + `/question/${questionId}`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
           Refresh: `${refreshToken}`
         }
       })
       .then(() => {
-        window.location.href = '/';
+        window.location.href = process.env.REACT_APP_DB_HOST;
       })
       .catch(handleDeleteError);
   };
@@ -89,14 +78,14 @@ function Question({ questionId, questionData, setQuestionData }) {
       localStorage.setItem('refreshToken', newRefreshToken);
 
       axios
-        .delete(`/question/${questionId}`, {
+        .delete(process.env.REACT_APP_DB_HOST + `/question/${questionId}`, {
           headers: {
             Authorization: `Bearer ${newAccessToken}`,
             Refresh: `${newRefreshToken}`
           }
         })
         .then(() => {
-          window.location.href = '/';
+          window.location.href = process.env.REACT_APP_DB_HOST;
         })
         .catch(handleDeleteError);
     }

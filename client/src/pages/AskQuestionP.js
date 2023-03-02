@@ -134,14 +134,15 @@ function AskQuestionPage() {
     const refreshToken = localStorage.getItem('refreshToken');
 
     axios
-      .post('/question', newQuestion, {
+      .post(process.env.REACT_APP_DB_HOST + '/question', newQuestion, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
           Refresh: `${refreshToken}`
         }
       })
       .then(res => {
-        window.location.href = `/question/${res.data.questionId}`;
+        window.location.href =
+          process.env.REACT_APP_DB_HOST + `/question/${res.data.questionId}`;
       })
       .catch(handleSubmitError);
   };
@@ -159,14 +160,15 @@ function AskQuestionPage() {
       localStorage.setItem('refreshToken', newRefreshToken);
 
       axios
-        .post('/question', newQuestion, {
+        .post(process.env.REACT_APP_DB_HOST + '/question', newQuestion, {
           headers: {
             Authorization: `Bearer ${newAccessToken}`,
             Refresh: `${newRefreshToken}`
           }
         })
         .then(res => {
-          window.location.href = `/question/${res.data.questionId}`;
+          window.location.href =
+            process.env.REACT_APP_DB_HOST + `/question/${res.data.questionId}`;
         })
         .catch(handleSubmitError);
     }

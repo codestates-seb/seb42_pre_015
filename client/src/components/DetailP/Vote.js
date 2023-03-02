@@ -43,7 +43,7 @@ function Vote({
     if (data === questionData) {
       // 유저가 질문에 좋아요를 했는지 확인
       axios
-        .get(`/question/${questionId}/vote`, {
+        .get(process.env.REACT_APP_DB_HOST + `/question/${questionId}/vote`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
             Refresh: `${refreshToken}`
@@ -55,12 +55,16 @@ function Vote({
     } else if (data === answer) {
       // 유저가 답변에 좋아요를 했는지 확인
       axios
-        .get(`/question/${questionId}/answer/${answerId}/vote`, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            Refresh: `${refreshToken}`
+        .get(
+          process.env.REACT_APP_DB_HOST +
+            `/question/${questionId}/answer/${answerId}/vote`,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              Refresh: `${refreshToken}`
+            }
           }
-        })
+        )
         .then(res => {
           setIsLiked(res.data.userVote);
         });
@@ -73,28 +77,33 @@ function Vote({
       if (data === questionData) {
         if (!isLiked) {
           axios
-            .post(`/question/${questionId}/vote`, null, {
-              headers: {
-                Authorization: `Bearer ${accessToken}`,
-                Refresh: `${refreshToken}`
+            .post(
+              process.env.REACT_APP_DB_HOST + `/question/${questionId}/vote`,
+              null,
+              {
+                headers: {
+                  Authorization: `Bearer ${accessToken}`,
+                  Refresh: `${refreshToken}`
+                }
               }
-            })
+            )
             .then(res => {
-              //window.location.href = `/question/${questionId}`;
               setQuestionData(res.data);
               setIsLiked(true);
             })
             .catch(handleVoteCountPError);
         } else {
           axios
-            .delete(`/question/${questionId}/vote`, {
-              headers: {
-                Authorization: `Bearer ${accessToken}`,
-                Refresh: `${refreshToken}`
+            .delete(
+              process.env.REACT_APP_DB_HOST + `/question/${questionId}/vote`,
+              {
+                headers: {
+                  Authorization: `Bearer ${accessToken}`,
+                  Refresh: `${refreshToken}`
+                }
               }
-            })
+            )
             .then(res => {
-              //window.location.href = `/question/${questionId}`;
               setQuestionData(res.data);
               setIsLiked(false);
             })
@@ -105,28 +114,35 @@ function Vote({
       if (data === answer) {
         if (!isLiked) {
           axios
-            .post(`/question/${questionId}/answer/${answerId}/vote`, null, {
-              headers: {
-                Authorization: `Bearer ${accessToken}`,
-                Refresh: `${refreshToken}`
+            .post(
+              process.env.REACT_APP_DB_HOST +
+                `/question/${questionId}/answer/${answerId}/vote`,
+              null,
+              {
+                headers: {
+                  Authorization: `Bearer ${accessToken}`,
+                  Refresh: `${refreshToken}`
+                }
               }
-            })
+            )
             .then(res => {
-              //window.location.href = `/question/${questionId}`;
               setAnswerData(res.data);
               setIsLiked(true);
             })
             .catch(handleVoteACountPError);
         } else {
           axios
-            .delete(`/question/${questionId}/answer/${answerId}/vote`, {
-              headers: {
-                Authorization: `Bearer ${accessToken}`,
-                Refresh: `${refreshToken}`
+            .delete(
+              process.env.REACT_APP_DB_HOST +
+                `/question/${questionId}/answer/${answerId}/vote`,
+              {
+                headers: {
+                  Authorization: `Bearer ${accessToken}`,
+                  Refresh: `${refreshToken}`
+                }
               }
-            })
+            )
             .then(res => {
-              // window.location.href = `/question/${questionId}`;
               setAnswerData(res.data);
               setIsLiked(false);
             })
@@ -149,16 +165,20 @@ function Vote({
       localStorage.setItem('refreshToken', newRefreshToken);
 
       axios
-        .post(`/question/${questionId}/vote`, null, {
-          headers: {
-            Authorization: `Bearer ${newAccessToken}`,
-            Refresh: `${newRefreshToken}`
+        .post(
+          process.env.REACT_APP_DB_HOST + `/question/${questionId}/vote`,
+          null,
+          {
+            headers: {
+              Authorization: `Bearer ${newAccessToken}`,
+              Refresh: `${newRefreshToken}`
+            }
           }
-        })
+        )
         .then(() => {
-          window.location.href = `/question/${questionId}`;
-        })
-        .catch(handleVoteCountPError);
+          window.location.href =
+            process.env.REACT_APP_DB_HOST + `/question/${questionId}`;
+        });
     }
   };
   const handleVoteCountDError = err => {
@@ -173,16 +193,19 @@ function Vote({
       localStorage.setItem('refreshToken', newRefreshToken);
 
       axios
-        .delete(`/question/${questionId}/vote`, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            Refresh: `${refreshToken}`
+        .delete(
+          process.env.REACT_APP_DB_HOST + `/question/${questionId}/vote`,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              Refresh: `${refreshToken}`
+            }
           }
-        })
+        )
         .then(() => {
-          window.location.href = `/question/${questionId}`;
-        })
-        .catch(handleVoteCountDError);
+          window.location.href =
+            process.env.REACT_APP_DB_HOST + `/question/${questionId}`;
+        });
     }
   };
 
@@ -198,16 +221,21 @@ function Vote({
       localStorage.setItem('refreshToken', newRefreshToken);
 
       axios
-        .post(`/question/${questionId}/answer/${answerId}/vote`, null, {
-          headers: {
-            Authorization: `Bearer ${newAccessToken}`,
-            Refresh: `${newRefreshToken}`
+        .post(
+          process.env.REACT_APP_DB_HOST +
+            `/question/${questionId}/answer/${answerId}/vote`,
+          null,
+          {
+            headers: {
+              Authorization: `Bearer ${newAccessToken}`,
+              Refresh: `${newRefreshToken}`
+            }
           }
-        })
+        )
         .then(() => {
-          window.location.href = `/question/${questionId}`;
-        })
-        .catch(handleVoteCountPError);
+          window.location.href =
+            process.env.REACT_APP_DB_HOST + `/question/${questionId}`;
+        });
     }
   };
   const handleVoteACountDError = err => {
@@ -222,16 +250,20 @@ function Vote({
       localStorage.setItem('refreshToken', newRefreshToken);
 
       axios
-        .delete(`/question/${questionId}/answer/${answerId}/vote`, {
-          headers: {
-            Authorization: `Bearer ${newAccessToken}`,
-            Refresh: `${newRefreshToken}`
+        .delete(
+          process.env.REACT_APP_DB_HOST +
+            `/question/${questionId}/answer/${answerId}/vote`,
+          {
+            headers: {
+              Authorization: `Bearer ${newAccessToken}`,
+              Refresh: `${newRefreshToken}`
+            }
           }
-        })
+        )
         .then(() => {
-          window.location.href = `/question/${questionId}`;
-        })
-        .catch(handleVoteCountDError);
+          window.location.href =
+            process.env.REACT_APP_DB_HOST + `/question/${questionId}`;
+        });
     }
   };
 

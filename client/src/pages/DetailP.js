@@ -112,26 +112,15 @@ function DetailPage() {
 
   useEffect(() => {
     // ! async await 을 사용하여 question 과 vote 데이터를 하나의 res로 합치기
-    axios.get(`/question/${questionId}`).then(res => {
-      if (res.headers.authorization && res.headers.refresh) {
-        const accessToken = res.headers.authorization;
-        const refreshToken = res.headers.refresh;
+    axios
+      .get(process.env.REACT_APP_DB_HOST + `/question/${questionId}`)
+      .then(res => {
+        setQuestionData(res.data);
+        setIsQuestionLoading(false);
 
-        // 기존 토큰 삭제
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
-
-        // 새로운 토큰 로컬 스토리지에 저장
-        localStorage.setItem('accessToken', accessToken);
-        localStorage.setItem('refreshToken', refreshToken);
-      }
-
-      setQuestionData(res.data);
-      setIsQuestionLoading(false);
-
-      // 페이지 변경 시 항상 상단으로 위치.
-      window.scrollTo(0, 0);
-    });
+        // 페이지 변경 시 항상 상단으로 위치.
+        window.scrollTo(0, 0);
+      });
   }, [questionId]);
 
   const accessToken = localStorage.getItem('accessToken');

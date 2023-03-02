@@ -142,7 +142,7 @@ function Header({ SearchDataHandler }) {
           <HeaderLogoImgMini
             onClick={() => {
               window.scrollTo(0, 0);
-              window.location.href = '/';
+              window.location.href = process.env.REACT_APP_DB_HOST + '/';
             }}
           >
             <SOLogoSvg />
@@ -152,7 +152,7 @@ function Header({ SearchDataHandler }) {
             alt='HeaderLogo'
             onClick={() => {
               window.scrollTo(0, 0);
-              window.location.href = '/';
+              window.location.href = process.env.REACT_APP_DB_HOST + '/';
             }}
           />
           {isLogin ? (
