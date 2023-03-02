@@ -345,7 +345,7 @@ export function MainComponent({ SearchData }) {
                       <a href='/#'>
                         createdAt
                         <span
-                          style={{ color: 'rgb(82,89,96)', marginLeft: '10px' }}
+                          style={{ color: 'rgb(82,89,96)', marginLeft: '5px' }}
                         >
                           {convertToKoreanTime(el.createdAt)}
                         </span>
@@ -388,7 +388,7 @@ export function MainComponent({ SearchData }) {
                       <a href='/#'>
                         createdAt
                         <span
-                          style={{ color: 'rgb(82,89,96)', marginLeft: '10px' }}
+                          style={{ color: 'rgb(82,89,96)', marginLeft: '3px' }}
                         >
                           {convertToKoreanTime(el.createdAt)}
                         </span>
