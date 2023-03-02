@@ -99,7 +99,6 @@ const Loading = styled.div`
   width: calc(50vw + 300px);
   height: 100vh;
   background-color: #fff;
-  /* background-color: red; */
 `;
 
 function DetailPage() {
