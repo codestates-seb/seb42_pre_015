@@ -264,7 +264,7 @@ export function MainComponent({ SearchData }) {
   useEffect(() => {
     window.scrollTo(0, 0);
     axios
-      .get(`/question`, {
+      .get(process.env.REACT_APP_DB_HOST + `/question`, {
         params: {
           page: activePage,
           size: activePageItemButton,
