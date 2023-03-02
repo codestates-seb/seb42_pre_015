@@ -16,7 +16,7 @@ const PostAnswerContainer = styled.div`
   }
 `;
 
-function PostAnswer({ setAnswerData, questionId }) {
+function PostAnswer({ questionId }) {
   //   const BASE_URL = 'http://localhost:3001';
   const [newAnswer, setNewAnswer] = useState('');
   const [answerErrorMsg, setAnswerErrorMsg] = useState(null);
@@ -40,26 +40,38 @@ function PostAnswer({ setAnswerData, questionId }) {
             Refresh: `${refreshToken}`
           }
         })
-        .then(res => {
-          if (res.headers.authorization && res.headers.refresh) {
-            const accessToken = res.headers.authorization;
-            const refreshToken = res.headers.refresh;
-
-            // 기존 토큰 삭제
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('refreshToken');
-
-            // 새로운 토큰 로컬 스토리지에 저장
-            localStorage.setItem('accessToken', accessToken);
-            localStorage.setItem('refreshToken', refreshToken);
-          }
-          setAnswerData(res.data);
-          setNewAnswer('');
+        .then(() => {
+          window.location.href = `/question/${questionId}`;
         })
-        .catch(error => console.log('error:', error));
+        .catch(handlePostAnswerError);
     }
   };
 
+  const handlePostAnswerError = err => {
+    const newAnswerInput = { content: newAnswer };
+    if (err.response.status === 401) {
+      const newAccessToken = err.response.headers.authorization;
+      const newRefreshToken = err.response.headers.refresh;
+
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+
+      localStorage.setItem('accessToken', newAccessToken);
+      localStorage.setItem('refreshToken', newRefreshToken);
+
+      axios
+        .post(`/question/${questionId}/answer`, newAnswerInput, {
+          headers: {
+            Authorization: `Bearer ${newAccessToken}`,
+            Refresh: `${newRefreshToken}`
+          }
+        })
+        .then(() => {
+          window.location.href = `/question/${questionId}`;
+        })
+        .catch(handlePostAnswerError);
+    }
+  };
   const handleValidation = () => {
     if (!newAnswer) {
       setAnswerErrorMsg('Body is missing.');

@@ -61,8 +61,12 @@ const ShowConentData = styled.div`
     white-space: normal;
   }
 `;
+const Loading = styled.div`
+  height: 100vh;
+  width: 100%;
+`;
 export function QuestionEditMain() {
-  const [QuestionData, setQuestionData] = useState({ content: '', tags: [] });
+  const [QuestionData, setQuestionData] = useState('');
   const { questionId } = useParams();
   const navigate = useNavigate();
 
@@ -131,78 +135,85 @@ export function QuestionEditMain() {
       </QEHelpBox>
 
       <QELable htmlFor='Title'>Title</QELable>
+      {QuestionData ? (
+        <>
+          <QEInput
+            placeholder='How to avoid sending a brunch of requests to update data in DB'
+            id='title'
+            value={QuestionData.title}
+            onChange={handleInputChange}
+            onBlur={handleValidation}
+            name='title'
+            validated={!titleErrorMsg}
+          ></QEInput>
+          {titleErrorMsg && <p style={{ color: '#DE4F54' }}>{titleErrorMsg}</p>}
+          <QELable htmlFor='body'>Body</QELable>
+          <Editor
+            editorInput={QuestionData.content}
+            setEditorInput={setQuestionData}
+            formValues={QuestionData}
+            handleValidation={handleValidation}
+            contentErrorMsg={contentErrorMsg}
+          />
+          {contentErrorMsg && (
+            <p style={{ color: '#DE4F54' }}>{contentErrorMsg}</p>
+          )}
+          <ShowConentData
+            dangerouslySetInnerHTML={{
+              __html: QuestionData.content
+            }}
+          />
+          <QELable htmlFor='tags'>Tags</QELable>
 
-      <QEInput
-        placeholder='How to avoid sending a brunch of requests to update data in DB'
-        id='title'
-        value={QuestionData.title}
-        onChange={handleInputChange}
-        onBlur={handleValidation}
-        name='title'
-        validated={!titleErrorMsg}
-      ></QEInput>
-      {titleErrorMsg && <p style={{ color: '#DE4F54' }}>{titleErrorMsg}</p>}
-      <QELable htmlFor='body'>Body</QELable>
-      <Editor
-        editorInput={QuestionData.content}
-        setEditorInput={setQuestionData}
-        formValues={QuestionData}
-        handleValidation={handleValidation}
-        contentErrorMsg={contentErrorMsg}
-      />
-      {contentErrorMsg && <p style={{ color: '#DE4F54' }}>{contentErrorMsg}</p>}
-      <ShowConentData
-        dangerouslySetInnerHTML={{
-          __html: QuestionData.content
-        }}
-      />
-      <QELable htmlFor='tags'>Tags</QELable>
-
-      <TagInput
-        id='tags'
-        placeholder='e.g. (vba css json)'
-        tags={QuestionData.tags}
-        formValues={QuestionData}
-        setFormValues={setQuestionData}
-        handleValidation={handleValidation}
-        tagErrorMsg={tagErrorMsg}
-      />
-      {tagErrorMsg && <p style={{ color: '#DE4F54' }}>{tagErrorMsg}</p>}
-      <div style={{ marginBottom: '12px', marginTop: '12px' }}>
-        <GeneralBtn
-          width={'80px'}
-          BtnText='Save edits'
-          onClick={() => {
-            const accessToken = localStorage.getItem('accessToken');
-            const refreshToken = localStorage.getItem('refreshToken');
-            const data = {
-              title: QuestionData.title,
-              content: QuestionData.content,
-              tags: QuestionData.tags
-            };
-            axios
-              .patch(`/question/${questionId}`, data, {
-                headers: {
-                  Authorization: `Bearer ${accessToken}`,
-                  'X-Refresh-Token': refreshToken
-                }
-              })
-              .then(() => {
+          <TagInput
+            id='tags'
+            placeholder='e.g. (vba css json)'
+            tags={QuestionData.tags}
+            formValues={QuestionData}
+            setFormValues={setQuestionData}
+            handleValidation={handleValidation}
+            tagErrorMsg={tagErrorMsg}
+          />
+          {tagErrorMsg && <p style={{ color: '#DE4F54' }}>{tagErrorMsg}</p>}
+          <div style={{ marginBottom: '12px', marginTop: '12px' }}>
+            <GeneralBtn
+              width={'80px'}
+              BtnText='Save edits'
+              onClick={() => {
+                const accessToken = localStorage.getItem('accessToken');
+                const refreshToken = localStorage.getItem('refreshToken');
+                const data = {
+                  title: QuestionData.title,
+                  content: QuestionData.content,
+                  tags: QuestionData.tags
+                };
+                axios
+                  .patch(`/question/${questionId}`, data, {
+                    headers: {
+                      Authorization: `Bearer ${accessToken}`,
+                      'X-Refresh-Token': refreshToken
+                    }
+                  })
+                  .then(() => {
+                    navigate(`/question/${questionId}`);
+                  })
+                  .catch(error => {
+                    console.error(error.response);
+                  });
+              }}
+            ></GeneralBtn>
+            <QECancelBtn
+              onClick={() => {
                 navigate(`/question/${questionId}`);
-              })
-              .catch(error => {
-                console.error(error.response);
-              });
-          }}
-        ></GeneralBtn>
-        <QECancelBtn
-          onClick={() => {
-            navigate(`/question/${questionId}`);
-          }}
-        >
-          Cancel
-        </QECancelBtn>
-      </div>
+              }}
+            >
+              Cancel
+            </QECancelBtn>
+          </div>
+        </>
+      ) : (
+        <Loading>Loading...</Loading>
+      )}
     </QEditContainer>
   );
 }
@@ -232,10 +243,6 @@ export function AnswerEditMain() {
     setAnswer(filteredAnswer);
   }, [AllAnswerData, answerId]);
 
-  if (!answer) {
-    return <div>Loading...</div>;
-  }
-
   const handleValidation = e => {
     if (e.target.className.includes('ql-editor')) {
       if (answer.content.length > 0 && answer.content.length < 20) {
@@ -247,6 +254,7 @@ export function AnswerEditMain() {
       }
     }
   };
+
   return (
     <QEditContainer>
       <QEHelpBox margin='20px'>
@@ -264,51 +272,59 @@ export function AnswerEditMain() {
       <QELable htmlFor='Answer' fontsize='17px' margin='14px'>
         Answer
       </QELable>
-      <Editor
-        editorInput={answer.content}
-        setEditorInput={setAnswer}
-        formValues={answer}
-        handleValidation={handleValidation}
-        contentErrorMsg={contentErrorMsg}
-      />
-      {contentErrorMsg && <p style={{ color: '#DE4F54' }}>{contentErrorMsg}</p>}
-      <ShowConentData
-        dangerouslySetInnerHTML={{
-          __html: answer.content
-        }}
-      />
-      <div style={{ marginBottom: '12px' }}>
-        <GeneralBtn
-          width={'80px'}
-          BtnText='Save edits'
-          padding='0px'
-          onClick={() => {
-            const accessToken = localStorage.getItem('accessToken');
-            const refreshToken = localStorage.getItem('refreshToken');
-            const data = { content: answer.content };
-            axios
-              .patch(`/question/${questionId}/answer/${answerId}`, data, {
-                headers: {
-                  Authorization: `Bearer ${accessToken}`,
-                  'X-Refresh-Token': refreshToken
-                }
-              })
-              .then(() => {
+      {answer ? (
+        <>
+          <Editor
+            editorInput={answer.content}
+            setEditorInput={setAnswer}
+            formValues={answer}
+            handleValidation={handleValidation}
+            contentErrorMsg={contentErrorMsg}
+          />
+          {contentErrorMsg && (
+            <p style={{ color: '#DE4F54' }}>{contentErrorMsg}</p>
+          )}
+          <ShowConentData
+            dangerouslySetInnerHTML={{
+              __html: answer.content
+            }}
+          />
+          <div style={{ marginBottom: '12px' }}>
+            <GeneralBtn
+              width={'80px'}
+              BtnText='Save edits'
+              padding='0px'
+              onClick={() => {
+                const accessToken = localStorage.getItem('accessToken');
+                const refreshToken = localStorage.getItem('refreshToken');
+                const data = { content: answer.content };
+                axios
+                  .patch(`/question/${questionId}/answer/${answerId}`, data, {
+                    headers: {
+                      Authorization: `Bearer ${accessToken}`,
+                      'X-Refresh-Token': refreshToken
+                    }
+                  })
+                  .then(() => {
+                    navigate(`/question/${questionId}`);
+                  })
+                  .catch(error => {
+                    console.error(error.response);
+                  });
+              }}
+            ></GeneralBtn>
+            <QECancelBtn
+              onClick={() => {
                 navigate(`/question/${questionId}`);
-              })
-              .catch(error => {
-                console.error(error.response);
-              });
-          }}
-        ></GeneralBtn>
-        <QECancelBtn
-          onClick={() => {
-            navigate(`/question/${questionId}`);
-          }}
-        >
-          Cancel
-        </QECancelBtn>
-      </div>
+              }}
+            >
+              Cancel
+            </QECancelBtn>
+          </div>
+        </>
+      ) : (
+        <Loading>Loading...</Loading>
+      )}
     </QEditContainer>
   );
 }

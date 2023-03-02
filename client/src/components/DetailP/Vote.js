@@ -80,9 +80,11 @@ function Vote({
               }
             })
             .then(res => {
+              //window.location.href = `/question/${questionId}`;
               setQuestionData(res.data);
               setIsLiked(true);
-            });
+            })
+            .catch(handleVoteCountPError);
         } else {
           axios
             .delete(`/question/${questionId}/vote`, {
@@ -92,12 +94,13 @@ function Vote({
               }
             })
             .then(res => {
+              //window.location.href = `/question/${questionId}`;
               setQuestionData(res.data);
               setIsLiked(false);
-            });
+            })
+            .catch(handleVoteCountDError);
         }
       }
-
       // answer 좋아요 기능
       if (data === answer) {
         if (!isLiked) {
@@ -109,9 +112,11 @@ function Vote({
               }
             })
             .then(res => {
+              //window.location.href = `/question/${questionId}`;
               setAnswerData(res.data);
               setIsLiked(true);
-            });
+            })
+            .catch(handleVoteACountPError);
         } else {
           axios
             .delete(`/question/${questionId}/answer/${answerId}/vote`, {
@@ -121,13 +126,112 @@ function Vote({
               }
             })
             .then(res => {
+              // window.location.href = `/question/${questionId}`;
               setAnswerData(res.data);
               setIsLiked(false);
-            });
+            })
+            .catch(handleVoteACountDError);
         }
       }
     } else {
       navigate('/login');
+    }
+  };
+  const handleVoteCountPError = err => {
+    if (err.response.status === 401) {
+      const newAccessToken = err.response.headers.authorization;
+      const newRefreshToken = err.response.headers.refresh;
+
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+
+      localStorage.setItem('accessToken', newAccessToken);
+      localStorage.setItem('refreshToken', newRefreshToken);
+
+      axios
+        .post(`/question/${questionId}/vote`, null, {
+          headers: {
+            Authorization: `Bearer ${newAccessToken}`,
+            Refresh: `${newRefreshToken}`
+          }
+        })
+        .then(() => {
+          window.location.href = `/question/${questionId}`;
+        })
+        .catch(handleVoteCountPError);
+    }
+  };
+  const handleVoteCountDError = err => {
+    if (err.response.status === 401) {
+      const newAccessToken = err.response.headers.authorization;
+      const newRefreshToken = err.response.headers.refresh;
+
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+
+      localStorage.setItem('accessToken', newAccessToken);
+      localStorage.setItem('refreshToken', newRefreshToken);
+
+      axios
+        .delete(`/question/${questionId}/vote`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            Refresh: `${refreshToken}`
+          }
+        })
+        .then(() => {
+          window.location.href = `/question/${questionId}`;
+        })
+        .catch(handleVoteCountDError);
+    }
+  };
+
+  const handleVoteACountPError = err => {
+    if (err.response.status === 401) {
+      const newAccessToken = err.response.headers.authorization;
+      const newRefreshToken = err.response.headers.refresh;
+
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+
+      localStorage.setItem('accessToken', newAccessToken);
+      localStorage.setItem('refreshToken', newRefreshToken);
+
+      axios
+        .post(`/question/${questionId}/answer/${answerId}/vote`, null, {
+          headers: {
+            Authorization: `Bearer ${newAccessToken}`,
+            Refresh: `${newRefreshToken}`
+          }
+        })
+        .then(() => {
+          window.location.href = `/question/${questionId}`;
+        })
+        .catch(handleVoteCountPError);
+    }
+  };
+  const handleVoteACountDError = err => {
+    if (err.response.status === 401) {
+      const newAccessToken = err.response.headers.authorization;
+      const newRefreshToken = err.response.headers.refresh;
+
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+
+      localStorage.setItem('accessToken', newAccessToken);
+      localStorage.setItem('refreshToken', newRefreshToken);
+
+      axios
+        .delete(`/question/${questionId}/answer/${answerId}/vote`, {
+          headers: {
+            Authorization: `Bearer ${newAccessToken}`,
+            Refresh: `${newRefreshToken}`
+          }
+        })
+        .then(() => {
+          window.location.href = `/question/${questionId}`;
+        })
+        .catch(handleVoteCountDError);
     }
   };
 

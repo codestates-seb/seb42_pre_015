@@ -66,27 +66,31 @@ const Inputbox = () => {
     if (!name) {
       return 'Display name cannot be empty';
     } else if (!Constraint.test(name)) {
-      return 'Display name must match the regular expression';
+      if (/\d/.test(name)) {
+        return 'Name should not contain numbers';
+      }
     }
     return '';
   };
 
   const validateEmail = email => {
-    const Constraint = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const constraint = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email) {
       return 'Email cannot be empty';
-    } else if (!Constraint.test(email)) {
+    } else if (!constraint.test(email)) {
       return 'Email must be a well-formed email address';
     }
     return '';
   };
 
   const validatePassword = password => {
-    const Constraint = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    const constraint = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
     if (!password) {
       return 'Password cannot be empty';
-    } else if (!Constraint.test(password)) {
-      return 'Password must match the regular expression ';
+    } else if (password.length < 8) {
+      return 'Passwords must contain at least 8 characters';
+    } else if (!constraint.test(password)) {
+      return 'Please add at least 1 letter and 1 number.';
     }
     return '';
   };
