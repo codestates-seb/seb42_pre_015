@@ -1,0 +1,18 @@
+.quill {
+    border-radius: 3px;
+}
+
+.ql-editor {
+    height: 200px;
+    font-size: 20px;
+    border-radius: 3px;
+}
+
+.ql-editor > p {
+    font-size: 13px;
+    white-space: normal;
+}
+
+.ql-editor:focus {
+    outline: none;
+  }
