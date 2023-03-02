@@ -155,35 +155,27 @@ export default function Search({ SearchDataHandler }) {
   }, []);
 
   function extractTargets(input) {
-    // 이름 추출
-    const nameRegex = /name:(\S+)/;
-    const nameMatch = input.match(nameRegex);
-    const name = nameMatch ? nameMatch[1] : null;
-
-    // 태그 추출
-    const tagRegex = /\[(\S+?)\]/g;
-    const tagMatches = [];
-    let tagMatch;
-    while ((tagMatch = tagRegex.exec(input))) {
-      tagMatches.push(tagMatch[1]);
-    }
-
-    // 답변 수 추출
-    const answersRegex = /answers:(\d+)/;
-    const answersMatch = input.match(answersRegex);
-    const answers = answersMatch ? answersMatch[1] : null;
-
-    // 나머지 추출
-    const restRegex = /name:\S+|\[(\S+?)\]|answers:\d+\s+/g;
-    const rest = input.replace(restRegex, '').trim();
-
-    // 로그 출력
-    const params = { page: 1, size: 20, sort: 'questionId,asc' };
-    if (name !== null) params.name = name;
-    if (answers !== null) params.answerCount = Number(answers);
-    if (tagMatches.length !== 0) params.tags = tagMatches;
-    if (rest !== '') params.title = rest;
-
+    const params = {
+      page: 1,
+      size: 20,
+      sort: 'questionId,asc'
+    };
+    const arr1 = input.split(' ');
+    arr1.forEach(el => {
+      if (el.includes('user:')) {
+        const user = el.substr(5);
+        params.name = user;
+      } else if (el.includes('answers:')) {
+        const answer = el.substr(8);
+        params.answerCount = Number(answer);
+      } else if (el.charAt(0) === '[' && el.charAt(el.length - 1) === ']') {
+        const tag = el.slice(1, -1);
+        params.tags = tag;
+      } else {
+        const title = el;
+        params.title = title;
+      }
+    });
     return params;
   }
 
@@ -196,13 +188,11 @@ export default function Search({ SearchDataHandler }) {
         .then(response => {
           console.log(response.data);
           SearchDataHandler(response.data);
-          setIsSearchClick(false);
           navigate('/');
         })
         .catch(error => {
           console.error(error);
         });
-      setSearchText('');
     }
   };
 

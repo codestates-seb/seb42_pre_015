@@ -38,7 +38,6 @@ const CommentWrapper = styled.div`
     width: 80%;
   }
   > div {
-    width: 19%;
     > .name {
       color: #0069c1;
     }
@@ -46,8 +45,7 @@ const CommentWrapper = styled.div`
       color: #858e97;
       margin-left: 3px;
     }
-    > .edit-btn,
-    .delete-btn {
+    > .delete-btn {
       margin-left: 3px;
       color: #858e97;
       background-color: #fff;
@@ -107,7 +105,6 @@ function Comment({
 
   const [isAddClicked, setIsAddClicked] = useState(false);
   const [newComment, setNewComment] = useState('');
-  const [onEdit, setOnEdit] = useState('');
 
   const handleAddComment = () => {
     const newCommentInput = { content: newComment };
@@ -173,11 +170,6 @@ function Comment({
         })
         .catch(err => handleAddCommentError(err, endpoint));
     }
-  };
-
-  const handleEditComment = e => {
-    setOnEdit(!onEdit);
-    // console.log('e:', e.target);
   };
 
   const handleDeleteComment = commentId => {
@@ -263,9 +255,6 @@ function Comment({
                 </span>
                 {LogginUserId === comment.userId ? (
                   <>
-                    <button className='edit-btn' onClick={handleEditComment}>
-                      Edit
-                    </button>
                     <button
                       className='delete-btn'
                       onClick={() => handleDeleteComment(comment.commentId)}

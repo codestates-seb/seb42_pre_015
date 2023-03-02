@@ -9,6 +9,7 @@ import Nav from '../components/common/Nav';
 import Footer from '../components/common/Footer';
 import { GeneralBtn } from '../components/common/Buttons';
 import { MainNav } from '../components/common/SideNav';
+import { parseISO, addHours, format } from 'date-fns';
 
 const MainPContainer = styled.div`
   padding: 5px 0 0 16px;
@@ -201,6 +202,20 @@ const PageNationContainer = styled.div`
   }
 `;
 
+const LoadingPage = styled.div`
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding-top: 200px;
+`;
+function convertToKoreanTime(dateString) {
+  const date = parseISO(dateString);
+  const koreanDate = addHours(date, 0);
+  const formattedDate = format(koreanDate, 'yyyy-MM-dd-HH:mm');
+  return formattedDate;
+}
+
 export function MainComponent({ SearchData }) {
   const [AllQestion, setAllQuestion] = useState([]);
   const [PageNationData, setPageNationData] = useState([]);
@@ -240,6 +255,7 @@ export function MainComponent({ SearchData }) {
       })
       .then(res => {
         setAllQuestion(res.data.data);
+        console.log(res.data.data);
         setPageNationData(res.data.pageInfo);
       })
       .catch(error => {
@@ -297,6 +313,7 @@ export function MainComponent({ SearchData }) {
           </MainTopBtnGather>
         </MainFilterContainer>
       </MainPContainer>
+      {AllQestion.length === 0 ? <LoadingPage>Loading</LoadingPage> : <></>}
       {SearchData.data ? (
         <>
           {SearchData.data.map((el, index) => {
@@ -330,9 +347,7 @@ export function MainComponent({ SearchData }) {
                         <span
                           style={{ color: 'rgb(82,89,96)', marginLeft: '10px' }}
                         >
-                          {el.createdAt
-                            .replace(/T/, ' ')
-                            .replace(/:\d\d(.\d{1,6})?$/, '')}
+                          {convertToKoreanTime(el.createdAt)}
                         </span>
                       </a>
                     </UserContainer>
@@ -375,9 +390,7 @@ export function MainComponent({ SearchData }) {
                         <span
                           style={{ color: 'rgb(82,89,96)', marginLeft: '10px' }}
                         >
-                          {el.createdAt
-                            .replace(/T/, ' ')
-                            .replace(/:\d\d(.\d{1,6})?$/, '')}
+                          {convertToKoreanTime(el.createdAt)}
                         </span>
                       </a>
                     </UserContainer>
@@ -388,7 +401,6 @@ export function MainComponent({ SearchData }) {
           })}
         </>
       )}
-
       <PageNationContainer>
         {PageNationData.totalElements ? (
           <Pagination

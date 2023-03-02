@@ -1,8 +1,6 @@
 import styled from 'styled-components';
 import Vote from './Vote';
 import ProfileCard from './ProfileCard';
-// import Comment from './Comment';
-// import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import AnswerCommentList from './AnswerCommentList';
@@ -87,7 +85,12 @@ function AnswerBody({ questionId, answerData, setAnswerData }) {
       {answerData &&
         answerData.map(answer => (
           <AnswerContainer key={answer.answerId}>
-            <Vote answer={answer} answerId={answer.answerId} />
+            <Vote
+              questionId={questionId}
+              answerId={answer.answerId}
+              answer={answer}
+              setAnswerData={setAnswerData}
+            />
             <AnswerWrapper>
               <Answercontent
                 dangerouslySetInnerHTML={{ __html: answer.content }}

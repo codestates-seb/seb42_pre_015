@@ -111,6 +111,7 @@ function DetailPage() {
   const [isQuestionLoading, setIsQuestionLoading] = useState(true);
 
   useEffect(() => {
+    // ! async await 을 사용하여 question 과 vote 데이터를 하나의 res로 합치기
     axios.get(`/question/${questionId}`).then(res => {
       if (res.headers.authorization && res.headers.refresh) {
         const accessToken = res.headers.authorization;
@@ -176,12 +177,12 @@ function DetailPage() {
             </Info>
             <Content className='main'>
               <Article>
-                <Question questionId={questionId} questionData={questionData} />
-                <Answer
-                  // answerData={answerData}
+                <Question
                   questionId={questionId}
-                  // setAnswerData={setAnswerData}
+                  questionData={questionData}
+                  setQuestionData={setQuestionData}
                 />
+                <Answer questionId={questionId} />
               </Article>
               <Side>
                 <MainNav />
