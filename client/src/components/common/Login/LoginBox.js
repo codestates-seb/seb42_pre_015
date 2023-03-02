@@ -38,7 +38,7 @@ const LoginBox = () => {
     } else if (password.length < 8) {
       return 'Passwords must contain at least 8 characters';
     } else if (!constraint.test(password)) {
-      return 'including at least 1 letter and 1 number.';
+      return 'Please add at least 1 letter and 1 number.';
     }
     return '';
   };
