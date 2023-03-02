@@ -19,7 +19,7 @@ public class QuestionComment extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long questionCommentId;
-    @Column
+    @Column(columnDefinition="TEXT")
     private String content;
     @ManyToOne
     @JoinColumn(name = "question_id")

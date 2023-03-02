@@ -28,7 +28,7 @@ public class AnswerComment extends BaseTimeEntity {
     @OnDelete(action= OnDeleteAction.CASCADE)
     @JoinColumn(name = "answer_id")
     private Answer answer;
-    @Nullable
+    @Column(nullable = false, columnDefinition="TEXT")
     private String content;
 
     public void setUser(User user) {//User 양방향 매핑 메소드
