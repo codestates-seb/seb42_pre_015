@@ -61,16 +61,13 @@ const ShowConentData = styled.div`
     white-space: normal;
   }
 `;
-const Loading = styled.div`
-  height: 100vh;
-  width: 100%;
-`;
 export function QuestionEditMain() {
-  const [QuestionData, setQuestionData] = useState('');
+  const [QuestionData, setQuestionData] = useState({ content: '', tags: [] });
   const { questionId } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     axios
       .get(`/question/${questionId}`)
       .then(res => {
@@ -135,89 +132,110 @@ export function QuestionEditMain() {
       </QEHelpBox>
 
       <QELable htmlFor='Title'>Title</QELable>
-      {QuestionData ? (
-        <>
-          <QEInput
-            placeholder='How to avoid sending a brunch of requests to update data in DB'
-            id='title'
-            value={QuestionData.title}
-            onChange={handleInputChange}
-            onBlur={handleValidation}
-            name='title'
-            validated={!titleErrorMsg}
-          ></QEInput>
-          {titleErrorMsg && <p style={{ color: '#DE4F54' }}>{titleErrorMsg}</p>}
-          <QELable htmlFor='body'>Body</QELable>
-          <Editor
-            editorInput={QuestionData.content}
-            setEditorInput={setQuestionData}
-            formValues={QuestionData}
-            handleValidation={handleValidation}
-            contentErrorMsg={contentErrorMsg}
-          />
-          {contentErrorMsg && (
-            <p style={{ color: '#DE4F54' }}>{contentErrorMsg}</p>
-          )}
-          <ShowConentData
-            dangerouslySetInnerHTML={{
-              __html: QuestionData.content
-            }}
-          />
-          <QELable htmlFor='tags'>Tags</QELable>
 
-          <TagInput
-            id='tags'
-            placeholder='e.g. (vba css json)'
-            tags={QuestionData.tags}
-            formValues={QuestionData}
-            setFormValues={setQuestionData}
-            handleValidation={handleValidation}
-            tagErrorMsg={tagErrorMsg}
-          />
-          {tagErrorMsg && <p style={{ color: '#DE4F54' }}>{tagErrorMsg}</p>}
-          <div style={{ marginBottom: '12px', marginTop: '12px' }}>
-            <GeneralBtn
-              width={'80px'}
-              BtnText='Save edits'
-              onClick={() => {
-                const accessToken = localStorage.getItem('accessToken');
-                const refreshToken = localStorage.getItem('refreshToken');
-                const data = {
-                  title: QuestionData.title,
-                  content: QuestionData.content,
-                  tags: QuestionData.tags
-                };
-                axios
-                  .patch(`/question/${questionId}`, data, {
-                    headers: {
-                      Authorization: `Bearer ${accessToken}`,
-                      'X-Refresh-Token': refreshToken
-                    }
-                  })
-                  .then(() => {
-                    navigate(`/question/${questionId}`);
-                  })
-                  .catch(error => {
-                    console.error(error.response);
-                  });
-              }}
-            ></GeneralBtn>
-            <QECancelBtn
-              onClick={() => {
-                navigate(`/question/${questionId}`);
-              }}
-            >
-              Cancel
-            </QECancelBtn>
-          </div>
-        </>
-      ) : (
-        <Loading>Loading...</Loading>
-      )}
+      <QEInput
+        placeholder='How to avoid sending a brunch of requests to update data in DB'
+        id='title'
+        value={QuestionData.title}
+        onChange={handleInputChange}
+        onBlur={handleValidation}
+        name='title'
+        validated={!titleErrorMsg}
+      ></QEInput>
+      {titleErrorMsg && <p style={{ color: '#DE4F54' }}>{titleErrorMsg}</p>}
+      <QELable htmlFor='body'>Body</QELable>
+      <Editor
+        editorInput={QuestionData.content}
+        setEditorInput={setQuestionData}
+        formValues={QuestionData}
+        handleValidation={handleValidation}
+        contentErrorMsg={contentErrorMsg}
+      />
+      {contentErrorMsg && <p style={{ color: '#DE4F54' }}>{contentErrorMsg}</p>}
+      <ShowConentData
+        dangerouslySetInnerHTML={{
+          __html: QuestionData.content
+        }}
+      />
+      <QELable htmlFor='tags'>Tags</QELable>
+
+      <TagInput
+        id='tags'
+        placeholder='e.g. (vba css json)'
+        tags={QuestionData.tags}
+        formValues={QuestionData}
+        setFormValues={setQuestionData}
+        handleValidation={handleValidation}
+        tagErrorMsg={tagErrorMsg}
+      />
+      {tagErrorMsg && <p style={{ color: '#DE4F54' }}>{tagErrorMsg}</p>}
+      <div style={{ marginBottom: '12px', marginTop: '12px' }}>
+        <GeneralBtn
+          width={'80px'}
+          BtnText='Save edits'
+          onClick={() => {
+            const accessToken = localStorage.getItem('accessToken');
+            const refreshToken = localStorage.getItem('refreshToken');
+            const data = {
+              title: QuestionData.title,
+              content: QuestionData.content,
+              tags: QuestionData.tags
+            };
+            axios
+              .patch(`/question/${questionId}`, data, {
+                headers: {
+                  Authorization: `Bearer ${accessToken}`,
+                  Refresh: `${refreshToken}`
+                }
+              })
+              .then(() => {
+                window.location.href = `/question/${questionId}`;
+              })
+              .catch(err => {
+                if (err.response.status === 401) {
+                  const newAccessToken = err.response.headers.authorization;
+                  const newRefreshToken = err.response.headers.refresh;
+
+                  localStorage.removeItem('accessToken');
+                  localStorage.removeItem('refreshToken');
+
+                  localStorage.setItem('accessToken', newAccessToken);
+                  localStorage.setItem('refreshToken', newRefreshToken);
+
+                  axios
+                    .patch(`/question/${questionId}`, data, {
+                      headers: {
+                        Authorization: `Bearer ${newAccessToken}`,
+                        Refresh: `${newRefreshToken}`
+                      }
+                    })
+                    .then(() => {
+                      window.location.href = `/question/${questionId}`;
+                    })
+                    .catch(err => {
+                      console.error(err);
+                      console.log('삭제를 실패했습니다.');
+                    });
+                }
+              });
+          }}
+        ></GeneralBtn>
+        <QECancelBtn
+          onClick={() => {
+            navigate(`/question/${questionId}`);
+          }}
+        >
+          Cancel
+        </QECancelBtn>
+      </div>
     </QEditContainer>
   );
 }
 
+const Loading = styled.div`
+  width: 100%;
+  height: 100vh;
+`;
 export function AnswerEditMain() {
   const [AllAnswerData, AllsetAnswerData] = useState([]);
   const [answer, setAnswer] = useState(null);
@@ -226,6 +244,7 @@ export function AnswerEditMain() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     axios
       .get(`/question/${questionId}/answer`)
       .then(res => {
@@ -254,7 +273,6 @@ export function AnswerEditMain() {
       }
     }
   };
-
   return (
     <QEditContainer>
       <QEHelpBox margin='20px'>
@@ -274,6 +292,7 @@ export function AnswerEditMain() {
       </QELable>
       {answer ? (
         <>
+          {' '}
           <Editor
             editorInput={answer.content}
             setEditorInput={setAnswer}
@@ -302,14 +321,42 @@ export function AnswerEditMain() {
                   .patch(`/question/${questionId}/answer/${answerId}`, data, {
                     headers: {
                       Authorization: `Bearer ${accessToken}`,
-                      'X-Refresh-Token': refreshToken
+                      Refresh: `${refreshToken}`
                     }
                   })
                   .then(() => {
-                    navigate(`/question/${questionId}`);
+                    window.location.href = `/question/${questionId}`;
                   })
-                  .catch(error => {
-                    console.error(error.response);
+                  .catch(err => {
+                    if (err.response.status === 401) {
+                      const newAccessToken = err.response.headers.authorization;
+                      const newRefreshToken = err.response.headers.refresh;
+
+                      localStorage.removeItem('accessToken');
+                      localStorage.removeItem('refreshToken');
+
+                      localStorage.setItem('accessToken', newAccessToken);
+                      localStorage.setItem('refreshToken', newRefreshToken);
+
+                      axios
+                        .patch(
+                          `/question/${questionId}/answer/${answerId}`,
+                          data,
+                          {
+                            headers: {
+                              Authorization: `Bearer ${newAccessToken}`,
+                              Refresh: `${newRefreshToken}`
+                            }
+                          }
+                        )
+                        .then(() => {
+                          window.location.href = `/question/${questionId}`;
+                        })
+                        .catch(err => {
+                          console.error(err);
+                          console.log('삭제를 실패했습니다.');
+                        });
+                    }
                   });
               }}
             ></GeneralBtn>
@@ -323,7 +370,7 @@ export function AnswerEditMain() {
           </div>
         </>
       ) : (
-        <Loading>Loading...</Loading>
+        <Loading>Loading</Loading>
       )}
     </QEditContainer>
   );

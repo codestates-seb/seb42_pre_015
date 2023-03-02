@@ -117,8 +117,9 @@ function Comment({
             Refresh: `${refreshToken}`
           }
         })
-        .then(() => {
-          window.location.href = `/question/${questionId}`;
+        .then(res => {
+          setQuestionCommentData(res.data);
+          setNewComment('');
         })
         .catch(err =>
           handleAddCommentError(err, `/question/${questionId}/comment`)
@@ -135,8 +136,9 @@ function Comment({
             }
           }
         )
-        .then(() => {
-          window.location.href = `/question/${questionId}`;
+        .then(res => {
+          setAnswerCommentData(res.data);
+          setNewComment('');
         })
         .catch(err =>
           handleAddCommentError(
@@ -181,8 +183,9 @@ function Comment({
             Refresh: `${refreshToken}`
           }
         })
-        .then(() => {
-          window.location.href = `/question/${questionId}`;
+        .then(res => {
+          setQuestionCommentData(res.data);
+          setNewComment('');
         })
         .catch(err =>
           handleDeleteCommentError(
@@ -201,8 +204,9 @@ function Comment({
             }
           }
         )
-        .then(() => {
-          window.location.href = `/question/${questionId}`;
+        .then(res => {
+          setAnswerCommentData(res.data);
+          setNewComment('');
         })
         .catch(err =>
           handleDeleteCommentError(
