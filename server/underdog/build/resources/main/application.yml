@@ -12,7 +12,7 @@ spring:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         highlight_sql: true
@@ -72,3 +72,5 @@ mail:
   subject:
     member:
       registration: Thank you for joining our cafe!
+config:
+  domain: ${S3_ENDPOINT}

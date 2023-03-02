@@ -4,6 +4,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import preproject.underdog.auditing.BaseTimeEntity;
 import preproject.underdog.question.entity.Question;
 import preproject.underdog.user.entity.User;
@@ -33,10 +35,10 @@ public class Answer extends BaseTimeEntity {
     @JoinColumn(name = "question_id")
     private Question question;
 
-    @OneToMany(mappedBy = "answer", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "answer", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<AnswerVote> votes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "answer", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "answer", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<AnswerComment> comments = new ArrayList<>();
 
     public void setQuestion(Question question) {//Question 양방향 매핑 메소드

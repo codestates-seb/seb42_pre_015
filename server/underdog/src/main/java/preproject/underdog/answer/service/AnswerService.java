@@ -71,15 +71,14 @@ public class AnswerService {
         Question question = questionService.findQuestionById(questionId);
         Answer answer = findVerifiedAnswer(answerId);
 
+        if (!question.getAnswerList().contains(answer))
+            throw new BusinessLogicException(ExceptionCode.ANSWER_NOT_FOUND);
+
         // 답변 작성자가 맞는지 검증 -> 시큐리티
         String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         if (!answer.getUser().getEmail().equals(principal))
             throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_DELETING_POST);
 
-        if (!question.getAnswerList().contains(answer))
-            throw new BusinessLogicException(ExceptionCode.ANSWER_NOT_FOUND);
-
-        answerRepository.deleteComment(answer.getAnswerId());
         answerRepository.deleteAllByIdInBatch(Collections.singleton(answer.getAnswerId()));
         return answerRepository.findByQuestionId(question.getQuestionId());
     }
