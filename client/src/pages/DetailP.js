@@ -73,6 +73,7 @@ const Article = styled.article`
   padding-right: 16px;
   display: flex;
   flex-direction: column;
+  overflow-wrap: break-word;
   @media screen and (max-width: 980px) {
     min-width: 100%;
   }

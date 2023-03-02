@@ -1,6 +1,4 @@
 import styled from 'styled-components';
-// import { SmallPenSVG } from '../../assets/CommonSVG';
-// import { GeneralBtn } from '../common/Buttons';
 import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -26,8 +24,7 @@ const CommentContainer = styled.div`
 const CommentWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
-  width: 100%;
+  align-items: center;
   margin: 4px 0px;
   border-top: 1px solid #dee2e5;
   > .content {
@@ -38,6 +35,8 @@ const CommentWrapper = styled.div`
     width: 80%;
   }
   > div {
+    width: 20%;
+    white-space: normal;
     > .name {
       color: #0069c1;
     }
