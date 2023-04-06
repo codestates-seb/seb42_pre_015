@@ -64,6 +64,8 @@ export default function UserNav() {
     const userName = localStorage.getItem('name');
     if (userName.length <= 3) {
       return userName.slice(-2);
+    } else if (userName === '') {
+      return;
     } else {
       return userName.slice(0, 1);
     }
